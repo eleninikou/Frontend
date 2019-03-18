@@ -7,6 +7,9 @@ import {
     REGISTER_REQUEST,
     REGISTER_SUCCESS,
     REGISTER_FAILURE,
+    GOOGLE_AUTH_REQUEST,
+    GOOGLE_AUTH_SUCCESS,
+    GOOGLE_AUTH_FAILURE,
 } from '../actions/auth/Action-types';
 
 const initialState = {
@@ -66,6 +69,23 @@ const authReducer = (state = initialState, action) => {
                 isFetching: false,
                 errorMessage: action.message
             }  
+        case GOOGLE_AUTH_REQUEST:
+            return {
+                ...state,
+                isFetching: true 
+            } 
+        case GOOGLE_AUTH_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                user: action.payload
+            } 
+        case GOOGLE_AUTH_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }     
         default:
             return state;
     }
