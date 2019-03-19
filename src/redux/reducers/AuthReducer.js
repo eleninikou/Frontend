@@ -32,7 +32,7 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 isAuthenticated: true,
-                user: action.user
+                user: action.payload
             } 
         case LOGIN_FAILURE:
             return {

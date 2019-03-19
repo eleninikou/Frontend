@@ -15,7 +15,6 @@ import image from "../assets/img/sidebar-2.jpg";
 const switchRoutes = (
   <Switch>
     {routes.map((prop, key) => {
-    console.log(prop);
       if (prop.layout === "/home") {
         return (
           <Route
@@ -23,8 +22,7 @@ const switchRoutes = (
             component={prop.component}
             key={key}
           />
-        );
-      }
+        );}
     })}
   </Switch>
 );
@@ -117,7 +115,6 @@ class Home extends React.Component {
           {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {this.getRoute() ? (
             <div className={classes.content}>
-            {console.log(switchRoutes)}
               <div className={classes.container}>{switchRoutes}</div>
             </div>
           ) : ('')} 

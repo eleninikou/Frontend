@@ -20,11 +20,14 @@ export const login = creds => {
       const loginRequest = () => { dispatch({ type: LOGIN_REQUEST }) };
   
       const recieveLogin = token => { 
-        debugger;  
-        dispatch ({ type: LOGIN_SUCCESS, payload: token}); 
+        dispatch ({ type: LOGIN_SUCCESS, payload: token.user}); 
         const cookies = new Cookies();
-        cookies.set("token", token.token, { path: "/", maxAge: 86399 });
-        return token; 
+        cookies.set(
+          "token", token.token, { path: "/", maxAge: 86399 },
+          "user", token.user, { path: "/", maxAge: 86399 },
+          );
+          debugger;  
+        return token.user; 
     }
   
     // return user
@@ -55,8 +58,12 @@ export const login = creds => {
   
       const recieveGoogleAuth = user => { 
         dispatch ({ type: GOOGLE_AUTH_SUCCESS, payload: user}); 
+        debugger;
         const cookies = new Cookies();
-        cookies.set("token", user.success.token, { path: "/", maxAge: 86399 });
+        cookies.set(
+          "token", user.success.token, { path: "/", maxAge: 86399 },
+          'user', user.success.user
+          );
         return user;
     }
 

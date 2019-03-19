@@ -48,9 +48,7 @@ class LoginForm extends Component {
     if (!response.error) {
       this.props.googleLogin(response.profileObj)
       .then(res => {
-        console.log(res);
-        console.log(this.props);
-        this.props.history.push('/admin')
+        this.props.history.push('/home')
       })
     }
   }
@@ -63,8 +61,7 @@ class LoginForm extends Component {
     };
     this.props.login(creds)
       .then(res => {
-        console.log(res);
-        this.props.history.push('/admin')
+        this.props.history.push('/home')
 
       })
   }

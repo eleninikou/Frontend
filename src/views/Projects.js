@@ -33,19 +33,12 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import Cookies from 'universal-cookie'
 
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "../variables/charts.jsx";
-
 import { getProjectsByUser, getAllProjects } from '../redux/actions/projects/Actions'
 import { connect } from 'react-redux'
 
 
 
-class Dashboard extends Component {
+class Projects extends Component {
 
   componentWillMount() {
     const cookies = new Cookies()
@@ -76,7 +69,7 @@ class Dashboard extends Component {
                   </CardBody>
                 </Card>
               </GridItem>
-              {/* <GridItem xs={12} sm={12} md={6}>
+              <GridItem xs={12} sm={12} md={6}>
                 <Card>
                   <CardHeader color="warning">
                     <h4 className={classes.cardTitleWhite}>Active Projects</h4>
@@ -91,62 +84,18 @@ class Dashboard extends Component {
                             return [`${project.project.id}`, `${project.project.name}`, `${project.project.description}` ]
                             
                           }) : ''
-                        // ]}
                       ]}
                     />
                   </CardBody>
                 </Card>
-              </GridItem> */}
-            </GridContainer>
-            {/* <GridContainer>
-            <GridItem xs={12} sm={12} md={6}>
-                <CustomTabs
-                  title="Tasks:"
-                  headerColor="primary"
-                  tabs={[
-                    {
-                      tabName: "Bugs",
-                      tabIcon: BugReport,
-                      tabContent: (
-                        <Tasks
-                          checkedIndexes={[0, 3]}
-                          tasksIndexes={[0, 1, 2, 3]}
-                        //   tasks={bugs}
-                        />
-                      )
-                    },
-                    {
-                      tabName: "Website",
-                      tabIcon: Code,
-                      tabContent: (
-                        <Tasks
-                          checkedIndexes={[0]}
-                          tasksIndexes={[0, 1]}
-                        //   tasks={website}
-                        />
-                      )
-                    },
-                    {
-                      tabName: "Server",
-                      tabIcon: Cloud,
-                      tabContent: (
-                        <Tasks
-                          checkedIndexes={[1]}
-                          tasksIndexes={[0, 1, 2]}
-                        //   tasks={server}
-                        />
-                      )
-                    }
-                  ]}
-                />
               </GridItem>
-            </GridContainer> */}
+            </GridContainer>
           </div>
         );
       }
 }
 
-Dashboard.propTypes = {
+Projects.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
@@ -164,6 +113,6 @@ const mapStateToProps = state => ({
   isFetching: state.project.isFetching
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Dashboard));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Projects));
   
 
