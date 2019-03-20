@@ -18,6 +18,8 @@ import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
 
+import Button from "../components/theme/CustomButtons/Button.jsx";
+
 // core components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
@@ -33,31 +35,57 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import Cookies from 'universal-cookie'
 
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart
-} from "../variables/charts.jsx";
+import { bugs, website, server } from "../variables/general.jsx";
 
 import { getProjectsByUser, getAllProjects } from '../redux/actions/projects/Actions'
+import { logout } from '../redux/actions/auth/Actions'
+
 import { connect } from 'react-redux'
 
 
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { 
+      token: '',
+      userId: '' 
+  }
+    this.logout = this.logout.bind(this);
+
+}
+  logout() {
+    this.props.logout(this.state.token).then(res => {
+      const cookies = new Cookies()
+      cookies.remove('token')
+      cookies.remove('user')
+      console.log(res)
+      debugger;
+      if(!res.error) {
+        this.props.history.push('/')
+      }
+    })
+  }
+
 
   componentWillMount() {
     const cookies = new Cookies()
     var token = cookies.get('token')
-    this.props.getProjectsByUser(token, 3);
-    this.props.getAllProjects(token, 3);
+    var userId = cookies.get('user')
+    this.setState({ 
+      token: token,
+      userId: userId
+    })
+    this.props.getProjectsByUser(token, userId);
+    this.props.getAllProjects(token, userId);
   }
 
     render() {
         const { classes, projects, allProjects } = this.props;
         return (
           <div>
+            <Button onClick={this.logout}>Logout</Button>
             <GridContainer> 
               <GridItem xs={12} sm={12} md={6}>
                 <Card>
@@ -98,8 +126,8 @@ class Dashboard extends Component {
                 </Card>
               </GridItem> */}
             </GridContainer>
-            {/* <GridContainer>
-            <GridItem xs={12} sm={12} md={6}>
+            <GridContainer>
+            {/* <GridItem xs={12} sm={12} md={6}>
                 <CustomTabs
                   title="Tasks:"
                   headerColor="primary"
@@ -111,7 +139,7 @@ class Dashboard extends Component {
                         <Tasks
                           checkedIndexes={[0, 3]}
                           tasksIndexes={[0, 1, 2, 3]}
-                        //   tasks={bugs}
+                          tasks={bugs}
                         />
                       )
                     },
@@ -122,7 +150,7 @@ class Dashboard extends Component {
                         <Tasks
                           checkedIndexes={[0]}
                           tasksIndexes={[0, 1]}
-                        //   tasks={website}
+                          tasks={website}
                         />
                       )
                     },
@@ -133,14 +161,14 @@ class Dashboard extends Component {
                         <Tasks
                           checkedIndexes={[1]}
                           tasksIndexes={[0, 1, 2]}
-                        //   tasks={server}
+                          tasks={server}
                         />
                       )
                     }
                   ]}
                 />
-              </GridItem>
-            </GridContainer> */}
+              </GridItem> */}
+            </GridContainer>
           </div>
         );
       }
@@ -152,6 +180,7 @@ Dashboard.propTypes = {
 
 const mapDispatchToProps = dispatch => { 
   return { 
+    logout: (token) => dispatch(logout(token)),
     getProjectsByUser: (token, id) => dispatch(getProjectsByUser(token, id)),
     getAllProjects: (token, id) => dispatch(getAllProjects(token, id)),
 

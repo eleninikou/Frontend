@@ -2,7 +2,6 @@ import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
-    LOGOUT_REQUEST,
     LOGOUT_SUCCESS,
     REGISTER_REQUEST,
     REGISTER_SUCCESS,
@@ -28,6 +27,7 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false,
             } 
         case LOGIN_SUCCESS:
+        debugger;
             return {
                 ...state,
                 isFetching: false,
@@ -40,12 +40,7 @@ const authReducer = (state = initialState, action) => {
                 isFetching: false,
                 isAuthenticated: false,
                 errorMessage: action.message
-            }
-        case LOGOUT_REQUEST:
-        return {
-            ...state,
-            isFetching: true,
-        }    
+            }  
         case LOGOUT_SUCCESS:
             return {
                 ...state,

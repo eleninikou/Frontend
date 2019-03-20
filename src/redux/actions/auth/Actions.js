@@ -4,8 +4,8 @@ import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGIN_FAILURE,
-    LOGOUT_REQUEST,
     LOGOUT_SUCCESS,
+    LOGOUT_FAILURE,
     REGISTER_REQUEST,
     REGISTER_SUCCESS,
     REGISTER_FAILURE,
@@ -20,14 +20,11 @@ export const login = creds => {
       const loginRequest = () => { dispatch({ type: LOGIN_REQUEST }) };
   
       const recieveLogin = token => { 
-        dispatch ({ type: LOGIN_SUCCESS, payload: token.user}); 
+        dispatch ({ type: LOGIN_SUCCESS, payload: token.success.user}); 
         const cookies = new Cookies();
-        cookies.set(
-          "token", token.token, { path: "/", maxAge: 86399 },
-          "user", token.user, { path: "/", maxAge: 86399 },
-          );
-          debugger;  
-        return token.user; 
+        cookies.set("token", token.success.token, { path: "/", maxAge: 86399 });
+        cookies.set("user", token.success.user.id, { path: "/", maxAge: 86399 });
+        return token.success.user; 
     }
   
     // return user
@@ -35,11 +32,14 @@ export const login = creds => {
   
       try {
         loginRequest();
-        debugger;
         const res = await fetch(`http://127.0.0.1:8000/api/login`, {
           method: "POST",
           body: JSON.stringify(creds),
-          headers: { "Content-Type": "application/json"}
+          headers: { 
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin': '*',
+            'mode': 'no-cors'
+          }
         })
         const token = await res.json();
         return recieveLogin(token);
@@ -58,12 +58,9 @@ export const login = creds => {
   
       const recieveGoogleAuth = user => { 
         dispatch ({ type: GOOGLE_AUTH_SUCCESS, payload: user}); 
-        debugger;
         const cookies = new Cookies();
-        cookies.set(
-          "token", user.success.token, { path: "/", maxAge: 86399 },
-          'user', user.success.user
-          );
+        cookies.set("token", user.success.token, { path: "/", maxAge: 86399 });
+        cookies.set("user", user.success.user.id, { path: "/", maxAge: 86399 });
         return user;
     }
 
@@ -78,5 +75,32 @@ export const login = creds => {
         return recieveGoogleAuth(user);
 
       } catch (error) { return googleAuthError(error) }
+    }
+  };  
+
+  export const logout = (token) => {
+    debugger;
+    return async dispatch => {
+      const logoutError = error => { dispatch ({ type: LOGOUT_FAILURE, message: 'Could not logout user' }); return error; }
+      const logoutSuccess = success => { 
+        dispatch ({ type: LOGOUT_SUCCESS, payload: success}); 
+        return success;
+    }
+
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/api/logout`, {
+            method: "POST",
+            headers: { 
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json",
+              'Access-Control-Allow-Origin': '*',
+              'mode': 'no-cors'
+            }
+        })
+        const success = await res.json();
+        debugger;
+        return logoutSuccess(success);
+
+      } catch (error) { return logoutError(error) }
     }
   };  

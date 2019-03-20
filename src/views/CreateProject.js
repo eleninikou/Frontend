@@ -11,98 +11,100 @@ import Cookies from 'universal-cookie';
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+
 
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
-import { getProjectsByUser } from '../redux/actions/projects/Actions'
+import { projectCreate } from '../redux/actions/projects/Actions'
 import { connect } from 'react-redux'
 
 
-
-class Invite extends Component {
+class CreateProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      project_name: null,
-      email: null
+      name: '',
+      description: ''
     }
+    this.handleChange = this.handleChange.bind(this);
 
+}
+
+// CreateProject action --> invite page
+CreateNewProject(event) {
+  event.preventDefault();
+  const cookies = new Cookies()
+  var token = cookies.get('token')
+  const project = {
+    name: this.state.name,
+    description: this.state.description
+  };
+  this.props.projectCreate(token, project)
+  .then(res => {
+    console.log(res)
+    debugger;
+    this.props.history.push('/home/invite')
+
+  })
 }
 
   componentWillMount() {
     const cookies = new Cookies()
     var token = cookies.get('token')
-    this.props.getProjectsByUser(token, 3);
-
-    // Fetch projects by user -> dropdown 
-    // fetch roles -> dropdown
-    // fetch team
   }
 
-  handleChange = event => {
+  handleChange(event) {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
     debugger;
-    this.setState({ [event.target.name]: event.target.value });
-  };
+  }
 
   render() {
-  const { classes, projects } = this.props;
+  const { classes } = this.props;
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Invite people to join this project</h4>
+              <h4 className={classes.cardTitleWhite}>Create new project</h4>
             </CardHeader>
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="project_name">Project</InputLabel>
-                    <Select
-                      value={this.state.project_name}
-                      onChange={this.handleChange}
-                      inputProps={{
-                        name: 'project_name',
-                        id: 'project_name',
-                      }}
-                    >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {projects.projects ? projects.projects.map(project => {
-                      return <MenuItem value={project.name}>{project.name}</MenuItem>
-                    }): null}
-                    </Select>
-                </FormControl>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={12}>
                   <CustomInput
-                    labelText="Email"
-                    id="Email"
+                    labelText="Name"
+                    id="name"
+                    name="name"
                     formControlProps={{
                       fullWidth: true
                     }}
                     onChange={this.handleChange}
-                    name="Email"
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
+                  <CustomInput
+                    labelText="Description"
+                    id="description"
+                    name="description"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    onChange={this.handleChange}
                   />
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Invite</Button>
+              <Button color="primary" onClick={this.CreateNewProject}>Create Project</Button>
             </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>The team</h4>
+              <h4 className={classes.cardTitleWhite}>Info</h4>
             </CardHeader>
           </Card>
         </GridItem>
@@ -112,18 +114,16 @@ class Invite extends Component {
       }
 }
 
-Invite.propTypes = { classes: PropTypes.object.isRequired };
+CreateProject.propTypes = { classes: PropTypes.object.isRequired };
 
 const mapDispatchToProps = dispatch => { 
-  return { getProjectsByUser: (token, id) => dispatch(getProjectsByUser(token, id)) }
+  return { projectCreate: (token, project) => dispatch(projectCreate(token, project)) }
 }
 
 const mapStateToProps = state => ({ 
-  projects: state.project.projects, 
-  isFetching: state.project.isFetching
+
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Invite)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateProject)));
   
-
 

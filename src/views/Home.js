@@ -7,10 +7,14 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Navbar from "../components/theme/Navbars/Navbar.jsx";
 import Footer from "../components/theme/Footer/Footer.jsx";
 import Sidebar from "../components/theme/Sidebar/Sidebar.jsx";
+import logo from "../assets/img/reactlogo.png";
 
 import routes from "../routes.js";
 import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
 import image from "../assets/img/sidebar-2.jpg";
+import Project from './Project'
+import CreateProject from './CreateProject'
+import EditProject from './EditProject'
 
 const switchRoutes = (
   <Switch>
@@ -24,6 +28,9 @@ const switchRoutes = (
           />
         );}
     })}
+      <Route exact path='/home/create-project' component={CreateProject} />
+      <Route exact path='/home/edit-project/{id}' component={EditProject} />
+      <Route exact path='/home/show-project/{id}' component={Project} />
   </Switch>
 );
 
@@ -97,7 +104,7 @@ class Home extends React.Component {
         <Sidebar
           routes={routes}
           logoText={""}
-          // logo={logo}
+          logo={logo}
           image={this.state.image}
           handleDrawerToggle={this.handleDrawerToggle}
           open={this.state.mobileOpen}
@@ -106,11 +113,11 @@ class Home extends React.Component {
         />
         <div className={classes.mainPanel} ref="mainPanel">
 
-          <Navbar
+          {/* <Navbar
             routes={routes}
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
-          />
+          /> */}
 
           {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {this.getRoute() ? (

@@ -1,8 +1,8 @@
 import Dashboard from "./views/Dashboard";
 import Projects from "./views/Projects";
 import Tickets from "./views/Tickets";
-import Invite from "./views/Tickets";
-import UserProfile from "./views/Tickets";
+import Invite from "./views/Invite";
+import UserProfile from "./views/UserProfile";
 
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
@@ -43,7 +43,6 @@ const dashboardRoutes = [
     {
       path: "/user",
       name: "User Profile",
-      rtlName: "ملف تعريفي للمستخدم",
       icon: Person,
       component: UserProfile,
       layout: "/home"

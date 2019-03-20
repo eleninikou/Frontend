@@ -9,6 +9,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 // core components
 import tableStyle from "../../../assets/jss/material-dashboard-react/components/tableStyle.jsx";
+import { withRouter} from "react-router-dom"
 
 function CustomTable({ ...props }) {
   const { classes, tableHead, tableData, tableHeaderColor } = props;
@@ -22,9 +23,8 @@ function CustomTable({ ...props }) {
               {tableHead.map((prop, key) => {
                 return (
                   <TableCell
-                  className={classes.tableCell + " " + classes.tableHeadCell}
-                  key={key}
-                  >
+                    className={classes.tableCell + " " + classes.tableHeadCell}
+                    key={key}>
                     {prop}
                   </TableCell>
                 );
@@ -33,23 +33,27 @@ function CustomTable({ ...props }) {
           </TableHead>
         ) : null}
         <TableBody>
-          {console.log(tableData)}
           {tableData ? tableData.map((data, key) => {
             return (
               data ? data.map((prop, key) => {
                 return (
-                  <TableRow key={key}>
+                  <TableRow 
+                  hover={true}
+                  key={key} 
+                  // component="a" 
+                  // href={prop[6]} 
+                  >
                     {prop ? prop.map((pro, key) => {
                       return (
                         <TableCell className={classes.tableCell} key={key}>
                           {pro}
                         </TableCell>
                       );
-                    }) : ''}
+                    }) : null}
                   </TableRow>
                 );
-              }) : ''
-            )}) : ''}
+              }) : null
+            )}) : null}
         </TableBody>
       </Table>
     </div>
@@ -75,4 +79,4 @@ CustomTable.propTypes = {
   tableData: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
 };
 
-export default withStyles(tableStyle)(CustomTable);
+export default withRouter(withStyles(tableStyle)(CustomTable));
