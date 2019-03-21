@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Switch, Route, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import PropTypes from "prop-types";
 
 import GridItem from "../components/theme/Grid/GridItem.jsx";
@@ -27,7 +27,7 @@ class Projects extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {}
+    this.state = { userId: null}
 
     this.createNewProject = this.createNewProject.bind(this);
     this.editProject = this.editProject.bind(this);
@@ -45,32 +45,36 @@ class Projects extends Component {
     const cookies = new Cookies()
     var token = cookies.get('token')
     var userId = cookies.get('user')
+    this.setState({ userId })
     this.props.getAllProjects(token, userId);
   }
 
     render() {
         const { classes, allProjects } = this.props;
+        console.log(allProjects.projects);
         return (
           <div>
-            <Button onClick={this.createNewProject}>Create new Project</Button>
             <GridContainer> 
+            <Button color="primary"  onClick={this.createNewProject}>Create new Project</Button>
               <GridItem xs={12} sm={12} md={12}>
                 <Card>
-                  <CardHeader color="warning">
+                  <CardHeader color="primary">
                     <h4 className={classes.cardTitleWhite}>Projects</h4>
                   </CardHeader>
                   <CardBody>
                     <Table
-                      tableHeaderColor="warning"
+                      tableHeaderColor="primary"
                       tableHead={["Name", "Created", "Open Tickets", "Total Tickets", "Last updated", "Edit" ]}
                       tableData={[
-                        allProjects.projects ? allProjects.projects.map(project => {
-                          if(project.project.creator_id === 4) {
+                        allProjects ? allProjects.map(project => {
+                          let active_tickets = project.tickets.filter(ticket => (ticket.status_id !== 7) && (ticket.status_id !== 4))
+
+                          if(project.project.creator_id == this.state.userId) {
                               return [
                                 `${project.project.name}`, 
                                 `${project.project.created_at}`, 
-                                `${project.project.tickets}`, 
-                                `${project.project.tickets}`, 
+                                 (active_tickets).length, 
+                                `${(project.tickets).length}`, 
                                 `${project.project.updated_at}`,
                                 <Tooltip
                                   id="tooltip-top"
@@ -89,8 +93,8 @@ class Projects extends Component {
                               return [
                                 `${project.project.name}`, 
                                 `${project.project.created_at}`, 
-                                `${project.project.tickets}`, 
-                                `${project.project.tickets}`, 
+                                  (active_tickets).length, 
+                                `${(project.tickets).length}`, 
                                 `${project.project.updated_at}`,
                               ]    
                             }

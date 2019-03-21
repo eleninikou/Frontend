@@ -31,7 +31,7 @@ const ProjectReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                project: action.payload
+                project: action.payload.project
             } 
         case GET_PROJECT_FAILURE:
             return {
@@ -65,7 +65,7 @@ const ProjectReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                allProjects: action.payload
+                allProjects: action.payload.projects
             } 
         case GET_ALL_PROJECTS_USER_FAILURE:
             return {

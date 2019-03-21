@@ -1,7 +1,6 @@
 import React from "react";
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
@@ -9,7 +8,6 @@ import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import Card from "../components/theme/Card/Card.jsx";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
-import CardAvatar from "../components/theme/Card/CardAvatar.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 

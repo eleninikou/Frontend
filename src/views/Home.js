@@ -1,10 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import withStyles from "@material-ui/core/styles/withStyles";
-import Navbar from "../components/theme/Navbars/Navbar.jsx";
 import Footer from "../components/theme/Footer/Footer.jsx";
 import Sidebar from "../components/theme/Sidebar/Sidebar.jsx";
 import logo from "../assets/img/reactlogo.png";
@@ -15,6 +14,7 @@ import image from "../assets/img/sidebar-2.jpg";
 import Project from './Project'
 import CreateProject from './CreateProject'
 import EditProject from './EditProject'
+import CreateTicket from './CreateTicket'
 
 const switchRoutes = (
   <Switch>
@@ -31,6 +31,8 @@ const switchRoutes = (
       <Route exact path='/home/create-project' component={CreateProject} />
       <Route exact path='/home/edit-project/{id}' component={EditProject} />
       <Route exact path='/home/show-project/{id}' component={Project} />
+      <Route exact path='/home/create-ticket' component={CreateTicket} />
+
   </Switch>
 );
 

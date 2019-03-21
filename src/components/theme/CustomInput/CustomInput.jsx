@@ -13,29 +13,34 @@ import Check from "@material-ui/icons/Check";
 import customInputStyle from "../../../assets/jss/material-dashboard-react/components/customInputStyle.jsx";
 
 function CustomInput({ ...props }) {
+  
   const {
     classes,
     formControlProps,
     labelText,
     id,
+    name,
     labelProps,
     inputProps,
     error,
-    success
+    success,
   } = props;
 
   const labelClasses = classNames({
     [" " + classes.labelRootError]: error,
     [" " + classes.labelRootSuccess]: success && !error
   });
+
   const underlineClasses = classNames({
     [classes.underlineError]: error,
     [classes.underlineSuccess]: success && !error,
     [classes.underline]: true
   });
+
   const marginTop = classNames({
     [classes.marginTop]: labelText === undefined
   });
+
   return (
     <FormControl
       {...formControlProps}
@@ -57,13 +62,13 @@ function CustomInput({ ...props }) {
           underline: underlineClasses
         }}
         id={id}
+        name={name}
         {...inputProps}
       />
-      {error ? (
-        <Clear className={classes.feedback + " " + classes.labelRootError} />
-      ) : success ? (
-        <Check className={classes.feedback + " " + classes.labelRootSuccess} />
-      ) : null}
+
+      { error ? <Clear className={classes.feedback + " " + classes.labelRootError} />
+      : success ?  <Check className={classes.feedback + " " + classes.labelRootSuccess} />
+      : null }
     </FormControl>
   );
 }

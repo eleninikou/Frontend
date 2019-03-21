@@ -44,7 +44,7 @@ class LoginForm extends Component {
     this.responseGoogle = this.responseGoogle.bind(this);
 }
 
-  responseGoogle = (response) => {
+  responseGoogle = response => {
     if (!response.error) {
       this.props.googleLogin(response.profileObj)
       .then(res => {
@@ -72,14 +72,13 @@ class LoginForm extends Component {
       })
   }
   
-  handleChange(event) {
+  handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   }
 
   render () {
     const {classes } = this.props
-
   return (
     <Card className={classes.card}>
         <form className={classes.form} onSubmit={this.submit}>

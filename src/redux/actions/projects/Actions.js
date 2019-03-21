@@ -29,7 +29,7 @@ export const getProject = (token, id) => {
       const res = await fetch(`http://127.0.0.1:8000/api/projects/${id}`, {
         method: "GET",
         headers: {
-          'Authorization': token,
+          "Authorization": `Bearer ${token}`,
           'Access-Control-Allow-Origin': '*',
           "Content-Type": "application/json"}
       })
@@ -57,7 +57,7 @@ export const getProjectsByUser = (token, id) => {
         const res = await fetch(`http://127.0.0.1:8000/api/projects/user/${id}`, {
           method: "GET",
           headers: {
-            'Authorization': token,
+            "Authorization": `Bearer ${token}`,
             'Access-Control-Allow-Origin': '*',
             "Content-Type": "application/json"}
         })
@@ -85,7 +85,7 @@ export const getProjectsByUser = (token, id) => {
         const res = await fetch(`http://127.0.0.1:8000/api/projects/user/${id}/all`, {
           method: "GET",
           headers: {
-            'Authorization': token,
+            "Authorization": `Bearer ${token}`,
             'Access-Control-Allow-Origin': '*',
             "Content-Type": "application/json"}
         })
@@ -101,18 +101,17 @@ export const getProjectsByUser = (token, id) => {
     return async dispatch => {  
 
       const createProjectSuccess = success => { 
-        dispatch ({ type: CREATE_PROJECT_SUCCESS, payload: success}); 
-        return project; 
+        dispatch ({ type: CREATE_PROJECT_SUCCESS, payload: success}); return project; 
     }
-  
+
       const createProjectError = error => { dispatch ({ type: CREATE_PROJECT_FAILURE, message: 'Could not fetch projects' }); return error; }
   
       try {
         const res = await fetch(`http://127.0.0.1:8000/api/projects`, {
           method: "POST",
+          body: JSON.stringify(project),
           headers: {
-            body: JSON.stringify(project),
-            'Authorization': token,
+            "Authorization": `Bearer ${token}`,
             'Access-Control-Allow-Origin': '*',
             "Content-Type": "application/json"}
         })

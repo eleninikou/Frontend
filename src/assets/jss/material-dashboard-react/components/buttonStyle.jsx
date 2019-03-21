@@ -117,6 +117,7 @@ const buttonStyle = {
     }
   },
   primary: {
+    margin: "auto",
     backgroundColor: primaryColor[0],
     boxShadow:
       "0 2px 2px 0 rgba(" +

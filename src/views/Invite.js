@@ -29,7 +29,9 @@ class Invite extends Component {
     super(props);
     this.state = {
       project_name: null,
-      email: null
+      email: null,
+      token: '',
+      userId: ''
     }
 
 }
@@ -37,7 +39,8 @@ class Invite extends Component {
   componentWillMount() {
     const cookies = new Cookies()
     var token = cookies.get('token')
-    this.props.getProjectsByUser(token, 3);
+    var userId = cookies.get('user')
+    this.props.getProjectsByUser(token, userId);
 
     // Fetch projects by user -> dropdown 
     // fetch roles -> dropdown
