@@ -116,7 +116,6 @@ export const getProjectsByUser = (token, id) => {
             "Content-Type": "application/json"}
         })
         const success = await res.json();
-        debugger;
         return createProjectSuccess(success);
   
       } catch (error) { return createProjectError(error) }

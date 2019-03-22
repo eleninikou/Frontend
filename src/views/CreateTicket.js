@@ -30,17 +30,17 @@ class CreateTicket extends Component {
     super(props);
 
     this.state = {
-        token: null,
-        creator_id: null,
-        title: null,
-        description: null,
-        type_id: null,
-        status_id: null,
-        project_id: null,
-        priority: null,
-        due_date: null,
-        assigned_user_id: null,
-        milestone_id: null,
+        token: '',
+        creator_id: '',
+        title: '',
+        description: '',
+        type_id: '',
+        status_id: '',
+        project_id: '',
+        priority: '',
+        due_date: '',
+        assigned_user_id: '',
+        milestone_id: '',
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -66,7 +66,7 @@ submit = event => {
   .then(res => {
     debugger;
     if (!res.error) {
-      this.props.history.push('/home/invite')
+      console.log(res);
     }
   })
 }
@@ -79,12 +79,12 @@ componentWillMount = () => {
   this.props.getAllProjects(token, creator_id);
   this.props.getTicketTypes(token);
   this.props.getTicketStatus(token);
-
 }
 
 handleChange = event => {
   const { name, value } = event.target;
   this.setState({ [name]: value });
+  console.log(value)
   // Fetch project to get available values
   if (event.target.name = "project_id" ) {
     this.props.getProject(this.state.token, value);
@@ -92,7 +92,8 @@ handleChange = event => {
 }
 
 render() {
-  const { classes, allProjects, ticketTypes, ticketStatus, project } = this.props;
+  const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
+  {console.log(project)}
   return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
@@ -108,38 +109,35 @@ render() {
                       name="title" 
                       type="text"
                       label="Title" 
-                      value={this.state.title}
+                      value={this.state.textFieldValue}
                       onChange={this.handleChange}
-                      fullWidth
-                    />
+                      fullWidth />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                     <TextField 
                       name="description" 
                       type="text"
                       label="Description" 
-                      value={this.state.description}
+                      value={this.state.textFieldValue}
                       onChange={this.handleChange}
-                      fullWidth
-                      />
+                      fullWidth />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="project_name">Project</InputLabel>
+                      <InputLabel htmlFor="project_id">Project</InputLabel>
                         <Select
                           value={this.state.project_name}
                           onChange={this.handleChange}
-                          inputProps={{
-                            name: 'project_name',
-                            id: 'project_name',
-                          }}
-                        >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
+                          inputProps={{ name: 'project_name', id: 'project_name'}} >
+                        <MenuItem > <em>None</em></MenuItem>
                         {allProjects ? allProjects.map(project => {
-                          return (<MenuItem value={project.project.id}>{project.project.name}</MenuItem>) 
-                        }): null }
+                          return (
+                            <MenuItem 
+                              key={project.project.id}
+                              value={project.project.id}> 
+                                {project.project.name}
+                            </MenuItem>) 
+                          }): null }
                         </Select>
                     </FormControl>
                   </GridItem>
@@ -149,16 +147,16 @@ render() {
                         <Select
                           value={this.state.type_id}
                           onChange={this.handleChange}
-                          inputProps={{
-                            name: 'type_id',
-                            id: 'type_id',
-                          }}
-                        >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
+                          inputProps={{ name: 'type_id', id: 'type_id'}} >
+                        <MenuItem> <em>None</em> </MenuItem>
                         {ticketTypes ? ticketTypes.map(type => {
-                          return (<MenuItem value={type.id}>{type.type}</MenuItem>)
+                          return (
+                          <MenuItem 
+                            key={type.id}
+                            value={type.id}>
+                            {type.type}
+                          </MenuItem>
+                          )
                         }): null}
                         </Select>
                     </FormControl>
@@ -174,11 +172,14 @@ render() {
                             id: 'status_id',
                           }}
                         >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
+                        <MenuItem value=""> <em>None</em> </MenuItem>
                         {ticketStatus ? ticketStatus.map(status => {
-                          return <MenuItem value={status.id}>{status.status}</MenuItem>
+                          return (
+                          <MenuItem 
+                            key={status.id}
+                            value={status.id}>
+                              {status.status}
+                          </MenuItem>)
                         }): null}
                         </Select>
                     </FormControl>
@@ -189,11 +190,7 @@ render() {
                         <Select
                           value={this.state.priority}
                           onChange={this.handleChange}
-                          inputProps={{
-                            name: 'priority',
-                            id: 'priority',
-                          }}
-                        >
+                          inputProps={{ name: 'priority', id: 'priority'}}>
                         <MenuItem value="low">Low</MenuItem>
                         <MenuItem value="medium">Medium</MenuItem>
                         <MenuItem value="high">High</MenuItem>
@@ -206,17 +203,17 @@ render() {
                         <Select
                           value={this.state.assigned_user_id}
                           onChange={this.handleChange}
-                          inputProps={{
-                            name: 'assigned_user_id',
-                            id: 'assigned_user_id',
-                          }}
-                        >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        {project ? project.team ? project.team.map(member => {
-                          return <MenuItem value={member.id}>{member.name}</MenuItem>
-                        }): null : null}
+                          inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
+                        <MenuItem><em>None</em></MenuItem>
+                        {team ? team.map(member => {
+                          return (
+                            <MenuItem 
+                              key={member.id}
+                              value={member.id}>
+                                {member.name}
+                            </MenuItem>
+                          )
+                        }): null }
                         </Select>
                     </FormControl>
                   </GridItem>
@@ -226,35 +223,31 @@ render() {
                         <Select
                           value={this.state.milestone_id}
                           onChange={this.handleChange}
-                          inputProps={{
-                            name: 'milestone_id',
-                            id: 'milestone_id',
-                          }}
-                        >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        {project ? project.milestones ? project.milestones.map(milestone => {
-                          return <MenuItem value={milestone.id}>{milestone.title}</MenuItem>
-                        }): null : null}
+                          inputProps={{ name: 'milestone_id', id: 'milestone_id' }} >
+                        <MenuItem> <em>None</em></MenuItem>
+                          {project ? project.milestones ? project.milestones.map(milestone => {
+                            return (
+                            <MenuItem 
+                              key={milestone.id}
+                              value={milestone.id}>
+                              {milestone.title}
+                            </MenuItem>
+                            )
+                          }): null : null}
                         </Select>
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
-                    <FormControl className={classes.formControl}>
                       <InputLabel htmlFor="due_date">Due date</InputLabel>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <FormControl className={classes.formControl}>
                       <TextField
-                        id="datetime-local"
-                        label="Due date"
                         type="datetime-local"
                         name="due_date"
                         value={this.state.due_date}
-                        defaultValue="2017-05-24T10:30"
                         className={classes.textField}
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                      />
+                        InputLabelProps={{ shrink: true }} />
                     </FormControl>
                   </GridItem>
               </GridContainer>
@@ -292,6 +285,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => ({ 
   project: state.project.project,
+  team: state.project.team,
   allProjects: state.project.allProjects,
   isFetching: state.project.isFetching,
   ticketTypes: state.ticket.ticketTypes,

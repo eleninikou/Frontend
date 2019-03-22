@@ -51,7 +51,7 @@ class Projects extends Component {
 
     render() {
         const { classes, allProjects } = this.props;
-        console.log(allProjects.projects);
+        console.log(allProjects);
         return (
           <div>
             <GridContainer> 
@@ -68,38 +68,28 @@ class Projects extends Component {
                       tableData={[
                         allProjects ? allProjects.map(project => {
                           let active_tickets = project.tickets.filter(ticket => (ticket.status_id !== 7) && (ticket.status_id !== 4))
-
-                          if(project.project.creator_id == this.state.userId) {
-                              return [
-                                `${project.project.name}`, 
-                                `${project.project.created_at}`, 
-                                 (active_tickets).length, 
-                                `${(project.tickets).length}`, 
-                                `${project.project.updated_at}`,
-                                <Tooltip
-                                  id="tooltip-top"
-                                  title="Edit Project"
-                                  placement="top"
-                                  classes={{ tooltip: classes.tooltip }}
-                                  onClick={this.editProject}
-                                >
-                                  <IconButton aria-label="Edit" className={classes.tableActionButton}>
-                                    <Edit className={ classes.tableActionButtonIcon + " " + classes.edit }/>
-                                  </IconButton>
-                                </Tooltip>,
-                                // `/home/show-project/${project.project.id}` 
-                              ]    
-                            } else {
-                              return [
-                                `${project.project.name}`, 
-                                `${project.project.created_at}`, 
-                                  (active_tickets).length, 
-                                `${(project.tickets).length}`, 
-                                `${project.project.updated_at}`,
-                              ]    
-                            }
-                          }) : '']}
-                    />
+                          return (
+                              project.project ? 
+                                  project.project.creator_id == this.state.userId ? 
+                                      [`${project.project.name}`, `${project.project.created_at}`, (active_tickets).length, `${(project.tickets).length}`, `${project.updated_at}`,
+                                        <Tooltip
+                                          id="tooltip-top"
+                                          title="Edit Project"
+                                          placement="top"
+                                          classes={{ tooltip: classes.tooltip }}
+                                          onClick={this.editProject}
+                                        >
+                                          <IconButton aria-label="Edit" className={classes.tableActionButton}>
+                                            <Edit className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                          </IconButton>
+                                        </Tooltip>,
+                                        // `/home/show-project/${project.project.id}` 
+                                      ]
+                                   :  [`${project.project.name}`, `${project.project.created_at}`, (active_tickets).length, `${(project.tickets).length}`, `${project.updated_at}`]  
+                                    
+                               : null)     
+                        }) : null
+                      ]}/>
                   </CardBody>
                 </Card>
               </GridItem>

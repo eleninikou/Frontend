@@ -15,6 +15,7 @@ import {
 const initialState = {
     project: {},
     projects: [],
+    team: [],
     allProjects: [],
     isFetching: false,
     errorMessage: null,
@@ -31,7 +32,8 @@ const ProjectReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                project: action.payload.project
+                project: action.payload.project,
+                team: action.payload.action
             } 
         case GET_PROJECT_FAILURE:
             return {

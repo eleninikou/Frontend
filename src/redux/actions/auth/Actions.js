@@ -79,7 +79,6 @@ export const login = creds => {
   };  
 
   export const logout = (token) => {
-    debugger;
     return async dispatch => {
       const logoutError = error => { dispatch ({ type: LOGOUT_FAILURE, message: 'Could not logout user' }); return error; }
       const logoutSuccess = success => { 
@@ -98,7 +97,6 @@ export const login = creds => {
             }
         })
         const success = await res.json();
-        debugger;
         return logoutSuccess(success);
 
       } catch (error) { return logoutError(error) }
