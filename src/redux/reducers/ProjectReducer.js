@@ -33,7 +33,7 @@ const ProjectReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 project: action.payload.project,
-                team: action.payload.action
+                team: action.payload.team
             } 
         case GET_PROJECT_FAILURE:
             return {

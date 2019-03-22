@@ -15,7 +15,7 @@ import {
 
 export const getProject = (token, id) => {
   return async dispatch => {
-    const getProjectRequest = () => { dispatch({ type: GET_PROJECT_REQUEST}) };
+    const getProjectRequest = () => { dispatch({ type: GET_PROJECT_REQUEST }) };
 
     const recieveProject = project => { 
       dispatch ({ type: GET_PROJECT_SUCCESS, payload: project}); 

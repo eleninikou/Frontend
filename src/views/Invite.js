@@ -28,8 +28,8 @@ class Invite extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      project_name: null,
-      email: null,
+      project_name: '',
+      email: '',
       token: '',
       userId: ''
     }
@@ -73,13 +73,16 @@ class Invite extends Component {
                       inputProps={{
                         name: 'project_name',
                         id: 'project_name',
-                      }}
-                    >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
+                      }}>
+                    <MenuItem><em>None</em></MenuItem>
                     {projects.projects ? projects.projects.map(project => {
-                      return <MenuItem value={project.name}>{project.name}</MenuItem>
+                      return (
+                        <MenuItem 
+                          key={project.id}
+                          value={project.name}>
+                            {project.name}
+                        </MenuItem>
+                      )
                     }): null}
                     </Select>
                 </FormControl>

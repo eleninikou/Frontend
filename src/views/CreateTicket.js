@@ -41,6 +41,7 @@ class CreateTicket extends Component {
         due_date: '',
         assigned_user_id: '',
         milestone_id: '',
+        selectedDate: '',
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -56,18 +57,20 @@ submit = event => {
     status_id: this.state.status_id,
     project_id: this.state.project_id,
     priority: this.state.priority,
-    due_date: this.state.due_date,
+    due_date: this.state.selectedDate,
     assigned_user_id: this.state.assigned_user_id,
     milestone_id: this.state.milestone_id,
   };
-  debugger;
 
   this.props.ticketCreate(this.state.token, ticket)
   .then(res => {
     debugger;
     if (!res.error) {
-      console.log(res);
+      this.props.history.push('/home/tickets')
+    } else {
+      console.log(res)
     }
+
   })
 }
 
@@ -84,16 +87,18 @@ componentWillMount = () => {
 handleChange = event => {
   const { name, value } = event.target;
   this.setState({ [name]: value });
-  console.log(value)
   // Fetch project to get available values
-  if (event.target.name = "project_id" ) {
+  if (event.target.name = "project_name" ) {
     this.props.getProject(this.state.token, value);
   }
 }
 
+handleDateChange = event => {
+  this.setState({ selectedDate: event.target.value });
+};
+
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
-  {console.log(project)}
   return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
@@ -128,7 +133,7 @@ render() {
                         <Select
                           value={this.state.project_name}
                           onChange={this.handleChange}
-                          inputProps={{ name: 'project_name', id: 'project_name'}} >
+                          inputProps={{ name: 'project_id', id: 'project_name'}} >
                         <MenuItem > <em>None</em></MenuItem>
                         {allProjects ? allProjects.map(project => {
                           return (
@@ -192,7 +197,7 @@ render() {
                           onChange={this.handleChange}
                           inputProps={{ name: 'priority', id: 'priority'}}>
                         <MenuItem value="low">Low</MenuItem>
-                        <MenuItem value="medium">Medium</MenuItem>
+                        <MenuItem value="normal">Normal</MenuItem>
                         <MenuItem value="high">High</MenuItem>
                         </Select>
                     </FormControl>
@@ -208,9 +213,9 @@ render() {
                         {team ? team.map(member => {
                           return (
                             <MenuItem 
-                              key={member.id}
-                              value={member.id}>
-                                {member.name}
+                              key={member.user.id}
+                              value={member.user.id}>
+                                {member.user.name}
                             </MenuItem>
                           )
                         }): null }
@@ -242,12 +247,17 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl}>
-                      <TextField
-                        type="datetime-local"
-                        name="due_date"
-                        value={this.state.due_date}
+                    <TextField
+                        id="date"
+                        label="Due date"
+                        type="date"
+                        value={this.state.selectedDate}
+                        onChange={this.handleDateChange}
                         className={classes.textField}
-                        InputLabelProps={{ shrink: true }} />
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
                     </FormControl>
                   </GridItem>
               </GridContainer>
@@ -258,7 +268,7 @@ render() {
             </form> 
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        {/* <GridItem xs={12} sm={12} md={4}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}> Your ticket </h4>
@@ -266,7 +276,7 @@ render() {
             <CardBody>  
             </CardBody>
           </Card>
-        </GridItem>
+        </GridItem> */}
       </GridContainer>
     );
   }
