@@ -40,8 +40,8 @@ class Milestones extends Component {
     this.props.history.push('/home/create-milestone')
   }
 
-  editMilestone() {
-    this.props.history.push('/home/milestones/edit')
+  editMilestone(id) {
+    this.props.history.push(`/home/edit-milestone/${id}`)
   }
 
   componentWillMount() {
@@ -54,7 +54,6 @@ class Milestones extends Component {
 
     render() {
         const { classes, allProjects } = this.props;
-        {console.log(allProjects)}
         return (
           <div>
             <GridContainer> 
@@ -65,48 +64,43 @@ class Milestones extends Component {
                     <h4 className={classes.cardTitleWhite}>Milestones</h4>
                   </CardHeader>
                   <CardBody>
-                    <Table
-                      tableHeaderColor="primary"
-                      tableHead={["Project", "Name", "Open Tickets", "Total Tickets", "Last updated", "Edit" ]}
-                      tableData={[
-                          allProjects.projects ? allProjects.projects.map(project => {
-                            if(project.project.creator_id === 4) {
-                              return [
-                                `${project.project.name}`, 
-                                `${project.project.created_at}`, 
-                                `${project.project.tickets}`, 
-                                `${project.project.tickets}`, 
-                                `${project.project.updated_at}`,
-                                <Tooltip
-                                  id="tooltip-top"
-                                  title="Edit Project"
-                                  placement="top"
-                                  classes={{ tooltip: classes.tooltip }}
-                                  onClick={this.editMilestone}
-                                >
-                                <IconButton
-                                  aria-label="Edit"
-                                  className={classes.tableActionButton}
-                                >
-                                <Edit
-                                  className={
-                                    classes.tableActionButtonIcon + " " + classes.edit
-                                  }
-                                />
-                                </IconButton>
-                              </Tooltip>
-                              ]    
-                            } else {
-                              return [
-                                `${project.project.name}`, 
-                                `${project.project.created_at}`, 
-                                `${project.project.tickets}`, 
-                                `${project.project.tickets}`, 
-                                `${project.project.updated_at}`,
-                              ]    
-                            }
-                          }) : '']}
-                    />
+                    {allProjects ? allProjects.map(project => {
+                      return (
+                        <Table
+                          tableHeaderColor="primary"
+                          tableHead={["Project", "Name", "Focus", "Last updated", "Edit" ]}
+                          tableData={[
+                            project.milestones.map(milestone => {
+                                if (project.role_id === 1) {
+                                  return ([
+                                      `${project.project.name}`, 
+                                      `${milestone.title}`, 
+                                      `${milestone.focus}`,
+                                      `${milestone.updated_at}`,
+                                      <Tooltip
+                                        id="tooltip-top"
+                                        title="Edit Project"
+                                        placement="top"
+                                        classes={{ tooltip: classes.tooltip }}
+                                        onClick={this.editMilestone.bind(this, milestone.id)} >
+                                        <IconButton
+                                            aria-label="Edit"
+                                            className={classes.tableActionButton}>
+                                          <Edit className={classes.tableActionButtonIcon + " " + classes.edit} />
+                                        </IconButton>
+                                      </Tooltip>
+                                      ]) 
+                                  } else {
+                                    return ([
+                                      `${project.project.name}`, 
+                                      `${milestone.title}`, 
+                                      `${milestone.focus}`,
+                                      `${milestone.updated_at}`
+                                        ])
+                                  }})
+                          ]} />
+                        ) 
+                      }) : null }
                   </CardBody>
                 </Card>
               </GridItem>

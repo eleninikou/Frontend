@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom"
 
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
@@ -9,6 +10,9 @@ import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import Cookies from 'universal-cookie'
 import Button from "../components/theme/CustomButtons/Button.jsx";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import Edit from "@material-ui/icons/Edit";
 
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -49,6 +53,10 @@ class Tickets extends Component {
     this.props.history.push('/home/create-ticket')
   }
 
+  editTicket(id) {
+    this.props.history.push(`/home/edit-ticket/${id}`)
+  }
+
     render() {
         const { classes, allTickets } = this.props;
         return (
@@ -63,10 +71,22 @@ class Tickets extends Component {
                   <CardBody>
                     <Table
                       tableHeaderColor="primary"
-                      tableHead={["Project", "Type", "Status", "Priority", "Due Date"]}
+                      tableHead={["Project", "Type", "Status", "Priority", "Due Date", "Edit"]}
                       tableData={[
                           allTickets.tickets ? allTickets.tickets.map(ticket => {
-                            return [`${ticket.project.name}`, `${ticket.type.type}`, `${ticket.status.status}`,`${ticket.priority}`, `${ticket.due_date}` ]
+                            return [`${ticket.project.name}`, `${ticket.type.type}`, `${ticket.status.status}`,`${ticket.priority}`, `${ticket.due_date}`,
+                            <Tooltip
+                            id="tooltip-top"
+                            title="Edit Project"
+                            placement="top"
+                            classes={{ tooltip: classes.tooltip }}
+                            onClick={this.editTicket.bind(this, ticket.id)}
+                          >
+                            <IconButton aria-label="Edit" className={classes.tableActionButton}>
+                              <Edit className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                            </IconButton>
+                          </Tooltip>
+                          ]
                           }) : ''
                       ]}
                       url={'/'}
@@ -96,6 +116,6 @@ const mapStateToProps = state => ({
   isFetching: state.ticket.isFetching
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Tickets));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Tickets)));
   
 

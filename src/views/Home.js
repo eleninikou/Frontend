@@ -15,6 +15,7 @@ import Project from './Project'
 import CreateProject from './CreateProject'
 import EditProject from './EditProject'
 import CreateTicket from './CreateTicket'
+import EditTicket from './EditTicket'
 import CreateMilestone from "./CreateMilestone.js";
 
 const switchRoutes = (
@@ -31,10 +32,10 @@ const switchRoutes = (
     })}
       <Route exact path='/home/create-milestone' component={CreateMilestone} />
       <Route exact path='/home/create-project' component={CreateProject} />
-      <Route exact path='/home/edit-project/{id}' component={EditProject} />
+      <Route path='/home/edit-project/{id}' component={EditProject} />
       <Route exact path='/home/show-project/{id}' component={Project} />
       <Route exact path='/home/create-ticket' component={CreateTicket} />
-
+      <Route path='/home/edit-ticket/{id}' component={EditTicket} />
   </Switch>
 );
 

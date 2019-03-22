@@ -34,11 +34,11 @@ class Projects extends Component {
 
 }
   createNewProject() {
-    this.props.history.push('/home/create-project')
+    this.props.history.push('/home/create-project/')
   }
 
-  editProject() {
-    this.props.history.push('/home/edit-project/1')
+  editProject(id) {
+    this.props.history.push(`/home/edit-project/${id}`)
   }
 
   componentWillMount() {
@@ -51,7 +51,6 @@ class Projects extends Component {
 
     render() {
         const { classes, allProjects } = this.props;
-        console.log(allProjects);
         return (
           <div>
             <GridContainer> 
@@ -77,7 +76,7 @@ class Projects extends Component {
                                           title="Edit Project"
                                           placement="top"
                                           classes={{ tooltip: classes.tooltip }}
-                                          onClick={this.editProject}
+                                          onClick={this.editProject.bind(this, project.project.id)}
                                         >
                                           <IconButton aria-label="Edit" className={classes.tableActionButton}>
                                             <Edit className={ classes.tableActionButtonIcon + " " + classes.edit }/>
@@ -86,7 +85,6 @@ class Projects extends Component {
                                         // `/home/show-project/${project.project.id}` 
                                       ]
                                    :  [`${project.project.name}`, `${project.project.created_at}`, (active_tickets).length, `${(project.tickets).length}`, `${project.updated_at}`]  
-                                    
                                : null)     
                         }) : null
                       ]}/>
