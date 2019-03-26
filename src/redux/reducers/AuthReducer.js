@@ -27,7 +27,6 @@ const authReducer = (state = initialState, action) => {
                 isAuthenticated: false,
             } 
         case LOGIN_SUCCESS:
-        debugger;
             return {
                 ...state,
                 isFetching: false,

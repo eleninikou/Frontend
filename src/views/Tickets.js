@@ -107,7 +107,6 @@ Tickets.propTypes = {
 const mapDispatchToProps = dispatch => { 
   return { 
     getAllTickets: (token, id) => dispatch(getAllTickets(token, id)),
-
   }
 }
 

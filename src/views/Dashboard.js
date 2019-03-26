@@ -15,9 +15,16 @@ import Card from "../components/theme/Card/Card";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import Cookies from 'universal-cookie'
+import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
+import Note from "@material-ui/icons/Note";
+import Today from "@material-ui/icons/Today";
 
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import Edit from "@material-ui/icons/Edit";
 
+import { getAllTickets } from '../redux/actions/tickets/Actions'
 import { getProjectsByUser, getAllProjects } from '../redux/actions/projects/Actions'
 import { logout } from '../redux/actions/auth/Actions'
 
@@ -63,92 +70,46 @@ class Dashboard extends Component {
   }
 
     render() {
-        const { classes, projects, allProjects } = this.props;
+        const { classes, projects, allProjects, allTickets } = this.props;
         return (
           <div>
+            {console.log(allTickets)}
             <Button onClick={this.logout}>Logout</Button>
             <GridContainer> 
-              <GridItem xs={12} sm={12} md={6}>
+              <GridItem xs={12} sm={12} md={12}>
                 <Card>
-                  <CardHeader color="warning">
-                    <h4 className={classes.cardTitleWhite}>Projects created by you</h4>
-                  </CardHeader>
+
                   <CardBody>
-                    <Table
-                      tableHeaderColor="warning"
-                      tableHead={["ID", "Name"]}
-                      tableData={[
-                          projects.projects ? projects.projects.map(project => {
-                            return [`${project.id}`, `${project.name}`]
-                          }) : '' ]}
-                    />
-                  </CardBody>
-                </Card>
-              </GridItem>
-              {/* <GridItem xs={12} sm={12} md={6}>
-                <Card>
-                  <CardHeader color="warning">
-                    <h4 className={classes.cardTitleWhite}>Active Projects</h4>
-                  </CardHeader>
-                  <CardBody>
-                    {console.log(allProjects)}
-                    <Table
-                      tableHeaderColor="warning"
-                      tableHead={["ID", "Name", "Description"]}
-                      tableData={[
-                          allProjects.projects ? allProjects.projects.map(project => {
-                            return [`${project.project.id}`, `${project.project.name}`, `${project.project.description}` ]
-                            
-                          }) : ''
-                        // ]}
-                      ]}
-                    />
-                  </CardBody>
-                </Card>
-              </GridItem> */}
-            </GridContainer>
-            <GridContainer>
-            {/* <GridItem xs={12} sm={12} md={6}>
-                <CustomTabs
-                  title="Tasks:"
+                  <CustomTabs
                   headerColor="primary"
                   tabs={[
                     {
-                      tabName: "Bugs",
-                      tabIcon: BugReport,
+                      tabName: "Feed",
+                      tabIcon: Today,
                       tabContent: (
-                        <Tasks
-                          checkedIndexes={[0, 3]}
-                          tasksIndexes={[0, 1, 2, 3]}
-                          tasks={bugs}
+                        'latest'
+                      )
+                    },{
+                      tabName: "Tickets",
+                      tabIcon: Note,
+                      tabContent: (
+                        <Table
+                        tableHeaderColor="primary"
+                        tableHead={["Status", "Title", "Priority", "Due Date"]}
+                        tableData={[
+                            allTickets.tickets ? allTickets.tickets.map(ticket => {
+                              return [`${ticket.status.status}`, `${ticket.title}`, `${ticket.priority}`, `${ticket.due_date}`,
+                            ]
+                            }) : ''
+                        ]}
                         />
                       )
                     },
-                    {
-                      tabName: "Website",
-                      tabIcon: Code,
-                      tabContent: (
-                        <Tasks
-                          checkedIndexes={[0]}
-                          tasksIndexes={[0, 1]}
-                          tasks={website}
-                        />
-                      )
-                    },
-                    {
-                      tabName: "Server",
-                      tabIcon: Cloud,
-                      tabContent: (
-                        <Tasks
-                          checkedIndexes={[1]}
-                          tasksIndexes={[0, 1, 2]}
-                          tasks={server}
-                        />
-                      )
-                    }
-                  ]}
-                />
-              </GridItem> */}
+                  ]}/>
+                  </CardBody>
+                </Card>
+              </GridItem>
+
             </GridContainer>
           </div>
         );
@@ -164,6 +125,7 @@ const mapDispatchToProps = dispatch => {
     logout: (token) => dispatch(logout(token)),
     getProjectsByUser: (token, id) => dispatch(getProjectsByUser(token, id)),
     getAllProjects: (token, id) => dispatch(getAllProjects(token, id)),
+    getAllTickets: (token, id) => dispatch(getAllTickets(token, id)),
 
   }
 }
@@ -171,8 +133,10 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => ({ 
   projects: state.project.projects, 
   allProjects: state.project.allProjects,
+  allTickets: state.ticket.allTickets, 
   isFetching: state.project.isFetching
 })
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Dashboard));
   

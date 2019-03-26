@@ -27,7 +27,6 @@ class CreateProject extends Component {
       token: null,
       name: null,
       description: null,
-      creator_id: null,
       tr: false
     }
     this.handleChange = this.handleChange.bind(this);
@@ -36,7 +35,6 @@ class CreateProject extends Component {
 submit = event => {
   event.preventDefault();
   const project = {
-    creator_id: this.state.creator_id,
     name: this.state.name,
     description: this.state.description
   };

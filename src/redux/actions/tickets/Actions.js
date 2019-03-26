@@ -12,7 +12,7 @@ import {
     CREATE_TICKET_FAILURE
 } from './Action-types';
 
-export const getAllTickets = (token, id) => {
+export const getAllTickets = (token) => {
     return async dispatch => {
       const getAllTicketsRequest = () => { dispatch({ type: GET_ALL_TICKETS_USER_REQUEST }) };
   
@@ -24,10 +24,10 @@ export const getAllTickets = (token, id) => {
       const getAllTicketsError = error => { dispatch ({ type: GET_ALL_TICKETS_USER_FAILURE, message: 'Could not fetch tickets' }); return error; }
       try {
         getAllTicketsRequest();
-        const res = await fetch(`http://127.0.0.1:8000/api/tickets/user/${id}/all`, {
+        const res = await fetch(`http://127.0.0.1:8000/api/tickets/user`, {
           method: "GET",
           headers: {
-            'Authorization': token,
+            "Authorization": `Bearer ${token}`,
             'Access-Control-Allow-Origin': '*',
             "Content-Type": "application/json"}
         })

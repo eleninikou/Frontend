@@ -12,6 +12,10 @@ import Button from "../components/theme/CustomButtons/Button.jsx";
 // import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormLabel from '@material-ui/core/FormLabel';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -42,6 +46,7 @@ class CreateTicket extends Component {
         assigned_user_id: '',
         milestone_id: '',
         selectedDate: '',
+        project_name: ''
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -60,11 +65,11 @@ submit = event => {
     due_date: this.state.selectedDate,
     assigned_user_id: this.state.assigned_user_id,
     milestone_id: this.state.milestone_id,
+    project_name: this.state.project_name
   };
 
   this.props.ticketCreate(this.state.token, ticket)
   .then(res => {
-    debugger;
     if (!res.error) {
       this.props.history.push('/home/tickets')
     } else {
@@ -87,9 +92,10 @@ componentWillMount = () => {
 handleChange = event => {
   const { name, value } = event.target;
   this.setState({ [name]: value });
+
   // Fetch project to get available values
-  if (event.target.name = "project_name" ) {
-    this.props.getProject(this.state.token, value);
+  if (event.target.name === "project_id" ) {
+    this.props.getProject(this.state.token, value)
   }
 }
 
@@ -131,9 +137,11 @@ render() {
                     <FormControl className={classes.formControl}>
                       <InputLabel htmlFor="project_id">Project</InputLabel>
                         <Select
-                          value={this.state.project_name}
+                          value={this.state.project_id}
                           onChange={this.handleChange}
-                          inputProps={{ name: 'project_id', id: 'project_name'}} >
+                          inputProps={{ 
+                            name: 'project_id', 
+                            id: 'project_id'}} >
                         <MenuItem > <em>None</em></MenuItem>
                         {allProjects ? allProjects.map(project => {
                           return (
@@ -190,7 +198,20 @@ render() {
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
-                    <FormControl className={classes.formControl}>
+                  <FormControl component="fieldset" className={classes.formControl}>
+                    <FormLabel component="legend">Priority</FormLabel>
+                    <RadioGroup
+                      aria-label="Priority"
+                      name="priority"
+                      className={classes.group}
+                      value={this.state.priority}
+                      onChange={this.handleChange}>
+                      <FormControlLabel value="low" control={<Radio />} label="Low" />
+                      <FormControlLabel value="normal" control={<Radio />} label="Normal" />
+                      <FormControlLabel value="high" control={<Radio />} label="High" />
+                    </RadioGroup>
+                  </FormControl>
+                    {/* <FormControl className={classes.formControl}>
                       <InputLabel htmlFor="priority">priority</InputLabel>
                         <Select
                           value={this.state.priority}
@@ -200,7 +221,7 @@ render() {
                         <MenuItem value="normal">Normal</MenuItem>
                         <MenuItem value="high">High</MenuItem>
                         </Select>
-                    </FormControl>
+                    </FormControl> */}
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl}>
@@ -243,9 +264,6 @@ render() {
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
-                      <InputLabel htmlFor="due_date">Due date</InputLabel>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl}>
                     <TextField
                         id="date"
@@ -268,15 +286,6 @@ render() {
             </form> 
           </Card>
         </GridItem>
-        {/* <GridItem xs={12} sm={12} md={4}>
-          <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}> Your ticket </h4>
-            </CardHeader>
-            <CardBody>  
-            </CardBody>
-          </Card>
-        </GridItem> */}
       </GridContainer>
     );
   }
