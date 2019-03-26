@@ -24,13 +24,13 @@ class EditTicket extends Component {
       this.state = {
       }
   
-      this.createNewProject = this.createNewProject.bind(this);
+      // this.createNewProject = this.createNewProject.bind(this);
   }
   
     componentWillMount() {
       const cookies = new Cookies()
       var token = cookies.get('token')
-      this.props.getTicket(token, 3);
+      // this.props.getTicket(token, 3);
     }
   
       render() {

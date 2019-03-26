@@ -77,7 +77,7 @@ class Tickets extends Component {
                             return [`${ticket.project.name}`, `${ticket.type.type}`, `${ticket.status.status}`,`${ticket.priority}`, `${ticket.due_date}`,
                             <Tooltip
                             id="tooltip-top"
-                            title="Edit Project"
+                            title="Edit Ticket"
                             placement="top"
                             classes={{ tooltip: classes.tooltip }}
                             onClick={this.editTicket.bind(this, ticket.id)}
@@ -85,12 +85,12 @@ class Tickets extends Component {
                             <IconButton aria-label="Edit" className={classes.tableActionButton}>
                               <Edit className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                             </IconButton>
-                          </Tooltip>
+                          </Tooltip>,
+                          // `/home/show-ticket/${ticket.id}` 
                           ]
                           }) : ''
                       ]}
-                      url={'/'}
-                    />
+                      />
                   </CardBody>
                 </Card>
               </GridItem>

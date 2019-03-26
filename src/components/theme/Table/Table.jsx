@@ -36,6 +36,7 @@ function CustomTable({ ...props }) {
           {tableData ? tableData.map((data, key) => {
             return (
               data ? data.map((prop, key) => {
+                console.log(prop)
                 return (
                   <TableRow 
                   hover={true}

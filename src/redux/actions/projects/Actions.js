@@ -10,6 +10,8 @@ import {
   GET_ALL_PROJECTS_USER_FAILURE,
   CREATE_PROJECT_SUCCESS,
   CREATE_PROJECT_FAILURE,
+  UPDATE_PROJECT_SUCCESS,
+  UPDATE_PROJECT_FAILURE,
 } from './Action-types';
 
 
@@ -17,9 +19,9 @@ export const getProject = (token, id) => {
   return async dispatch => {
     const getProjectRequest = () => { dispatch({ type: GET_PROJECT_REQUEST }) };
 
-    const recieveProject = project => { 
-      dispatch ({ type: GET_PROJECT_SUCCESS, payload: project}); 
-      return project; 
+    const recieveProject = project_with_team => { 
+      dispatch ({ type: GET_PROJECT_SUCCESS, payload: project_with_team}); 
+      return project_with_team; 
   }
 
     const getProjectError = error => { dispatch ({ type: GET_PROJECT_FAILURE, message: 'Could not fetch project' }); return error; }
@@ -33,8 +35,8 @@ export const getProject = (token, id) => {
           'Access-Control-Allow-Origin': '*',
           "Content-Type": "application/json"}
       })
-      const project = await res.json();
-      return recieveProject(project);
+      const project_with_team = await res.json();
+      return recieveProject(project_with_team);
 
     } catch (error) { return getProjectError(error) }
   }
@@ -66,10 +68,10 @@ export const getProjectsByUser = (token, id) => {
   
       } catch (error) { return getProjectsByUserError(error) }
     }
-  };
+};
 
 
-  export const getAllProjects = (token, id) => {
+export const getAllProjects = (token, id) => {
     return async dispatch => {
       const getAllProjectsRequest = () => { dispatch({ type: GET_ALL_PROJECTS_USER_REQUEST }) };
   
@@ -94,10 +96,10 @@ export const getProjectsByUser = (token, id) => {
   
       } catch (error) { return getAllProjectsError(error) }
     }
-  };  
+};  
 
 
-  export const projectCreate = (token, project) => {
+export const projectCreate = (token, project) => {
     return async dispatch => {  
 
       const createProjectSuccess = success => { 
@@ -120,4 +122,31 @@ export const getProjectsByUser = (token, id) => {
   
       } catch (error) { return createProjectError(error) }
     }
-  };   
+};   
+
+export const editProject = (token, project) => {
+  return async dispatch => {  
+
+    const editProjectSuccess = success => { 
+      debugger;
+      dispatch ({ type: UPDATE_PROJECT_SUCCESS, payload: success}); return success; 
+  }
+
+    const editProjectError = error => { dispatch ({ type: UPDATE_PROJECT_FAILURE, message: 'Could not fetch projects' }); return error; }
+
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/projects/${project.id}`, {
+        method: "PUT",
+        body: JSON.stringify(project),
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      return editProjectSuccess(success);
+
+    } catch (error) { return editProjectError(error) }
+  }
+}; 
+ 

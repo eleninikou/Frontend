@@ -65,6 +65,7 @@ render() {
   const { classes } = this.props;
   return (
       <GridContainer>
+        {console.log(this.props)}
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">

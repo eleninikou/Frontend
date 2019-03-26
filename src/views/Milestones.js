@@ -41,7 +41,7 @@ class Milestones extends Component {
   }
 
   editMilestone(id) {
-    this.props.history.push(`/home/edit-milestone/${id}`)
+    this.props.history.push(`/home/edit-milestones/${id}`)
   }
 
   componentWillMount() {

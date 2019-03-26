@@ -47,7 +47,7 @@ class Tasks extends React.Component {
           {tasksIndexes.map(value => (
             <TableRow key={value} className={classes.tableRow}>
               <TableCell className={tableCellClasses}>
-                <Checkbox
+                {/* <Checkbox
                   checked={this.state.checked.indexOf(value) !== -1}
                   tabIndex={-1}
                   onClick={this.handleToggle(value)}
@@ -57,7 +57,7 @@ class Tasks extends React.Component {
                     checked: classes.checked,
                     root: classes.root
                   }}
-                />
+                /> */}
               </TableCell>
               <TableCell className={tableCellClasses}>
                 {tasks[value]}

@@ -10,7 +10,7 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Note from "@material-ui/icons/Note";
 import Message from "@material-ui/icons/Message";
 import Person from "@material-ui/icons/Person";
-import TrendingUp from "@material-ui/icons/TrendingUp";
+import Timeline from "@material-ui/icons/Timeline";
 
 
 const dashboardRoutes = [
@@ -31,7 +31,7 @@ const dashboardRoutes = [
     {
       path: "/milestones",
       name: "Milestones",
-      icon: TrendingUp,
+      icon: Timeline,
       component: Milestones,
       layout: "/home"
     },

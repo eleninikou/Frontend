@@ -54,6 +54,7 @@ class Projects extends Component {
         return (
           <div>
             <GridContainer> 
+            {console.log(this.props)}
             <Button color="primary"  onClick={this.createNewProject}>Create new Project</Button>
               <GridItem xs={12} sm={12} md={12}>
                 <Card>

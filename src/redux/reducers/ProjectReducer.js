@@ -10,6 +10,8 @@ import {
     GET_ALL_PROJECTS_USER_FAILURE,
     CREATE_PROJECT_SUCCESS,
     CREATE_PROJECT_FAILURE,
+    UPDATE_PROJECT_SUCCESS,
+    UPDATE_PROJECT_FAILURE,
 } from '../actions/projects/Action-types';
 
 const initialState = {
@@ -19,6 +21,7 @@ const initialState = {
     allProjects: [],
     isFetching: false,
     errorMessage: null,
+    successMessage: null
 };
 
 const ProjectReducer = (state = initialState, action) => {
@@ -86,7 +89,20 @@ const ProjectReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errorMessage: action.message
-            }       
+            }   
+        case UPDATE_PROJECT_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                project: action.payload.project,
+                successMessage: action.payload.message
+            } 
+        case  UPDATE_PROJECT_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }             
         default:
             return state;
         }

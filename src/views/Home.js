@@ -17,6 +17,7 @@ import EditProject from './EditProject'
 import CreateTicket from './CreateTicket'
 import EditTicket from './EditTicket'
 import CreateMilestone from "./CreateMilestone.js";
+import Invite from "./Invite.js";
 
 const switchRoutes = (
   <Switch>
@@ -31,11 +32,15 @@ const switchRoutes = (
         );}
     })}
       <Route exact path='/home/create-milestone' component={CreateMilestone} />
+      <Route path='/home/edit-milestone/:id' component={EditTicket} />
       <Route exact path='/home/create-project' component={CreateProject} />
-      <Route path='/home/edit-project/{id}' component={EditProject} />
-      <Route exact path='/home/show-project/{id}' component={Project} />
+      <Route path='/home/edit-project/:id' component={EditProject} />
+      <Route path='/home/show-project/:id' component={Project} />
       <Route exact path='/home/create-ticket' component={CreateTicket} />
-      <Route path='/home/edit-ticket/{id}' component={EditTicket} />
+      <Route path='/home/edit-ticket/:id' component={EditTicket} />
+      <Route path='/home/project-invite/:id' component={Invite} />
+      <Route path='/home/show-ticket/:id' component={EditTicket} />
+
   </Switch>
 );
 
