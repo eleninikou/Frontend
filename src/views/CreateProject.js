@@ -14,6 +14,7 @@ import Button from "../components/theme/CustomButtons/Button.jsx";
 // import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField'
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -26,7 +27,8 @@ class CreateProject extends Component {
       token: null,
       name: null,
       description: null,
-      creator_id: null
+      creator_id: null,
+      tr: false
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -42,7 +44,8 @@ submit = event => {
   this.props.projectCreate(this.state.token, project)
   .then(res => {
     if (!res.error) {
-      this.props.history.push('/home/invite')
+      this.showNotification('tr');
+      // this.props.history.push('/home/invite')
     } else {
       console.log(res)
     }
@@ -54,6 +57,10 @@ componentWillMount = () => {
   var token = cookies.get('token')
   var creator_id = cookies.get('user')
   this.setState({ token, creator_id})
+  var id = window.setTimeout(null, 0);
+  while (id--) {
+    window.clearTimeout(id);
+  }
 }
 
 handleChange = event => {
@@ -61,12 +68,34 @@ handleChange = event => {
   this.setState({ [name]: value });
 }
 
+showNotification(place) {
+  var x = [];
+  x[place] = true;
+  this.setState(x);
+  this.alertTimeout = setTimeout(
+    function() {
+      x[place] = false;
+      this.setState(x);
+    }.bind(this),
+    6000
+  );
+}
+
 render() {
-  const { classes } = this.props;
+  const { classes, successMessage } = this.props;
   return (
       <GridContainer>
-        {console.log(this.props)}
-        <GridItem xs={12} sm={12} md={8}>
+        {successMessage ? 
+          <Snackbar
+            place="tr"
+            color="success"
+            message={successMessage}
+            open={this.state.tr}
+            closeNotification={() => this.setState({ tr: false })}
+            close
+          />
+          : null}
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Create new project</h4>
@@ -103,13 +132,6 @@ render() {
             </form> 
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Info</h4>
-            </CardHeader>
-          </Card>
-        </GridItem>
       </GridContainer>
     );
   }
@@ -122,7 +144,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = state => ({ 
-
+  successMessage: state.project.successMessage,
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateProject)));

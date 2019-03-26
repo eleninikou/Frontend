@@ -12,6 +12,8 @@ import {
     CREATE_PROJECT_FAILURE,
     UPDATE_PROJECT_SUCCESS,
     UPDATE_PROJECT_FAILURE,
+    DELETE_PROJECT_SUCCESS,
+    DELETE_PROJECT_FAILURE,
 } from '../actions/projects/Action-types';
 
 const initialState = {
@@ -82,7 +84,8 @@ const ProjectReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                Project: action.payload
+                project: action.payload.project,
+                successMessage: action.payload.message
             } 
         case  CREATE_PROJECT_FAILURE:
             return {
@@ -102,7 +105,19 @@ const ProjectReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errorMessage: action.message
-            }             
+            } 
+        case  DELETE_PROJECT_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }   
+        case DELETE_PROJECT_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                successMessage: action.payload.message
+            }                
         default:
             return state;
         }

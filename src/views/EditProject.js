@@ -15,6 +15,7 @@ import Table from "../components/theme/Table/Table.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
 import TextField from '@material-ui/core/TextField'
 import InputLabel from '@material-ui/core/InputLabel';
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -24,8 +25,9 @@ import Close from "@material-ui/icons/Close";
 import People from "@material-ui/icons/People";
 import Timeline from "@material-ui/icons/Timeline";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
+import DeleteForever from "@material-ui/icons/DeleteForever";
 
-import { getProject, editProject } from '../redux/actions/projects/Actions'
+import { getProject, editProject, deleteProject } from '../redux/actions/projects/Actions'
 import { deleteMilestone } from '../redux/actions/milestones/Action'
 import { connect } from 'react-redux'
 
@@ -38,7 +40,8 @@ class EditProject extends Component {
         name: '',
         description: '',
         client_id: '',
-        id: ''
+        id: '',
+        tr: false
       }
   
       this.editMilestone = this.editMilestone.bind(this);
@@ -58,12 +61,10 @@ class EditProject extends Component {
       description: this.state.description,
       user_id: this.state.userId
     };
-    debugger;
 
     this.props.editProject(this.state.token, project)
     .then(res => {
-        console.log(res)
-        debugger;
+        this.showNotification('tr');
     })
   }
   
@@ -82,6 +83,24 @@ class EditProject extends Component {
           client_id: res.project.client_id
          })
       });
+
+      var id = window.setTimeout(null, 0);
+      while (id--) {
+        window.clearTimeout(id);
+      }
+    }
+
+    showNotification(place) {
+      var x = [];
+      x[place] = true;
+      this.setState(x);
+      this.alertTimeout = setTimeout(
+        function() {
+          x[place] = false;
+          this.setState(x);
+        }.bind(this),
+        6000
+      );
     }
 
     editMilestone(id) {
@@ -90,6 +109,12 @@ class EditProject extends Component {
 
     deleteMilestone(id) {
       this.props.deleteMilestone(this.state.token, id).then(res => { console.log(res)})
+    }
+
+    deleteProject(id) {
+        this.props.deleteProject(this.state.token, id).then(res => { 
+        this.showNotification('tr')
+      })
     }
 
     invitePeople() {
@@ -103,10 +128,19 @@ class EditProject extends Component {
     }
   
       render() {
-          const { classes, team, project } = this.props;
+          const { classes, team, project, successMessage } = this.props;
           return (
             <div>
-              {console.log(project)}
+            {successMessage ? 
+              <Snackbar
+                place="tr"
+                color="success"
+                message={successMessage}
+                open={this.state.tr}
+                closeNotification={() => this.setState({ tr: false })}
+                close
+              />
+              : null}
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                 <Card>
@@ -242,6 +276,15 @@ class EditProject extends Component {
                             </CardFooter>
                         </div> 
                       )
+                    },
+                    {
+                      tabName: "Delete",
+                      tabIcon: DeleteForever,
+                      tabContent: (
+                        <CardBody>
+                          <Button color="primary" onClick={this.deleteProject.bind(this, project.id)}>Delete project</Button>
+                       </CardBody>
+                      )
                     }
                   ]}/>
                   </Card>
@@ -257,7 +300,8 @@ const mapDispatchToProps = dispatch => {
   return { 
     getProject: (token, id) => dispatch(getProject(token, id)),
     deleteMilestone: (token, id) => dispatch(deleteMilestone(token, id)),
-    editProject: (token, id) => dispatch(editProject(token, id))
+    editProject: (token, id) => dispatch(editProject(token, id)),
+    deleteProject: (token, id) => dispatch(deleteProject(token, id))
    }
 }
 
@@ -265,7 +309,7 @@ const mapStateToProps = state => ({
   project: state.project.project,
   team: state.project.team,
   isFetching: state.project.isFetching,
-  successMessage: state.project.successMessage
+  successMessage: state.project.successMessage,
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditProject)));

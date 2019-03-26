@@ -12,6 +12,8 @@ import {
   CREATE_PROJECT_FAILURE,
   UPDATE_PROJECT_SUCCESS,
   UPDATE_PROJECT_FAILURE,
+  DELETE_PROJECT_SUCCESS,
+  DELETE_PROJECT_FAILURE,
 } from './Action-types';
 
 
@@ -103,7 +105,8 @@ export const projectCreate = (token, project) => {
     return async dispatch => {  
 
       const createProjectSuccess = success => { 
-        dispatch ({ type: CREATE_PROJECT_SUCCESS, payload: success}); return project; 
+        debugger;
+        dispatch ({ type: CREATE_PROJECT_SUCCESS, payload: success }); return success; 
     }
 
       const createProjectError = error => { dispatch ({ type: CREATE_PROJECT_FAILURE, message: 'Could not fetch projects' }); return error; }
@@ -124,11 +127,11 @@ export const projectCreate = (token, project) => {
     }
 };   
 
+
 export const editProject = (token, project) => {
   return async dispatch => {  
 
     const editProjectSuccess = success => { 
-      debugger;
       dispatch ({ type: UPDATE_PROJECT_SUCCESS, payload: success}); return success; 
   }
 
@@ -147,6 +150,30 @@ export const editProject = (token, project) => {
       return editProjectSuccess(success);
 
     } catch (error) { return editProjectError(error) }
+  }
+}; 
+
+export const deleteProject = (token, id) => {
+  return async dispatch => {  
+
+    const deleteProjectSuccess = success => { 
+      dispatch ({ type: DELETE_PROJECT_SUCCESS, payload: success}); return success; 
+  }
+
+    const deleteProjectError = error => { dispatch ({ type: DELETE_PROJECT_FAILURE, message: 'Could not delete project' }); return error; }
+
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/projects/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      return deleteProjectSuccess(success);
+
+    } catch (error) { return deleteProjectError(error) }
   }
 }; 
  
