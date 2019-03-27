@@ -1,65 +1,56 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-import PropTypes from "prop-types";
-
+import { connect } from 'react-redux'
+import { getAllProjects } from '../redux/actions/projects/Actions'
+import Cookies from 'universal-cookie';
+// Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Table from "../components/theme/Table/Table.jsx";
 import Card from "../components/theme/Card/Card";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
-import Cookies from 'universal-cookie';
 import Button from "../components/theme/CustomButtons/Button.jsx";
+// Material UI components
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-
+// Icons
 import Edit from "@material-ui/icons/Edit";
 import ExitToApp from "@material-ui/icons/ExitToApp";
-
+// Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
-import { getAllProjects } from '../redux/actions/projects/Actions'
-import { connect } from 'react-redux'
-
-
 
 class Projects extends Component {
+
   constructor(props) {
     super(props);
-
-    this.state = { userId: null}
-
+    this.state = { auth_user_id: '' }
     this.createNewProject = this.createNewProject.bind(this);
-    this.editProject = this.editProject.bind(this);
-
+    this.goToProject = this.goToProject.bind(this);
 }
+
   createNewProject() {
     this.props.history.push('/home/create-project/')
   }
 
-  editProject(id) {
-    this.props.history.push(`/home/edit-project/${id}`)
-  }
-
   goToProject(id) {
-    this.props.history.push(`/home/show-project/${id}`)
+    this.props.history.push(`/home/project/${id}`)
   }
 
   componentWillMount() {
     const cookies = new Cookies()
-    var token = cookies.get('token')
-    var userId = cookies.get('user')
-    this.setState({ userId })
-    this.props.getAllProjects(token, userId);
+    var auth_user_id = cookies.get('user')
+    this.setState({ auth_user_id })
+
+    this.props.getAllProjects();
   }
 
     render() {
-        const { classes, allProjects } = this.props;
+      const { classes, allProjects } = this.props;
         return (
-          <div>
-            <GridContainer> 
-            {console.log(this.props)}
+          <GridContainer> 
             <Button color="primary"  onClick={this.createNewProject}>Create new Project</Button>
               <GridItem xs={12} sm={12} md={12}>
                 <Card>
@@ -72,17 +63,17 @@ class Projects extends Component {
                       tableHead={["Name", "Created", "Open Tickets", "Total Tickets", "Last updated", "Edit", "Details" ]}
                       tableData={[
                         allProjects ? allProjects.map(project => {
-                          let active_tickets = project.tickets.filter(ticket => (ticket.status_id !== 7) && (ticket.status_id !== 4))
-                          return (
+                          let active_tickets = project.tickets.filter(ticket => (ticket.status_id !== (7 && 4)))
+                            return (
                               project.project ? 
-                                  project.project.creator_id == this.state.userId ? 
+                                  project.project.creator_id == this.state.auth_user_id? 
                                       [`${project.project.name}`, `${project.project.created_at}`, (active_tickets).length, `${(project.tickets).length}`, `${project.updated_at}`,
                                         <Tooltip
                                           id="tooltip-top"
                                           title="Edit Project"
                                           placement="top"
                                           classes={{ tooltip: classes.tooltip }}
-                                          onClick={this.editProject.bind(this, project.project.id)}
+                                          onClick={this.goToProject.bind(this, project.project.id)}
                                         >
                                           <IconButton aria-label="Edit" className={classes.tableActionButton}>
                                             <Edit className={ classes.tableActionButtonIcon + " " + classes.edit }/>
@@ -101,22 +92,21 @@ class Projects extends Component {
                                       </Tooltip>,
                                       ]
                                    :  [`${project.project.name}`, `${project.project.created_at}`, (active_tickets).length, `${(project.tickets).length}`, `${project.updated_at}`]  
-                               : null)     
+                               : null
+                              )     
                         }) : null
                       ]}/>
                   </CardBody>
                 </Card>
               </GridItem>
             </GridContainer>
-          </div>
         );
       }
 }
 
-Projects.propTypes = { classes: PropTypes.object.isRequired };
 
 const mapDispatchToProps = dispatch => { 
-  return { getAllProjects: (token, id) => dispatch(getAllProjects(token, id)) }
+  return { getAllProjects: () => dispatch(getAllProjects()) }
 }
 
 const mapStateToProps = state => ({ 

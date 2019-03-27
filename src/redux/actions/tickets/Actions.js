@@ -12,7 +12,12 @@ import {
     CREATE_TICKET_FAILURE
 } from './Action-types';
 
-export const getAllTickets = (token) => {
+import Cookies from 'universal-cookie';
+const cookies = new Cookies()
+var token = cookies.get('token')
+
+
+export const getAllTickets = () => {
     return async dispatch => {
       const getAllTicketsRequest = () => { dispatch({ type: GET_ALL_TICKETS_USER_REQUEST }) };
   
@@ -38,7 +43,7 @@ export const getAllTickets = (token) => {
     }
 };  
 
-  export const ticketCreate = (token, ticket) => {
+  export const ticketCreate = ticket => {
     return async dispatch => {  
 
       const createTicketSuccess = success => { 
@@ -64,7 +69,7 @@ export const getAllTickets = (token) => {
     }
   };    
 
-export const getTicketTypes = token => {
+export const getTicketTypes = () => {
     return async dispatch => {
       const getTicketTypesRequest = () => { dispatch({ type: GET_TICKET_TYPES_REQUEST}) };
   
@@ -90,7 +95,7 @@ export const getTicketTypes = token => {
     }
 };   
 
-export const getTicketStatus = token => {
+export const getTicketStatus = () => {
   return async dispatch => {
     const getTicketStatusRequest = () => { dispatch({ type: GET_TICKET_STATUS_REQUEST}) };
 

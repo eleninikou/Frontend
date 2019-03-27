@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import PropTypes from "prop-types";
 import { milestoneCreate } from '../redux/actions/milestones/Actions'
 import { connect } from 'react-redux'
 
@@ -9,7 +8,6 @@ import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Card from "../components/theme/Card/Card";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
-import Cookies from 'universal-cookie';
 import Button from "../components/theme/CustomButtons/Button.jsx";
 // import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
@@ -29,7 +27,6 @@ class CreateMilestone extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      token: null,
       title: '',
       focus: '',
       due_date: '',
@@ -49,7 +46,7 @@ submit = event => {
     project_id: this.state.project_id
   };
 
-  this.props.milestoneCreate(this.state.token, milestone).then(this.showNotification('tr'))
+  this.props.milestoneCreate(milestone).then(this.showNotification('tr'))
 }
 
 showNotification(place) {
@@ -66,11 +63,7 @@ showNotification(place) {
 }
 
 componentWillMount = () => {
-  const cookies = new Cookies()
-  var token = cookies.get('token')
-  var creator_id = cookies.get('user')
-  this.setState({ token, creator_id})
-  this.props.getAllProjects(token, creator_id);
+  this.props.getAllProjects();
 }
 
 handleChange = event => {
@@ -170,24 +163,16 @@ render() {
             </form> 
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Info</h4>
-            </CardHeader>
-          </Card>
-        </GridItem>
       </GridContainer>
     );
   }
 }
 
-CreateMilestone.propTypes = { classes: PropTypes.object.isRequired };
 
 const mapDispatchToProps = dispatch => { 
   return { 
-      milestoneCreate: (token, milestone) => dispatch(milestoneCreate(token, milestone)),
-      getAllProjects: (token, id) => dispatch(getAllProjects(token, id)) 
+      milestoneCreate: milestone => dispatch(milestoneCreate(milestone)),
+      getAllProjects: () => dispatch(getAllProjects()) 
     }
 }
 

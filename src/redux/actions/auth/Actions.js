@@ -1,5 +1,3 @@
-import Cookies from "universal-cookie";
-
 import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
@@ -13,6 +11,8 @@ import {
     GOOGLE_AUTH_SUCCESS,
     GOOGLE_AUTH_FAILURE,
 } from './Action-types';
+
+import Cookies from 'universal-cookie';
 
 export const login = creds => {
 
@@ -79,9 +79,11 @@ export const login = creds => {
   };  
 
   export const logout = (token) => {
+    debugger;
     return async dispatch => {
       const logoutError = error => { dispatch ({ type: LOGOUT_FAILURE, message: 'Could not logout user' }); return error; }
       const logoutSuccess = success => { 
+        debugger;
         dispatch ({ type: LOGOUT_SUCCESS, payload: success}); 
         return success;
     }
@@ -97,6 +99,7 @@ export const login = creds => {
             }
         })
         const success = await res.json();
+        debugger;
         return logoutSuccess(success);
 
       } catch (error) { return logoutError(error) }

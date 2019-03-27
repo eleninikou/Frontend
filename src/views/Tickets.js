@@ -26,41 +26,25 @@ class Tickets extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      token: null,
-      creator_id: null,
-      title: null,
-      description: null,
-      type_id: null,
-      status_id: null,
-      project_id: null,
-      priority: null,
-      due_date: null,
-      assigned_user_id: null,
-      milestone_id: null,
-    }
+    this.state = {}
     this.createNewTicket = this.createNewTicket.bind(this);
 }
 
   componentWillMount() {
-    const cookies = new Cookies()
-    var token = cookies.get('token')
-    var userId = cookies.get('user')
-    this.props.getAllTickets(token, userId);
+    this.props.getAllTickets();
   }
 
   createNewTicket() {
     this.props.history.push('/home/create-ticket')
   }
 
-  editTicket(id) {
-    this.props.history.push(`/home/edit-ticket/${id}`)
+  goToTicket(id) {
+    this.props.history.push(`/home/ticket/${id}`)
   }
 
     render() {
-        const { classes, allTickets } = this.props;
+      const { classes, allTickets } = this.props;
         return (
-          <div>
             <GridContainer> 
             <Button color="primary" onClick={this.createNewTicket}>Create new Ticket</Button>
               <GridItem xs={12} sm={12} md={12}>
@@ -77,25 +61,23 @@ class Tickets extends Component {
                             return [`${ticket.project.name}`, `${ticket.type.type}`, `${ticket.status.status}`,`${ticket.priority}`, `${ticket.due_date}`,
                             <Tooltip
                             id="tooltip-top"
-                            title="Edit Ticket"
+                            title="Go To Ticket"
                             placement="top"
                             classes={{ tooltip: classes.tooltip }}
-                            onClick={this.editTicket.bind(this, ticket.id)}
+                            onClick={this.goToTicket.bind(this, ticket.id)}
                           >
                             <IconButton aria-label="Edit" className={classes.tableActionButton}>
                               <Edit className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                             </IconButton>
                           </Tooltip>,
-                          // `/home/show-ticket/${ticket.id}` 
                           ]
-                          }) : ''
+                          }) : null
                       ]}
                       />
                   </CardBody>
                 </Card>
               </GridItem>
             </GridContainer>
-          </div>
         );
       }
 }
@@ -105,9 +87,7 @@ Tickets.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => { 
-  return { 
-    getAllTickets: (token, id) => dispatch(getAllTickets(token, id)),
-  }
+  return { getAllTickets: () => dispatch(getAllTickets()) }
 }
 
 const mapStateToProps = state => ({ 

@@ -1,43 +1,49 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+import { connect } from 'react-redux'
+import { getProject, editProject, deleteProject } from '../redux/actions/projects/Actions'
+import { deleteMilestone } from '../redux/actions/milestones/Actions'
+import Cookies from 'universal-cookie';
 
+// Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Card from "../components/theme/Card/Card";
 import CardBody from "../components/theme/Card/CardBody.jsx";
-import Cookies from 'universal-cookie';
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
 import Table from "../components/theme/Table/Table.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
-import TextField from '@material-ui/core/TextField'
-import InputLabel from '@material-ui/core/InputLabel';
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
-import withStyles from "@material-ui/core/styles/withStyles";
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+// Material UI components
+import Tooltip from "@material-ui/core/Tooltip";
+import TextField from '@material-ui/core/TextField'
+import InputLabel from '@material-ui/core/InputLabel';
+import IconButton from "@material-ui/core/IconButton";
 
+// Icons
 import Edit from "@material-ui/icons/Edit";
+import Note from "@material-ui/icons/Note";
 import Close from "@material-ui/icons/Close";
 import People from "@material-ui/icons/People";
 import Timeline from "@material-ui/icons/Timeline";
+import ExitToApp from "@material-ui/icons/ExitToApp";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import DeleteForever from "@material-ui/icons/DeleteForever";
-import Note from "@material-ui/icons/Note";
-import ExitToApp from "@material-ui/icons/ExitToApp";
 
-import { getProject, editProject, deleteProject } from '../redux/actions/projects/Actions'
-import { deleteMilestone } from '../redux/actions/milestones/Actions'
-import { connect } from 'react-redux'
+// Styles
+import withStyles from "@material-ui/core/styles/withStyles";
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import '../assets/sass/main.sass';
+
+
 
 class EditProject extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        token: '',
         auth_user_id: '',
         name: '',
         description: '',
@@ -61,16 +67,16 @@ class EditProject extends Component {
       description: this.state.description,
     };
 
-    this.props.editProject(this.state.token, project).then(this.showNotification('tr'))
+    this.props.editProject(project)
+    .then(this.showNotification('tr'))
   }
   
     componentWillMount() {
       const cookies = new Cookies()
-      var token = cookies.get('token')
       var auth_user_id = cookies.get('user')
-      this.setState({token, auth_user_id})
+      this.setState( {auth_user_id })
 
-      this.props.getProject(token, this.props.match.params.id)
+      this.props.getProject(this.props.match.params.id)
       .then(res => {
         this.setState({ 
           id: res.project.id,
@@ -94,29 +100,24 @@ class EditProject extends Component {
         function() {
           x[place] = false;
           this.setState(x);
-        }.bind(this),
-        6000
-      );
+        }.bind(this), 4000);
     }
 
-    editTicket(id) {
-      this.props.history.push(`/home/edit-ticket/${id}`)
-    }
 
     goToTicket(id) {
-      this.props.history.push(`/home/show-ticket/${id}`)
+      this.props.history.push(`/home/ticket/${id}`)
     }
 
     editMilestone(id) {
-      this.props.history.push(`/home/edit-milestone/${id}`)
+      this.props.history.push(`/home/milestone/${id}`)
     }
 
     deleteMilestone(id) {
-      this.props.deleteMilestone(this.state.token, id).then(this.showNotification('tr'))
+      this.props.deleteMilestone(id).then(this.showNotification('tr'))
     }
 
     deleteProject(id) {
-        this.props.deleteProject(this.state.token, id).then(this.showNotification('tr'))
+        this.props.deleteProject(id).then(this.showNotification('tr'))
     }
 
     invitePeople() {
@@ -128,12 +129,14 @@ class EditProject extends Component {
       const { name, value } = event.target;
       this.setState({ [name]: value });
     }
-  
-      render() {
-          const { classes, team, project, successMessage, successMessageMilestone, tickets } = this.props;
+
+    
+    render() {
+      const { classes, team, project, successMessage, successMessageMilestone, tickets } = this.props;
           return (
+          project ?
             <div>
-              {console.log(successMessageMilestone)}
+              {console.log(this.props)}
             {successMessage || successMessageMilestone ? 
               <Snackbar
                 place="tr"
@@ -146,15 +149,14 @@ class EditProject extends Component {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                 <Card>
-                {project ?
                   <CustomTabs
                     headerColor="primary"
                     tabs={[
-                    {
+                      project.creator_id === this.state.auth_user_id ?
+                      {
                       tabName: "Info",
                       tabIcon: LibraryBooks,
                       tabContent: (
-                        project.creator_id === this.state.auth_user_id ?
                           <form className={classes.form} onSubmit={this.submit}>
                             <CardBody>
                               <GridContainer>
@@ -166,6 +168,7 @@ class EditProject extends Component {
                                       value={this.state.name}
                                       onChange={this.handleChange}
                                       fullWidth
+                                      className="my-input"
                                   />
                                 </GridItem>
                                 <GridItem xs={12} sm={12} md={12}>
@@ -193,16 +196,31 @@ class EditProject extends Component {
                             </CardBody>
                             <CardFooter>
                               <Button color="primary" type="submit">Edit Info</Button>
-                           </CardFooter>
+                            </CardFooter>
                           </form>  
-                      : 
-                        <Table
-                          tableHeaderColor="primary"
-                          tableHead={["Name", "Description", "Created", "Tickets", "Last updated"]}
-                          tableData={[
-                          ]} 
-                         /> 
-                      )
+                        ) 
+                      } : {
+                        tabName: "Info",
+                        tabIcon: LibraryBooks,
+                        tabContent: ( 
+                          <h4>Name: {project.name}, Description: {project.description}, Created: {project.created_at}, 
+                          Tickets: {project.tickets ? (project.tickets).length : null}</h4>
+
+                          // <Table
+                          //   tableHeaderColor="primary"
+                          //   tableHead={["Name", "Description", "Created", "Tickets", "Last updated"]}
+                          //   tableData={[
+                          //     project ?
+                          //       [`${project.name}`, 
+                          //       `${project.description}`,
+                          //       `${project.created_at}`,
+                          //       `${project.tickets ? (project.tickets).length : null}`,
+
+                          //   ]
+                          //     : null  
+                          //   ]} 
+                          //  /> 
+                        )
                     },{
                       tabName: "Milestones",
                       tabIcon: Timeline,
@@ -280,7 +298,7 @@ class EditProject extends Component {
                                         title="Edit Ticket"
                                         placement="top"
                                         classes={{ tooltip: classes.tooltip }}
-                                        onClick={this.editTicket.bind(this, ticket.id)}>
+                                        onClick={this.goToTicket.bind(this, ticket.id)}>
                                         <IconButton
                                           aria-label="Edit"
                                           className={classes.tableActionButton}>
@@ -368,11 +386,11 @@ class EditProject extends Component {
                       }
                    : null
                   ]}/>
-                  : null }
                   </Card>
                 </GridItem>
               </GridContainer>
             </div>
+          : null 
           );
         }
   }
@@ -380,10 +398,10 @@ class EditProject extends Component {
 
 const mapDispatchToProps = dispatch => { 
   return { 
-    getProject: (token, id) => dispatch(getProject(token, id)),
-    deleteMilestone: (token, id) => dispatch(deleteMilestone(token, id)),
-    editProject: (token, id) => dispatch(editProject(token, id)),
-    deleteProject: (token, id) => dispatch(deleteProject(token, id))
+    getProject: id => dispatch(getProject(id)),
+    deleteMilestone: id => dispatch(deleteMilestone(id)),
+    editProject: id => dispatch(editProject(id)),
+    deleteProject: id => dispatch(deleteProject(id))
    }
 }
 

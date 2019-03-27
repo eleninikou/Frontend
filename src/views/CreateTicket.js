@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import PropTypes from "prop-types";
+import { connect } from 'react-redux'
+import { ticketCreate, getTicketTypes, getTicketStatus } from '../redux/actions/tickets/Actions'
+import { getAllProjects, getProject } from '../redux/actions/projects/Actions'
 
+// Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Card from "../components/theme/Card/Card";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
-import Cookies from 'universal-cookie';
 import Button from "../components/theme/CustomButtons/Button.jsx";
-// import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
+// Material UI components
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormLabel from '@material-ui/core/FormLabel';
@@ -20,13 +22,11 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+
+// Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
-import { ticketCreate, getTicketTypes, getTicketStatus } from '../redux/actions/tickets/Actions'
-import { getAllProjects, getProject } from '../redux/actions/projects/Actions'
-
-import { connect } from 'react-redux'
 
 
 class CreateTicket extends Component {
@@ -34,8 +34,6 @@ class CreateTicket extends Component {
     super(props);
 
     this.state = {
-        token: '',
-        creator_id: '',
         title: '',
         description: '',
         type_id: '',
@@ -55,7 +53,6 @@ submit = event => {
   event.preventDefault();
   
   const ticket = {
-    creator_id: this.state.creator_id,
     title: this.state.title,
     description: this.state.description,
     type_id: this.state.type_id,
@@ -68,7 +65,7 @@ submit = event => {
     project_name: this.state.project_name
   };
 
-  this.props.ticketCreate(this.state.token, ticket)
+  this.props.ticketCreate(ticket)
   .then(res => {
     if (!res.error) {
       this.props.history.push('/home/tickets')
@@ -80,13 +77,9 @@ submit = event => {
 }
 
 componentWillMount = () => {
-  const cookies = new Cookies()
-  var token = cookies.get('token')
-  var creator_id = cookies.get('user')
-  this.setState({ token, creator_id})
-  this.props.getAllProjects(token, creator_id);
-  this.props.getTicketTypes(token);
-  this.props.getTicketStatus(token);
+  this.props.getAllProjects();
+  this.props.getTicketTypes();
+  this.props.getTicketStatus();
 }
 
 handleChange = event => {
@@ -95,7 +88,7 @@ handleChange = event => {
 
   // Fetch project to get available values
   if (event.target.name === "project_id" ) {
-    this.props.getProject(this.state.token, value)
+    this.props.getProject(value)
   }
 }
 
@@ -291,14 +284,13 @@ render() {
   }
 }
 
-CreateTicket.propTypes = { classes: PropTypes.object.isRequired };
 
 const mapDispatchToProps = dispatch => { 
-  return {  ticketCreate: (token, project) => dispatch(ticketCreate(token, project)),
-            getTicketTypes: token => dispatch(getTicketTypes(token)),
-            getTicketStatus: token => dispatch(getTicketStatus(token)),
-            getAllProjects: (token, id) => dispatch(getAllProjects(token, id)),
-            getProject: (token, id) => dispatch(getProject(token, id)) 
+  return {  ticketCreate: project => dispatch(ticketCreate(project)),
+            getTicketTypes: () => dispatch(getTicketTypes()),
+            getTicketStatus: () => dispatch(getTicketStatus()),
+            getAllProjects: () => dispatch(getAllProjects()),
+            getProject: id => dispatch(getProject(id)) 
           }
 }
 

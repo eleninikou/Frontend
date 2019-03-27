@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types";
+import { withRouter, } from "react-router-dom"
 
 // @material-ui/core
 import withStyles from "@material-ui/core/styles/withStyles";
-
 
 import Button from "../components/theme/CustomButtons/Button.jsx";
 
@@ -12,7 +12,6 @@ import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Table from "../components/theme/Table/Table.jsx";
 import Card from "../components/theme/Card/Card";
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import Cookies from 'universal-cookie'
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
@@ -35,16 +34,11 @@ import { connect } from 'react-redux'
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { 
-      token: '',
-      userId: '' 
-  }
     this.logout = this.logout.bind(this);
 
 }
   logout() {
-    this.props.logout(this.state.token).then(res => {
+    this.props.logout().then(res => {
       const cookies = new Cookies()
       cookies.remove('token')
       cookies.remove('user')
@@ -58,21 +52,14 @@ class Dashboard extends Component {
 
 
   componentWillMount() {
-    const cookies = new Cookies()
-    var token = cookies.get('token')
-    var userId = cookies.get('user')
-    this.setState({ 
-      token: token,
-      userId: userId
-    })
-    this.props.getProjectsByUser(token, userId);
-    this.props.getAllProjects(token, userId);
-    this.props.getActivity(token);
+    this.props.getProjectsByUser();
+    this.props.getAllProjects();
+    this.props.getActivity();
 
   }
 
     render() {
-        const { classes, projects, allProjects, allTickets, activity } = this.props;
+        const { allTickets, activity } = this.props;
         return (
           <div>
             {console.log(activity)}
@@ -91,12 +78,16 @@ class Dashboard extends Component {
                       tabContent: (
                         <Table
                         tableHeaderColor="primary"
-                        tableHead={["Date", "Title", "Priority", "Due Date"]}
+                        tableHead={["Date", " ", "", "Type"]}
                         tableData={[
                             activity ? activity.map(A => {
-                              return [`${A.created_at}`,
+                              return [
+                                `${A.created_at}`,
+                                `${A.user.name} ${A.text}`,
+                                ` in ${A.project.name}`,
+                                `${A.type}`
                             ]
-                            }) : ''
+                            }) : null
                         ]}
                         />
                       )
@@ -111,7 +102,7 @@ class Dashboard extends Component {
                             allTickets.tickets ? allTickets.tickets.map(ticket => {
                               return [`${ticket.status.status}`, `${ticket.title}`, `${ticket.priority}`, `${ticket.due_date}`,
                             ]
-                            }) : ''
+                            }) : null
                         ]}
                         />
                       )
@@ -120,7 +111,6 @@ class Dashboard extends Component {
                   </CardBody>
                 </Card>
               </GridItem>
-
             </GridContainer>
           </div>
         );
@@ -133,11 +123,11 @@ Dashboard.propTypes = {
 
 const mapDispatchToProps = dispatch => { 
   return { 
-    logout: (token) => dispatch(logout(token)),
-    getProjectsByUser: (token, id) => dispatch(getProjectsByUser(token, id)),
-    getAllProjects: (token, id) => dispatch(getAllProjects(token, id)),
-    getAllTickets: (token, id) => dispatch(getAllTickets(token, id)),
-    getActivity: (token) => dispatch(getActivity(token))
+    logout: () => dispatch(logout()),
+    getProjectsByUser: () => dispatch(getProjectsByUser()),
+    getAllProjects: () => dispatch(getAllProjects()),
+    getAllTickets: () => dispatch(getAllTickets()),
+    getActivity: () => dispatch(getActivity())
   }
 }
 
@@ -150,6 +140,6 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Dashboard));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Dashboard)));
   
 

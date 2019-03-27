@@ -19,8 +19,12 @@ import {
   GET_ACTIVITY_FAILURE,
 } from './Action-types';
 
+import Cookies from 'universal-cookie';
+const cookies = new Cookies()
+var token = cookies.get('token')
 
-export const getProject = (token, id) => {
+
+export const getProject = id => {
   return async dispatch => {
     const getProjectRequest = () => { dispatch({ type: GET_PROJECT_REQUEST }) };
 
@@ -48,7 +52,7 @@ export const getProject = (token, id) => {
 };
 
 
-export const getProjectsByUser = (token, id) => {
+export const getProjectsByUser = id => {
     return async dispatch => {
       const getProjectsByUserRequest = () => { dispatch({ type: GET_PROJECTS_BY_USER_REQUEST }) };
   
@@ -76,7 +80,7 @@ export const getProjectsByUser = (token, id) => {
 };
 
 
-export const getAllProjects = (token, id) => {
+export const getAllProjects = () => {
     return async dispatch => {
       const getAllProjectsRequest = () => { dispatch({ type: GET_ALL_PROJECTS_USER_REQUEST }) };
   
@@ -89,7 +93,7 @@ export const getAllProjects = (token, id) => {
   
       try {
         getAllProjectsRequest();
-        const res = await fetch(`http://127.0.0.1:8000/api/projects/user/${id}/all`, {
+        const res = await fetch(`http://127.0.0.1:8000/api/projects/user/all`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -104,34 +108,28 @@ export const getAllProjects = (token, id) => {
 };  
 
 
-export const projectCreate = (token, project) => {
+export const projectCreate = project => {
+  debugger;
     return async dispatch => {  
-
       const createProjectSuccess = success => { 
-        debugger;
         dispatch ({ type: CREATE_PROJECT_SUCCESS, payload: success }); return success; 
-    }
-
-      const createProjectError = error => { dispatch ({ type: CREATE_PROJECT_FAILURE, message: 'Could not fetch projects' }); return error; }
+      }
   
       try {
         const res = await fetch(`http://127.0.0.1:8000/api/projects`, {
           method: "POST",
           body: JSON.stringify(project),
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            'Access-Control-Allow-Origin': '*',
-            "Content-Type": "application/json"}
+          headers: { "Authorization": `Bearer ${token}`, 'Access-Control-Allow-Origin': '*', "Content-Type": "application/json"}
         })
         const success = await res.json();
         return createProjectSuccess(success);
   
-      } catch (error) { return createProjectError(error) }
+      } catch (error) { dispatch ({ type: CREATE_PROJECT_FAILURE, message: 'Could not fetch projects' }); return error }
     }
 };   
 
 
-export const editProject = (token, project) => {
+export const editProject = project => {
   return async dispatch => {  
 
     const editProjectSuccess = success => { 
@@ -156,7 +154,7 @@ export const editProject = (token, project) => {
   }
 }; 
 
-export const deleteProject = (token, id) => {
+export const deleteProject = id => {
   return async dispatch => {  
 
     const deleteProjectSuccess = success => { 
@@ -180,7 +178,7 @@ export const deleteProject = (token, id) => {
   }
 }; 
  
-export const getActivity = (token, id) => {
+export const getActivity = id => {
   return async dispatch => {
     const getActivityRequest = () => { dispatch({ type: GET_ACTIVITY_REQUEST }) };
 

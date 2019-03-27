@@ -16,10 +16,12 @@ const initialState = {
 const MilestoneReducer = (state = initialState, action) => {
     switch (action.type) {
         case CREATE_MILESTONE_SUCCESS:
+        debugger;
             return {
                 ...state,
                 isFetching: false,
-                milestone: action.payload
+                milestone: action.payload.milestone,
+                successMessage: action.payload.message
             } 
         case CREATE_MILESTONE_FAILURE:
             return {

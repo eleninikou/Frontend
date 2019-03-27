@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import PropTypes from "prop-types";
 import { projectCreate } from '../redux/actions/projects/Actions'
 import { connect } from 'react-redux'
 
@@ -24,7 +23,6 @@ class CreateProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      token: null,
       name: null,
       description: null,
       tr: false
@@ -39,9 +37,10 @@ submit = event => {
     description: this.state.description
   };
 
-  this.props.projectCreate(this.state.token, project)
+  this.props.projectCreate(project)
   .then(res => {
     if (!res.error) {
+      console.log(res)
       this.showNotification('tr');
       // this.props.history.push('/home/invite')
     } else {
@@ -52,9 +51,8 @@ submit = event => {
 
 componentWillMount = () => {
   const cookies = new Cookies()
-  var token = cookies.get('token')
   var creator_id = cookies.get('user')
-  this.setState({ token, creator_id})
+  this.setState({ creator_id})
   var id = window.setTimeout(null, 0);
   while (id--) {
     window.clearTimeout(id);
@@ -135,10 +133,9 @@ render() {
   }
 }
 
-CreateProject.propTypes = { classes: PropTypes.object.isRequired };
 
 const mapDispatchToProps = dispatch => { 
-  return { projectCreate: (token, project) => dispatch(projectCreate(token, project)) }
+  return { projectCreate: project => dispatch(projectCreate(project)) }
 }
 
 const mapStateToProps = state => ({ 

@@ -12,11 +12,11 @@ import logo from "../assets/img/reactlogo.png";
 import routes from "../routes.js";
 import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
 import image from "../assets/img/sidebar-2.jpg";
-import Project from './Project'
 import CreateProject from './CreateProject'
 import EditProject from './EditProject'
 import CreateTicket from './CreateTicket'
 import EditTicket from './EditTicket'
+import EditMilestone from './EditMilestone'
 import CreateMilestone from "./CreateMilestone.js";
 import Invite from "./Invite.js";
 
@@ -34,15 +34,12 @@ const switchRoutes = (
         );}
     })}
       <Route exact path='/home/create-milestone' component={CreateMilestone} />
-      <Route path='/home/edit-milestone/:id' component={EditTicket} />
+      <Route path='/home/milestone/:id' component={EditMilestone} />
       <Route exact path='/home/create-project' component={CreateProject} />
-      <Route path='/home/edit-project/:id' component={EditProject} />
-      <Route path='/home/show-project/:id' component={EditProject} />
+      <Route path='/home/project/:id' component={EditProject} />
       <Route exact path='/home/create-ticket' component={CreateTicket} />
-      <Route path='/home/edit-ticket/:id' component={EditTicket} />
+      <Route path='/home/ticket/:id' component={EditTicket} />
       <Route path='/home/project-invite/:id' component={Invite} />
-      <Route path='/home/show-ticket/:id' component={EditTicket} />
-
   </Switch>
 );
 

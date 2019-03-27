@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
+import Cookies from 'universal-cookie';
 
 import GoogleLogin from 'react-google-login'
 import { login, googleLogin } from '../../../redux/actions/auth/Actions'
@@ -64,7 +65,11 @@ class LoginForm extends Component {
     this.props.login(creds)
       .then(res => {
         if(!res.error) {
-          this.props.history.push('/home')
+          const cookies = new Cookies()
+          var creator_id = cookies.get('user')
+          if (creator_id) {
+            this.props.history.push('/home')
+          }
         }
       })
   }

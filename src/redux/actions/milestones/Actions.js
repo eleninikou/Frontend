@@ -4,8 +4,13 @@ import {
     DELETE_MILESTONE_SUCCESS,
     DELETE_MILESTONE_FAILURE,
   } from './Action-Types';
-  
-export const milestoneCreate = (token, milestone) => {
+
+import Cookies from 'universal-cookie';
+const cookies = new Cookies()
+var token = cookies.get('token')
+
+
+export const milestoneCreate = milestone => {
     return async dispatch => {  
 
       const createMilestoneSuccess = success => { 
@@ -23,13 +28,14 @@ export const milestoneCreate = (token, milestone) => {
             "Content-Type": "application/json"}
         })
         const success = await res.json();
+        debugger;
         return createMilestoneSuccess(success);
   
       } catch (error) { return createMilestoneError(error) }
     }
 }
 
-export const deleteMilestone = (token, id) => {
+export const deleteMilestone = id => {
   debugger;
   return async dispatch => {  
 

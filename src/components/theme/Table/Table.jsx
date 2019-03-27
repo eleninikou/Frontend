@@ -34,20 +34,18 @@ function CustomTable({ ...props }) {
         ) : null}
         <TableBody>
           {tableData ? tableData.map((data, key) => {
+            console.log(data)
             return (
               data ? data.map((prop, key) => {
-                console.log(prop)
                 return (
                   <TableRow 
                   hover={true}
                   key={key} 
-                  // component="a" 
-                  // href={prop[6]} 
                   >
-                    {prop ? prop.map((pro, key) => {
+                    { prop ? prop.map((pro, key) => {
                       return (
                         <TableCell className={classes.tableCell} key={key}>
-                          {pro}
+                          <div dangerouslySetInnerHTML={{ __html: pro }} />
                         </TableCell>
                       );
                     }) : null}
