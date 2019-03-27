@@ -25,7 +25,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Edit from "@material-ui/icons/Edit";
 
 import { getAllTickets } from '../redux/actions/tickets/Actions'
-import { getProjectsByUser, getAllProjects } from '../redux/actions/projects/Actions'
+import { getProjectsByUser, getAllProjects, getActivity } from '../redux/actions/projects/Actions'
 import { logout } from '../redux/actions/auth/Actions'
 
 import { connect } from 'react-redux'
@@ -67,13 +67,15 @@ class Dashboard extends Component {
     })
     this.props.getProjectsByUser(token, userId);
     this.props.getAllProjects(token, userId);
+    this.props.getActivity(token);
+
   }
 
     render() {
-        const { classes, projects, allProjects, allTickets } = this.props;
+        const { classes, projects, allProjects, allTickets, activity } = this.props;
         return (
           <div>
-            {console.log(allTickets)}
+            {console.log(activity)}
             <Button onClick={this.logout}>Logout</Button>
             <GridContainer> 
               <GridItem xs={12} sm={12} md={12}>
@@ -87,7 +89,16 @@ class Dashboard extends Component {
                       tabName: "Feed",
                       tabIcon: Today,
                       tabContent: (
-                        'latest'
+                        <Table
+                        tableHeaderColor="primary"
+                        tableHead={["Date", "Title", "Priority", "Due Date"]}
+                        tableData={[
+                            activity ? activity.map(A => {
+                              return [`${A.created_at}`,
+                            ]
+                            }) : ''
+                        ]}
+                        />
                       )
                     },{
                       tabName: "Tickets",
@@ -126,7 +137,7 @@ const mapDispatchToProps = dispatch => {
     getProjectsByUser: (token, id) => dispatch(getProjectsByUser(token, id)),
     getAllProjects: (token, id) => dispatch(getAllProjects(token, id)),
     getAllTickets: (token, id) => dispatch(getAllTickets(token, id)),
-
+    getActivity: (token) => dispatch(getActivity(token))
   }
 }
 
@@ -134,6 +145,7 @@ const mapStateToProps = state => ({
   projects: state.project.projects, 
   allProjects: state.project.allProjects,
   allTickets: state.ticket.allTickets, 
+  activity: state.project.activity,
   isFetching: state.project.isFetching
 })
 

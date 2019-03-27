@@ -54,11 +54,13 @@ class CustomTabs extends React.Component {
           >
             {tabs.map((prop, key) => {
               var icon = {};
-              if (prop.tabIcon) {
-                icon = {
-                  icon: <prop.tabIcon />
-                };
-              }
+              if(prop) {
+                if (prop.tabIcon) {
+                  icon = {
+                    icon: <prop.tabIcon />
+                  };
+                }
+
               return (
                 <Tab
                   classes={{
@@ -73,6 +75,7 @@ class CustomTabs extends React.Component {
                   {...icon}
                 />
               );
+                }
             })}
           </Tabs>
         </CardHeader>

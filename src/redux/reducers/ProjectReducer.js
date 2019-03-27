@@ -14,13 +14,18 @@ import {
     UPDATE_PROJECT_FAILURE,
     DELETE_PROJECT_SUCCESS,
     DELETE_PROJECT_FAILURE,
+    GET_ACTIVITY_REQUEST,
+    GET_ACTIVITY_SUCCESS,
+    GET_ACTIVITY_FAILURE,
 } from '../actions/projects/Action-types';
 
 const initialState = {
     project: {},
     projects: [],
+    tickets:[],
     team: [],
     allProjects: [],
+    activity: [],
     isFetching: false,
     errorMessage: null,
     successMessage: null
@@ -38,7 +43,8 @@ const ProjectReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 project: action.payload.project,
-                team: action.payload.team
+                team: action.payload.team,
+                tickets: action.payload.tickets
             } 
         case GET_PROJECT_FAILURE:
             return {
@@ -117,7 +123,24 @@ const ProjectReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 successMessage: action.payload.message
-            }                
+            }  
+        case GET_ACTIVITY_REQUEST:
+            return {
+                ...state,
+                isFetching: true,
+            } 
+        case GET_ACTIVITY_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                activity: action.payload.activity
+            } 
+        case GET_ACTIVITY_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }                  
         default:
             return state;
         }

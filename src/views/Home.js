@@ -6,6 +6,7 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Footer from "../components/theme/Footer/Footer.jsx";
 import Sidebar from "../components/theme/Sidebar/Sidebar.jsx";
+import Navbar from "../components/theme/Navbars/Navbar.jsx";
 import logo from "../assets/img/reactlogo.png";
 
 import routes from "../routes.js";
@@ -18,6 +19,7 @@ import CreateTicket from './CreateTicket'
 import EditTicket from './EditTicket'
 import CreateMilestone from "./CreateMilestone.js";
 import Invite from "./Invite.js";
+
 
 const switchRoutes = (
   <Switch>
@@ -35,7 +37,7 @@ const switchRoutes = (
       <Route path='/home/edit-milestone/:id' component={EditTicket} />
       <Route exact path='/home/create-project' component={CreateProject} />
       <Route path='/home/edit-project/:id' component={EditProject} />
-      <Route path='/home/show-project/:id' component={Project} />
+      <Route path='/home/show-project/:id' component={EditProject} />
       <Route exact path='/home/create-ticket' component={CreateTicket} />
       <Route path='/home/edit-ticket/:id' component={EditTicket} />
       <Route path='/home/project-invite/:id' component={Invite} />
@@ -123,11 +125,11 @@ class Home extends React.Component {
         />
         <div className={classes.mainPanel} ref="mainPanel">
 
-          {/* <Navbar
+          <Navbar
             routes={routes}
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
-          /> */}
+          />
 
           {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {this.getRoute() ? (

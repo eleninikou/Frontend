@@ -14,6 +14,9 @@ import {
   UPDATE_PROJECT_FAILURE,
   DELETE_PROJECT_SUCCESS,
   DELETE_PROJECT_FAILURE,
+  GET_ACTIVITY_REQUEST,
+  GET_ACTIVITY_SUCCESS,
+  GET_ACTIVITY_FAILURE,
 } from './Action-types';
 
 
@@ -177,3 +180,29 @@ export const deleteProject = (token, id) => {
   }
 }; 
  
+export const getActivity = (token, id) => {
+  return async dispatch => {
+    const getActivityRequest = () => { dispatch({ type: GET_ACTIVITY_REQUEST }) };
+
+    const recieveActivity = activity => { 
+      dispatch ({ type: GET_ACTIVITY_SUCCESS, payload: activity}); 
+      return activity; 
+  }
+
+    const getActivityError = error => { dispatch ({ type: GET_ACTIVITY_FAILURE, message: 'Could not fetch activity' }); return error; }
+
+    try {
+      getActivityRequest();
+      const res = await fetch(`http://127.0.0.1:8000/api/activity/user`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const activity = await res.json();
+      return recieveActivity(activity);
+
+    } catch (error) { return getActivityError(error) }
+  }
+}; 

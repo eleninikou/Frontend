@@ -14,6 +14,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 
 import Edit from "@material-ui/icons/Edit";
+import ExitToApp from "@material-ui/icons/ExitToApp";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -41,6 +42,10 @@ class Projects extends Component {
     this.props.history.push(`/home/edit-project/${id}`)
   }
 
+  goToProject(id) {
+    this.props.history.push(`/home/show-project/${id}`)
+  }
+
   componentWillMount() {
     const cookies = new Cookies()
     var token = cookies.get('token')
@@ -64,7 +69,7 @@ class Projects extends Component {
                   <CardBody>
                     <Table
                       tableHeaderColor="primary"
-                      tableHead={["Name", "Created", "Open Tickets", "Total Tickets", "Last updated", "Edit" ]}
+                      tableHead={["Name", "Created", "Open Tickets", "Total Tickets", "Last updated", "Edit", "Details" ]}
                       tableData={[
                         allProjects ? allProjects.map(project => {
                           let active_tickets = project.tickets.filter(ticket => (ticket.status_id !== 7) && (ticket.status_id !== 4))
@@ -83,7 +88,17 @@ class Projects extends Component {
                                             <Edit className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                                           </IconButton>
                                         </Tooltip>,
-                                        // `/home/show-project/${project.project.id}` 
+                                        <Tooltip
+                                          id="tooltip-top"
+                                          title="Go to Project"
+                                          placement="top"
+                                          classes={{ tooltip: classes.tooltip }}
+                                          onClick={this.goToProject.bind(this, project.project.id)}
+                                        >
+                                          <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                            <ExitToApp className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                          </IconButton>
+                                      </Tooltip>,
                                       ]
                                    :  [`${project.project.name}`, `${project.project.created_at}`, (active_tickets).length, `${(project.tickets).length}`, `${project.updated_at}`]  
                                : null)     

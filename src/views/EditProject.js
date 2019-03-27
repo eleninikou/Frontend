@@ -26,9 +26,11 @@ import People from "@material-ui/icons/People";
 import Timeline from "@material-ui/icons/Timeline";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import DeleteForever from "@material-ui/icons/DeleteForever";
+import Note from "@material-ui/icons/Note";
+import ExitToApp from "@material-ui/icons/ExitToApp";
 
 import { getProject, editProject, deleteProject } from '../redux/actions/projects/Actions'
-import { deleteMilestone } from '../redux/actions/milestones/Action'
+import { deleteMilestone } from '../redux/actions/milestones/Actions'
 import { connect } from 'react-redux'
 
 class EditProject extends Component {
@@ -36,7 +38,7 @@ class EditProject extends Component {
       super(props);
       this.state = {
         token: '',
-        userId: '',
+        auth_user_id: '',
         name: '',
         description: '',
         client_id: '',
@@ -48,31 +50,25 @@ class EditProject extends Component {
       this.deleteMilestone = this.deleteMilestone.bind(this);
       this.invitePeople = this.invitePeople.bind(this);
       this.handleChange = this.handleChange.bind(this);
-
   }
 
   submit = event => {
     event.preventDefault();
     const project = {
       id: this.state.id,
-      creator_id: this.state.userId,
       client_id: this.state.client_id,
       name: this.state.name,
       description: this.state.description,
-      user_id: this.state.userId
     };
 
-    this.props.editProject(this.state.token, project)
-    .then(res => {
-        this.showNotification('tr');
-    })
+    this.props.editProject(this.state.token, project).then(this.showNotification('tr'))
   }
   
     componentWillMount() {
       const cookies = new Cookies()
       var token = cookies.get('token')
-      var userId = cookies.get('user')
-      this.setState({token, userId})
+      var auth_user_id = cookies.get('user')
+      this.setState({token, auth_user_id})
 
       this.props.getProject(token, this.props.match.params.id)
       .then(res => {
@@ -103,18 +99,24 @@ class EditProject extends Component {
       );
     }
 
+    editTicket(id) {
+      this.props.history.push(`/home/edit-ticket/${id}`)
+    }
+
+    goToTicket(id) {
+      this.props.history.push(`/home/show-ticket/${id}`)
+    }
+
     editMilestone(id) {
       this.props.history.push(`/home/edit-milestone/${id}`)
     }
 
     deleteMilestone(id) {
-      this.props.deleteMilestone(this.state.token, id).then(res => { console.log(res)})
+      this.props.deleteMilestone(this.state.token, id).then(this.showNotification('tr'))
     }
 
     deleteProject(id) {
-        this.props.deleteProject(this.state.token, id).then(res => { 
-        this.showNotification('tr')
-      })
+        this.props.deleteProject(this.state.token, id).then(this.showNotification('tr'))
     }
 
     invitePeople() {
@@ -128,112 +130,180 @@ class EditProject extends Component {
     }
   
       render() {
-          const { classes, team, project, successMessage } = this.props;
+          const { classes, team, project, successMessage, successMessageMilestone, tickets } = this.props;
           return (
             <div>
-            {successMessage ? 
+              {console.log(successMessageMilestone)}
+            {successMessage || successMessageMilestone ? 
               <Snackbar
                 place="tr"
                 color="success"
-                message={successMessage}
+                message={successMessage || successMessageMilestone}
                 open={this.state.tr}
                 closeNotification={() => this.setState({ tr: false })}
                 close
-              />
-              : null}
+              /> : null }
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                 <Card>
-                <CustomTabs
-                  headerColor="primary"
-                  tabs={[
+                {project ?
+                  <CustomTabs
+                    headerColor="primary"
+                    tabs={[
                     {
                       tabName: "Info",
                       tabIcon: LibraryBooks,
                       tabContent: (
-                      <form className={classes.form} onSubmit={this.submit}>
-                        <CardBody>
-                          <GridContainer>
-                            <GridItem xs={12} sm={12} md={12}>
-                              <InputLabel>Name</InputLabel>
-                              <TextField 
-                                  name="name" 
-                                  type="text"
-                                  value={this.state.name}
-                                  onChange={this.handleChange}
-                                  fullWidth
-                              />
-                            </GridItem>
-                            <GridItem xs={12} sm={12} md={12}>
-                              <InputLabel>Description</InputLabel>
-                              <TextField 
-                                  name="description" 
-                                  type="text"
-                                  value={this.state.description}
-                                  onChange={this.handleChange}
-                                  fullWidth
-                                />
-                            </GridItem>
-                            {project.client ? 
-                              <GridItem xs={12} sm={12} md={12}>
-                                  <CustomInput
-                                    name="client_id"
-                                    id="client_id"
-                                    value={this.state.client_id}
-                                    formControlProps={{
-                                      fullWidth: true
-                                    }}/>
-                              </GridItem>
-                            : null }
-                          </GridContainer>
-                        </CardBody>
-                        <CardFooter>
-                          <Button color="primary" type="submit">Edit Info</Button>
-                       </CardFooter>
-                      </form>  
+                        project.creator_id === this.state.auth_user_id ?
+                          <form className={classes.form} onSubmit={this.submit}>
+                            <CardBody>
+                              <GridContainer>
+                                <GridItem xs={12} sm={12} md={12}>
+                                  <InputLabel>Name</InputLabel>
+                                  <TextField 
+                                      name="name" 
+                                      type="text"
+                                      value={this.state.name}
+                                      onChange={this.handleChange}
+                                      fullWidth
+                                  />
+                                </GridItem>
+                                <GridItem xs={12} sm={12} md={12}>
+                                  <InputLabel>Description</InputLabel>
+                                  <TextField 
+                                      name="description" 
+                                      type="text"
+                                      value={this.state.description}
+                                      onChange={this.handleChange}
+                                      fullWidth
+                                    />
+                                </GridItem>
+                                {project.client ? 
+                                  <GridItem xs={12} sm={12} md={12}>
+                                      <CustomInput
+                                        name="client_id"
+                                        id="client_id"
+                                        value={this.state.client_id}
+                                        formControlProps={{
+                                          fullWidth: true
+                                        }}/>
+                                  </GridItem>
+                                : null }
+                              </GridContainer>
+                            </CardBody>
+                            <CardFooter>
+                              <Button color="primary" type="submit">Edit Info</Button>
+                           </CardFooter>
+                          </form>  
+                      : 
+                        <Table
+                          tableHeaderColor="primary"
+                          tableHead={["Name", "Description", "Created", "Tickets", "Last updated"]}
+                          tableData={[
+                          ]} 
+                         /> 
                       )
                     },{
                       tabName: "Milestones",
                       tabIcon: Timeline,
                       tabContent: (
-                        project.milestones? project.milestones.map(milestone => {
-                          return (
+                        project.milestones ? 
                             <Table
                               tableHeaderColor="primary"
-                              tableHead={["Name", "Focus", "Last updated", "Edit", "Remove"]}
-                              tableData={[project.milestones.map(milestone => {
-                                return ([
+                              tableHead={
+                                project.creator_id == this.state.auth_user_id ?
+                                  ["Name", "Focus", "Last updated", "Edit", "Remove"]
+                                : ["Name", "Focus", "Last updated"]
+                              }
+                              tableData={[
+                                project.milestones.map(milestone => {
+                                return [
                                     `${milestone.title}`, 
                                     `${milestone.focus}`,
                                     `${milestone.updated_at}`,
-                                    <Tooltip
-                                      id="tooltip-top"
-                                      title="Edit Milestone"
-                                      placement="top"
-                                      classes={{ tooltip: classes.tooltip }}
-                                      onClick={this.editMilestone.bind(this, milestone.id)}>
-                                      <IconButton
-                                        aria-label="Edit"
-                                        className={classes.tableActionButton}>
-                                        <Edit className={ classes.tableActionButtonIcon + " " + classes.edit}/>
-                                      </IconButton>
-                                    </Tooltip>,
-                                    <Tooltip
-                                      id="tooltip-top-start"
-                                      title="Delete milestone"
-                                      placement="top"
-                                      onClick={this.deleteMilestone.bind(this, milestone.id)}
-                                      classes={{ tooltip: classes.tooltip }}>
-                                      <IconButton
-                                        aria-label="Close"
-                                        className={classes.tableActionButton}>
-                                        <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
+                                      project.creator_id == this.state.auth_user_id ?
+                                      (
+                                      <Tooltip
+                                        id="tooltip-top"
+                                        title="Edit Milestone"
+                                        placement="top"
+                                        classes={{ tooltip: classes.tooltip }}
+                                        onClick={this.editMilestone.bind(this, milestone.id)}>
+                                        <IconButton
+                                          aria-label="Edit"
+                                          className={classes.tableActionButton}>
+                                          <Edit className={ classes.tableActionButtonIcon + " " + classes.edit}/>
+                                        </IconButton>
+                                      </Tooltip>) : null, 
+                                      project.creator_id == this.state.auth_user_id ?
+                                      (
+                                        <Tooltip
+                                          id="tooltip-top-start"
+                                          title="Delete milestone"
+                                          placement="top"
+                                          onClick={this.deleteMilestone.bind(this, milestone.id)}
+                                          classes={{ tooltip: classes.tooltip }}>
+                                          <IconButton
+                                            aria-label="Close"
+                                            className={classes.tableActionButton}>
+                                            <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
+                                          </IconButton>
+                                        </Tooltip>
+                                      ) : null
+                                    ]
+                                })
+                              ]} 
+                            />    
+                         : null 
+                      )
+                    },
+                    {
+                      tabName: "Tickets",
+                      tabIcon: Note,
+                      tabContent: (
+                        tickets ? 
+                            <Table
+                              tableHeaderColor="primary"
+                              tableHead={["Priority", "Type", "Title", "Assigned to", "Status", "Due date", "Edit", "Details"]}
+                              tableData={[
+                                tickets.map(ticket => {
+                                return [
+                                    `${ticket.priority}`,
+                                    `${ticket.type.type}`, 
+                                    `${ticket.title}`, 
+                                    `${ticket.assigned_user.name}`,
+                                    `${ticket.status.status}`,
+                                    `${ticket.due_date}`,
+                                      (this.state.auth_user_id == ticket.creator_id) || (this.state.auth_user_id == ticket.assigned_user_id) ?
+                                      <Tooltip
+                                        id="tooltip-top"
+                                        title="Edit Ticket"
+                                        placement="top"
+                                        classes={{ tooltip: classes.tooltip }}
+                                        onClick={this.editTicket.bind(this, ticket.id)}>
+                                        <IconButton
+                                          aria-label="Edit"
+                                          className={classes.tableActionButton}>
+                                          <Edit className={ classes.tableActionButtonIcon + " " + classes.edit}/>
+                                        </IconButton>
+                                      </Tooltip>
+                                      : null,
+                                      <Tooltip
+                                        id="tooltip-top"
+                                        title="Go to Ticket"
+                                        placement="top"
+                                        classes={{ tooltip: classes.tooltip }}
+                                        onClick={this.goToTicket.bind(this, ticket.id)}
+                                    >
+                                      <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                        <ExitToApp className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                                       </IconButton>
                                     </Tooltip>
-                                    ]) 
-                                })]} />
-                            ) 
-                          }) : null 
+                                    ]
+                                })
+                              ]} 
+                            />    
+                         : null 
                       )
                     },
                     {
@@ -245,7 +315,11 @@ class EditProject extends Component {
                           return (
                             <Table
                               tableHeaderColor="primary"
-                              tableHead={["Name", "Role", "Remove" ]}
+                              tableHead={
+                                person.role ? person.role.id == 1 ?
+                                  ["Name", "Role", "Remove" ]
+                                : ["Name", "Role"] : null
+                                }
                               tableData={[
                                 team.map(person => {
                                   return ([
@@ -268,25 +342,33 @@ class EditProject extends Component {
                                     })
                                   ]} 
                              />) 
-                            }) : null } 
+                            }) : null }
+                            
                             <CardFooter>
-                              <Button 
-                                color="primary" 
-                                onClick={this.invitePeople}>Invite people</Button>
+                              {project.creator_id == this.state.auth_user_id ?
+                                <Button 
+                                  color="primary" 
+                                  onClick={this.invitePeople}>
+                                    Invite people
+                                </Button>
+                              : null}
                             </CardFooter>
                         </div> 
                       )
                     },
-                    {
-                      tabName: "Delete",
-                      tabIcon: DeleteForever,
-                      tabContent: (
-                        <CardBody>
-                          <Button color="primary" onClick={this.deleteProject.bind(this, project.id)}>Delete project</Button>
-                       </CardBody>
-                      )
-                    }
+                    project.creator_id == this.state.auth_user_id ?
+                      {
+                        tabName: "Delete",
+                        tabIcon: DeleteForever,
+                        tabContent: (
+                          <CardBody>
+                            <Button color="primary" onClick={this.deleteProject.bind(this, project.id)}>Delete project</Button>
+                         </CardBody>
+                        )
+                      }
+                   : null
                   ]}/>
+                  : null }
                   </Card>
                 </GridItem>
               </GridContainer>
@@ -308,8 +390,10 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => ({ 
   project: state.project.project,
   team: state.project.team,
+  tickets: state.project.tickets,
   isFetching: state.project.isFetching,
   successMessage: state.project.successMessage,
+  successMessageMilestone: state.milestone.successMessage
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditProject)));

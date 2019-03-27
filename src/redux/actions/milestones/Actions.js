@@ -3,7 +3,7 @@ import {
     CREATE_MILESTONE_FAILURE,
     DELETE_MILESTONE_SUCCESS,
     DELETE_MILESTONE_FAILURE,
-  } from '../milestones/Action-Types';
+  } from './Action-Types';
   
 export const milestoneCreate = (token, milestone) => {
     return async dispatch => {  
@@ -33,12 +33,12 @@ export const deleteMilestone = (token, id) => {
   debugger;
   return async dispatch => {  
 
-    const createMilestoneSuccess = success_message => { 
+    const deleteMilestoneSuccess = success_message => { 
       debugger;
-      dispatch ({ type: DELETE_MILESTONE_SUCCESS, payload: success_message }); return success_message; 
+      dispatch ({ type: DELETE_MILESTONE_SUCCESS, payload: success_message.message }); return success_message; 
   }
 
-    const createMilestoneError = error => { dispatch ({ type: DELETE_MILESTONE_FAILURE, message: 'Could not delete milestone' }); return error; }
+    const deleteMilestoneError = error => { dispatch ({ type: DELETE_MILESTONE_FAILURE, message: 'Could not delete milestone' }); return error; }
     try {
       const res = await fetch(`http://127.0.0.1:8000/api/milestones/${id}`, {
         method: "DELETE",
@@ -49,8 +49,8 @@ export const deleteMilestone = (token, id) => {
           "Content-Type": "application/json"}
       })
       const success_message = await res.json();
-      return createMilestoneSuccess(success_message);
+      return deleteMilestoneSuccess(success_message);
 
-    } catch (error) { return createMilestoneError(error) }
+    } catch (error) { return deleteMilestoneError(error) }
   }
 }

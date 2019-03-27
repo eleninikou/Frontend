@@ -55,7 +55,6 @@ class Milestones extends Component {
     render() {
         const { classes, allProjects } = this.props;
         return (
-          <div>
             <GridContainer> 
             <Button color="primary"  onClick={this.createNewMilestone}>Create new Milestone</Button>
               <GridItem xs={12} sm={12} md={12}>
@@ -64,19 +63,19 @@ class Milestones extends Component {
                     <h4 className={classes.cardTitleWhite}>Milestones</h4>
                   </CardHeader>
                   <CardBody>
-                    {allProjects ? allProjects.map(project => {
-                      return (
-                        <Table
-                          tableHeaderColor="primary"
-                          tableHead={["Project", "Name", "Focus", "Last updated", "Edit" ]}
-                          tableData={[
-                            project.milestones.map(milestone => {
-                                if (project.role_id === 1) {
+                      <Table
+                        tableHeaderColor="primary"
+                        tableHead={["Project", "Name", "Focus", "Last updated", "Edit" ]}
+                        tableData={
+                          allProjects ? allProjects.map(project => {
+                            return (
+                              project.milestones ? project.milestones.map(milestone => {
                                   return ([
-                                      `${project.project.name}`, 
-                                      `${milestone.title}`, 
-                                      `${milestone.focus}`,
-                                      `${milestone.updated_at}`,
+                                  `${project.project.name}`, 
+                                  `${milestone.title}`, 
+                                  `${milestone.focus}`,
+                                  `${milestone.updated_at}`,
+                                    project.role_id === 1 ?  
                                       <Tooltip
                                         id="tooltip-top"
                                         title="Edit Project"
@@ -89,23 +88,16 @@ class Milestones extends Component {
                                           <Edit className={classes.tableActionButtonIcon + " " + classes.edit} />
                                         </IconButton>
                                       </Tooltip>
-                                      ]) 
-                                  } else {
-                                    return ([
-                                      `${project.project.name}`, 
-                                      `${milestone.title}`, 
-                                      `${milestone.focus}`,
-                                      `${milestone.updated_at}`
-                                        ])
-                                  }})
-                          ]} />
-                        ) 
-                      }) : null }
+                                    : null 
+                                  ])
+                                  }) : null  
+                            ) }) : null 
+                            } 
+                      /> 
                   </CardBody>
                 </Card>
               </GridItem>
             </GridContainer>
-          </div>
         );
       }
 }

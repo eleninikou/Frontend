@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import PropTypes from "prop-types";
-import { milestoneCreate } from '../redux/actions/milestones/Action'
+import { milestoneCreate } from '../redux/actions/milestones/Actions'
 import { connect } from 'react-redux'
 
 import GridItem from "../components/theme/Grid/GridItem.jsx";
@@ -18,6 +18,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -40,20 +41,28 @@ class CreateMilestone extends Component {
 
 submit = event => {
   event.preventDefault();
+  debugger;
   const milestone = {
     title: this.state.title,
     focus: this.state.focus,
     due_date: this.state.selectedDate,
     project_id: this.state.project_id
   };
-  this.props.milestoneCreate(this.state.token, milestone)
-  .then(res => {
-    if (!res.error) {
-        console.log(res)
-    } else {
-      console.log(res)
-    }
-  })
+
+  this.props.milestoneCreate(this.state.token, milestone).then(this.showNotification('tr'))
+}
+
+showNotification(place) {
+  var x = [];
+  x[place] = true;
+  this.setState(x);
+  this.alertTimeout = setTimeout(
+    function() {
+      x[place] = false;
+      this.setState(x);
+    }.bind(this),
+    6000
+  );
 }
 
 componentWillMount = () => {
@@ -67,7 +76,6 @@ componentWillMount = () => {
 handleChange = event => {
   const { name, value } = event.target;
   this.setState({ [name]: value });
-  console.log(value)
 }
 
 handleDateChange = event => {
@@ -75,9 +83,19 @@ handleDateChange = event => {
   };
 
 render() {
-  const { classes, allProjects } = this.props;
+  const { classes, allProjects, successMessage } = this.props;
   return (
       <GridContainer>
+        {successMessage ? 
+          <Snackbar
+          place="tr"
+          color="success"
+          message={successMessage}
+          open={this.state.tr}
+          closeNotification={() => this.setState({ tr: false })}
+          close
+          /> : null }
+          {console.log(this.props)}
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
@@ -90,7 +108,7 @@ render() {
                     <FormControl className={classes.formControl}>
                       <InputLabel htmlFor="project_id">Project</InputLabel>
                         <Select
-                          value={this.state.project_name}
+                          value={this.state.project_id}
                           onChange={this.handleChange}
                           inputProps={{ name: 'project_id', id: 'project_id'}} >
                         <MenuItem > <em>None</em></MenuItem>
@@ -170,12 +188,12 @@ const mapDispatchToProps = dispatch => {
   return { 
       milestoneCreate: (token, milestone) => dispatch(milestoneCreate(token, milestone)),
       getAllProjects: (token, id) => dispatch(getAllProjects(token, id)) 
-
     }
 }
 
 const mapStateToProps = state => ({ 
     allProjects: state.project.allProjects,
+    successMessage: state.milestone.successMessage
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateMilestone)));
