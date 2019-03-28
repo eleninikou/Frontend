@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getAllProjects } from '../redux/actions/projects/Actions'
 import Cookies from 'universal-cookie';
+
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
@@ -11,12 +12,15 @@ import Card from "../components/theme/Card/Card";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
+
 // Material UI components
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
+
 // Icons
 import Edit from "@material-ui/icons/Edit";
 import ExitToApp from "@material-ui/icons/ExitToApp";
+
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";

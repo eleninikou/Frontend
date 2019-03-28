@@ -13,7 +13,6 @@ import Card from "../components/theme/Card/Card";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
-import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
 import Table from "../components/theme/Table/Table.jsx";
@@ -29,7 +28,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Edit from "@material-ui/icons/Edit";
 import Note from "@material-ui/icons/Note";
 import Close from "@material-ui/icons/Close";
-import People from "@material-ui/icons/People";
 import Timeline from "@material-ui/icons/Timeline";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
@@ -59,7 +57,8 @@ class EditMilestone extends Component {
     var auth_user_id = cookies.get('user')
     this.setState( {auth_user_id })
 
-    this.props.getMilestone(this.props.match.params.id)
+    // this.props.getMilestone(this.props.match.params.id)
+    this.props.getMilestone(1)
     .then(res => {
       this.setState({ 
         title: res.milestone.title,
@@ -106,6 +105,10 @@ class EditMilestone extends Component {
       }.bind(this), 4000);
   }
 
+  goToTicket(id) {
+    this.props.history.push(`/home/ticket/${id}`)
+  }
+
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
@@ -116,7 +119,7 @@ class EditMilestone extends Component {
   };
 
   render() {
-    const { classes, successMessage } = this.props;
+    const { classes, tickets, successMessage } = this.props;
       return (
         <div>        
           {successMessage ? 
@@ -200,50 +203,51 @@ class EditMilestone extends Component {
                     {
                       tabName: "Tickets",
                       tabIcon: Note,
-                      tabContent: ( ''
-                        // tickets ? 
-                        //     <Table
-                        //       tableHeaderColor="primary"
-                        //       tableHead={["Priority", "Type", "Title", "Assigned to", "Status", "Due date", "Edit", "Details"]}
-                        //       tableData={[
-                        //         tickets.map(ticket => {
-                        //         return [
-                        //             `${ticket.priority}`,
-                        //             `${ticket.type.type}`, 
-                        //             `${ticket.title}`, 
-                        //             `${ticket.assigned_user.name}`,
-                        //             `${ticket.status.status}`,
-                        //             `${ticket.due_date}`,
-                        //               (this.state.auth_user_id == ticket.creator_id) || (this.state.auth_user_id == ticket.assigned_user_id) ?
-                        //               <Tooltip
-                        //                 id="tooltip-top"
-                        //                 title="Edit Ticket"
-                        //                 placement="top"
-                        //                 classes={{ tooltip: classes.tooltip }}
-                        //                 onClick={this.goToTicket.bind(this, ticket.id)}>
-                        //                 <IconButton
-                        //                   aria-label="Edit"
-                        //                   className={classes.tableActionButton}>
-                        //                   <Edit className={ classes.tableActionButtonIcon + " " + classes.edit}/>
-                        //                 </IconButton>
-                        //               </Tooltip>
-                        //               : null,
-                        //               <Tooltip
-                        //                 id="tooltip-top"
-                        //                 title="Go to Ticket"
-                        //                 placement="top"
-                        //                 classes={{ tooltip: classes.tooltip }}
-                        //                 onClick={this.goToTicket.bind(this, ticket.id)}
-                        //             >
-                        //               <IconButton aria-label="Go to" className={classes.tableActionButton}>
-                        //                 <ExitToApp className={ classes.tableActionButtonIcon + " " + classes.edit }/>
-                        //               </IconButton>
-                        //             </Tooltip>
-                        //             ]
-                        //         })
-                        //       ]} 
-                        //     />    
-                        //  : null 
+                      tabContent: ( 
+                        tickets ? 
+                            <Table
+                              tableHeaderColor="primary"
+                              tableHead={["Priority", "Type", "Title", "Assigned to", "Status", "Due date", "Edit", "Details"]}
+                              tableData={[
+                                tickets.map(ticket => {
+                                return [
+                                    `${ticket.priority}`,
+                                    `${ticket.type.type}`, 
+                                    `${ticket.title}`, 
+                                    `${ticket.assigned_user.name}`,
+                                    `${ticket.status.status}`,
+                                    `${ticket.due_date}`,
+                                      (this.state.auth_user_id == ticket.creator_id) && (this.state.auth_user_id == ticket.assigned_user_id) ?
+                                      <Tooltip
+                                        id="tooltip-top"
+                                        title="Edit Ticket"
+                                        placement="top"
+                                        classes={{ tooltip: classes.tooltip }}
+                                        onClick={this.goToTicket.bind(this, ticket.id)}
+                                        >
+                                        <IconButton
+                                          aria-label="Edit"
+                                          className={classes.tableActionButton}>
+                                          <Edit className={ classes.tableActionButtonIcon + " " + classes.edit}/>
+                                        </IconButton>
+                                      </Tooltip>
+                                      : null,
+                                      <Tooltip
+                                        id="tooltip-top"
+                                        title="Go to Ticket"
+                                        placement="top"
+                                        classes={{ tooltip: classes.tooltip }}
+                                        onClick={this.goToTicket.bind(this, ticket.id)}
+                                    >
+                                      <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                        <ExitToApp className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                      </IconButton>
+                                    </Tooltip>
+                                    ]
+                                })
+                              ]} 
+                            />    
+                         : null 
                       )
                     },
                     this.state.auth_user_id ?
@@ -277,6 +281,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => ({ 
   milestone: state.milestone.milestone,
   isFetching: state.milestone.isFetching,
+  tickets: state.milestone.tickets,
   successMessage: state.milestone.successMessage
 })
 

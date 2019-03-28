@@ -1,33 +1,39 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types";
 import { withRouter, } from "react-router-dom"
+import Cookies from 'universal-cookie'
 
-// @material-ui/core
-import withStyles from "@material-ui/core/styles/withStyles";
+// Redux
+import { connect } from 'react-redux'
+import { getAllTickets } from '../redux/actions/tickets/Actions'
+import { getProjectsByUser, getAllProjects, getActivity } from '../redux/actions/projects/Actions'
+import { logout } from '../redux/actions/auth/Actions'
 
-import Button from "../components/theme/CustomButtons/Button.jsx";
 
-// core components
+// Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Table from "../components/theme/Table/Table.jsx";
 import Card from "../components/theme/Card/Card";
 import CardBody from "../components/theme/Card/CardBody.jsx";
-import Cookies from 'universal-cookie'
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
+import Button from "../components/theme/CustomButtons/Button.jsx";
+
+// Material UI components
+import IconButton from "@material-ui/core/IconButton";
+
+// Icons
 import Note from "@material-ui/icons/Note";
 import Today from "@material-ui/icons/Today";
-
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
 import Edit from "@material-ui/icons/Edit";
+import LibraryBooks from "@material-ui/icons/LibraryBooks";
+import Message from "@material-ui/icons/Message";
+import Person from "@material-ui/icons/Person";
+import Timeline from "@material-ui/icons/Timeline";
 
-import { getAllTickets } from '../redux/actions/tickets/Actions'
-import { getProjectsByUser, getAllProjects, getActivity } from '../redux/actions/projects/Actions'
-import { logout } from '../redux/actions/auth/Actions'
-
-import { connect } from 'react-redux'
+// Styles
+import withStyles from "@material-ui/core/styles/withStyles";
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 
 
@@ -35,15 +41,13 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.logout = this.logout.bind(this);
-
 }
+
   logout() {
     this.props.logout().then(res => {
       const cookies = new Cookies()
       cookies.remove('token')
       cookies.remove('user')
-      console.log(res)
-      debugger;
       if(!res.error) {
         this.props.history.push('/')
       }
@@ -55,11 +59,10 @@ class Dashboard extends Component {
     this.props.getProjectsByUser();
     this.props.getAllProjects();
     this.props.getActivity();
-
   }
 
     render() {
-        const { allTickets, activity } = this.props;
+      const { classes, allTickets, activity } = this.props;
         return (
           <div>
             {console.log(activity)}
@@ -67,7 +70,6 @@ class Dashboard extends Component {
             <GridContainer> 
               <GridItem xs={12} sm={12} md={12}>
                 <Card>
-
                   <CardBody>
                   <CustomTabs
                   headerColor="primary"
@@ -78,14 +80,28 @@ class Dashboard extends Component {
                       tabContent: (
                         <Table
                         tableHeaderColor="primary"
-                        tableHead={["Date", " ", "", "Type"]}
+                        tableHead={["Date", " ", "Project", ""]}
                         tableData={[
                             activity ? activity.map(A => {
+                              const icon = '';
+                              switch(A.type) {
+                                case 'milestone':
+                                  this.icon = <Timeline className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                  break;
+                                case 'ticket':
+                                  this.icon = <Note className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                  break;
+                                default:
+                                  return '';
+                              }
+
                               return [
                                 `${A.created_at}`,
                                 `${A.user.name} ${A.text}`,
-                                ` in ${A.project.name}`,
-                                `${A.type}`
+                                `${A.project.name}`,
+                                <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                  {this.icon}
+                                </IconButton>
                             ]
                             }) : null
                         ]}

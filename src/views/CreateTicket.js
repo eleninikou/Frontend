@@ -261,7 +261,7 @@ render() {
                     <TextField
                         id="date"
                         label="Due date"
-                        type="datetime"
+                        type="datetime-local"
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
                         className={classes.textField}

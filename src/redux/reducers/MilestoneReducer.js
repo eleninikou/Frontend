@@ -13,6 +13,7 @@ import {
 const initialState = {
     milestone: {},
     milestones: [],
+    tickets: [],
     isFetching: false,
     errorMessage: null,
     successMessage: null
@@ -55,7 +56,8 @@ const MilestoneReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                milestone: action.payload.milestone
+                milestone: action.payload.milestone,
+                tickets: action.payload.tickets
             }     
         case GET_MILESTONE_FAILURE:
             return {

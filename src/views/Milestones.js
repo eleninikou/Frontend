@@ -18,6 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 
 //Icons
 import Edit from "@material-ui/icons/Edit";
+import ExitToApp from "@material-ui/icons/ExitToApp";
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -54,15 +55,15 @@ class Milestones extends Component {
                   <CardBody>
                       <Table
                         tableHeaderColor="primary"
-                        tableHead={["Project", "Name", "Focus", "Last updated", "Edit" ]}
+                        tableHead={["Name", "Focus", "Project", "Last updated", "Edit", "Details" ]}
                         tableData={
                           allProjects ? allProjects.map(project => {
                             return (
                               project.milestones ? project.milestones.map(milestone => {
-                                  return ([
-                                  `${project.project.name}`, 
+                                return ([
                                   `${milestone.title}`, 
                                   `${milestone.focus}`,
+                                  `${project.project.name}`, 
                                   `${milestone.updated_at}`,
                                     project.role_id === 1 ?  
                                       <Tooltip
@@ -78,10 +79,22 @@ class Milestones extends Component {
                                         </IconButton>
                                       </Tooltip>
                                     : null 
+                                    ,
+                                    <Tooltip
+                                      id="tooltip-top"
+                                      title="Go to Milestone"
+                                      placement="top"
+                                      classes={{ tooltip: classes.tooltip }}
+                                      onClick={this.goToMilestone.bind(this, milestone.id)}
+                                      >
+                                      <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                        <ExitToApp className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                      </IconButton>
+                                    </Tooltip>,
                                   ])
                                   }) : null  
                             ) }) : null 
-                            } 
+                          } 
                       /> 
                   </CardBody>
                 </Card>

@@ -18,9 +18,9 @@ var token = cookies.get('token')
 export const getMilestone = id => {
 
   return async dispatch => {
-    const recieveMilestone = milestone => { 
-      dispatch ({ type: GET_MILESTONE_SUCCESS, payload: milestone}); 
-      return milestone; 
+    const recieveMilestone = milestone_with_tickets => { 
+      dispatch ({ type: GET_MILESTONE_SUCCESS, payload: milestone_with_tickets}); 
+      return milestone_with_tickets; 
   }
 
     try {
@@ -32,8 +32,8 @@ export const getMilestone = id => {
           'Access-Control-Allow-Origin': '*', 
           "Content-Type": "application/json"}
       })
-      const milestone = await res.json();
-      return recieveMilestone(milestone);
+      const milestone_with_tickets = await res.json();
+      return recieveMilestone(milestone_with_tickets);
 
     } catch (error) { dispatch ({ type: GET_MILESTONE_FAILURE, message: 'Could not fetch milestone' }); return error; }
   }
