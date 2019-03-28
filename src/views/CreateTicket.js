@@ -257,11 +257,11 @@ render() {
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
-                    <FormControl className={classes.formControl}>
+                    {/* <FormControl className={classes.formControl}> */}
                     <TextField
                         id="date"
                         label="Due date"
-                        type="date"
+                        type="datetime"
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
                         className={classes.textField}
@@ -269,7 +269,7 @@ render() {
                           shrink: true,
                         }}
                       />
-                    </FormControl>
+                    {/* </FormControl> */}
                   </GridItem>
               </GridContainer>
             </CardBody>

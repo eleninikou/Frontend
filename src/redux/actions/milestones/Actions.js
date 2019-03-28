@@ -1,8 +1,13 @@
 import {
     CREATE_MILESTONE_SUCCESS,
     CREATE_MILESTONE_FAILURE,
+    EDIT_MILESTONE_SUCCESS,
+    EDIT_MILESTONE_FAILURE,
     DELETE_MILESTONE_SUCCESS,
     DELETE_MILESTONE_FAILURE,
+    GET_MILESTONE_REQUEST,
+    GET_MILESTONE_SUCCESS,
+    GET_MILESTONE_FAILURE,
   } from './Action-Types';
 
 import Cookies from 'universal-cookie';
@@ -10,14 +15,37 @@ const cookies = new Cookies()
 var token = cookies.get('token')
 
 
-export const milestoneCreate = milestone => {
-    return async dispatch => {  
+export const getMilestone = id => {
 
+  return async dispatch => {
+    const recieveMilestone = milestone => { 
+      dispatch ({ type: GET_MILESTONE_SUCCESS, payload: milestone}); 
+      return milestone; 
+  }
+
+    try {
+      dispatch({ type: GET_MILESTONE_REQUEST })
+      const res = await fetch(`http://127.0.0.1:8000/api/milestones/${id}`,  {
+        method: "GET",
+        headers: { 
+          "Authorization": `Bearer ${token}`, 
+          'Access-Control-Allow-Origin': '*', 
+          "Content-Type": "application/json"}
+      })
+      const milestone = await res.json();
+      return recieveMilestone(milestone);
+
+    } catch (error) { dispatch ({ type: GET_MILESTONE_FAILURE, message: 'Could not fetch milestone' }); return error; }
+  }
+};
+
+export const milestoneCreate = milestone => {
+
+    return async dispatch => {  
       const createMilestoneSuccess = success => { 
         dispatch ({ type: CREATE_MILESTONE_SUCCESS, payload: success}); return milestone; 
     }
 
-      const createMilestoneError = error => { dispatch ({ type: CREATE_MILESTONE_FAILURE, message: 'Could not create milestone' }); return error; }
       try {
         const res = await fetch(`http://127.0.0.1:8000/api/milestones`, {
           method: "POST",
@@ -28,12 +56,35 @@ export const milestoneCreate = milestone => {
             "Content-Type": "application/json"}
         })
         const success = await res.json();
-        debugger;
         return createMilestoneSuccess(success);
   
-      } catch (error) { return createMilestoneError(error) }
+      } catch (error) { dispatch ({ type: CREATE_MILESTONE_FAILURE, message: 'Could not create milestone' }); return error; }
     }
 }
+
+export const milestoneEdit = (milestone, id) => {
+
+  return async dispatch => {
+    const editedMilestone = edited_milestone => { 
+      dispatch ({ type: EDIT_MILESTONE_SUCCESS, payload: edited_milestone}); 
+      return edited_milestone; 
+  }
+
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/milestones/${id}`,  {
+        method: "PUT",
+        body: JSON.stringify(milestone),
+        headers: { 
+          "Authorization": `Bearer ${token}`, 
+          'Access-Control-Allow-Origin': '*', 
+          "Content-Type": "application/json"}
+      })
+      const edited_milestone = await res.json();
+      return editedMilestone(edited_milestone);
+
+    } catch (error) { dispatch ({ type: EDIT_MILESTONE_FAILURE, message: 'Could not update milestone' }); return error; }
+  }
+};
 
 export const deleteMilestone = id => {
   debugger;

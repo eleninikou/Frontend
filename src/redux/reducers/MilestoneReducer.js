@@ -3,6 +3,11 @@ import {
     CREATE_MILESTONE_FAILURE,
     DELETE_MILESTONE_SUCCESS,
     DELETE_MILESTONE_FAILURE,
+    GET_MILESTONE_REQUEST,
+    GET_MILESTONE_SUCCESS,
+    GET_MILESTONE_FAILURE,
+    EDIT_MILESTONE_SUCCESS,
+    EDIT_MILESTONE_FAILURE,
   } from '../actions/milestones/Action-Types';
 
 const initialState = {
@@ -16,7 +21,6 @@ const initialState = {
 const MilestoneReducer = (state = initialState, action) => {
     switch (action.type) {
         case CREATE_MILESTONE_SUCCESS:
-        debugger;
             return {
                 ...state,
                 isFetching: false,
@@ -29,6 +33,36 @@ const MilestoneReducer = (state = initialState, action) => {
                 isFetching: false,
                 errorMessage: action.message
             }   
+        case EDIT_MILESTONE_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                milestone: action.payload.milestone,
+                successMessage: action.payload.message
+            } 
+        case EDIT_MILESTONE_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }     
+        case GET_MILESTONE_REQUEST:
+            return {
+                ...state,
+                isFetching: true,
+            } 
+        case GET_MILESTONE_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                milestone: action.payload.milestone
+            }     
+        case GET_MILESTONE_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }       
         case DELETE_MILESTONE_SUCCESS:
             return {
                 ...state,
