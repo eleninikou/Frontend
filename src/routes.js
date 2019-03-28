@@ -8,7 +8,7 @@ import Milestones from "./views/Milestones";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Note from "@material-ui/icons/Note";
-import Message from "@material-ui/icons/Message";
+import ContactMail from "@material-ui/icons/ContactMail";
 import Person from "@material-ui/icons/Person";
 import Timeline from "@material-ui/icons/Timeline";
 
@@ -45,7 +45,7 @@ const dashboardRoutes = [
     {
       path: "/invite",
       name: "Invite",
-      icon: Message,
+      icon: ContactMail,
       component: Invite,
       layout: "/home"
     },

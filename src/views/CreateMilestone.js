@@ -96,16 +96,40 @@ render() {
           {console.log(this.props)}
         <GridItem xs={12} sm={12} md={8}>
           <Card>
-            <CardHeader color="primary">
+            <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>Create new milestone</h4>
             </CardHeader>
             <form className={classes.form} onSubmit={this.submit}>
             <CardBody>
               <GridContainer>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <TextField 
+                      name="title" 
+                      type="text"
+                      label="Title" 
+                      className="my-input"
+                      value={this.state.title}
+                      onChange={this.handleChange}
+                      fullWidth
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <TextField 
+                      name="focus" 
+                      type="text"
+                      label="Focus" 
+                      className="my-input"
+                      value={this.state.focus}
+                      onChange={this.handleChange}
+                      multiline
+                      fullWidth
+                      />
+                  </GridItem>
               <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl}>
                       <InputLabel htmlFor="project_id">Project</InputLabel>
                         <Select
+                          className="my-input"
                           value={this.state.project_id}
                           onChange={this.handleChange}
                           inputProps={{ name: 'project_id', id: 'project_id'}} >
@@ -122,38 +146,14 @@ render() {
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
-                    <TextField 
-                      name="title" 
-                      type="text"
-                      label="Title" 
-                      value={this.state.title}
-                      onChange={this.handleChange}
-                      fullWidth
-                    />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <TextField 
-                      name="focus" 
-                      type="text"
-                      label="Focus" 
-                      value={this.state.focus}
-                      onChange={this.handleChange}
-                      multiline
-                      fullWidth
-                      />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                      <InputLabel htmlFor="due_date">Due date</InputLabel>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl}>
                     <TextField
                         id="date"
                         label="Due date"
                         type="date"
+                        className="my-input"
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
-                        className={classes.textField}
                         InputLabelProps={{
                           shrink: true,
                         }}
@@ -163,7 +163,7 @@ render() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary" type="submit">Create milestone</Button>
+              <Button color="warning" type="submit">Create milestone</Button>
             </CardFooter>
             </form> 
           </Card>

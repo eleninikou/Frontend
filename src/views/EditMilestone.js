@@ -4,13 +4,12 @@ import Cookies from 'universal-cookie';
 
 // Redux
 import { connect } from 'react-redux'
-import { getMilestone, milestoneEdit } from '../redux/actions/milestones/Actions'
+import { getMilestone, milestoneEdit, deleteMilestone } from '../redux/actions/milestones/Actions'
 
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Card from "../components/theme/Card/Card";
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
@@ -27,7 +26,6 @@ import IconButton from "@material-ui/core/IconButton";
 // Icons
 import Edit from "@material-ui/icons/Edit";
 import Note from "@material-ui/icons/Note";
-import Close from "@material-ui/icons/Close";
 import Timeline from "@material-ui/icons/Timeline";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
@@ -48,8 +46,12 @@ class EditMilestone extends Component {
         project: '',
         project_id: '',
         selectedDate: '',
-        due_date: ''
+        due_date: '',
+        creator: '',
+        id: ''
       }
+      this.milestoneDelete = this.milestoneDelete.bind(this);
+
   }
   
   componentWillMount() {
@@ -57,16 +59,21 @@ class EditMilestone extends Component {
     var auth_user_id = cookies.get('user')
     this.setState( {auth_user_id })
 
-    // this.props.getMilestone(this.props.match.params.id)
-    this.props.getMilestone(1)
+    this.props.getMilestone(this.props.match.params.id)
     .then(res => {
-      this.setState({ 
-        title: res.milestone.title,
-        focus: res.milestone.focus,
-        project: res.milestone.project.name,
-        project_id: res.milestone.project.id,
-        due_date: res.milestone.due_date
-       })
+      if(res.milestone) {
+        this.setState({ 
+          id: res.milestone.id,
+          title: res.milestone.title,
+          focus: res.milestone.focus,
+          project: res.milestone.project.name,
+          project_id: res.milestone.project.id,
+          due_date: res.milestone.due_date,
+          creator: res.milestone.project.creator_id
+         })
+      } else {
+        this.props.history.push(`/home`)
+      }
     });
 
     var id = window.setTimeout(null, 0);
@@ -90,6 +97,7 @@ class EditMilestone extends Component {
       focus: this.state.focus,
       due_date: this.date
     };
+
     this.props.milestoneEdit(milestone, this.props.match.params.id)
     .then(this.showNotification('tr'))
   }
@@ -109,6 +117,11 @@ class EditMilestone extends Component {
     this.props.history.push(`/home/ticket/${id}`)
   }
 
+  milestoneDelete() {
+    this.props.deleteMilestone(this.state.id)
+    .then(this.showNotification('tr'))
+  }
+
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
@@ -121,7 +134,7 @@ class EditMilestone extends Component {
   render() {
     const { classes, tickets, successMessage } = this.props;
       return (
-        <div>        
+        <GridContainer>
           {successMessage ? 
             <Snackbar
               place="tr"
@@ -131,8 +144,6 @@ class EditMilestone extends Component {
               closeNotification={() => this.setState({ tr: false })}
               close
             /> : null }
-
-              <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                   <Card>
                   <CustomTabs
@@ -250,14 +261,14 @@ class EditMilestone extends Component {
                          : null 
                       )
                     },
-                    this.state.auth_user_id ?
-                      {
-                        tabName: "Delete",
-                        tabIcon: DeleteForever,
-                        tabContent: (
-                          <CardBody>
-                            {/* <Button color="primary" onClick={this.deleteProject.bind(this, project.id)}>Delete project</Button> */}
-                         </CardBody>
+                    this.state.auth_user_id  == this.state.creator ?
+                    {
+                      tabName: "Delete",
+                      tabIcon: DeleteForever,
+                      tabContent: (
+                        <CardBody>
+                          <Button color="primary" onClick={this.milestoneDelete}>Delete milestone</Button>
+                        </CardBody>
                         )
                       }
                    : null
@@ -265,7 +276,6 @@ class EditMilestone extends Component {
                   </Card>
                 </GridItem>
               </GridContainer>
-            </div>
           );
         }
   }
@@ -274,7 +284,9 @@ class EditMilestone extends Component {
 const mapDispatchToProps = dispatch => { 
   return { 
     getMilestone: id => dispatch(getMilestone(id)),
-    milestoneEdit: (milestone, id) => dispatch(milestoneEdit(milestone, id))
+    milestoneEdit: (milestone, id) => dispatch(milestoneEdit(milestone, id)),
+    deleteMilestone: id => dispatch(deleteMilestone(id)),
+
   }
 }
 

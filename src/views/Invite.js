@@ -67,7 +67,7 @@ class Invite extends Component {
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
-            <CardHeader color="primary">
+            <CardHeader color="info">
               <h4 className={classes.cardTitleWhite}>Invite people to join this project</h4>
             </CardHeader>
             <CardBody>
@@ -117,13 +117,13 @@ class Invite extends Component {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Invite</Button>
+              <Button color="info">Invite</Button>
             </CardFooter>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
           <Card>
-            <CardHeader color="primary">
+            <CardHeader color="info">
               <h4 className={classes.cardTitleWhite}>The team</h4>
             </CardHeader>
             <CardBody>

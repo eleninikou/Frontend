@@ -136,7 +136,6 @@ class EditProject extends Component {
           return (
           project ?
             <div>
-              {console.log(this.props)}
             {successMessage || successMessageMilestone ? 
               <Snackbar
                 place="tr"
@@ -179,6 +178,7 @@ class EditProject extends Component {
                                       value={this.state.description}
                                       onChange={this.handleChange}
                                       fullWidth
+                                      className="my-input"
                                     />
                                 </GridItem>
                                 {project.client ? 
@@ -186,6 +186,7 @@ class EditProject extends Component {
                                       <CustomInput
                                         name="client_id"
                                         id="client_id"
+                                        className="my-input"
                                         value={this.state.client_id}
                                         formControlProps={{
                                           fullWidth: true

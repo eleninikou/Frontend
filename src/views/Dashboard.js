@@ -86,10 +86,10 @@ class Dashboard extends Component {
                               const icon = '';
                               switch(A.type) {
                                 case 'milestone':
-                                  this.icon = <Timeline className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                  this.icon = <Timeline style={{color:'#ffa726'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                                   break;
                                 case 'ticket':
-                                  this.icon = <Note className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                  this.icon = <Note style={{color:'#ab47bc'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                                   break;
                                 default:
                                   return '';

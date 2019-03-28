@@ -43,7 +43,7 @@ function CustomTable({ ...props }) {
                   >
                     { prop ? prop.map((pro, key) => {
                       return (
-                        typeof pro === 'string' && pro.search('href') !== -1 ? 
+                        (typeof pro === 'string' && pro.search('href') !== -1) || (typeof pro === 'string' && pro.search('deleted') !== -1) ? 
                             <TableCell className={classes.tableCell} key={key}>
                               <div dangerouslySetInnerHTML={{ __html: pro }} />
                             </TableCell>

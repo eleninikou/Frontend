@@ -8,18 +8,42 @@ import {
     GET_TICKET_STATUS_REQUEST,
     GET_TICKET_STATUS_SUCCESS,
     GET_TICKET_STATUS_FAILURE,
+    UPDATE_TICKET_SUCCESS,
+    UPDATE_TICKET_FAILURE,
+    GET_TICKET_SUCCESS,
+    GET_TICKET_FAILURE,
+    DELETE_TICKET_SUCCESS,
+    DELETE_TICKET_FAILURE
 } from '../actions/tickets/Action-types';
 
 const initialState = {
+    ticket: {},
+    team: [],
+    milestones: [],
     ticketTypes: [],
     ticketStatus:[],
     allTickets: [],
     isFetching: false,
     errorMessage: null,
+    succesMessage: ''
 };
 
 const TicketReducer = (state = initialState, action) => {
     switch (action.type) {
+        case GET_TICKET_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                ticket: action.payload.ticket,
+                team: action.payload.team,
+                milestones: action.payload.milestones
+            } 
+        case GET_TICKET_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }
         case GET_ALL_TICKETS_USER_REQUEST:
             return {
                 ...state,
@@ -70,7 +94,32 @@ const TicketReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errorMessage: action.message
-            }                   
+            }     
+        case UPDATE_TICKET_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                ticket: action.payload.ticket,
+                successMessage: action.payload.message
+            } 
+        case UPDATE_TICKET_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }  
+        case DELETE_TICKET_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                successMessage: action.payload.message
+            } 
+        case DELETE_TICKET_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }                     
         default:
             return state;
     }

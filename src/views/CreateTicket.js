@@ -12,6 +12,7 @@ import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
+
 // Material UI components
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -113,6 +114,7 @@ render() {
                       name="title" 
                       type="text"
                       label="Title" 
+                      className="my-input"
                       value={this.state.textFieldValue}
                       onChange={this.handleChange}
                       fullWidth />
@@ -122,6 +124,7 @@ render() {
                       name="description" 
                       type="text"
                       label="Description" 
+                      className="my-input"
                       value={this.state.textFieldValue}
                       onChange={this.handleChange}
                       fullWidth />
@@ -132,6 +135,7 @@ render() {
                         <Select
                           value={this.state.project_id}
                           onChange={this.handleChange}
+                          className="my-input"
                           inputProps={{ 
                             name: 'project_id', 
                             id: 'project_id'}} >
@@ -153,6 +157,7 @@ render() {
                         <Select
                           value={this.state.type_id}
                           onChange={this.handleChange}
+                          className="my-input"
                           inputProps={{ name: 'type_id', id: 'type_id'}} >
                         <MenuItem> <em>None</em> </MenuItem>
                         {ticketTypes ? ticketTypes.map(type => {
@@ -173,6 +178,7 @@ render() {
                         <Select
                           value={this.state.status_id}
                           onChange={this.handleChange}
+                          className="my-input"
                           inputProps={{
                             name: 'status_id',
                             id: 'status_id',
@@ -196,25 +202,14 @@ render() {
                     <RadioGroup
                       aria-label="Priority"
                       name="priority"
-                      className={classes.group}
                       value={this.state.priority}
+                      className="my-input"
                       onChange={this.handleChange}>
                       <FormControlLabel value="low" control={<Radio />} label="Low" />
                       <FormControlLabel value="normal" control={<Radio />} label="Normal" />
                       <FormControlLabel value="high" control={<Radio />} label="High" />
                     </RadioGroup>
                   </FormControl>
-                    {/* <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="priority">priority</InputLabel>
-                        <Select
-                          value={this.state.priority}
-                          onChange={this.handleChange}
-                          inputProps={{ name: 'priority', id: 'priority'}}>
-                        <MenuItem value="low">Low</MenuItem>
-                        <MenuItem value="normal">Normal</MenuItem>
-                        <MenuItem value="high">High</MenuItem>
-                        </Select>
-                    </FormControl> */}
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl}>
@@ -222,6 +217,7 @@ render() {
                         <Select
                           value={this.state.assigned_user_id}
                           onChange={this.handleChange}
+                          className="my-input"
                           inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
                         <MenuItem><em>None</em></MenuItem>
                         {team ? team.map(member => {
@@ -242,6 +238,7 @@ render() {
                         <Select
                           value={this.state.milestone_id}
                           onChange={this.handleChange}
+                          className="my-input"
                           inputProps={{ name: 'milestone_id', id: 'milestone_id' }} >
                         <MenuItem> <em>None</em></MenuItem>
                           {project ? project.milestones ? project.milestones.map(milestone => {
@@ -262,9 +259,9 @@ render() {
                         id="date"
                         label="Due date"
                         type="datetime-local"
+                        className="my-input"
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
-                        className={classes.textField}
                         InputLabelProps={{
                           shrink: true,
                         }}

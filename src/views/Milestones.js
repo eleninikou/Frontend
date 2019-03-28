@@ -46,15 +46,15 @@ class Milestones extends Component {
        const { classes, allProjects } = this.props;
         return (
             <GridContainer> 
-            <Button color="primary"  onClick={this.createNewMilestone}>Create new Milestone</Button>
+            <Button color="warning"  onClick={this.createNewMilestone}>Create new Milestone</Button>
               <GridItem xs={12} sm={12} md={12}>
                 <Card>
-                  <CardHeader color="primary">
+                  <CardHeader color="warning">
                     <h4 className={classes.cardTitleWhite}>Milestones</h4>
                   </CardHeader>
                   <CardBody>
                       <Table
-                        tableHeaderColor="primary"
+                        tableHeaderColor="warning"
                         tableHead={["Name", "Focus", "Project", "Last updated", "Edit", "Details" ]}
                         tableData={
                           allProjects ? allProjects.map(project => {
@@ -75,7 +75,10 @@ class Milestones extends Component {
                                         <IconButton
                                             aria-label="Edit"
                                             className={classes.tableActionButton}>
-                                          <Edit className={classes.tableActionButtonIcon + " " + classes.edit} />
+                                          <Edit 
+                                            className={classes.tableActionButtonIcon + " " + classes.edit}
+                                            style={{color:'#ffa726'}}
+                                           />
                                         </IconButton>
                                       </Tooltip>
                                     : null 
@@ -88,7 +91,10 @@ class Milestones extends Component {
                                       onClick={this.goToMilestone.bind(this, milestone.id)}
                                       >
                                       <IconButton aria-label="Go to" className={classes.tableActionButton}>
-                                        <ExitToApp className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                        <ExitToApp 
+                                        className={ classes.tableActionButtonIcon + " " + classes.edit }
+                                        style={{color:'#ffa726'}}
+                                        />
                                       </IconButton>
                                     </Tooltip>,
                                   ])

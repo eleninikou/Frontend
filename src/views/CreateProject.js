@@ -93,7 +93,7 @@ render() {
           : null}
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="primary">
+            <CardHeader color="success">
               <h4 className={classes.cardTitleWhite}>Create new project</h4>
             </CardHeader>
             <form className={classes.form} onSubmit={this.submit}>
@@ -104,6 +104,7 @@ render() {
                       name="name" 
                       type="text"
                       label="Name" 
+                      className="my-input"
                       value={this.state.name}
                       onChange={this.handleChange}
                       fullWidth
@@ -114,6 +115,7 @@ render() {
                       name="description" 
                       type="text"
                       label="Description" 
+                      className="my-input"
                       value={this.state.description}
                       onChange={this.handleChange}
                       multiline
@@ -123,7 +125,7 @@ render() {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary" type="submit">Create Project</Button>
+              <Button color="success" type="submit">Create Project</Button>
             </CardFooter>
             </form> 
           </Card>

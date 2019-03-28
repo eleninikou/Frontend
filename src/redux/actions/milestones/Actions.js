@@ -15,13 +15,14 @@ const cookies = new Cookies()
 var token = cookies.get('token')
 
 
-export const getMilestone = id => {
 
+
+export const getMilestone = id => {
   return async dispatch => {
     const recieveMilestone = milestone_with_tickets => { 
       dispatch ({ type: GET_MILESTONE_SUCCESS, payload: milestone_with_tickets}); 
       return milestone_with_tickets; 
-  }
+    }
 
     try {
       dispatch({ type: GET_MILESTONE_REQUEST })
@@ -39,12 +40,14 @@ export const getMilestone = id => {
   }
 };
 
-export const milestoneCreate = milestone => {
 
+
+
+export const milestoneCreate = milestone => {
     return async dispatch => {  
       const createMilestoneSuccess = success => { 
         dispatch ({ type: CREATE_MILESTONE_SUCCESS, payload: success}); return milestone; 
-    }
+      }
 
       try {
         const res = await fetch(`http://127.0.0.1:8000/api/milestones`, {
@@ -62,8 +65,12 @@ export const milestoneCreate = milestone => {
     }
 }
 
-export const milestoneEdit = (milestone, id) => {
 
+
+
+
+
+export const milestoneEdit = (milestone, id) => {
   return async dispatch => {
     const editedMilestone = edited_milestone => { 
       dispatch ({ type: EDIT_MILESTONE_SUCCESS, payload: edited_milestone}); 
@@ -86,16 +93,16 @@ export const milestoneEdit = (milestone, id) => {
   }
 };
 
-export const deleteMilestone = id => {
-  debugger;
-  return async dispatch => {  
 
+
+
+
+export const deleteMilestone = id => {
+  return async dispatch => {  
     const deleteMilestoneSuccess = success_message => { 
-      debugger;
-      dispatch ({ type: DELETE_MILESTONE_SUCCESS, payload: success_message.message }); return success_message; 
+    dispatch ({ type: DELETE_MILESTONE_SUCCESS, payload: success_message.message }); return success_message; 
   }
 
-    const deleteMilestoneError = error => { dispatch ({ type: DELETE_MILESTONE_FAILURE, message: 'Could not delete milestone' }); return error; }
     try {
       const res = await fetch(`http://127.0.0.1:8000/api/milestones/${id}`, {
         method: "DELETE",
@@ -108,6 +115,6 @@ export const deleteMilestone = id => {
       const success_message = await res.json();
       return deleteMilestoneSuccess(success_message);
 
-    } catch (error) { return deleteMilestoneError(error) }
+    } catch (error) { dispatch ({ type: DELETE_MILESTONE_FAILURE, message: 'Could not delete milestone' }); return error; }
   }
 }

@@ -19,6 +19,7 @@ import EditTicket from './EditTicket'
 import EditMilestone from './EditMilestone'
 import CreateMilestone from "./CreateMilestone.js";
 import Invite from "./Invite.js";
+import Dashboard from "./Dashboard.js";
 
 
 const switchRoutes = (

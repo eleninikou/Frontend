@@ -55,10 +55,10 @@ class Tickets extends Component {
                   <CardBody>
                     <Table
                       tableHeaderColor="primary"
-                      tableHead={["Project", "Type", "Status", "Priority", "Due Date", "Edit"]}
+                      tableHead={["Title", "Project", "Type", "Status", "Priority", "Due Date", "Edit"]}
                       tableData={[
                           allTickets.tickets ? allTickets.tickets.map(ticket => {
-                            return [`${ticket.project.name}`, `${ticket.type.type}`, `${ticket.status.status}`,`${ticket.priority}`, `${ticket.due_date}`,
+                            return [`${ticket.title}`,`${ticket.project.name}`, `${ticket.type.type}`, `${ticket.status.status}`,`${ticket.priority}`, `${ticket.due_date}`,
                             <Tooltip
                             id="tooltip-top"
                             title="Go To Ticket"
@@ -67,7 +67,7 @@ class Tickets extends Component {
                             onClick={this.goToTicket.bind(this, ticket.id)}
                           >
                             <IconButton aria-label="Edit" className={classes.tableActionButton}>
-                              <Edit className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                              <Edit style={{color:'#ab47bc'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                             </IconButton>
                           </Tooltip>,
                           ]
