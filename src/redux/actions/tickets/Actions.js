@@ -48,7 +48,6 @@ export const getTicket = id => {
 
 
 export const getAllTickets = () => {
-
     return async dispatch => {
       const recieveAllTickets = tickets => { 
         dispatch ({ type:  GET_ALL_TICKETS_USER_SUCCESS, payload: tickets}); 
@@ -72,7 +71,6 @@ export const getAllTickets = () => {
 
   export const ticketCreate = ticket => {
     return async dispatch => {  
-
       const createTicketSuccess = success => { 
         dispatch ({ type: CREATE_TICKET_SUCCESS, payload: success}); return ticket; 
     }
@@ -97,7 +95,6 @@ export const getAllTickets = () => {
 
 
   export const updateTicket = (ticket, id) => {
-
     return async dispatch => {  
       const editProjectSuccess = success => { 
         dispatch ({ type: UPDATE_TICKET_SUCCESS, payload: success}); return success; 

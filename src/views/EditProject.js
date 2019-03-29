@@ -130,6 +130,7 @@ class EditProject extends Component {
       this.setState({ [name]: value });
     }
 
+
     
     render() {
       const { classes, team, project, successMessage, successMessageMilestone, tickets } = this.props;

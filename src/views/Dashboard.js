@@ -20,16 +20,15 @@ import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 
 // Material UI components
+import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
+import TablePagination from '@material-ui/core/TablePagination';
 
 // Icons
 import Note from "@material-ui/icons/Note";
 import Today from "@material-ui/icons/Today";
-import Edit from "@material-ui/icons/Edit";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import Message from "@material-ui/icons/Message";
-import Person from "@material-ui/icons/Person";
 import Timeline from "@material-ui/icons/Timeline";
+import ExitToApp from "@material-ui/icons/ExitToApp";
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -40,6 +39,10 @@ import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboa
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      page: 0,
+      rowsPerPage: 5,
+    }
     this.logout = this.logout.bind(this);
 }
 
@@ -54,18 +57,34 @@ class Dashboard extends Component {
     })
   }
 
+  goToTicket(id) {
+    this.props.history.push(`/home/ticket/${id}`)
+  }
 
   componentWillMount() {
     this.props.getProjectsByUser();
     this.props.getAllProjects();
     this.props.getActivity();
+    this.props.getAllTickets();
   }
+
+
+  handleChangePage = (event, page) => {
+    this.setState({ page });
+  };
+
+  handleChangeRowsPerPage = event => {
+    this.setState({ rowsPerPage: event.target.value });
+  };
+
 
     render() {
       const { classes, allTickets, activity } = this.props;
+      const { rowsPerPage, page } = this.state;
+      const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage);
+
         return (
           <div>
-            {console.log(activity)}
             <Button onClick={this.logout}>Logout</Button>
             <GridContainer> 
               <GridItem xs={12} sm={12} md={12}>
@@ -78,34 +97,54 @@ class Dashboard extends Component {
                       tabName: "Feed",
                       tabIcon: Today,
                       tabContent: (
-                        <Table
-                        tableHeaderColor="primary"
-                        tableHead={["Date", " ", "Project", ""]}
-                        tableData={[
-                            activity ? activity.map(A => {
-                              const icon = '';
-                              switch(A.type) {
-                                case 'milestone':
-                                  this.icon = <Timeline style={{color:'#ffa726'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
-                                  break;
-                                case 'ticket':
-                                  this.icon = <Note style={{color:'#ab47bc'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
-                                  break;
-                                default:
-                                  return '';
-                              }
+                        <CardBody>
+                          <Table
+                            page={page}
+                            rowsPerPage={rowsPerPage}
+                            emptyRows={emptyRows}
+                            tableHeaderColor="primary"
+                            tableHead={["Date", " ", "Project", "Type"]}
+                            tableData={[ activity ? activity.map(A => {
 
-                              return [
-                                `${A.created_at}`,
-                                `${A.user.name} ${A.text}`,
-                                `${A.project.name}`,
-                                <IconButton aria-label="Go to" className={classes.tableActionButton}>
-                                  {this.icon}
-                                </IconButton>
-                            ]
-                            }) : null
-                        ]}
-                        />
+                                  const icon = '';
+                                  switch(A.type) {
+                                    case 'milestone':
+                                      this.icon = <Timeline style={{color:'#ffa726'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                      break;
+                                    case 'ticket':
+                                      this.icon = <Note style={{color:'#ab47bc'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                      break;
+                                    default:
+                                      return '';
+                                  }
+                        
+                                  return [
+                                    `${A.created_at}`,
+                                    `${A.user.name} ${A.text}`,
+                                    `${A.project.name}`,
+                                    <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                      {this.icon}
+                                    </IconButton>
+                                  ]
+                                }) : null
+                            ]}
+                          />
+                          <TablePagination
+                            rowsPerPageOptions={[5, 10, 20]}
+                            component="div"
+                            count={activity.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            backIconButtonProps={{
+                              'aria-label': 'Previous Page',
+                            }}
+                            nextIconButtonProps={{
+                              'aria-label': 'Next Page',
+                            }}
+                            onChangePage={this.handleChangePage}
+                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                          />
+                        </CardBody>
                       )
                     },{
                       tabName: "Tickets",
@@ -113,10 +152,28 @@ class Dashboard extends Component {
                       tabContent: (
                         <Table
                         tableHeaderColor="primary"
-                        tableHead={["Status", "Title", "Priority", "Due Date"]}
+                        tableHead={["Status", "Title", "Priority", "Due Date", "Details"]}
                         tableData={[
-                            allTickets.tickets ? allTickets.tickets.map(ticket => {
-                              return [`${ticket.status.status}`, `${ticket.title}`, `${ticket.priority}`, `${ticket.due_date}`,
+                            allTickets ? allTickets.map(ticket => {
+                              return [
+                                `${ticket.status.status}`, 
+                                `${ticket.title}`, 
+                                `${ticket.priority}`, 
+                                `${ticket.due_date}`, 
+                                <Tooltip
+                                  id="tooltip-top"
+                                  title="Go to Ticket"
+                                  placement="top"
+                                  classes={{ tooltip: classes.tooltip }}
+                                  onClick={this.goToTicket.bind(this, ticket.id)}
+                                  >
+                                  <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                    <ExitToApp 
+                                    className={ classes.tableActionButtonIcon + " " + classes.edit }
+                                    style={{color:'#ab47bc'}}
+                                    />
+                                  </IconButton>
+                                </Tooltip>
                             ]
                             }) : null
                         ]}

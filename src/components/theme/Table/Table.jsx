@@ -7,13 +7,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import TableFooter from "@material-ui/core/TableFooter";
+
+import Pagination from '../../table-pagination/table-pagination'
+
 // core components
 import tableStyle from "../../../assets/jss/material-dashboard-react/components/tableStyle.jsx";
 import { withRouter} from "react-router-dom"
 
 function CustomTable({ ...props }) {
-  const { classes, tableHead, tableData, tableHeaderColor } = props;
-
+  const { classes, tableHead, tableData, tableHeaderColor, page, rowsPerPage, emptyRows } = props;
+ 
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -35,12 +39,9 @@ function CustomTable({ ...props }) {
         <TableBody>
           {tableData ? tableData.map((data, key) => {
             return (
-              data ? data.map((prop, key) => {
+              data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((prop, key) => {
                 return (
-                  <TableRow 
-                    hover={true}
-                    key={key} 
-                  >
+                  <TableRow key={key}  >
                     { prop ? prop.map((pro, key) => {
                       return (
                         (typeof pro === 'string' && pro.search('href') !== -1) || (typeof pro === 'string' && pro.search('deleted') !== -1) ? 
@@ -57,6 +58,11 @@ function CustomTable({ ...props }) {
                 );
               }) : null
             )}) : null}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 48 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+             )}
         </TableBody>
       </Table>
     </div>

@@ -53,7 +53,7 @@ const TicketReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                allTickets: action.payload
+                allTickets: action.payload.tickets
             } 
         case GET_ALL_TICKETS_USER_FAILURE:
             return {

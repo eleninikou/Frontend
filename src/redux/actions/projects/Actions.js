@@ -25,8 +25,6 @@ var token = cookies.get('token')
 
 
 
-
-
 export const getProject = id => {
   return async dispatch => {
     const recieveProject = project_with_team => { 

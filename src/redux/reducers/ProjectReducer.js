@@ -23,6 +23,7 @@ const initialState = {
     project: {},
     projects: [],
     tickets:[],
+    milestones: [],
     team: [],
     allProjects: [],
     activity: [],
@@ -78,7 +79,8 @@ const ProjectReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                allProjects: action.payload.projects
+                allProjects: action.payload.projects,
+                milestones: action.payload.milestones[0]
             } 
         case GET_ALL_PROJECTS_USER_FAILURE:
             return {

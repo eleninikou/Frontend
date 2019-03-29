@@ -38,7 +38,7 @@ function UserProfile(props) {
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
-            <CardHeader color="primary">
+            <CardHeader color="danger">
               <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
               <p className={classes.cardCategoryWhite}>Complete your profile</p>
             </CardHeader>
@@ -48,6 +48,7 @@ function UserProfile(props) {
                   <CustomInput
                     labelText="Name"
                     id="name"
+                    className="my-input"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -57,6 +58,7 @@ function UserProfile(props) {
                   <CustomInput
                     labelText="Email address"
                     id="email-address"
+                    className="my-input"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -68,6 +70,7 @@ function UserProfile(props) {
                   <CustomInput
                     labelText="Password"
                     id="password"
+                    className="my-input"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -76,7 +79,7 @@ function UserProfile(props) {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="primary">Update Profile</Button>
+              <Button color="danger">Update Profile</Button>
             </CardFooter>
           </Card>
         </GridItem>
