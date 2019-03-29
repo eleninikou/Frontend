@@ -15,8 +15,6 @@ const cookies = new Cookies()
 var token = cookies.get('token')
 
 
-
-
 export const getMilestone = id => {
   return async dispatch => {
     const recieveMilestone = milestone_with_tickets => { 
@@ -69,14 +67,12 @@ export const milestoneCreate = milestone => {
 
 
 
-
 export const milestoneEdit = (milestone, id) => {
   return async dispatch => {
     const editedMilestone = edited_milestone => { 
       dispatch ({ type: EDIT_MILESTONE_SUCCESS, payload: edited_milestone}); 
       return edited_milestone; 
   }
-
     try {
       const res = await fetch(`http://127.0.0.1:8000/api/milestones/${id}`,  {
         method: "PUT",

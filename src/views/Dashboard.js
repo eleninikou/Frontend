@@ -94,7 +94,7 @@ class Dashboard extends Component {
                   headerColor="primary"
                   tabs={[
                     {
-                      tabName: "Feed",
+                      tabName: "Activity",
                       tabIcon: Today,
                       tabContent: (
                         <CardBody>

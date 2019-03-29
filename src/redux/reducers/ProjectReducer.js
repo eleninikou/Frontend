@@ -21,6 +21,8 @@ import {
     GET_ROLES_FAILURE,
     GET_TEAM_SUCCESS,
     GET_TEAM_FAILURE,
+    INVITATION_SUCCESS,
+    INVITATION_FAILURE,
 } from '../actions/projects/Action-types';
 
 const initialState = {
@@ -171,7 +173,19 @@ const ProjectReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errorMessage: action.message
-            }                         
+            }   
+        case INVITATION_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                successMessage: action.payload.message
+            } 
+        case INVITATION_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }                           
         default:
             return state;
         }

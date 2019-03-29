@@ -25,16 +25,14 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-
+import withStyles from "@material-ui/core/styles/withStyles";
 
 // Icons
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import Message from "@material-ui/icons/Message";
 
-
 // Styles
-import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 
@@ -131,8 +129,9 @@ class EditTicket extends Component {
     this.setState({ [name]: value });
   }
 
-  ticketDelete() {
-    this.props.deleteTicket(this.props.match.params.id).then(this.showNotification('tr'))
+  ticketDelete() { 
+    this.props.deleteTicket(this.props.match.params.id)
+    .then(this.showNotification('tr'))
   }
   
 
@@ -140,16 +139,14 @@ class EditTicket extends Component {
     const { classes, ticketStatus, ticketTypes, team, milestones, successMessage } = this.props;
     return (
       <div>
-      {console.log(successMessage)}
-        {successMessage ? 
-              <Snackbar
-                place="tr"
-                color="success"
-                message={successMessage}
-                open={this.state.tr}
-                closeNotification={() => this.setState({ tr: false })}
-                close
-              /> : null } 
+        <Snackbar
+          place="tr"
+          color="success"
+          message={successMessage}
+          open={this.state.tr}
+          closeNotification={() => this.setState({ tr: false })}
+          close
+        /> 
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>

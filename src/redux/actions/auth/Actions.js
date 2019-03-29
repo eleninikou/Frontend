@@ -10,10 +10,15 @@ import {
     GOOGLE_AUTH_REQUEST,
     GOOGLE_AUTH_SUCCESS,
     GOOGLE_AUTH_FAILURE,
+    GET_USER_SUCCESS,
+    GET_USER_FAILURE,
+    UPDATE_USER_SUCCESS,
+    UPDATE_USER_FAILURE,
 } from './Action-types';
 
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
+var token = cookies.get('token')
 
 
 
@@ -72,25 +77,65 @@ export const googleLogin = (googleAuth) => {
 
 
 
-  export const logout = (token) => {
-    debugger;
-    return async dispatch => {
-      const logoutSuccess = success => { dispatch ({ type: LOGOUT_SUCCESS, payload: success}); return success; }
+export const logout = (token) => {
+  debugger;
+  return async dispatch => {
+    const logoutSuccess = success => { dispatch ({ type: LOGOUT_SUCCESS, payload: success}); return success; }
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/logout`, {
+          method: "POST",
+          headers: { 
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin': '*',
+            'mode': 'no-cors'
+          }
+      })
+      const success = await res.json();
+      return logoutSuccess(success);
+    } catch (error) { dispatch ({ type: LOGOUT_FAILURE, message: 'Could not logout user' }); return error;  }
+  }
+};  
 
-      try {
-        const res = await fetch(`http://127.0.0.1:8000/api/logout`, {
-            method: "POST",
-            headers: { 
-              "Authorization": `Bearer ${token}`,
-              "Content-Type": "application/json",
-              'Access-Control-Allow-Origin': '*',
-              'mode': 'no-cors'
-            }
-        })
-        const success = await res.json();
-        debugger;
-        return logoutSuccess(success);
 
-      } catch (error) { dispatch ({ type: LOGOUT_FAILURE, message: 'Could not logout user' }); return error;  }
-    }
-  };  
+export const getUser = (id) => {
+  return async dispatch => {
+    const getUserSuccess = user=> { dispatch ({ type: GET_USER_SUCCESS, payload: user}); return user; }
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
+          method: "GET",
+          headers: { 
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin': '*',
+            'mode': 'no-cors'
+          }
+      })
+      const user = await res.json();
+      return getUserSuccess(user);
+    } catch (error) { dispatch ({ type: GET_USER_FAILURE, message: 'Could not get user' }); return error;  }
+  }
+};  
+
+
+export const updateUser = (user) => {
+  return async dispatch => {  
+    const editProjectSuccess = success => { 
+      dispatch ({ type: UPDATE_USER_SUCCESS, payload: success}); return success; 
+  }
+  
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/users`, {
+        method: "PUT",
+        body: JSON.stringify(user),
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      return editProjectSuccess(success);
+
+    } catch (error) { dispatch ({ type: UPDATE_USER_FAILURE, message: 'Could not update user' }); return error; }
+  }
+}; 

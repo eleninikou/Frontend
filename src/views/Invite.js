@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie';
 
 // Redux
-import { getProjectsByUser, getProject, getRoles, getTeam } from '../redux/actions/projects/Actions'
+import { getProjectsByUser, getProject, getRoles, getTeam, invite } from '../redux/actions/projects/Actions'
 import { connect } from 'react-redux'
 
 // Theme componets
@@ -13,9 +13,9 @@ import Card from "../components/theme/Card/Card";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
-import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import Table from "../components/theme/Table/Table.jsx";
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
 // Material UI components
 import TablePagination from '@material-ui/core/TablePagination';
@@ -23,7 +23,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import IconButton from "@material-ui/core/IconButton";
+import TextField from '@material-ui/core/TextField'
 
 
 //Icons
@@ -40,15 +40,15 @@ class Invite extends Component {
     this.state = {
       project_name: '',
       project_role: '',
+      project_id: '',
       email: '',
       team: '',
       page: 0,
       rowsPerPage: 5,
     }
+  }
 
-}
-
-  componentWillMount() {
+  componentWillMount = () => {
     // From invite to specific project
     if(this.props.match.params.id) {
       this.props.getProject(this.props.match.params.id)
@@ -61,10 +61,34 @@ class Invite extends Component {
     // fetch team
   }
 
+  submit = event => {
+    event.preventDefault();
+    const invitation = {
+      email: this.state.email,
+      project_id: this.state.project_id,
+      project_role: this.state.project_role,
+    }
+    this.props.invite(invitation)
+    .then(this.showNotification('tr'))
+  }
+
+  showNotification(place) {
+    var x = [];
+    x[place] = true;
+    this.setState(x);
+
+    this.alertTimeout = setTimeout(
+      function() {
+        x[place] = false;
+        this.setState(x);
+      }.bind(this), 4000);
+  }
+
   handleChange = event => { 
     this.setState({ [event.target.name]: event.target.value }) 
+    console.log(event.target.value)
 
-    if([event.target.name] == 'project_name') {
+    if([event.target.name] == 'project_id') {
       this.props.getTeam(event.target.value).then(
         res => {
           this.setState({ team : res.team })
@@ -75,11 +99,19 @@ class Invite extends Component {
   }
 
   render() {
-  const { classes, projects, project, roles } = this.props;
+  const { classes, projects, project, roles, successMessage } = this.props;
   const { rowsPerPage, page, team } = this.state;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
   return (
-    <div>
+    <form className={classes.form} onSubmit={this.submit}>
+      <Snackbar
+        place="tr"
+        color="success"
+        message={successMessage}
+        open={this.state.tr}
+        closeNotification={() => this.setState({ tr: false })}
+        close
+      /> 
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
@@ -90,14 +122,14 @@ class Invite extends Component {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                 <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="project_name">Project</InputLabel>
+                  <InputLabel htmlFor="project_id">Project</InputLabel>
                     <Select
                       className="my-input"
                       value={this.state.project_name}
                       onChange={this.handleChange}
                       inputProps={{
-                        name: 'project_name',
-                        id: 'project_name',
+                        name: 'project_id',
+                        id: 'project_id',
                       }}>
                     {projects.projects ? projects.projects.map(project => {
                       return (
@@ -135,7 +167,7 @@ class Invite extends Component {
                       return (
                         <MenuItem 
                           key={role.id}
-                          value={role.role}>
+                          value={role.id}>
                             {role.role}
                         </MenuItem>
                       )
@@ -144,20 +176,23 @@ class Invite extends Component {
                 </FormControl>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
-                  <CustomInput
-                    labelText="Email"
-                    id="Email"
+                  <TextField
+                    type="email"
+                    label="email" 
+                    className="my-input"
+                    id="email"
                     formControlProps={{
                       fullWidth: true
                     }}
                     onChange={this.handleChange}
-                    name="Email"
+                    name="email"
+                    fullWidth
                   />
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button color="info">Invite</Button>
+              <Button type="submit" color="info">Invite</Button>
             </CardFooter>
           </Card>
         </GridItem>
@@ -212,7 +247,7 @@ class Invite extends Component {
           </Card>
         </GridItem>
       </GridContainer>
-    </div>
+    </form>
         );
       }
 }
@@ -223,7 +258,8 @@ const mapDispatchToProps = dispatch => {
     getProjectsByUser: () => dispatch(getProjectsByUser()),
     getProject: id => dispatch(getProject(id)),
     getRoles: () => dispatch(getRoles()),
-    getTeam: id => dispatch(getTeam(id))
+    getTeam: id => dispatch(getTeam(id)),
+    invite: invitation => dispatch(invite(invitation))
    }
 }
 
@@ -232,7 +268,8 @@ const mapStateToProps = state => ({
   projects: state.project.projects, 
   team: state.project.team,
   isFetching: state.project.isFetching,
-  roles: state.project.roles
+  roles: state.project.roles,
+  successMessage: state.project.successMessage,
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Invite)));

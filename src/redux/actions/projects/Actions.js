@@ -21,6 +21,8 @@ import {
   GET_ROLES_FAILURE,
   GET_TEAM_SUCCESS,
   GET_TEAM_FAILURE,
+  INVITATION_SUCCESS,
+  INVITATION_FAILURE,
 } from './Action-types';
 
 import Cookies from 'universal-cookie';
@@ -226,7 +228,7 @@ export const getRoles = () => {
 };
 
 
-export const getTeam = (id) => {
+export const getTeam = id => {
   return async dispatch => {
     const recieveProject = team => { 
       dispatch ({ type: GET_TEAM_SUCCESS, payload: team }); 
@@ -244,5 +246,28 @@ export const getTeam = (id) => {
       return recieveProject(team);
 
     } catch (error) { dispatch ({ type: GET_TEAM_FAILURE, message: 'Could not fetch roles' }); return error;  }
+  }
+};
+
+
+export const invite = invitation => {
+  return async dispatch => {
+    const inviteSuccess = success => { 
+      dispatch ({ type: INVITATION_SUCCESS, payload: success }); 
+      return success; 
+  }
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/projects/${invitation.project_id}/invite`, {
+        method: "POST",
+        body: JSON.stringify(invitation),
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      return inviteSuccess(success);
+
+    } catch (error) { dispatch ({ type: INVITATION_FAILURE, message: 'Could not fetch roles' }); return error;  }
   }
 };
