@@ -41,6 +41,7 @@ function CustomTable({ ...props }) {
             return (
               data ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((prop, key) => {
                 return (
+                  console.log(data),
                   <TableRow key={key}  >
                     { prop ? prop.map((pro, key) => {
                       return (

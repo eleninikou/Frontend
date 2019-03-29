@@ -17,6 +17,10 @@ import {
     GET_ACTIVITY_REQUEST,
     GET_ACTIVITY_SUCCESS,
     GET_ACTIVITY_FAILURE,
+    GET_ROLES_SUCCESS,
+    GET_ROLES_FAILURE,
+    GET_TEAM_SUCCESS,
+    GET_TEAM_FAILURE,
 } from '../actions/projects/Action-types';
 
 const initialState = {
@@ -25,6 +29,7 @@ const initialState = {
     tickets:[],
     milestones: [],
     team: [],
+    roles: [],
     allProjects: [],
     activity: [],
     isFetching: false,
@@ -142,7 +147,31 @@ const ProjectReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errorMessage: action.message
-            }                  
+            }
+        case GET_ROLES_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                roles: action.payload.roles
+            } 
+        case GET_ROLES_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }   
+        case GET_TEAM_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                team: action.payload.team
+            } 
+        case GET_TEAM_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }                         
         default:
             return state;
         }

@@ -64,6 +64,9 @@ const dashboardStyle = {
     }
   },
   cardTitleWhite: {
+    display: 'flex',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
     color: whiteColor,
     marginTop: "0px",
     minHeight: "auto",

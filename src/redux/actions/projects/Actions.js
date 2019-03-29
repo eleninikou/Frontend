@@ -17,6 +17,10 @@ import {
   GET_ACTIVITY_REQUEST,
   GET_ACTIVITY_SUCCESS,
   GET_ACTIVITY_FAILURE,
+  GET_ROLES_SUCCESS,
+  GET_ROLES_FAILURE,
+  GET_TEAM_SUCCESS,
+  GET_TEAM_FAILURE,
 } from './Action-types';
 
 import Cookies from 'universal-cookie';
@@ -50,9 +54,7 @@ export const getProject = id => {
 
 
 
-
-
-export const getProjectsByUser = id => {
+export const getProjectsByUser = () => {
     return async dispatch => {  
       const recieveProjectsByUser = projects => { 
         dispatch ({ type: GET_PROJECTS_BY_USER_SUCCESS, payload: projects}); 
@@ -61,7 +63,7 @@ export const getProjectsByUser = id => {
     
       try {
         dispatch({ type: GET_PROJECTS_BY_USER_REQUEST })
-        const res = await fetch(`http://127.0.0.1:8000/api/projects/user/${id}`, {
+        const res = await fetch(`http://127.0.0.1:8000/api/projects/user`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -198,3 +200,49 @@ export const getActivity = () => {
     } catch (error) {dispatch ({ type: GET_ACTIVITY_FAILURE, message: 'Could not fetch activity' }); return error; }
   }
 }; 
+
+
+
+export const getRoles = () => {
+  return async dispatch => {
+    const recieveProject = roles => { 
+      dispatch ({ type: GET_ROLES_SUCCESS, payload: roles }); 
+      return roles; 
+  }
+
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/roles`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const roles = await res.json();
+      return recieveProject(roles);
+
+    } catch (error) { dispatch ({ type: GET_ROLES_FAILURE, message: 'Could not fetch roles' }); return error;  }
+  }
+};
+
+
+export const getTeam = (id) => {
+  return async dispatch => {
+    const recieveProject = team => { 
+      dispatch ({ type: GET_TEAM_SUCCESS, payload: team }); 
+      return team; 
+  }
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/projects/team/${id}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const team = await res.json();
+      return recieveProject(team);
+
+    } catch (error) { dispatch ({ type: GET_TEAM_FAILURE, message: 'Could not fetch roles' }); return error;  }
+  }
+};
