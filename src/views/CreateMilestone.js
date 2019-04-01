@@ -93,7 +93,6 @@ render() {
           closeNotification={() => this.setState({ tr: false })}
           close
           /> : null }
-          {console.log(this.props)}
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="warning">

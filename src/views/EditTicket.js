@@ -298,7 +298,7 @@ class EditTicket extends Component {
                                   <TextField
                                       id="date"
                                       label="Due date"
-                                      type="datetime-local"
+                                      type="date"
                                       className="my-input"
                                       defaultValue={this.state.due_date}
                                       value={this.state.selectedDate}

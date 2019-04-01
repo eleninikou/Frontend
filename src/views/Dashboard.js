@@ -103,7 +103,7 @@ class Dashboard extends Component {
                             rowsPerPage={rowsPerPage}
                             emptyRows={emptyRows}
                             tableHeaderColor="primary"
-                            tableHead={["Date", " ", "Project", "Type"]}
+                            tableHead={[" ", "Project", "Type", "Date"]}
                             tableData={[ activity ? activity.map(A => {
 
                                   const icon = '';
@@ -119,12 +119,12 @@ class Dashboard extends Component {
                                   }
                         
                                   return [
-                                    `${A.created_at}`,
                                     `${A.user.name} ${A.text}`,
                                     `${A.project.name}`,
                                     <IconButton aria-label="Go to" className={classes.tableActionButton}>
                                       {this.icon}
-                                    </IconButton>
+                                    </IconButton>,
+                                    `${A.created_at}`,
                                   ]
                                 }) : null
                             ]}
@@ -150,34 +150,53 @@ class Dashboard extends Component {
                       tabName: "Tickets",
                       tabIcon: Note,
                       tabContent: (
-                        <Table
-                        tableHeaderColor="primary"
-                        tableHead={["Status", "Title", "Priority", "Due Date", "Details"]}
-                        tableData={[
-                            allTickets ? allTickets.map(ticket => {
-                              return [
-                                `${ticket.status.status}`, 
-                                `${ticket.title}`, 
-                                `${ticket.priority}`, 
-                                `${ticket.due_date}`, 
-                                <Tooltip
-                                  id="tooltip-top"
-                                  title="Go to Ticket"
-                                  placement="top"
-                                  classes={{ tooltip: classes.tooltip }}
-                                  onClick={this.goToTicket.bind(this, ticket.id)}
-                                  >
-                                  <IconButton aria-label="Go to" className={classes.tableActionButton}>
-                                    <ExitToApp 
-                                    className={ classes.tableActionButtonIcon + " " + classes.edit }
-                                    style={{color:'#ab47bc'}}
-                                    />
-                                  </IconButton>
-                                </Tooltip>
-                            ]
-                            }) : null
-                        ]}
-                        />
+                        <div>
+                          <Table
+                            // page={page}
+                            // rowsPerPage={rowsPerPage}
+                            // emptyRows={emptyRows}
+                            tableHeaderColor="primary"
+                            tableHead={["Status", "Title", "Priority", "Due Date", "Details"]}
+                            tableData={[
+                                allTickets ? allTickets.map(ticket => {
+                                  return [
+                                    `${ticket.status ? ticket.status.status: null}`, 
+                                    `${ticket.title}`, 
+                                    `${ticket.priority}`, 
+                                    `${ticket.due_date}`, 
+                                    <Tooltip
+                                    id="tooltip-top"
+                                    title="Go to Ticket"
+                                    placement="top"
+                                    classes={{ tooltip: classes.tooltip }}
+                                    onClick={this.goToTicket.bind(this, ticket.id)}
+                                    >
+                                    {console.log(ticket)}
+                                      <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                        <ExitToApp 
+                                          className={ classes.tableActionButtonIcon + " " + classes.edit }
+                                          style={{color:'#ab47bc'}}
+                                        />
+                                      </IconButton>
+                                    </Tooltip>
+                                ] }) : 'hej'
+                            ]} />
+                            {/* <TablePagination
+                              rowsPerPageOptions={[5, 10, 20]}
+                              component="div"
+                              count={allTickets.length}
+                              rowsPerPage={rowsPerPage}
+                              page={page}
+                              backIconButtonProps={{
+                                'aria-label': 'Previous Page',
+                              }}
+                              nextIconButtonProps={{
+                                'aria-label': 'Next Page',
+                              }}
+                              onChangePage={this.handleChangePage}
+                              onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                            /> */}
+                        </div>
                       )
                     },
                   ]}/>

@@ -193,7 +193,7 @@ class EditMilestone extends Component {
                                   <TextField
                                       id="date"
                                       label="Due date"
-                                      type="datetime-local"
+                                      type="date"
                                       defaultValue={this.state.due_date}
                                       value={this.state.selectedDate}
                                       onChange={this.handleDateChange}
