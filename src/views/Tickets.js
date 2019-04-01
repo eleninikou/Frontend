@@ -68,6 +68,7 @@ class Tickets extends Component {
       [name]: value,
       filter: name
      });
+     
      console.log(this.state.tickets)
      let filteredTickets = this.state.tickets
      

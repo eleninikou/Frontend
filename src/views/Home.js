@@ -15,7 +15,7 @@ import image from "../assets/img/sidebar-2.jpg";
 import CreateProject from './CreateProject'
 import EditProject from './EditProject'
 import CreateTicket from './CreateTicket'
-import EditTicket from './EditTicket'
+import Ticket from './Ticket'
 import EditMilestone from './EditMilestone'
 import CreateMilestone from "./CreateMilestone.js";
 import Invite from "./Invite.js";
@@ -39,7 +39,7 @@ const switchRoutes = (
       <Route exact path='/home/create-project' component={CreateProject} />
       <Route path='/home/project/:id' component={EditProject} />
       <Route exact path='/home/create-ticket' component={CreateTicket} />
-      <Route path='/home/ticket/:id' component={EditTicket} />
+      <Route path='/home/ticket/:id' component={Ticket} />
       <Route path='/home/project-invite/:id' component={Invite} />
   </Switch>
 );

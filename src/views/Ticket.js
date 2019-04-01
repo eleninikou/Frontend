@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+import Cookies from 'universal-cookie'
 
 // Redux
 import { connect } from 'react-redux'
 import { getTicket, updateTicket, getTicketTypes, getTicketStatus, deleteTicket } from '../redux/actions/tickets/Actions'
+import { getUser } from '../redux/actions/auth/Actions'
 
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
@@ -14,29 +16,42 @@ import Button from "../components/theme/CustomButtons/Button.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
+import CardHeader from "../components/theme/Card/CardHeader.jsx";
 
 // Material UI components
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormLabel from '@material-ui/core/FormLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import withStyles from "@material-ui/core/styles/withStyles";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import IconButton from "@material-ui/core/IconButton";
 
 // Icons
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import Message from "@material-ui/icons/Message";
+import LinearScale from '@material-ui/icons/LinearScale';
+import Timeline from "@material-ui/icons/Timeline";
+import BugReport from "@material-ui/icons/BugReport";
+import Warning from "@material-ui/icons/Warning";
+import Person from "@material-ui/icons/Person";
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 
-class EditTicket extends Component {
+class Ticket extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -50,7 +65,11 @@ class EditTicket extends Component {
         type_id: '',
         project_name: '',
         project_id: '',
-        selectedDate: ''
+        selectedDate: '',
+        dense: false,
+        secondary: false,
+        show_ticket: '',
+        name: ''
       }
 
       this.ticketDelete = this.ticketDelete.bind(this);
@@ -98,7 +117,8 @@ class EditTicket extends Component {
           type_id: res.ticket.type_id,
           project_name: res.ticket.project.name,
           project_id: res.ticket.project_id,
-          creator: res.ticket.project.creator_id
+          creator: res.ticket.project.creator_id,
+          show_ticket: res.ticket
          })
       } else {
         this.props.history.push(`/home `)
@@ -111,6 +131,14 @@ class EditTicket extends Component {
     while (id--) {
       window.clearTimeout(id);
     }
+
+    const cookies = new Cookies()
+    const user = cookies.get('user')
+    this.props.getUser(user).then(res => {
+      this.setState({ 
+        name: res.user.name,
+        user })
+    })
   }
 
   showNotification(place) {
@@ -134,27 +162,41 @@ class EditTicket extends Component {
     .then(this.showNotification('tr'))
   }
   
+  submit = event => {
+    event.preventDefault();
+    
+    const comment = {
+      comment: this.state.comment,
+      user_id: this.state.user,
+      ticket_id: this.state.show_ticket.id
+    };
+    
+    debugger;
+    this.props.createComment(comment)
+  }
 
   render() {
-    const { classes, ticketStatus, ticketTypes, team, milestones, successMessage } = this.props;
+    const { classes, ticketStatus, ticketTypes, team, milestones, successMessage, isFetching } = this.props;
+    const { dense, secondary, show_ticket, name } = this.state;
+  
     return (
       <div>
         <Snackbar
           place="tr"
           color="success"
-          message={successMessage}
+          message={successMessage || ''}
           open={this.state.tr}
           closeNotification={() => this.setState({ tr: false })}
           close
         /> 
+
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
-            <CustomTabs
+            {this.state.creator_id === 3?
+              <CustomTabs
                     headerColor="primary"
-                    tabs={[
-                      this.state.creator_id === this.state.auth_user_id ?
-                      {
+                    tabs={[ {
                       tabName: "Info",
                       tabIcon: LibraryBooks,
                       tabContent: (
@@ -191,7 +233,7 @@ class EditTicket extends Component {
                                     value={this.state.project_name}
                                     fullWidth />
                                 </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
+                                  <GridItem xs={12} sm={12} md={4}>
                                   <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="type_id">Type</InputLabel>
                                       <Select
@@ -212,7 +254,7 @@ class EditTicket extends Component {
                                       </Select>
                                   </FormControl>
                                 </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
+                                <GridItem xs={12} sm={12} md={4}>
                                   <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="status_id">Status</InputLabel>
                                       <Select
@@ -236,44 +278,7 @@ class EditTicket extends Component {
                                       </Select>
                                   </FormControl>
                                 </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
-                                <FormControl component="fieldset" className={classes.formControl}>
-                                  <FormLabel component="legend">Priority</FormLabel>
-                                  <RadioGroup
-                                    aria-label="Priority"
-                                    name="priority"
-                                    className="my-input"
-                                    // className={classes.group}
-                                    value={this.state.priority}
-                                    onChange={this.handleChange}>
-                                    <FormControlLabel value="low" control={<Radio />} label="Low" />
-                                    <FormControlLabel value="normal" control={<Radio />} label="Normal" />
-                                    <FormControlLabel value="high" control={<Radio />} label="High" />
-                                  </RadioGroup>
-                                </FormControl>
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
-                                  <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor="assigned_user_id">Assign user</InputLabel>
-                                      <Select
-                                        className="my-input"
-                                        value={this.state.assigned_user_id}
-                                        onChange={this.handleChange}
-                                        inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
-                                      <MenuItem><em>None</em></MenuItem>
-                                      {team ? team.map(member => {
-                                        return (
-                                          <MenuItem 
-                                            key={member.user.id}
-                                            value={member.user.id}>
-                                              {member.user.name}
-                                          </MenuItem>
-                                        )
-                                      }): null }
-                                      </Select>
-                                  </FormControl>
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
+                                <GridItem xs={12} sm={12} md={4}>
                                   <FormControl className={classes.formControl}>
                                     <InputLabel htmlFor="milestone_id">Milestone</InputLabel>
                                       <Select
@@ -294,17 +299,53 @@ class EditTicket extends Component {
                                       </Select>
                                   </FormControl>
                                 </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
+                                <GridItem xs={12} sm={12} md={4}>
+                                  <FormControl className={classes.formControl}>
+                                  <InputLabel htmlFor="priority">Priority</InputLabel>
+                                      <Select
+                                        className="my-input"
+                                        value={this.state.priority}
+                                        onChange={this.handleChange}
+                                        inputProps={{ name: 'priority', id: 'priority' }} >
+                                      <MenuItem value="low"> low </MenuItem>
+                                      <MenuItem value="normal"> normal </MenuItem>
+                                      <MenuItem value="high"> high </MenuItem>
+                                      </Select>
+                                  </FormControl>
+                                </GridItem>
+                                <GridItem xs={12} sm={12} md={4}>
+                                  <FormControl className={classes.formControl}>
+                                    <InputLabel htmlFor="assigned_user_id">Assign user</InputLabel>
+                                      <Select
+                                        className="my-input"
+                                        value={this.state.assigned_user_id}
+                                        onChange={this.handleChange}
+                                        inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
+                                      <MenuItem><em>None</em></MenuItem>
+                                      {team ? team.map(member => {
+                                        return (
+                                          <MenuItem 
+                                            key={member.user.id}
+                                            value={member.user.id}>
+                                              {member.user.name}
+                                          </MenuItem>
+                                        )
+                                      }): null }
+                                      </Select>
+                                  </FormControl>
+                                </GridItem>
+                                <GridItem xs={12} sm={12} md={4}>
                                   <TextField
                                       id="date"
                                       label="Due date"
                                       type="date"
                                       className="my-input"
+                                      fullWidth
                                       defaultValue={this.state.due_date}
                                       value={this.state.selectedDate}
                                       onChange={this.handleDateChange}
                                       InputLabelProps={{
-                                        shrink: true,
+                                          shrink: true,
                                       }}
                                     />
                                 </GridItem>
@@ -313,15 +354,14 @@ class EditTicket extends Component {
                           <CardFooter>
                             <Button color="primary" type="submit">Edit Ticket</Button>
                           </CardFooter>
-                          </form> 
+                         </form> 
                       )
-                    } : null, 
+                    }, 
                     {
                       tabName: "Comments",
                       tabIcon: Message,
                       tabContent: (
-
-                        'Comment form'
+                         'Comment form'
                       )
                     },
                     this.state.creator_id === this.state.auth_user_id ? {
@@ -329,16 +369,110 @@ class EditTicket extends Component {
                         tabIcon: DeleteForever,
                         tabContent: (
                           <CardBody>
-                            <Button color="primary" onClick={this.ticketDelete}>Delete ticket</Button>
+                            <Button color="primary" type="button" onClick={this.ticketDelete}>Delete ticket</Button>
                           </CardBody>
                         )
 
                       } 
                       : null,
-                    ]}/>
+                    ]}/> : 
+                    <div>
+                      <CardHeader color="primary">
+                          <h4 className={classes.cardTitleWhite}>Ticket</h4>
+                        </CardHeader>
+                      <CardBody>
+                      <Grid item xs={12} md={12}>
+                          <Typography variant="h6" className="ticket-title">
+                            {show_ticket.title} created by {show_ticket.creator ? show_ticket.creator.name : null} | {show_ticket.created_at}
+                          </Typography>
+                          <div className={classes.demo}>
+                            <List className="my-ticket-list">
+                                <ListItem>
+                                  <ListItemAvatar>
+                                    <Avatar> <LinearScale /> </Avatar>
+                                  </ListItemAvatar>
+                                  <ListItemText primary={show_ticket.status ? show_ticket.status.status : null} />
+                                </ListItem>
+                                <ListItem>
+                                  <ListItemAvatar>
+                                    <Avatar> 
+                                      {show_ticket.type_id == 1 ?
+                                        <BugReport /> :
+                                      <LinearScale /> }
+                                    
+                                    </Avatar>
+                                  </ListItemAvatar>
+                                  <ListItemText primary={show_ticket.type ? show_ticket.type.type : null} />
+                                </ListItem>
+                                <ListItem>
+                                  <ListItemAvatar>                         
+                                  {
+                                    show_ticket.priority == 'low' ?
+                                      <Avatar style={{backgroundColor: '#ff9800'}}> 
+                                        <Warning /> 
+                                      </Avatar>
+                                    : show_ticket.priority == 'normal' ?
+                                      <Avatar style={{backgroundColor: '#4caf50'}}> 
+                                        <Warning /> 
+                                      </Avatar>
+                                    : 
+                                      <Avatar style={{backgroundColor: '#f44336'}}> 
+                                        <Warning /> 
+                                      </Avatar>
+                                }
+                                  </ListItemAvatar>
+                                  <ListItemText primary={show_ticket.priority} />
+                                </ListItem>
+                                <ListItem>
+                                  <ListItemAvatar>
+                                    <Avatar> <Timeline /> </Avatar>
+                                  </ListItemAvatar>
+                                  <ListItemText primary={show_ticket.milestone ? show_ticket.milestone.title : null} />
+                                </ListItem>
+                            </List>
+                          </div>
+                          <Typography className="my-ticket-description">
+                            Description: {show_ticket.description}
+                          </Typography>
+                          <GridContainer>
+                            <GridItem xs={12} sm={12} md={3}>
+                              <List>
+                               <ListItem>
+                               <ListItemAvatar>                         
+                                 <Avatar>
+                                   <Person /> 
+                                 </Avatar> 
+                               </ListItemAvatar>
+                                 <ListItemText primary={name} />
+                               </ListItem>
+                              </List>
+                            </GridItem>
+                          <form className="my-comments-form" onSubmit={this.submit}>
+                            <GridItem xs={12} sm={12} md={9}>
+                                 <TextField 
+                                    name="comment" 
+                                    type="text"
+                                    multiline={true}
+                                    label='comment on ticket' 
+                                    className="my-input"
+                                    onChange={this.handleChange}
+                                    value={this.state.comment}
+                                    fullWidth />
+                            </GridItem>
+                            <Button color="primary" type="submit">Comment</Button>
+                          </form>
+                            </GridContainer>
 
-          </Card>
+                      </Grid>
+                      </CardBody>
+                    </div>
+                    }
+                </Card>
                 </GridItem>
+                <Card>
+                </Card>
+
+                {isFetching ? <CircularProgress className="my-spinner" color="primary" /> : null } 
               </GridContainer>
             </div>
           );
@@ -353,6 +487,7 @@ const mapDispatchToProps = dispatch => {
     deleteTicket: id => dispatch(deleteTicket(id)),
     getTicketTypes: () => dispatch(getTicketTypes()),
     getTicketStatus: () => dispatch(getTicketStatus()),
+    getUser: (id) => dispatch(getUser(id))
   }
 }
 
@@ -360,11 +495,12 @@ const mapStateToProps = state => ({
   ticket: state.ticket.ticket,
   team: state.ticket.team,
   milestones: state.ticket.milestones,
-  isFetching: state.ticket.ticket,
+  isFetching: state.ticket.isFetching,
   successMessage: state.ticket.successMessage,
   ticketTypes: state.ticket.ticketTypes,
-  ticketStatus: state.ticket.ticketStatus
+  ticketStatus: state.ticket.ticketStatus,
+  user: state.auth.user,
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditTicket)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Ticket)));
   
