@@ -29,6 +29,7 @@ import Note from "@material-ui/icons/Note";
 import Today from "@material-ui/icons/Today";
 import Timeline from "@material-ui/icons/Timeline";
 import ExitToApp from "@material-ui/icons/ExitToApp";
+import Comment from "@material-ui/icons/Comment";
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -114,6 +115,9 @@ class Dashboard extends Component {
                                     case 'ticket':
                                       this.icon = <Note style={{color:'#ab47bc'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                                       break;
+                                    case 'comment':
+                                      this.icon = <Comment style={{color:'#00acc1'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                      break;  
                                     default:
                                       return '';
                                   }

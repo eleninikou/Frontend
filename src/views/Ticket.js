@@ -6,6 +6,7 @@ import Cookies from 'universal-cookie'
 import { connect } from 'react-redux'
 import { getTicket, updateTicket, getTicketTypes, getTicketStatus, deleteTicket } from '../redux/actions/tickets/Actions'
 import { getUser } from '../redux/actions/auth/Actions'
+import { commentCreate } from '../redux/actions/comments/Actions'
 
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
@@ -46,6 +47,7 @@ import Timeline from "@material-ui/icons/Timeline";
 import BugReport from "@material-ui/icons/BugReport";
 import Warning from "@material-ui/icons/Warning";
 import Person from "@material-ui/icons/Person";
+import Comment from "@material-ui/icons/Comment";
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -73,7 +75,6 @@ class Ticket extends Component {
       }
 
       this.ticketDelete = this.ticketDelete.bind(this);
-
   }
 
   submit = event => {
@@ -103,6 +104,7 @@ class Ticket extends Component {
   }
   
   componentWillMount = () => {
+    // Fetch ticket and set to state
     this.props.getTicket(this.props.match.params.id)
     .then(res => {
       if(res.ticket) {
@@ -124,14 +126,17 @@ class Ticket extends Component {
         this.props.history.push(`/home `)
       }})
 
+
     this.props.getTicketTypes();
     this.props.getTicketStatus();
 
+    // Notification bar
     var id = window.setTimeout(null, 0);
     while (id--) {
       window.clearTimeout(id);
     }
 
+    // Get loged in user for comments
     const cookies = new Cookies()
     const user = cookies.get('user')
     this.props.getUser(user).then(res => {
@@ -140,6 +145,7 @@ class Ticket extends Component {
         user })
     })
   }
+
 
   showNotification(place) {
     var x = [];
@@ -151,6 +157,7 @@ class Ticket extends Component {
         this.setState(x);
       }.bind(this), 4000);
   }
+  
 
   handleChange = event => {
     const { name, value } = event.target;
@@ -171,12 +178,12 @@ class Ticket extends Component {
       ticket_id: this.state.show_ticket.id
     };
     
-    debugger;
-    this.props.createComment(comment)
+    this.props.commentCreate(comment).then(this.showNotification('tr'))
+  
   }
 
   render() {
-    const { classes, ticketStatus, ticketTypes, team, milestones, successMessage, isFetching } = this.props;
+    const { classes, ticketStatus, ticketTypes, team, milestones, successMessage, isFetching, commentSuccess, comments } = this.props;
     const { dense, secondary, show_ticket, name } = this.state;
   
     return (
@@ -184,7 +191,7 @@ class Ticket extends Component {
         <Snackbar
           place="tr"
           color="success"
-          message={successMessage || ''}
+          message={successMessage || commentSuccess}
           open={this.state.tr}
           closeNotification={() => this.setState({ tr: false })}
           close
@@ -435,18 +442,6 @@ class Ticket extends Component {
                             Description: {show_ticket.description}
                           </Typography>
                           <GridContainer>
-                            <GridItem xs={12} sm={12} md={3}>
-                              <List>
-                               <ListItem>
-                               <ListItemAvatar>                         
-                                 <Avatar>
-                                   <Person /> 
-                                 </Avatar> 
-                               </ListItemAvatar>
-                                 <ListItemText primary={name} />
-                               </ListItem>
-                              </List>
-                            </GridItem>
                           <form className="my-comments-form" onSubmit={this.submit}>
                             <GridItem xs={12} sm={12} md={9}>
                                  <TextField 
@@ -459,9 +454,14 @@ class Ticket extends Component {
                                     value={this.state.comment}
                                     fullWidth />
                             </GridItem>
-                            <Button color="primary" type="submit">Comment</Button>
                           </form>
+                          <GridItem xs={12} sm={12} md={3}>
+                            <ListItemAvatar onClick={this.submit}>
+                              <Avatar> <Comment /> </Avatar>
+                            </ListItemAvatar>
+                          </GridItem>  
                             </GridContainer>
+                            {console.log(comments)}
 
                       </Grid>
                       </CardBody>
@@ -470,6 +470,26 @@ class Ticket extends Component {
                 </Card>
                 </GridItem>
                 <Card>
+                  <List>
+                    <CardHeader color="primary">
+                      <h4 className={classes.cardTitleWhite}>Comments</h4>
+                    </CardHeader>
+
+                    {comments ? comments.map(comment => {
+                      return(
+                        <ListItem>
+                          <ListItemAvatar>                         
+                            <Avatar>
+                              <Person /> 
+                            </Avatar> 
+                          </ListItemAvatar>
+                          <ListItemText 
+                            primary={comment.user ? comment.user.name + ' | ' + comment.created_at : null }
+                            secondary={comment.comment} />
+                        </ListItem>
+                      )
+                    }) : null}
+                  </List>
                 </Card>
 
                 {isFetching ? <CircularProgress className="my-spinner" color="primary" /> : null } 
@@ -487,7 +507,8 @@ const mapDispatchToProps = dispatch => {
     deleteTicket: id => dispatch(deleteTicket(id)),
     getTicketTypes: () => dispatch(getTicketTypes()),
     getTicketStatus: () => dispatch(getTicketStatus()),
-    getUser: (id) => dispatch(getUser(id))
+    getUser: id => dispatch(getUser(id)),
+    commentCreate: comment => dispatch(commentCreate(comment))
   }
 }
 
@@ -500,6 +521,8 @@ const mapStateToProps = state => ({
   ticketTypes: state.ticket.ticketTypes,
   ticketStatus: state.ticket.ticketStatus,
   user: state.auth.user,
+  commentSuccess: state.comment.successMessage,
+  comments: state.ticket.comments
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Ticket)));

@@ -18,6 +18,7 @@ import {
 
 const initialState = {
     ticket: {},
+    comments: [],
     team: [],
     milestones: [],
     ticketTypes: [],
@@ -36,7 +37,8 @@ const TicketReducer = (state = initialState, action) => {
                 isFetching: false,
                 ticket: action.payload.ticket,
                 team: action.payload.team,
-                milestones: action.payload.milestones
+                milestones: action.payload.milestones,
+                comments: action.payload.comments
             } 
         case GET_TICKET_FAILURE:
             return {

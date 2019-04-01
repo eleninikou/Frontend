@@ -6,9 +6,7 @@ import {
     GET_COMMENTS_REQUEST,
     GET_COMMENTS_SUCCESS,
     GET_COMMENTS_FAILURE,
-    EDIT_COMMENT_SUCCESS,
-    EDIT_COMMENT_FAILURE,
-  } from '../actions/milestones/Action-Types';
+  } from '../actions/comments/Action-Types';
 
 const initialState = {
     comment: {},
@@ -33,19 +31,6 @@ const CommentReducer = (state = initialState, action) => {
                 isFetching: false,
                 errorMessage: action.message
             }   
-        case EDIT_COMMENT_SUCCESS:
-            return {
-                ...state,
-                isFetching: false,
-                comment: action.payload.comment,
-                successMessage: action.payload.message
-            } 
-        case EDIT_COMMENT_FAILURE:
-            return {
-                ...state,
-                isFetching: false,
-                errorMessage: action.message
-            }     
         case GET_COMMENTS_REQUEST:
             return {
                 ...state,
