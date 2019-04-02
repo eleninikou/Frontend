@@ -15,10 +15,6 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx";
 
 // Material UI components
 import TextField from '@material-ui/core/TextField'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormLabel from '@material-ui/core/FormLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Radio from '@material-ui/core/Radio';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -28,6 +24,9 @@ import FormControl from '@material-ui/core/FormControl';
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
+import { Editor } from 'react-draft-wysiwyg';
+import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 
 class CreateTicket extends Component {
@@ -45,17 +44,26 @@ class CreateTicket extends Component {
         assigned_user_id: '',
         milestone_id: '',
         selectedDate: '',
-        project_name: ''
+        project_name: '',
+        editorState: EditorState.createEmpty()
     }
     this.handleChange = this.handleChange.bind(this);
 }
 
+onEditorStateChange = editorState => {
+  this.setState({
+    editorState,
+  });
+  console.log(editorState)
+};
+
 submit = event => {
-  event.preventDefault();
+  event.preventDefault()
   
+
   const ticket = {
     title: this.state.title,
-    description: this.state.description,
+    description: convertToRaw(this.state.editorState.getCurrentContent()),
     type_id: this.state.type_id,
     status_id: this.state.status_id,
     project_id: this.state.project_id,
@@ -64,7 +72,8 @@ submit = event => {
     assigned_user_id: this.state.assigned_user_id,
     milestone_id: this.state.milestone_id,
     project_name: this.state.project_name
-  };
+  }
+  debugger;
 
   this.props.ticketCreate(ticket)
   .then(res => {
@@ -93,15 +102,26 @@ handleChange = event => {
   }
 }
 
-handleDateChange = event => {
-  this.setState({ selectedDate: event.target.value });
-};
+handleDateChange = event => {this.setState({ selectedDate: event.target.value }) }
 
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
+  const { editorState } = this.state
+
+
+  // https://reactgo.com/removeduplicateobjects/
+  function getUnique(arr, comp) {
+    const unique = arr.map(e => e[comp])
+        .map((e, i, final) => final.indexOf(e) === i && i)
+        .filter(e => arr[e]).map(e => arr[e]);
+     return unique;
+  }
+  
+  let projects = getUnique(allProjects,'project_id')
+
   return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={8}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Create new ticket</h4>
@@ -117,148 +137,120 @@ render() {
                       className="my-input"
                       value={this.state.textFieldValue}
                       onChange={this.handleChange}
-                      fullWidth />
+                      fullWidth
+                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <TextField 
-                      name="description" 
-                      type="text"
-                      label="Description" 
-                      className="my-input"
-                      value={this.state.textFieldValue}
-                      onChange={this.handleChange}
-                      fullWidth />
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="project_id">Project</InputLabel>
-                        <Select
+                  <GridItem xs={12} sm={12} md={3}>
+                    <FormControl className={classes.formControl}>                    
+                        <TextField
+                          select
+                          label="Project"
+                          variant="outlined"
+                          margin="normal"
                           value={this.state.project_id}
                           onChange={this.handleChange}
                           className="my-input"
-                          inputProps={{ 
-                            name: 'project_id', 
-                            id: 'project_id'}} >
-                        <MenuItem > <em>None</em></MenuItem>
-                        {allProjects ? allProjects.map(project => {
+                          inputProps={{  name: 'project_id',  id: 'project_id'}} >
+                        {projects ? projects.map(project => {
                           return (
-                            <MenuItem 
-                              key={project.project.id}
-                              value={project.project.id}> 
-                                {project.project.name}
-                            </MenuItem>) 
+                            <MenuItem  key={project.project.id} value={project.project.id}>  {project.project.name} </MenuItem>) 
                           }): null }
-                        </Select>
+                        </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={3}>
                     <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="type_id">Type</InputLabel>
-                        <Select
+                        <TextField
+                          select
+                          label="Type"
+                          variant="outlined"
+                          margin="normal"
                           value={this.state.type_id}
                           onChange={this.handleChange}
                           className="my-input"
                           inputProps={{ name: 'type_id', id: 'type_id'}} >
-                        <MenuItem> <em>None</em> </MenuItem>
                         {ticketTypes ? ticketTypes.map(type => {
-                          return (
-                          <MenuItem 
-                            key={type.id}
-                            value={type.id}>
-                            {type.type}
-                          </MenuItem>
-                          )
+                          return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>
                         }): null}
-                        </Select>
+                        </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={3}>
                     <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="status_id">Status</InputLabel>
-                        <Select
+                        <TextField
+                          select
+                          label="Status"
+                          variant="outlined"
+                          margin="normal"
                           value={this.state.status_id}
                           onChange={this.handleChange}
                           className="my-input"
-                          inputProps={{
-                            name: 'status_id',
-                            id: 'status_id',
-                          }}
-                        >
-                        <MenuItem value=""> <em>None</em> </MenuItem>
+                          inputProps={{ name: 'status_id', id: 'status_id', }} >
                         {ticketStatus ? ticketStatus.map(status => {
-                          return (
-                          <MenuItem 
-                            key={status.id}
-                            value={status.id}>
-                              {status.status}
-                          </MenuItem>)
+                          return <MenuItem key={status.id} value={status.id}> {status.status} </MenuItem>
                         }): null}
-                        </Select>
+                        </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={3}>
                   <FormControl component="fieldset" className={classes.formControl}>
-                    <FormLabel component="legend">Priority</FormLabel>
-                    <RadioGroup
-                      aria-label="Priority"
-                      name="priority"
-                      value={this.state.priority}
-                      className="my-input"
-                      onChange={this.handleChange}>
-                      <FormControlLabel value="low" control={<Radio />} label="Low" />
-                      <FormControlLabel value="normal" control={<Radio />} label="Normal" />
-                      <FormControlLabel value="high" control={<Radio />} label="High" />
-                    </RadioGroup>
-                  </FormControl>
+                          <TextField
+                            select
+                            label="Priority"
+                            variant="outlined"
+                            margin="normal"
+                            className="my-input"
+                            value={this.state.priority}
+                            onChange={this.handleChange}
+                            inputProps={{ name: 'priority', id: 'priority' }} >
+                          <MenuItem value="low"> low </MenuItem>
+                          <MenuItem value="normal"> normal </MenuItem>
+                          <MenuItem value="high"> high </MenuItem>
+                          </TextField>
+                      </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={3}>
                     <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="assigned_user_id">Assign user</InputLabel>
-                        <Select
+                        <TextField
+                          select
+                          label="Assign user"
+                          variant="outlined"
+                          margin="normal"
                           value={this.state.assigned_user_id}
                           onChange={this.handleChange}
                           className="my-input"
                           inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
-                        <MenuItem><em>None</em></MenuItem>
                         {team ? team.map(member => {
-                          return (
-                            <MenuItem 
-                              key={member.user.id}
-                              value={member.user.id}>
-                                {member.user.name}
-                            </MenuItem>
-                          )
+                          return <MenuItem key={member.user.id} value={member.user.id}> {member.user.name} </MenuItem>
                         }): null }
-                        </Select>
+                        </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={3}>
                     <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="milestone_id">Milestone</InputLabel>
-                        <Select
+                        <TextField
+                          select
+                          label="milestone"
+                          variant="outlined"
+                          margin="normal"
                           value={this.state.milestone_id}
                           onChange={this.handleChange}
                           className="my-input"
                           inputProps={{ name: 'milestone_id', id: 'milestone_id' }} >
-                        <MenuItem> <em>None</em></MenuItem>
                           {project ? project.milestones ? project.milestones.map(milestone => {
-                            return (
-                            <MenuItem 
-                              key={milestone.id}
-                              value={milestone.id}>
-                              {milestone.title}
-                            </MenuItem>
-                            )
+                            return  <MenuItem key={milestone.id} value={milestone.id}> {milestone.title}</MenuItem>
                           }): null : null}
-                        </Select>
+                        </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                    {/* <FormControl className={classes.formControl}> */}
+                  <GridItem xs={12} sm={12} md={3}>
+                    <FormControl className={classes.formControl}>
                     <TextField
                         id="date"
                         label="Due date"
                         type="date"
+                        variant="outlined"
+                        margin="normal"
                         className="my-input"
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
@@ -266,8 +258,18 @@ render() {
                           shrink: true,
                         }}
                       />
-                    {/* </FormControl> */}
+                    </FormControl>
                   </GridItem>
+                  <GridItem xs={12} sm={12} md={12}>
+                      <Editor
+                          editorState={editorState}
+                          toolbarClassName="toolbarClassName"
+                          wrapperClassName="wrapperClassName"
+                          editorClassName="editorClassName"
+                          onEditorStateChange={this.onEditorStateChange}
+                        />
+                  </GridItem>
+
               </GridContainer>
             </CardBody>
             <CardFooter>

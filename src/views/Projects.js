@@ -60,6 +60,16 @@ class Projects extends Component {
       const { rowsPerPage, page, auth_user_id } = this.state;
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, allProjects.length - page * rowsPerPage);
 
+        // https://reactgo.com/removeduplicateobjects/
+        function getUnique(arr, comp) {
+          const unique = arr.map(e => e[comp])
+              .map((e, i, final) => final.indexOf(e) === i && i)
+              .filter(e => arr[e]).map(e => arr[e]);
+           return unique;
+        }
+  
+        let projects = getUnique(allProjects,'project_id')
+
       return (
          <GridContainer> 
           <Button color="success"  onClick={this.createNewProject}>Create new Project</Button>
@@ -75,7 +85,7 @@ class Projects extends Component {
                     emptyRows={emptyRows}
                     tableHeaderColor="success"
                     tableHead={["Name", "Created", "Open Tickets", "Total Tickets", "Last updated", "Edit", "Details" ]}
-                    tableData={[ allProjects ? allProjects.map(project => {
+                    tableData={[ projects ? projects.map(project => {
                       let active_tickets = project.tickets.filter(ticket => (ticket.status_id !== (7 && 4)))
                         return ( project.project ?  project.project.creator_id == auth_user_id ? 
                           [ 

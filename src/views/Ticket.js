@@ -48,6 +48,9 @@ import BugReport from "@material-ui/icons/BugReport";
 import Warning from "@material-ui/icons/Warning";
 import Person from "@material-ui/icons/Person";
 import Comment from "@material-ui/icons/Comment";
+import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor";
+import LowPriority from "@material-ui/icons/LowPriority";
+
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -241,8 +244,13 @@ class Ticket extends Component {
                         <ListItemAvatar>
                           <Avatar> 
                             {show_ticket.type_id == 1 ?
-                              <BugReport /> :
-                            <LinearScale /> }
+                              <BugReport /> 
+                              : show_ticket.type_id == 2 ?
+                              <LowPriority />
+                              : show_ticket.type_id == 3 ?
+                              <LinearScale />
+                              : 
+                              <YoutubeSearchedFor /> }
                           
                           </Avatar>
                         </ListItemAvatar>

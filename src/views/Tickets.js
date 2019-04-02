@@ -81,15 +81,14 @@ class Tickets extends Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, allTickets.length - page * rowsPerPage);
 
 
-  
-    let filteredTickets = tickets.filter(ticket => {
-      return (
-        (status_id ? ticket.status_id == status_id : ticket) &&
-        (type_id ? ticket.type_id == type_id : ticket) &&
-        (priority ? ticket.priority == priority : ticket) &&
-        (project_id ? ticket.project_id == project_id : ticket)
-      )
-    })
+        let filteredTickets = tickets ? tickets.filter(ticket => {
+        return (
+          (status_id ? ticket.status_id == status_id : ticket) &&
+          (type_id ? ticket.type_id == type_id : ticket) &&
+          (priority ? ticket.priority == priority : ticket) &&
+          (project_id ? ticket.project_id == project_id : ticket)
+        )
+      }) : tickets
 
     return (
     <GridContainer>              
