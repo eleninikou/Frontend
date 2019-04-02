@@ -24,6 +24,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
+import Paper from '@material-ui/core/Paper';
 
 
 // Styles
@@ -38,7 +39,11 @@ class Tickets extends Component {
       page: 0,
       rowsPerPage: 5,
       tickets: [],
-      filtredTickets: []
+      filtredTickets: [],
+      type_id: null,
+      priority: null,
+      status_id: null,
+      project_id: null
     }
     this.createNewTicket = this.createNewTicket.bind(this);
   }
@@ -62,20 +67,16 @@ class Tickets extends Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
+
   handleChange = event => {
     const { name, value } = event.target;
+
     this.setState({ 
       [name]: value,
       filter: name
-     });
-     
-     console.log(this.state.tickets)
-     let filteredTickets = this.state.tickets
-     
-     filteredTickets = filteredTickets.filter(ticket => ticket.name == value )
-     debugger;
+     })
 
-     this.setState({ filteredTickets })
+     console.log(this.state)
   }
 
   render() {
@@ -84,34 +85,90 @@ class Tickets extends Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, allTickets.length - page * rowsPerPage);
 
 
-      // switch(filter) {
-      //   case 'status_id':
-      //     tickets = allTickets.filter(ticket => 
-      //       ticket.status_id === status_id && ticket.type_id === type_id && ticket.priority == priority)
-      //     console.log(tickets)
-      //     break;
-      //   case 'type_id':
-      //     tickets = allTickets.filter(ticket => ticket.type_id === type_id)
-      //     break;
-      //   case 'priority':
-      //     tickets = allTickets.filter(ticket => ticket.priority == priority)
-      //     break; 
-      //   case 'project_id':
-      //     tickets = allTickets.filter(ticket => ticket.project_id == project_id)
-      //     break;   
-      //   default:
-      //     tickets = allTickets;
-      // }
-  
+      function filterByType(ticket) {
+        return (
+          (status_id ? (ticket.status_id == status_id) : (ticket.status_id == null)) &&  
+          (priority ? (ticket.priority == priority) : (ticket.priority == null)) &&
+          (project_id ? (ticket.project_id == project_id) : (ticket.project_id == null)) &&
+          (type_id ? (ticket.type_id == type_id) : (ticket.type_id == null))
+          )
+      }
+      
+      let filteredTickets = tickets.filter(ticket => filterByType(ticket))
+
+    console.log(filteredTickets)
 
     return (
     <GridContainer>              
-          <GridItem xs={12} sm={12} md={9}>
+          <GridItem xs={12} sm={12} md={12}>        
             <Card>
               <CardHeader color="primary">
                 <h4 className={classes.cardTitleWhite}>Your tickets</h4>
               </CardHeader>
               <CardBody>
+              <GridContainer>
+            <GridItem xs={12} sm={12} md={3}>
+          <FormControl className="my-select"> 
+            <InputLabel className="my-label">Type</InputLabel> 
+                <Select
+                  value={this.state.type_id}
+                  onChange={this.handleChange}
+                  className="my-select"
+                  inputProps={{ name: 'type_id', id: 'type_id' }} >
+                  <MenuItem value={null}>All</MenuItem>
+                      {ticketTypes ? ticketTypes.map(type => {
+                        return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>    
+                    }): null}
+                </Select>   
+            </FormControl>
+          </GridItem>   
+          <GridItem xs={12} sm={12} md={3}>
+          <FormControl className="my-select">  
+            <InputLabel className="my-label">Status</InputLabel>
+              <Select
+                value={this.state.status_id}
+                onChange={this.handleChange}
+                className="my-select"
+                inputProps={{ name: 'status_id', id: 'status_id' }} >
+                  <MenuItem value={null}>All</MenuItem>
+                  {ticketStatus ? ticketStatus.map(status => {
+                    return <MenuItem  key={status.id} value={status.id}> {status.status} </MenuItem> 
+                  }): null}
+              </Select> 
+            </FormControl>  
+          </GridItem> 
+          <GridItem xs={12} sm={12} md={3}>
+          <FormControl className="my-select">  
+            <InputLabel className="my-label">Priority</InputLabel>
+              <Select
+                value={this.state.priority}
+                onChange={this.handleChange}
+                className="my-select"
+                inputProps={{ name: 'priority', id: 'priority' }} >
+                  <MenuItem value={null}>All</MenuItem>
+                  <MenuItem value='low'>Low</MenuItem>
+                  <MenuItem value='normal'>Normal</MenuItem>
+                  <MenuItem value='high'>High</MenuItem>
+              </Select> 
+            </FormControl>  
+          </GridItem>  
+          <GridItem xs={12} sm={12} md={3}>
+          <FormControl className="my-select"> 
+            <InputLabel className="my-label">Project</InputLabel>     
+              <Select
+                value={this.state.project_id}
+                onChange={this.handleChange}
+                className="my-select"
+                inputProps={{ name: 'project_id', id: 'project_id' }} >
+                  <MenuItem value={null}>All</MenuItem>
+                    {allProjects ? allProjects.map(project => {
+                      return <MenuItem key={project.project_id} value={project.project_id}>  {project.project.name} </MenuItem>
+                     }): null}
+              </Select> 
+            </FormControl>
+          </GridItem>
+            </GridContainer> 
+            <div>
                 <Table
                   page={page}
                   rowsPerPage={rowsPerPage}
@@ -151,80 +208,11 @@ class Tickets extends Component {
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                   />
+                </div>
                 </CardBody>
               </Card>
-            </GridItem>
-
-      <GridItem xs={12} sm={12} md={3}>
-        <Card>
-          <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Filter Tickets</h4>
-          </CardHeader>
-
-            <FormControl className="my-select"> 
-            <InputLabel className="my-label">Type</InputLabel> 
-                <Select
-                  value={this.state.type_id}
-                  onChange={this.handleChange}
-                  className="my-select"
-                  inputProps={{ name: 'type_id', id: 'type_id' }} >
-                  <MenuItem value={null}>All</MenuItem>
-                      {ticketTypes ? ticketTypes.map(type => {
-                        return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>    
-                    }): null}
-                </Select>   
-            </FormControl>
-
-            <FormControl className="my-select">  
-            <InputLabel className="my-label">Status</InputLabel>
-              <Select
-                value={this.state.status_id}
-                onChange={this.handleChange}
-                className="my-select"
-                inputProps={{ name: 'status_id', id: 'status_id' }} >
-                  <MenuItem value={null}>All</MenuItem>
-                  {ticketStatus ? ticketStatus.map(status => {
-                    return <MenuItem  key={status.id} value={status.id}> {status.status} </MenuItem> 
-                  }): null}
-              </Select> 
-            </FormControl>   
-
-            <FormControl className="my-select"> 
-            <InputLabel className="my-label">Priority</InputLabel> 
-              <Select
-                value={this.state.priority}
-                onChange={this.handleChange}
-                className="my-select"
-                inputProps={{ name: 'priority', id: 'priority' }} >
-                    <MenuItem value={null}>All</MenuItem>
-                    <MenuItem value={'low'}>Low</MenuItem>
-                    <MenuItem value={'normal'}>Normal</MenuItem>
-                    <MenuItem value={'high'}>High</MenuItem>
-                </Select>        
-            </FormControl>
-
-            <FormControl className="my-select"> 
-            <InputLabel className="my-label">Project</InputLabel>     
-              <Select
-                value={this.state.project_id}
-                onChange={this.handleChange}
-                className="my-select"
-                inputProps={{ name: 'project_id', id: 'project_id' }} >
-                  <MenuItem value={null}>All</MenuItem>
-                    {allProjects ? allProjects.map(project => {
-                      return <MenuItem key={project.project_id} value={project.project_id}>  {project.project.name} </MenuItem>
-                     }): null}
-              </Select> 
-            </FormControl>
-                
-          </Card>    
-
-          <Card>
               <Button color="primary" onClick={this.createNewTicket}>Create new Ticket</Button>
-          </Card>
-
-        </GridItem>
-
+            </GridItem>
           </GridContainer>
         );
       }

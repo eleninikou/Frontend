@@ -101,7 +101,9 @@ class Ticket extends Component {
 
     this.props.updateTicket(ticket, this.props.match.params.id)
     .then(this.showNotification('tr'))
+
   }
+          
   
   componentWillMount = () => {
     // Fetch ticket and set to state
@@ -120,7 +122,8 @@ class Ticket extends Component {
           project_name: res.ticket.project.name,
           project_id: res.ticket.project_id,
           creator: res.ticket.project.creator_id,
-          show_ticket: res.ticket
+          show_ticket: res.ticket,
+          comment: null
          })
       } else {
         this.props.history.push(`/home `)
@@ -179,13 +182,19 @@ class Ticket extends Component {
     };
     
     this.props.commentCreate(comment).then(this.showNotification('tr'))
+    this.props.getTicket(this.props.match.params.id).then(res => {
+      this.setState({ 
+        show_ticket: res.ticket,
+        comment: null })
+    })
   
   }
 
   render() {
     const { classes, ticketStatus, ticketTypes, team, milestones, successMessage, isFetching, commentSuccess, comments } = this.props;
-    const { dense, secondary, show_ticket, name } = this.state;
+    const { show_ticket, comment } = this.state;
   
+    console.log(comment)
     return (
       <div>
         <Snackbar
@@ -388,10 +397,7 @@ class Ticket extends Component {
                           <h4 className={classes.cardTitleWhite}>Ticket</h4>
                         </CardHeader>
                       <CardBody>
-                      <Grid item xs={12} md={12}>
-                          <Typography variant="h6" className="ticket-title">
-                            {show_ticket.title} created by {show_ticket.creator ? show_ticket.creator.name : null} | {show_ticket.created_at}
-                          </Typography>
+                      <Grid xs={12} md={12}>
                           <div className={classes.demo}>
                             <List className="my-ticket-list">
                                 <ListItem>
@@ -438,8 +444,14 @@ class Ticket extends Component {
                                 </ListItem>
                             </List>
                           </div>
+                          <Typography variant="h6" className="ticket-title">
+                            {show_ticket.title} created by {show_ticket.creator ? show_ticket.creator.name : null}
+                          </Typography>                          
+                          <Typography className="my-ticket-time">
+                            Created: {show_ticket.created_at}
+                          </Typography>
                           <Typography className="my-ticket-description">
-                            Description: {show_ticket.description}
+                            {show_ticket.description}
                           </Typography>
                           <GridContainer>
                           <form className="my-comments-form" onSubmit={this.submit}>
@@ -451,30 +463,22 @@ class Ticket extends Component {
                                     label='comment on ticket' 
                                     className="my-input"
                                     onChange={this.handleChange}
-                                    value={this.state.comment}
+                                    value={comment}
+                                    variant="outlined"
                                     fullWidth />
                             </GridItem>
                           </form>
-                          <GridItem xs={12} sm={12} md={3}>
                             <ListItemAvatar onClick={this.submit}>
-                              <Avatar> <Comment /> </Avatar>
+                              <Avatar className="my-comment-submit"> <Comment /> </Avatar>
                             </ListItemAvatar>
-                          </GridItem>  
                             </GridContainer>
-                            {console.log(comments)}
-
                       </Grid>
                       </CardBody>
                     </div>
                     }
                 </Card>
-                </GridItem>
                 <Card>
                   <List>
-                    <CardHeader color="primary">
-                      <h4 className={classes.cardTitleWhite}>Comments</h4>
-                    </CardHeader>
-
                     {comments ? comments.map(comment => {
                       return(
                         <ListItem>
@@ -491,6 +495,7 @@ class Ticket extends Component {
                     }) : null}
                   </List>
                 </Card>
+                </GridItem>
 
                 {isFetching ? <CircularProgress className="my-spinner" color="primary" /> : null } 
               </GridContainer>
