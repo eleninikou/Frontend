@@ -30,6 +30,7 @@ import Paper from '@material-ui/core/Paper';
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { TextField } from '@material-ui/core';
 
 
 class Tickets extends Component {
@@ -40,18 +41,16 @@ class Tickets extends Component {
       rowsPerPage: 5,
       tickets: [],
       filtredTickets: [],
-      type_id: null,
-      priority: null,
-      status_id: null,
-      project_id: null
+      type_id: '',
+      priority: '',
+      status_id: '',
+      project_id: ''
     }
     this.createNewTicket = this.createNewTicket.bind(this);
   }
 
   componentWillMount() { 
-    this.props.getAllTickets().then(res => {
-      this.setState({ tickets: res.tickets})
-    });
+    this.props.getAllTickets().then(res => { this.setState({ tickets: res.tickets}) })
     this.props.getTicketStatus()
     this.props.getTicketTypes()
     this.props.getAllProjects()
@@ -63,20 +62,17 @@ class Tickets extends Component {
 
   handleChangePage = (event, page) => { this.setState({ page }) }
 
-  handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
-  };
+  handleChangeRowsPerPage = event => { this.setState({ rowsPerPage: event.target.value }) }
 
 
   handleChange = event => {
     const { name, value } = event.target;
+    this.setState({ [name]: value, filter: name })
 
-    this.setState({ 
-      [name]: value,
-      filter: name
-     })
-
-     console.log(this.state)
+    // let filters = {
+    //   color: ["Blue", "Black"],
+    //   size: [70, 50]
+    // };
   }
 
   render() {
@@ -85,18 +81,15 @@ class Tickets extends Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, allTickets.length - page * rowsPerPage);
 
 
-      function filterByType(ticket) {
-        return (
-          (status_id ? (ticket.status_id == status_id) : (ticket.status_id == null)) &&  
-          (priority ? (ticket.priority == priority) : (ticket.priority == null)) &&
-          (project_id ? (ticket.project_id == project_id) : (ticket.project_id == null)) &&
-          (type_id ? (ticket.type_id == type_id) : (ticket.type_id == null))
-          )
-      }
-      
-      let filteredTickets = tickets.filter(ticket => filterByType(ticket))
-
-    console.log(filteredTickets)
+  
+    let filteredTickets = tickets.filter(ticket => {
+      return (
+        (status_id ? ticket.status_id == status_id : ticket) &&
+        (type_id ? ticket.type_id == type_id : ticket) &&
+        (priority ? ticket.priority == priority : ticket) &&
+        (project_id ? ticket.project_id == project_id : ticket)
+      )
+    })
 
     return (
     <GridContainer>              
@@ -108,64 +101,68 @@ class Tickets extends Component {
               <CardBody>
               <GridContainer>
             <GridItem xs={12} sm={12} md={3}>
-          <FormControl className="my-select"> 
-            <InputLabel className="my-label">Type</InputLabel> 
-                <Select
-                  value={this.state.type_id}
-                  onChange={this.handleChange}
-                  className="my-select"
-                  inputProps={{ name: 'type_id', id: 'type_id' }} >
-                  <MenuItem value={null}>All</MenuItem>
-                      {ticketTypes ? ticketTypes.map(type => {
-                        return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>    
-                    }): null}
-                </Select>   
-            </FormControl>
-          </GridItem>   
-          <GridItem xs={12} sm={12} md={3}>
-          <FormControl className="my-select">  
-            <InputLabel className="my-label">Status</InputLabel>
-              <Select
-                value={this.state.status_id}
+              <TextField
+                value={this.state.type_id}
+                select
+                label="Type"
                 onChange={this.handleChange}
                 className="my-select"
+                variant="outlined"
+                margin="normal"
+                inputProps={{ name: 'type_id', id: 'type_id' }} >
+                <MenuItem value={null}>All</MenuItem>
+                    {ticketTypes ? ticketTypes.map(type => {
+                      return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>    
+                  }): null}
+              </TextField>   
+          </GridItem>   
+          <GridItem xs={12} sm={12} md={3}>
+              <TextField
+                value={this.state.status_id}
+                select
+                label="Status"
+                onChange={this.handleChange}
+                className="my-select"
+                variant="outlined"
+                margin="normal"
                 inputProps={{ name: 'status_id', id: 'status_id' }} >
                   <MenuItem value={null}>All</MenuItem>
                   {ticketStatus ? ticketStatus.map(status => {
                     return <MenuItem  key={status.id} value={status.id}> {status.status} </MenuItem> 
                   }): null}
-              </Select> 
-            </FormControl>  
+              </TextField> 
           </GridItem> 
           <GridItem xs={12} sm={12} md={3}>
-          <FormControl className="my-select">  
-            <InputLabel className="my-label">Priority</InputLabel>
-              <Select
+              <TextField
+                select
+                label="Priority"
                 value={this.state.priority}
                 onChange={this.handleChange}
                 className="my-select"
+                variant="outlined"
+                margin="normal"
                 inputProps={{ name: 'priority', id: 'priority' }} >
                   <MenuItem value={null}>All</MenuItem>
                   <MenuItem value='low'>Low</MenuItem>
                   <MenuItem value='normal'>Normal</MenuItem>
                   <MenuItem value='high'>High</MenuItem>
-              </Select> 
-            </FormControl>  
+              </TextField> 
           </GridItem>  
           <GridItem xs={12} sm={12} md={3}>
-          <FormControl className="my-select"> 
-            <InputLabel className="my-label">Project</InputLabel>     
-              <Select
+              <TextField
+                select
+                label="Project"
                 value={this.state.project_id}
                 onChange={this.handleChange}
                 className="my-select"
+                variant="outlined"
+                margin="normal"
                 inputProps={{ name: 'project_id', id: 'project_id' }} >
                   <MenuItem value={null}>All</MenuItem>
                     {allProjects ? allProjects.map(project => {
                       return <MenuItem key={project.project_id} value={project.project_id}>  {project.project.name} </MenuItem>
                      }): null}
-              </Select> 
-            </FormControl>
+              </TextField> 
           </GridItem>
             </GridContainer> 
             <div>
@@ -175,7 +172,7 @@ class Tickets extends Component {
                   emptyRows={emptyRows}
                   tableHeaderColor="primary"
                   tableHead={["Title", "Project", "Type", "Status", "Priority", "Milestone", "Due Date", "Edit"]}
-                  tableData={[ tickets ? tickets.map(ticket => {
+                  tableData={[ filteredTickets ? filteredTickets.map(ticket => {
                     return [
                       `${ticket.title}`,
                       `${ticket.project.name}`, 

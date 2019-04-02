@@ -71,7 +71,10 @@ class Ticket extends Component {
         dense: false,
         secondary: false,
         show_ticket: '',
-        name: ''
+        name: '',
+        user: '',
+        edit: '',
+        ButtonText: 'Edit Ticket'
       }
 
       this.ticketDelete = this.ticketDelete.bind(this);
@@ -123,7 +126,8 @@ class Ticket extends Component {
           project_id: res.ticket.project_id,
           creator: res.ticket.project.creator_id,
           show_ticket: res.ticket,
-          comment: null
+          comment: null,
+          edit: false
          })
       } else {
         this.props.history.push(`/home `)
@@ -190,11 +194,23 @@ class Ticket extends Component {
   
   }
 
+  showForm = event => {
+    const { edit } = this.state
+    edit ?  
+      this.setState({ 
+        edit: false,
+        ButtonText: 'Edit Ticket' 
+      }) 
+    : this.setState({
+         edit: true,
+         ButtonText: 'Hide form'
+        })
+  }
+
   render() {
     const { classes, ticketStatus, ticketTypes, team, milestones, successMessage, isFetching, commentSuccess, comments } = this.props;
-    const { show_ticket, comment } = this.state;
+    const { show_ticket, comment, user, creator, edit, ButtonText } = this.state;
   
-    console.log(comment)
     return (
       <div>
         <Snackbar
@@ -205,299 +221,281 @@ class Ticket extends Component {
           closeNotification={() => this.setState({ tr: false })}
           close
         /> 
-
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
-            {this.state.creator_id === 3?
-              <CustomTabs
-                    headerColor="primary"
-                    tabs={[ {
-                      tabName: "Info",
-                      tabIcon: LibraryBooks,
-                      tabContent: (
-                        <form className={classes.form} onSubmit={this.submit}>
-                          <CardBody>
-                            <GridContainer>
-                                <GridItem xs={12} sm={12} md={12}>
-                                  <TextField 
-                                    name="title" 
-                                    type="text"
-                                    label="Title" 
-                                    className="my-input"
-                                    value={this.state.title}
-                                    onChange={this.handleChange}
-                                    fullWidth />
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
-                                  <TextField 
-                                    name="description" 
-                                    type="text"
-                                    label="Description" 
-                                    className="my-input"
-                                    value={this.state.description}
-                                    onChange={this.handleChange}
-                                    fullWidth />
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
-                                  <TextField 
-                                    disabled
-                                    name="project" 
-                                    type="text"
-                                    label="Project" 
-                                    className="my-input"
-                                    value={this.state.project_name}
-                                    fullWidth />
-                                </GridItem>
-                                  <GridItem xs={12} sm={12} md={4}>
-                                  <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor="type_id">Type</InputLabel>
-                                      <Select
-                                        className="my-input"
-                                        value={this.state.type_id}
-                                        onChange={this.handleChange}
-                                        inputProps={{ name: 'type_id', id: 'type_id'}} >
-                                      <MenuItem> <em>None</em> </MenuItem>
-                                      {ticketTypes ? ticketTypes.map(type => {
-                                        return (
-                                        <MenuItem 
-                                          key={type.id}
-                                          value={type.id}>
-                                          {type.type}
-                                        </MenuItem>
-                                        )
-                                      }): null}
-                                      </Select>
-                                  </FormControl>
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={4}>
-                                  <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor="status_id">Status</InputLabel>
-                                      <Select
-                                        className="my-input"
-                                        value={this.state.status_id}
-                                        onChange={this.handleChange}
-                                        inputProps={{
-                                          name: 'status_id',
-                                          id: 'status_id',
-                                        }}
-                                      >
-                                      <MenuItem value=""> <em>None</em> </MenuItem>
-                                      {ticketStatus ? ticketStatus.map(status => {
-                                        return (
-                                        <MenuItem 
-                                          key={status.id}
-                                          value={status.id}>
-                                            {status.status}
-                                        </MenuItem>)
-                                      }): null}
-                                      </Select>
-                                  </FormControl>
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={4}>
-                                  <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor="milestone_id">Milestone</InputLabel>
-                                      <Select
-                                        className="my-input"
-                                        value={this.state.milestone_id}
-                                        onChange={this.handleChange}
-                                        inputProps={{ name: 'milestone_id', id: 'milestone_id' }} >
-                                      <MenuItem> <em>None</em></MenuItem>
-                                        {milestones ? milestones.map(milestone => {
-                                          return (
-                                          <MenuItem 
-                                            key={milestone.id}
-                                            value={milestone.id}>
-                                            {milestone.title}
-                                          </MenuItem>
-                                          )
-                                        }): null }
-                                      </Select>
-                                  </FormControl>
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={4}>
-                                  <FormControl className={classes.formControl}>
-                                  <InputLabel htmlFor="priority">Priority</InputLabel>
-                                      <Select
-                                        className="my-input"
-                                        value={this.state.priority}
-                                        onChange={this.handleChange}
-                                        inputProps={{ name: 'priority', id: 'priority' }} >
-                                      <MenuItem value="low"> low </MenuItem>
-                                      <MenuItem value="normal"> normal </MenuItem>
-                                      <MenuItem value="high"> high </MenuItem>
-                                      </Select>
-                                  </FormControl>
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={4}>
-                                  <FormControl className={classes.formControl}>
-                                    <InputLabel htmlFor="assigned_user_id">Assign user</InputLabel>
-                                      <Select
-                                        className="my-input"
-                                        value={this.state.assigned_user_id}
-                                        onChange={this.handleChange}
-                                        inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
-                                      <MenuItem><em>None</em></MenuItem>
-                                      {team ? team.map(member => {
-                                        return (
-                                          <MenuItem 
-                                            key={member.user.id}
-                                            value={member.user.id}>
-                                              {member.user.name}
-                                          </MenuItem>
-                                        )
-                                      }): null }
-                                      </Select>
-                                  </FormControl>
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={4}>
-                                  <TextField
-                                      id="date"
-                                      label="Due date"
-                                      type="date"
-                                      className="my-input"
-                                      fullWidth
-                                      defaultValue={this.state.due_date}
-                                      value={this.state.selectedDate}
-                                      onChange={this.handleDateChange}
-                                      InputLabelProps={{
-                                          shrink: true,
-                                      }}
-                                    />
-                                </GridItem>
-                            </GridContainer>
-                          </CardBody>
-                          <CardFooter>
-                            <Button color="primary" type="submit">Edit Ticket</Button>
-                          </CardFooter>
-                         </form> 
-                      )
-                    }, 
-                    {
-                      tabName: "Comments",
-                      tabIcon: Message,
-                      tabContent: (
-                         'Comment form'
-                      )
-                    },
-                    this.state.creator_id === this.state.auth_user_id ? {
-                        tabName: "Delete",
-                        tabIcon: DeleteForever,
-                        tabContent: (
-                          <CardBody>
-                            <Button color="primary" type="button" onClick={this.ticketDelete}>Delete ticket</Button>
-                          </CardBody>
-                        )
-
-                      } 
-                      : null,
-                    ]}/> : 
-                    <div>
-                      <CardHeader color="primary">
-                          <h4 className={classes.cardTitleWhite}>Ticket</h4>
-                        </CardHeader>
-                      <CardBody>
-                      <Grid xs={12} md={12}>
-                          <div className={classes.demo}>
-                            <List className="my-ticket-list">
-                                <ListItem>
-                                  <ListItemAvatar>
-                                    <Avatar> <LinearScale /> </Avatar>
-                                  </ListItemAvatar>
-                                  <ListItemText primary={show_ticket.status ? show_ticket.status.status : null} />
-                                </ListItem>
-                                <ListItem>
-                                  <ListItemAvatar>
-                                    <Avatar> 
-                                      {show_ticket.type_id == 1 ?
-                                        <BugReport /> :
-                                      <LinearScale /> }
-                                    
-                                    </Avatar>
-                                  </ListItemAvatar>
-                                  <ListItemText primary={show_ticket.type ? show_ticket.type.type : null} />
-                                </ListItem>
-                                <ListItem>
-                                  <ListItemAvatar>                         
-                                  {
-                                    show_ticket.priority == 'low' ?
-                                      <Avatar style={{backgroundColor: '#ff9800'}}> 
-                                        <Warning /> 
-                                      </Avatar>
-                                    : show_ticket.priority == 'normal' ?
-                                      <Avatar style={{backgroundColor: '#4caf50'}}> 
-                                        <Warning /> 
-                                      </Avatar>
-                                    : 
-                                      <Avatar style={{backgroundColor: '#f44336'}}> 
-                                        <Warning /> 
-                                      </Avatar>
-                                }
-                                  </ListItemAvatar>
-                                  <ListItemText primary={show_ticket.priority} />
-                                </ListItem>
-                                <ListItem>
-                                  <ListItemAvatar>
-                                    <Avatar> <Timeline /> </Avatar>
-                                  </ListItemAvatar>
-                                  <ListItemText primary={show_ticket.milestone ? show_ticket.milestone.title : null} />
-                                </ListItem>
-                            </List>
-                          </div>
-                          <Typography variant="h6" className="ticket-title">
-                            {show_ticket.title} created by {show_ticket.creator ? show_ticket.creator.name : null}
-                          </Typography>                          
-                          <Typography className="my-ticket-time">
-                            Created: {show_ticket.created_at}
-                          </Typography>
-                          <Typography className="my-ticket-description">
-                            {show_ticket.description}
-                          </Typography>
-                          <GridContainer>
-                          <form className="my-comments-form" onSubmit={this.submit}>
-                            <GridItem xs={12} sm={12} md={9}>
-                                 <TextField 
-                                    name="comment" 
-                                    type="text"
-                                    multiline={true}
-                                    label='comment on ticket' 
-                                    className="my-input"
-                                    onChange={this.handleChange}
-                                    value={comment}
-                                    variant="outlined"
-                                    fullWidth />
-                            </GridItem>
-                          </form>
-                            <ListItemAvatar onClick={this.submit}>
-                              <Avatar className="my-comment-submit"> <Comment /> </Avatar>
-                            </ListItemAvatar>
-                            </GridContainer>
-                      </Grid>
-                      </CardBody>
-                    </div>
-                    }
-                </Card>
-                <Card>
-                  <List>
-                    {comments ? comments.map(comment => {
-                      return(
-                        <ListItem>
-                          <ListItemAvatar>                         
-                            <Avatar>
-                              <Person /> 
-                            </Avatar> 
-                          </ListItemAvatar>
-                          <ListItemText 
-                            primary={comment.user ? comment.user.name + ' | ' + comment.created_at : null }
-                            secondary={comment.comment} />
-                        </ListItem>
-                      )
-                    }) : null}
-                  </List>
-                </Card>
-                </GridItem>
+              <CardHeader color="primary">
+                 <h4 className={classes.cardTitleWhite}>Ticket</h4>
+              </CardHeader>
+              <CardBody>
+                <Grid xs={12} md={12}>
+                  <div className={classes.demo}>
+                    <List className="my-ticket-list">
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar> <LinearScale /> </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary={show_ticket.status ? show_ticket.status.status : null} />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar> 
+                            {show_ticket.type_id == 1 ?
+                              <BugReport /> :
+                            <LinearScale /> }
+                          
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary={show_ticket.type ? show_ticket.type.type : null} />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemAvatar>                         
+                        {
+                          show_ticket.priority == 'low' ?
+                            <Avatar style={{backgroundColor: '#ff9800'}}> 
+                              <Warning /> 
+                            </Avatar>
+                          : show_ticket.priority == 'normal' ?
+                            <Avatar style={{backgroundColor: '#4caf50'}}> 
+                              <Warning /> 
+                            </Avatar>
+                          : 
+                            <Avatar style={{backgroundColor: '#f44336'}}> 
+                              <Warning /> 
+                            </Avatar>
+                        }
+                        </ListItemAvatar>
+                        <ListItemText primary={show_ticket.priority} />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemAvatar>
+                          <Avatar> <Timeline /> </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary={show_ticket.milestone ? show_ticket.milestone.title : null} />
+                      </ListItem>
+                    </List>
+                  </div>
+                  <Typography variant="h6" className="ticket-title">
+                    {show_ticket.title} created by {show_ticket.creator ? show_ticket.creator.name : null}
+                  </Typography>                          
+                  <Typography className="my-ticket-time">
+                    Created: {show_ticket.created_at}
+                  </Typography>
+                  <Typography className="my-ticket-time">
+                    Due date: {show_ticket.due_date}
+                  </Typography>
+                  <Typography className="my-ticket-description">
+                    {show_ticket.description}
+                  </Typography>
+                  <GridContainer>
+                    <form className="my-comments-form" onSubmit={this.submit}>
+                      <GridItem xs={12} sm={12} md={9}>
+                        <TextField 
+                           name="comment" 
+                           type="text"
+                           multiline={true}
+                           label='comment on ticket' 
+                           className="my-input"
+                           onChange={this.handleChange}
+                           value={comment}
+                           variant="outlined"
+                           fullWidth 
+                        />
+                      </GridItem>
+                    </form>
+                    <ListItemAvatar onClick={this.submit}>
+                      <Avatar className="my-comment-submit"> <Comment /> </Avatar>
+                    </ListItemAvatar>
+                  </GridContainer>
+                    <Button color="primary" onClick={this.showForm}>{ButtonText}</Button>
+                    <Button color="danger" onClick={this.deleteTicket}>Delete ticket</Button>
+              </Grid>
+            </CardBody> 
+          </Card>
+          <Card>
+          {creator == user && edit ? 
+          <form className={classes.form} onSubmit={this.submit}>
+            <CardHeader color="primary">
+              <h4 className={classes.cardTitleWhite}>Edit</h4>
+            </CardHeader>
+              <CardBody>
+                <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <TextField 
+                        name="title" 
+                        type="text"
+                        label="Title" 
+                        className="my-input"
+                        value={this.state.title}
+                        onChange={this.handleChange}
+                        fullWidth />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <TextField 
+                        name="description" 
+                        type="text"
+                        label="Description" 
+                        className="my-input"
+                        value={this.state.description}
+                        onChange={this.handleChange}
+                        fullWidth />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <TextField 
+                        disabled
+                        name="project" 
+                        type="text"
+                        label="Project" 
+                        className="my-input"
+                        value={this.state.project_name}
+                        fullWidth />
+                    </GridItem>
+                      <GridItem xs={12} sm={12} md={4}>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="type_id">Type</InputLabel>
+                          <Select
+                            className="my-input"
+                            value={this.state.type_id}
+                            onChange={this.handleChange}
+                            inputProps={{ name: 'type_id', id: 'type_id'}} >
+                          <MenuItem> <em>None</em> </MenuItem>
+                          {ticketTypes ? ticketTypes.map(type => {
+                            return (
+                            <MenuItem 
+                              key={type.id}
+                              value={type.id}>
+                              {type.type}
+                            </MenuItem>
+                            )
+                          }): null}
+                          </Select>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="status_id">Status</InputLabel>
+                          <Select
+                            className="my-input"
+                            value={this.state.status_id}
+                            onChange={this.handleChange}
+                            inputProps={{
+                              name: 'status_id',
+                              id: 'status_id',
+                            }}
+                          >
+                          <MenuItem value=""> <em>None</em> </MenuItem>
+                          {ticketStatus ? ticketStatus.map(status => {
+                            return (
+                            <MenuItem 
+                              key={status.id}
+                              value={status.id}>
+                                {status.status}
+                            </MenuItem>)
+                          }): null}
+                          </Select>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="milestone_id">Milestone</InputLabel>
+                          <Select
+                            className="my-input"
+                            value={this.state.milestone_id}
+                            onChange={this.handleChange}
+                            inputProps={{ name: 'milestone_id', id: 'milestone_id' }} >
+                          <MenuItem> <em>None</em></MenuItem>
+                            {milestones ? milestones.map(milestone => {
+                              return (
+                              <MenuItem 
+                                key={milestone.id}
+                                value={milestone.id}>
+                                {milestone.title}
+                              </MenuItem>
+                              )
+                            }): null }
+                          </Select>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      <FormControl className={classes.formControl}>
+                      <InputLabel htmlFor="priority">Priority</InputLabel>
+                          <Select
+                            className="my-input"
+                            value={this.state.priority}
+                            onChange={this.handleChange}
+                            inputProps={{ name: 'priority', id: 'priority' }} >
+                          <MenuItem value="low"> low </MenuItem>
+                          <MenuItem value="normal"> normal </MenuItem>
+                          <MenuItem value="high"> high </MenuItem>
+                          </Select>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      <FormControl className={classes.formControl}>
+                        <InputLabel htmlFor="assigned_user_id">Assign user</InputLabel>
+                          <Select
+                            className="my-input"
+                            value={this.state.assigned_user_id}
+                            onChange={this.handleChange}
+                            inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
+                          <MenuItem><em>None</em></MenuItem>
+                          {team ? team.map(member => {
+                            return (
+                              <MenuItem 
+                                key={member.user.id}
+                                value={member.user.id}>
+                                  {member.user.name}
+                              </MenuItem>
+                            )
+                          }): null }
+                          </Select>
+                      </FormControl>
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={4}>
+                      <TextField
+                          id="date"
+                          label="Due date"
+                          type="date"
+                          className="my-input"
+                          fullWidth
+                          defaultValue={this.state.due_date}
+                          value={this.state.selectedDate}
+                          onChange={this.handleDateChange}
+                          InputLabelProps={{
+                              shrink: true,
+                          }}
+                        />
+                    </GridItem>
+                </GridContainer>
+              </CardBody>
+              <CardFooter>
+                <Button color="primary" type="submit"> Save</Button>
+              </CardFooter>
+            </form> 
+          : ''}
+          </Card>
+            <Card>
+              <List>
+                {comments ? comments.map(comment => {
+                  return(
+                    <ListItem>
+                      <ListItemAvatar>                         
+                        <Avatar>
+                          <Person /> 
+                        </Avatar> 
+                      </ListItemAvatar>
+                      <ListItemText 
+                        primary={comment.user ? comment.user.name + ' | ' + comment.created_at : null }
+                        secondary={comment.comment} />
+                    </ListItem>
+                  )
+                }) : null}
+              </List>
+            </Card>
+          </GridItem>
 
                 {isFetching ? <CircularProgress className="my-spinner" color="primary" /> : null } 
+
               </GridContainer>
             </div>
           );
