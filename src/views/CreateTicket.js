@@ -35,7 +35,7 @@ class CreateTicket extends Component {
 
     this.state = {
         title: '',
-        description: '',
+        description: [],
         type_id: '',
         status_id: '',
         project_id: '',
@@ -50,16 +50,10 @@ class CreateTicket extends Component {
     this.handleChange = this.handleChange.bind(this);
 }
 
-onEditorStateChange = editorState => {
-  this.setState({
-    editorState,
-  });
-  console.log(editorState)
-};
+onEditorStateChange = editorState => { this.setState({ editorState }) }
 
 submit = event => {
   event.preventDefault()
-  
 
   const ticket = {
     title: this.state.title,
@@ -71,18 +65,14 @@ submit = event => {
     due_date: this.state.selectedDate,
     assigned_user_id: this.state.assigned_user_id,
     milestone_id: this.state.milestone_id,
-    project_name: this.state.project_name
   }
   debugger;
 
   this.props.ticketCreate(ticket)
   .then(res => {
-    if (!res.error) {
-      this.props.history.push('/home/tickets')
-    } else {
-      console.log(res)
-    }
-
+      if(!res.error) {
+        this.props.history.push('/home/tickets')
+      } 
   })
 }
 
@@ -118,6 +108,7 @@ render() {
   }
   
   let projects = getUnique(allProjects,'project_id')
+  let team_members = getUnique(team,'user_id')
 
   return (
       <GridContainer>
@@ -220,7 +211,7 @@ render() {
                           onChange={this.handleChange}
                           className="my-input"
                           inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
-                        {team ? team.map(member => {
+                        {team_members ? team_members.map(member => {
                           return <MenuItem key={member.user.id} value={member.user.id}> {member.user.name} </MenuItem>
                         }): null }
                         </TextField>

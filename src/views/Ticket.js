@@ -2,6 +2,12 @@ import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
 
+// wysiwyg
+import {stateToHTML} from 'draft-js-export-html'; 
+import { convertFromRaw } from 'draft-js';
+import { convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
+
 // Redux
 import { connect } from 'react-redux'
 import { getTicket, updateTicket, getTicketTypes, getTicketStatus, deleteTicket } from '../redux/actions/tickets/Actions'
@@ -16,7 +22,6 @@ import CardBody from "../components/theme/Card/CardBody.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
-import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 
 // Material UI components
@@ -39,9 +44,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from "@material-ui/core/IconButton";
 
 // Icons
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import Message from "@material-ui/icons/Message";
 import LinearScale from '@material-ui/icons/LinearScale';
 import Timeline from "@material-ui/icons/Timeline";
 import BugReport from "@material-ui/icons/BugReport";
@@ -210,10 +212,16 @@ class Ticket extends Component {
         })
   }
 
+  convertFromJSONToHTML = (text) => {     
+    return stateToHTML(convertFromRaw(text)) 
+  }
+
+
   render() {
-    const { classes, ticketStatus, ticketTypes, team, milestones, successMessage, isFetching, commentSuccess, comments } = this.props;
+    const { classes, ticketStatus, ticketTypes, team, milestones, successMessage, isFetching, commentSuccess, comments, description } = this.props;
     const { show_ticket, comment, user, creator, edit, ButtonText } = this.state;
-  
+
+    console.log(description)
     return (
       <div>
         <Snackbar
@@ -223,15 +231,31 @@ class Ticket extends Component {
           open={this.state.tr}
           closeNotification={() => this.setState({ tr: false })}
           close
-        /> 
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
+          /> 
+
             <Card>
               <CardHeader color="primary">
                  <h4 className={classes.cardTitleWhite}>Ticket</h4>
               </CardHeader>
               <CardBody>
-                <Grid xs={12} md={12}>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={8}>
+                    <Typography variant="h6" className="ticket-title">
+                      {show_ticket.title} created by {show_ticket.creator ? show_ticket.creator.name : null}
+                    </Typography>                          
+                    <Typography className="my-ticket-time">
+                      Created: {show_ticket.created_at}
+                    </Typography>
+                    <Typography className="my-ticket-time">
+                      Due date: {show_ticket.due_date}
+                    </Typography>
+                      {description.blocks ? 
+                    <Typography className="my-ticket-time">
+                      <div dangerouslySetInnerHTML={{ __html: this.convertFromJSONToHTML(description) }} />
+                    </Typography> : <CircularProgress className="my-spinner" color="primary" />
+                    }
+                </GridItem> 
+                <GridItem xs={12} sm={12} md={3}>
                   <div className={classes.demo}>
                     <List className="my-ticket-list">
                       <ListItem>
@@ -283,20 +307,8 @@ class Ticket extends Component {
                       </ListItem>
                     </List>
                   </div>
-                  <Typography variant="h6" className="ticket-title">
-                    {show_ticket.title} created by {show_ticket.creator ? show_ticket.creator.name : null}
-                  </Typography>                          
-                  <Typography className="my-ticket-time">
-                    Created: {show_ticket.created_at}
-                  </Typography>
-                  <Typography className="my-ticket-time">
-                    Due date: {show_ticket.due_date}
-                  </Typography>
-                  <Typography className="my-ticket-description">
-                    {show_ticket.description}
-                  </Typography>
-                  <GridContainer>
-                    <form className="my-comments-form" onSubmit={this.submit}>
+                </GridItem> 
+                    {/* <form className="my-comments-form" onSubmit={this.submit}>
                       <GridItem xs={12} sm={12} md={9}>
                         <TextField 
                            name="comment" 
@@ -313,11 +325,10 @@ class Ticket extends Component {
                     </form>
                     <ListItemAvatar onClick={this.submit}>
                       <Avatar className="my-comment-submit"> <Comment /> </Avatar>
-                    </ListItemAvatar>
-                  </GridContainer>
+                    </ListItemAvatar> */}
                     <Button color="primary" onClick={this.showForm}>{ButtonText}</Button>
-                    <Button color="danger" onClick={this.deleteTicket}>Delete ticket</Button>
-              </Grid>
+                    {/* <Button color="danger" onClick={this.deleteTicket}>Delete ticket</Button> */}
+                </GridContainer>
             </CardBody> 
           </Card>
           <Card>
@@ -500,11 +511,7 @@ class Ticket extends Component {
                 }) : null}
               </List>
             </Card>
-          </GridItem>
-
                 {isFetching ? <CircularProgress className="my-spinner" color="primary" /> : null } 
-
-              </GridContainer>
             </div>
           );
         }
@@ -533,7 +540,8 @@ const mapStateToProps = state => ({
   ticketStatus: state.ticket.ticketStatus,
   user: state.auth.user,
   commentSuccess: state.comment.successMessage,
-  comments: state.ticket.comments
+  comments: state.ticket.comments,
+  description: state.ticket.description
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Ticket)));
