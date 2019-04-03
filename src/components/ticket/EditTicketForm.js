@@ -50,6 +50,8 @@ class EditTicketForm extends Component {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   }
+  
+  onEditorStateChange = editorState => { this.setState({ editorState }) }
 
   handleDateChange = event => {this.setState({ selectedDate: event.target.value }) }
 

@@ -8,8 +8,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const TicketContent = ({ ticket, description }) => {
 
-    const convertFromJSONToHTML = (text) => { return stateToHTML(convertFromRaw(text))  }
-
+    const convertFromJSONToHTML = (text) => { return stateToHTML(convertFromRaw(text))   }
+  
     return(
         <div>
             <Typography variant="h6" className="ticket-title">

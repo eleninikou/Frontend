@@ -24,6 +24,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+
+// import { TicketIconList, TicketContent, EditTicketForm, TicketComments, AddComment } from '../components/ticket'
+
+
 import TicketIconList from '../components/ticket/TicketIconList'
 import TicketContent from '../components/ticket/TicketContent'
 import EditTicketForm from '../components/ticket/EditTicketForm'
@@ -145,7 +149,7 @@ class Ticket extends Component {
 
   render() {
     const { classes, team, milestones, isFetching, commentSuccess, comments, description } = this.props;
-    const { show_ticket, user, creator, edit, ButtonText, editorState, addComment, 
+    const { show_ticket, user, creator, edit, ButtonText, addComment, 
             ButtonTextComment, successMessage, assigned_user_id, due_date, milestone_id,
             priority, status_id, title, type_id, project_name, project_id } = this.state;
 
@@ -153,18 +157,23 @@ class Ticket extends Component {
       <div> 
 
         {/* Display Success message */}
-        <Snackbar place="tr" color="success" message={successMessage || commentSuccess} open={this.state.tr}
-                  closeNotification={() => this.setState({ tr: false })} close /> 
+        <Snackbar 
+          place="tr" 
+          color="success" 
+          message={successMessage} 
+          open={this.state.tr}
+          closeNotification={() => this.setState({ tr: false })} 
+          close /> 
 
         {/* Display Ticket */}
           <Card>
             <CardHeader color="primary"> <h4 className={classes.cardTitleWhite}>Ticket</h4> </CardHeader>
               <CardBody>
                 <GridContainer>
-                  <GridItem xs={12} sm={8} md={9}>
+                  <GridItem xs={12} sm={12} md={9}>
                     <TicketContent ticket={show_ticket} description={description}/>
                   </GridItem> 
-                  <GridItem xs={12} sm={4} md={3}>
+                  <GridItem xs={12} sm={12} md={3}>
                     <TicketIconList ticket={show_ticket}/>
                   </GridItem> 
                 </GridContainer>
@@ -204,7 +213,12 @@ class Ticket extends Component {
                 <GridItem xs={12} sm={2} md={2}>
                   <Button color="primary" onClick={this.showCommentForm}>{ButtonTextComment}</Button>
                 </GridItem>  
-                {addComment ? <AddComment /> : null}
+                {addComment ? 
+                  <AddComment 
+                    ticket_id={show_ticket.id} 
+                    getSuccess={this.getSuccess.bind(this)}
+                  /> 
+                : null}
                 <TicketComments comments={comments} />    
               </CardBody>
             </Card>
