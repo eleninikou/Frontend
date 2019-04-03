@@ -1,8 +1,15 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+
+// Redux
 import { connect } from 'react-redux'
 import { ticketCreate, getTicketTypes, getTicketStatus } from '../redux/actions/tickets/Actions'
 import { getAllProjects, getProject } from '../redux/actions/projects/Actions'
+
+// Wysiwyg
+import { Editor } from 'react-draft-wysiwyg';
+import { EditorState, convertToRaw } from 'draft-js';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
@@ -24,9 +31,6 @@ import FormControl from '@material-ui/core/FormControl';
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
-import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 
 class CreateTicket extends Component {

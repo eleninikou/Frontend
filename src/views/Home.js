@@ -13,7 +13,7 @@ import routes from "../routes.js";
 import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
 import image from "../assets/img/sidebar-2.jpg";
 import CreateProject from './CreateProject'
-import EditProject from './EditProject'
+import Project from './Project'
 import CreateTicket from './CreateTicket'
 import Ticket from './Ticket'
 import EditMilestone from './EditMilestone'
@@ -37,7 +37,7 @@ const switchRoutes = (
       <Route exact path='/home/create-milestone' component={CreateMilestone} />
       <Route path='/home/milestone/:id' component={EditMilestone} />
       <Route exact path='/home/create-project' component={CreateProject} />
-      <Route path='/home/project/:id' component={EditProject} />
+      <Route path='/home/project/:id' component={Project} />
       <Route exact path='/home/create-ticket' component={CreateTicket} />
       <Route path='/home/ticket/:id' component={Ticket} />
       <Route path='/home/project-invite/:id' component={Invite} />
