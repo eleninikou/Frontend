@@ -43,15 +43,28 @@ class CreateMilestone extends Component {
 
 submit = event => {
   event.preventDefault();
-  debugger;
   const milestone = {
     title: this.state.title,
     focus: this.state.focus,
     due_date: this.state.selectedDate,
-    project_id: this.state.project_id
+    project_id: this.state.project_id,
+    backToProject: false
   };
 
-  this.props.milestoneCreate(milestone).then(this.showNotification('tr'))
+
+  this.props.milestoneCreate(milestone)
+  .then(() => {
+    if(this.state.backToProject) {
+        if(this.props.successMessage) {
+          this.props.history.push({
+            pathname: `/home/project/${this.state.project_id}`,
+            state: { successMessage: this.props.successMessage}
+          })
+      }
+    } else {
+      this.showNotification('tr')
+    }
+  })
 }
 
 showNotification(place) {
@@ -69,6 +82,17 @@ showNotification(place) {
 
 componentWillMount = () => {
   this.props.getAllProjects();
+      // If redirected from specific project select project
+      if (this.props.location.state ? this.props.location.state.project_id : null) {
+        this.setState({ 
+          project_id: this.props.location.state.project_id ,
+          backToProject: true
+        })
+      }
+}
+
+componentWillUnmount = () => {
+  this.setState({ backToProject: false})
 }
 
 handleChange = event => {

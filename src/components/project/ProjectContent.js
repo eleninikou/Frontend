@@ -22,8 +22,9 @@ import Timeline from "@material-ui/icons/Timeline";
 // Material UI components
 import Typography from '@material-ui/core/Typography';
 
-const ProjectContent = ({ project, getEdit, classes, team }) => {
+const ProjectContent = ({ project, getEdit, classes, team, tickets }) => {
 
+  console.log(project)
     const showForm = () => { getEdit(true)  }
     return (
         <GridContainer>          
@@ -58,7 +59,7 @@ const ProjectContent = ({ project, getEdit, classes, team }) => {
                               </Avatar>
                             </Tooltip>
                           </ListItemAvatar>
-                          <ListItemText primary={project.tickets ? project.tickets.length : 0 } />
+                          <ListItemText primary={tickets ? tickets.length : 0 } />
                         </ListItem>
                         <ListItem>
                           <ListItemAvatar>

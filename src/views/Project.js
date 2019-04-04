@@ -17,7 +17,6 @@ import CardBody from "../components/theme/Card/CardBody.jsx";
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 
 // Material UI components
@@ -26,7 +25,6 @@ import IconButton from "@material-ui/core/IconButton";
 import TablePagination from '@material-ui/core/TablePagination';
 
 // Icons
-import Edit from "@material-ui/icons/Edit";
 import Note from "@material-ui/icons/Note";
 import Close from "@material-ui/icons/Close";
 import People from "@material-ui/icons/People";
@@ -48,7 +46,7 @@ class Project extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        auth_user_id: '',
+        user: '',
         name: '',
         description: '',
         client_id: '',
@@ -57,17 +55,18 @@ class Project extends Component {
         page: 0,
         rowsPerPage: 5,
         ticketRowsPerPage: 5,
-        edit: false
+        edit: false,
+        successMessage: this.props.successMessage
       }
       this.deleteMilestone = this.deleteMilestone.bind(this);
       this.invitePeople = this.invitePeople.bind(this);
   }
 
   
-    componentWillMount() {
+    componentWillMount = () => {
       const cookies = new Cookies()
-      var auth_user_id = cookies.get('user')
-      this.setState( {auth_user_id })
+      var user = cookies.get('user')
+      this.setState({ user })
 
       this.props.getProject(this.props.match.params.id)
       .then(res => {
@@ -83,9 +82,19 @@ class Project extends Component {
       while (id--) {
         window.clearTimeout(id);
       }
+
+
+      if (this.props.location.state ? this.props.location.state.successMessage : null) {
+        this.setState({ successMessage : this.props.location.state.successMessage })
+        this.showNotification('tr')
+      }
     }
 
-    showNotification(place) {
+    componentWillUnmount = () => {
+      this.setState({ successMessage: '' })
+    }
+
+    showNotification = place => {
       var x = [];
       x[place] = true;
       this.setState(x);
@@ -97,31 +106,48 @@ class Project extends Component {
     }
 
 
-    goToTicket(id) { this.props.history.push(`/home/ticket/${id}`) }
+    goToTicket = id => { this.props.history.push(`/home/ticket/${id}`) }
 
-    editMilestone(id) { this.props.history.push(`/home/milestone/${id}`) }
+    editMilestone = id => { this.props.history.push(`/home/milestone/${id}`) }
 
-    deleteMilestone(id) { 
+    deleteMilestone = id => { 
       this.props.deleteMilestone(id)
-      .then(this.showNotification('tr')) 
+      .then(res => {
+        this.setState({ successMessage: res.message})
+      }).then(this.showNotification('tr')) 
+
       this.props.getProject(this.props.match.params.id)
       .then(res => {
         this.setState({ 
           id: res.project.id,
           name: res.project.name,
           description: res.project.description,
-          client_id: res.project.client_id
-         })
-      });
-    
+          client_id: res.project.client_id,
+        })
+      })
+      this.forceUpdate()
     }
 
-    deleteProject(id) { 
+    deleteProject = id => { 
       this.props.deleteProject(id)
-      .then(this.showNotification('tr'))
-      .then(this.props.history.push('/home/projects')) }
+      .then(() => {
+        if(this.props.successMessage) {
+          this.props.history.push({
+            pathname: '/home/projects',
+            state: { successMessage: this.props.successMessage}
+          })
+      }
+    })
+  }
 
-    invitePeople() { this.props.history.push(`/home/project-invite/${this.props.match.params.id}`) }
+    createNewMilestone = () => { 
+      this.props.history.push({
+        pathname: '/home/create-milestone',
+        state: { project_id: this.state.id }
+      }) 
+    }
+
+    invitePeople = () => { this.props.history.push(`/home/project-invite/${this.props.match.params.id}`) }
 
     handleChangePage = (event, page) => { this.setState({ page }) }
 
@@ -144,8 +170,8 @@ class Project extends Component {
     getEdit = edit => { this.setState({ edit }) }  
     
     render() {
-      const { classes, team, project, successMessage, successMessageMilestone, tickets } = this.props;
-      const { rowsPerPage, page, edit } = this.state;
+      const { classes, team, project, tickets } = this.props;
+      const { rowsPerPage, page, edit, successMessage, user } = this.state;
       const emptyRows = 0
       const TicketEmptyRows = 0
 
@@ -162,7 +188,7 @@ class Project extends Component {
               <Snackbar
                 place="tr"
                 color="success"
-                message={successMessage || successMessageMilestone}
+                message={successMessage}
                 open={this.state.tr}
                 closeNotification={() => this.setState({ tr: false })}
                 close
@@ -170,7 +196,7 @@ class Project extends Component {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                 <Card>
-                  {project.creator_id == this.state.auth_user_id ?
+                  {project.creator_id == user ?
                   <CustomTabs
                     headerColor="success"
                     tabs={[
@@ -191,6 +217,7 @@ class Project extends Component {
                             getEdit={this.getEdit.bind(this)}
                             classes={classes}
                             team={team}
+                            ticket={tickets}
                           />
                         ) 
                       },{ 
@@ -251,6 +278,11 @@ class Project extends Component {
                               nextIconButtonProps={{ 'aria-label': 'Next Page' }}
                               onChangePage={this.handleChangePage}
                               onChangeRowsPerPage={this.handleChangeRowsPerPage} /> 
+                              <GridContainer>
+                                <GridItem xs={12} sm={2} md={2}>
+                                  <Button color="success"  onClick={this.createNewMilestone.bind(this)}>Create new Milestone</Button>
+                                </GridItem>
+                              </GridContainer>
                           </div>    
                         )
                     },{
@@ -355,89 +387,7 @@ class Project extends Component {
                         )
                     }
                   ]}/> 
-                    : 
-                    <Card>
-                    <CardHeader color="primary">
-                       <h4 className={classes.cardTitleWhite}>Ticket</h4>
-                    </CardHeader>
-                    <CardBody>
-                    <GridContainer>
-                      <GridItem xs={12} sm={8} md={9}>
-                          {/* <Typography variant="h6" className="ticket-title">
-                            {show_ticket.title} created by {show_ticket.creator ? show_ticket.creator.name : null} | {show_ticket.created_at}
-                          </Typography>                          
-                            {description.blocks ? 
-                          <Typography className="my-ticket-time">
-                            <div dangerouslySetInnerHTML={{ __html: this.convertFromJSONToHTML(description) }} />
-                          </Typography> : <CircularProgress className="my-spinner" color="primary" />
-                          } */}
-                      </GridItem> 
-                      <GridItem xs={12} sm={4} md={3}>
-                        <div className={classes.demo}>
-                          {/* <List className="my-ticket-list">
-                            <ListItem>
-                              <ListItemAvatar>
-                                <Avatar> <DateRange /> </Avatar>
-                              </ListItemAvatar>
-                              <ListItemText primary={moment(show_ticket.due_date).format('YYYY-MM-DD')} />
-                            </ListItem>
-                            <ListItem>
-                              <ListItemAvatar>
-                                <Avatar> <LinearScale /> </Avatar>
-                              </ListItemAvatar>
-                              <ListItemText primary={show_ticket.status ? show_ticket.status.status : null} />
-                            </ListItem>
-                            <ListItem>
-                              <ListItemAvatar>
-                                <Avatar> 
-                                  {show_ticket.type_id == 1 ?
-                                    <BugReport /> 
-                                    : show_ticket.type_id == 2 ?
-                                    <LowPriority />
-                                    : show_ticket.type_id == 3 ?
-                                    <LinearScale />
-                                    : 
-                                    <YoutubeSearchedFor /> }
-                                
-                                </Avatar>
-                              </ListItemAvatar>
-                              <ListItemText primary={show_ticket.type ? show_ticket.type.type : null} />
-                            </ListItem>
-                            <ListItem>
-                              <ListItemAvatar>                         
-                              {
-                                show_ticket.priority == 'low' ?
-                                  <Avatar style={{backgroundColor: '#ff9800'}}> 
-                                    <Warning /> 
-                                  </Avatar>
-                                : show_ticket.priority == 'normal' ?
-                                  <Avatar style={{backgroundColor: '#4caf50'}}> 
-                                    <Warning /> 
-                                  </Avatar>
-                                : 
-                                  <Avatar style={{backgroundColor: '#f44336'}}> 
-                                    <Warning /> 
-                                  </Avatar>
-                              }
-                              </ListItemAvatar>
-                              <ListItemText primary={show_ticket.priority} />
-                            </ListItem>
-                            <ListItem>
-                              <ListItemAvatar>
-                                <Avatar> <Timeline /> </Avatar>
-                              </ListItemAvatar>
-                              <ListItemText primary={show_ticket.milestone ? show_ticket.milestone.title : null} />
-                            </ListItem>
-                          </List> */}
-                        </div>
-                      </GridItem> 
-                    </GridContainer>
-                  </CardBody> 
-                  <CardFooter>
-                    {/* <Button color="primary" onClick={this.showForm}>{ButtonText}</Button> */}
-                  </CardFooter>
-                </Card>
-                }   
+                    : null }   
                   </Card>
                 </GridItem>
               </GridContainer>
