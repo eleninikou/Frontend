@@ -13,10 +13,12 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Warning from "@material-ui/icons/Warning";
 import Timeline from "@material-ui/icons/Timeline";
 import DateRange from "@material-ui/icons/DateRange";
+import PersonPin from "@material-ui/icons/PersonPin";
 import BugReport from "@material-ui/icons/BugReport";
 import LowPriority from "@material-ui/icons/LowPriority";
 import LinearScale from '@material-ui/icons/LinearScale';
 import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor";
+import Comment from "@material-ui/icons/Comment";
 
 
 
@@ -36,6 +38,20 @@ const TicketIconList = ({ ticket, classes }) => {
                 </Tooltip>
               </ListItemAvatar>
               <ListItemText primary={moment(ticket.due_date).format('YYYY-MM-DD')} />
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+              <Tooltip
+                id="tooltip-top-start"
+                title="Assigned user"
+                placement="top"
+                classes={{ tooltip: classes.tooltip }}>  
+                  <Avatar style={{backgroundColor: '#f44336'}}> 
+                    <PersonPin /> 
+                  </Avatar>
+                </Tooltip>
+              </ListItemAvatar>
+              <ListItemText primary={ticket.assigned_user ? ticket.assigned_user.name : null} />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -108,6 +124,20 @@ const TicketIconList = ({ ticket, classes }) => {
                 </Tooltip>
               </ListItemAvatar>
               <ListItemText primary={ticket.milestone ? ticket.milestone.title : null} />
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+              <Tooltip
+                id="tooltip-top-start"
+                title="Comments"
+                placement="top"
+                classes={{ tooltip: classes.tooltip }}>  
+                  <Avatar style={{backgroundColor: '#00acc1'}}> 
+                    <Comment /> 
+                  </Avatar>
+                </Tooltip>
+              </ListItemAvatar>
+              <ListItemText primary={ticket.comments ? ticket.comments.length : 0} />
             </ListItem>
           </List>
 

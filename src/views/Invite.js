@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import Cookies from 'universal-cookie';
 
 // Redux
 import { getProjectsByUser, getProject, getRoles, getTeam, invite } from '../redux/actions/projects/Actions'
@@ -18,7 +17,6 @@ import Table from "../components/theme/Table/Table.jsx";
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
 // Material UI components
-import TablePagination from '@material-ui/core/TablePagination';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -56,9 +54,7 @@ class Invite extends Component {
       // From dashboard. Get all projects
       this.props.getProjectsByUser()
     }
-
     this.props.getRoles()
-    // fetch team
   }
 
   submit = event => {
@@ -69,7 +65,11 @@ class Invite extends Component {
       project_role: this.state.project_role,
     }
     this.props.invite(invitation)
-    .then(this.showNotification('tr'))
+    .then(() => {
+      if (this.props.successMessage) {
+        this.showNotification('tr')
+      }
+    })
   }
 
   showNotification(place) {
@@ -86,7 +86,6 @@ class Invite extends Component {
 
   handleChange = event => { 
     this.setState({ [event.target.name]: event.target.value }) 
-    console.log(event.target.value)
 
     if([event.target.name] == 'project_id') {
       this.props.getTeam(event.target.value).then(
@@ -120,42 +119,37 @@ class Invite extends Component {
             </CardHeader>
             <CardBody>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
-                <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="project_id">Project</InputLabel>
-                    <Select
+                <GridItem xs={12} sm={12} md={6}>
+                  <FormControl className={classes.formControl}>                    
+                    <TextField
+                      select
+                      label="Project"
+                      variant="outlined"
+                      margin="normal"
                       className="my-input"
-                      value={this.state.project_name}
+                      value={this.state.project_id}
                       onChange={this.handleChange}
                       inputProps={{
                         name: 'project_id',
                         id: 'project_id',
                       }}>
                     {projects.projects ? projects.projects.map(project => {
-                      return (
-                        <MenuItem 
-                          key={project.id}
-                          value={project.id}>
-                            {project.name}
-                        </MenuItem>
-                      )
+                      return <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
                     }): 
                     project ? 
-                      <MenuItem 
-                        defaultValue
-                        key={project.id}
-                        value={project.name}>
-                          {project.name}
-                      </MenuItem>
+                      <MenuItem defaultValue key={project.id} value={project.id}> {project.name} </MenuItem>
                     : null
                   }
-                    </Select>
+                    </TextField>
                 </FormControl>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={6}>
                 <FormControl className={classes.formControl}>
-                  <InputLabel htmlFor="project_role">User role</InputLabel>
-                    <Select
+                  <TextField
+                      select
+                      label="Project"
+                      variant="outlined"
+                      margin="normal"
                       className="my-input"
                       value={this.state.project_role}
                       onChange={this.handleChange}
@@ -164,15 +158,9 @@ class Invite extends Component {
                         id: 'project_role',
                       }}>
                       {roles ? roles.map(role => {
-                      return (
-                        <MenuItem 
-                          key={role.id}
-                          value={role.id}>
-                            {role.role}
-                        </MenuItem>
-                      )
+                      return  <MenuItem key={role.id} value={role.id}> {role.role} </MenuItem>
                     }) : null }
-                    </Select>
+                    </TextField>
                 </FormControl>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
@@ -199,7 +187,7 @@ class Invite extends Component {
         <GridItem xs={12} sm={12} md={4}>
           <Card>
             <CardHeader color="info">
-              <h4 className={classes.cardTitleWhite}>The team <People/></h4>
+              <h4 className={classes.cardTitleWhite}><People/></h4>
             </CardHeader>
             <CardBody>
               {team ? 
@@ -215,32 +203,8 @@ class Invite extends Component {
                       return [
                         `${user.user ? user.user.name : null}`, 
                         `${user.role ? user.role.role : null }`,
-                        // person.role ? person.role.id !== 1 ?
-                        // <Tooltip
-                        //   id="tooltip-top-start"
-                        //   title="Remove"
-                        //   placement="top"
-                        //   classes={{ tooltip: classes.tooltip }}>
-                        //   <IconButton
-                        //     aria-label="Close"
-                        //     className={classes.tableActionButton}>
-                        //     <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
-                        //   </IconButton>
-                        // </Tooltip>
-                        // : null : null
                       ] }) : null
                       ]} />
-                  <TablePagination
-                    rowsPerPageOptions={[5, 10, 20]}
-                    component="div"
-                    count={team.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    backIconButtonProps={{ 'aria-label': 'Previous Page' }}
-                    nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-                    onChangePage={this.handleChangePage}
-                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                    />
                     </div>
                     : null}
             </CardBody>

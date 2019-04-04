@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+import Cookies from 'universal-cookie';
+import moment from 'moment';
+
+// Redux
 import { connect } from 'react-redux'
 import { getAllProjects } from '../redux/actions/projects/Actions'
-import Cookies from 'universal-cookie';
 
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
@@ -58,8 +61,14 @@ class Milestones extends Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, milestones ? milestones.length : 0 - page * rowsPerPage);
     
     return (
+      <div>
+      <GridContainer>
+        <GridItem xs={12} sm={2} md={2}>
+          <Button color="warning"  onClick={this.createNewMilestone}>Create new Milestone</Button>
+        </GridItem>
+      </GridContainer>
+
       <GridContainer> 
-        <Button color="warning"  onClick={this.createNewMilestone}>Create new Milestone</Button>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning">
@@ -78,7 +87,7 @@ class Milestones extends Component {
                           `${milestone.title}`, 
                           `${milestone.focus}`,
                           `${milestone.project ? milestone.project.name : null}`, 
-                          `${milestone.updated_at}`,
+                          `${moment(milestone.updated_at).format('YYYY-MM-DD')}`,
                             <Tooltip
                               id="tooltip-top"
                               title="Go to Milestone"
@@ -108,6 +117,7 @@ class Milestones extends Component {
               </Card>
             </GridItem>
           </GridContainer>
+        </div>  
         );
       }
 }

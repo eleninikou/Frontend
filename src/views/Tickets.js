@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+import moment from 'moment';
 
 // Redux
 import { getAllTickets, getTicketStatus, getTicketTypes } from '../redux/actions/tickets/Actions'
@@ -81,7 +82,14 @@ class Tickets extends Component {
       }) : tickets
 
     return (
-    <GridContainer>              
+      <div>
+      <GridContainer>
+        <GridItem xs={12} sm={2} md={2}>
+          <Button color="primary" onClick={this.createNewTicket}>Create new Ticket</Button>
+        </GridItem>
+      </GridContainer>
+
+      <GridContainer>              
           <GridItem xs={12} sm={12} md={12}>        
             <Card>
               <CardHeader color="primary">
@@ -104,8 +112,8 @@ class Tickets extends Component {
                       return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>    
                   }): null}
               </TextField>   
-          </GridItem>   
-          <GridItem xs={12} sm={12} md={3}>
+            </GridItem>   
+            <GridItem xs={12} sm={12} md={3}>
               <TextField
                 value={this.state.status_id}
                 select
@@ -169,7 +177,7 @@ class Tickets extends Component {
                       `${ticket.status.status}`,
                       `${ticket.priority}`, 
                       `${ticket.milestone.title}`,
-                      `${ticket.due_date}`,
+                      `${moment(ticket.due_date).format('YYYY-MM-DD')}`,
                       <Tooltip
                           id="tooltip-top"
                           title="Go To Ticket"
@@ -197,9 +205,9 @@ class Tickets extends Component {
                 </div>
                 </CardBody>
               </Card>
-              <Button color="primary" onClick={this.createNewTicket}>Create new Ticket</Button>
             </GridItem>
           </GridContainer>
+        </div>  
         );
       }
 }

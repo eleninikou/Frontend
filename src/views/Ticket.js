@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
+import moment from 'moment';
 
 // Redux
 import { connect } from 'react-redux'
@@ -53,7 +54,9 @@ class Ticket extends Component {
         ButtonText: 'Edit Ticket',
         editorState: '',
         addComment: false,
-        ButtonTextComment: 'Add Comment'
+        ButtonTextComment: 'Add Comment',
+        CommentText: 'Show Comments',
+        showComments: false
       }
   }
   
@@ -111,6 +114,20 @@ class Ticket extends Component {
     this.state.edit ?  
       this.setState({ edit: false, ButtonText: 'Edit Ticket' }) 
     : this.setState({ edit: true, ButtonText: 'Hide edit view' })
+    
+    if(this.state.showComments) {
+      this.setState({ showComments: false, CommentText: 'Show Comments' }) 
+    }
+  }
+
+  showComments = event => {
+    this.state.showComments ?  
+      this.setState({ showComments: false, CommentText: 'Show Comments' }) 
+    : this.setState({ showComments: true, CommentText: 'Hide Comments' })
+
+      if(this.state.edit) {
+        this.setState({ edit: false, ButtonText: 'Edit Ticket' }) 
+      }
   }
 
   showCommentForm = event => {
@@ -159,8 +176,9 @@ class Ticket extends Component {
   render() {
     const { classes, team, milestones, isFetching, comments, description } = this.props;
     const { show_ticket, user, creator, edit, ButtonText, addComment, 
-            ButtonTextComment, successMessage, assigned_user_id, due_date, milestone_id,
-            priority, status_id, title, type_id, project_name, project_id } = this.state;
+            ButtonTextComment, successMessage, assigned_user_id, due_date, 
+            milestone_id, priority, status_id, title, type_id, project_name, 
+            project_id, CommentText, showComments } = this.state;
 
     return (
       <div> 
@@ -178,22 +196,43 @@ class Ticket extends Component {
         <GridContainer>          
           <GridItem xs={12} sm={12} md={12}>
             <Card>
-              <CardHeader color="primary"> <h4 className={classes.cardTitleWhite}>{show_ticket.title} </h4> </CardHeader>
+              <CardHeader color="primary"> 
+                <h4 className={classes.cardTitleWhite}>{show_ticket.title} </h4> 
+                <p className={classes.cardCategoryWhite}>created by {
+                    show_ticket.creator ? show_ticket.creator.name : null} |  {moment(show_ticket.created_at).format('YYYY-MM-DD')}
+                </p>
+              </CardHeader>
                 <CardBody>
                 <GridContainer>          
-                  <GridItem xs={12} sm={12} md={8}>
-                    <TicketContent ticket={show_ticket} description={description}/>
-                  </GridItem>    
                   <GridItem xs={12} sm={12} md={4}>
                     <TicketIconList ticket={show_ticket} classes={classes}/>
-                      <Button color="primary" onClick={this.showForm} style={{ float: 'right'}}>
-                        {ButtonText}
-                      </Button> 
                   </GridItem> 
+                  <GridItem xs={12} sm={12} md={8}>
+                    <TicketContent description={description}/>
+                  </GridItem>    
                 </GridContainer>
               </CardBody> 
             </Card>
           </GridItem> 
+        </GridContainer>
+
+        <GridContainer>
+          <GridItem xs={12} sm={2} md={2}>
+            <Button color="primary" onClick={this.showComments} >
+              {CommentText}
+            </Button> 
+         </GridItem>
+         <GridItem xs={12} sm={2} md={2}>
+            <Button color="primary" onClick={this.showForm}>
+              {ButtonText}
+            </Button> 
+         </GridItem>
+         <GridItem xs={12} sm={2} md={8}>
+            <Button color="danger" onClick={this.deleteTicket} style={{ float: 'right'}}>
+              Delete Ticket
+            </Button>
+        </GridItem>
+
         </GridContainer>
 
         {/* Edit Ticket if authorized */}
@@ -219,6 +258,7 @@ class Ticket extends Component {
            </Card>
 
         {/* Display Comments */}
+        {showComments ? 
             <Card>
               <CardBody>
                 <GridItem xs={12} sm={2} md={3}>
@@ -238,6 +278,7 @@ class Ticket extends Component {
                   />    
               </CardBody>
             </Card>
+            : null }
 
           {isFetching ? <CircularProgress className="my-spinner" color="primary" /> : null } 
       </div> 
