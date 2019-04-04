@@ -14,6 +14,7 @@ import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Card from "../components/theme/Card/Card";
 import CardBody from "../components/theme/Card/CardBody.jsx";
+import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
@@ -212,6 +213,9 @@ class Ticket extends Component {
                   </GridItem>    
                 </GridContainer>
               </CardBody> 
+              <CardFooter>
+
+              </CardFooter>
             </Card>
           </GridItem> 
         </GridContainer>
@@ -232,7 +236,6 @@ class Ticket extends Component {
               Delete Ticket
             </Button>
         </GridItem>
-
         </GridContainer>
 
         {/* Edit Ticket if authorized */}

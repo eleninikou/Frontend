@@ -13,7 +13,6 @@ import Button from "../components/theme/CustomButtons/Button.jsx";
 // import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField'
-import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -40,9 +39,12 @@ submit = event => {
   this.props.projectCreate(project)
   .then(res => {
     if (!res.error) {
-      console.log(res)
-      this.showNotification('tr');
-      // this.props.history.push('/home/invite')
+      if(this.props.successMessage) {
+        this.props.history.push({
+          pathname: '/home/projects',
+          state: { successMessage: this.props.successMessage}
+        })
+      }
     } else {
       console.log(res)
     }
@@ -53,10 +55,6 @@ componentWillMount = () => {
   const cookies = new Cookies()
   var creator_id = cookies.get('user')
   this.setState({ creator_id})
-  var id = window.setTimeout(null, 0);
-  while (id--) {
-    window.clearTimeout(id);
-  }
 }
 
 handleChange = event => {
@@ -64,33 +62,10 @@ handleChange = event => {
   this.setState({ [name]: value });
 }
 
-showNotification(place) {
-  var x = [];
-  x[place] = true;
-  this.setState(x);
-  this.alertTimeout = setTimeout(
-    function() {
-      x[place] = false;
-      this.setState(x);
-    }.bind(this),
-    6000
-  );
-}
-
 render() {
-  const { classes, successMessage } = this.props;
+  const { classes } = this.props;
   return (
       <GridContainer>
-        {successMessage ? 
-          <Snackbar
-            place="tr"
-            color="success"
-            message={successMessage}
-            open={this.state.tr}
-            closeNotification={() => this.setState({ tr: false })}
-            close
-          />
-          : null}
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="success">

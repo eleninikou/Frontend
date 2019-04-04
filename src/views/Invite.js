@@ -50,6 +50,13 @@ class Invite extends Component {
     // From invite to specific project
     if(this.props.match.params.id) {
       this.props.getProject(this.props.match.params.id)
+      .then(res => {  
+        this.setState({ 
+          project_id: this.props.project.id,
+          team: this.props.team
+      }) 
+    
+      })
     } else {
       // From dashboard. Get all projects
       this.props.getProjectsByUser()
@@ -65,11 +72,7 @@ class Invite extends Component {
       project_role: this.state.project_role,
     }
     this.props.invite(invitation)
-    .then(() => {
-      if (this.props.successMessage) {
-        this.showNotification('tr')
-      }
-    })
+    .then(() => { if (this.props.successMessage) { this.showNotification('tr') } })
   }
 
   showNotification(place) {
@@ -133,12 +136,11 @@ class Invite extends Component {
                         name: 'project_id',
                         id: 'project_id',
                       }}>
-                    {projects.projects ? projects.projects.map(project => {
+                      {project ? 
+                        <MenuItem defaultValue key={project.id} value={project.id}> {project.name} </MenuItem>
+                    : projects.projects ? projects.projects.map(project => {
                       return <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
-                    }): 
-                    project ? 
-                      <MenuItem defaultValue key={project.id} value={project.id}> {project.name} </MenuItem>
-                    : null
+                    }) : null
                   }
                     </TextField>
                 </FormControl>
@@ -147,7 +149,7 @@ class Invite extends Component {
                 <FormControl className={classes.formControl}>
                   <TextField
                       select
-                      label="Project"
+                      label="Role"
                       variant="outlined"
                       margin="normal"
                       className="my-input"

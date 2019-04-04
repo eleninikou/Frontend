@@ -15,6 +15,7 @@ import Card from "../components/theme/Card/Card";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
 // Material UI components
 import Tooltip from "@material-ui/core/Tooltip";
@@ -47,6 +48,17 @@ class Projects extends Component {
     var auth_user_id = cookies.get('user')
     this.setState({ auth_user_id })
     this.props.getAllProjects();
+
+    var id = window.setTimeout(null, 0);
+    while (id--) {
+      window.clearTimeout(id);
+    }
+
+    // If redirected from create project display Success message
+    if (this.props.location.state ? this.props.location.state.successMessage : null) {
+      this.setState({ successMessage : this.props.location.state.successMessage })
+      this.showNotification('tr')
+    }
   }
 
   createNewProject() { this.props.history.push('/home/create-project/') }
@@ -57,9 +69,22 @@ class Projects extends Component {
 
   handleChangeRowsPerPage = event => { this.setState({ rowsPerPage: event.target.value }) }
 
+  showNotification(place) {
+    var x = [];
+    x[place] = true;
+    this.setState(x);
+    this.alertTimeout = setTimeout(
+      function() {
+        x[place] = false;
+        this.setState(x);
+      }.bind(this),
+      6000
+    );
+  }
+
     render() {
       const { classes, allProjects } = this.props;
-      const { rowsPerPage, page, auth_user_id } = this.state;
+      const { rowsPerPage, page, auth_user_id, successMessage } = this.state;
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, allProjects.length - page * rowsPerPage);
 
         // https://reactgo.com/removeduplicateobjects/
@@ -74,6 +99,14 @@ class Projects extends Component {
 
       return (
         <div>
+          <Snackbar
+            place="tr"
+            color="success"
+            message={successMessage}
+            open={this.state.tr}
+            closeNotification={() => this.setState({ tr: false })}
+            close
+          />
           <GridContainer>
             <GridItem xs={12} sm={2} md={2}>
               <Button color="success"  onClick={this.createNewProject}>Create new Project</Button>

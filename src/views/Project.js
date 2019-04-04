@@ -1,28 +1,27 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie';
+import moment from 'moment';
 
 // Redux
 import { connect } from 'react-redux'
-import { getProject, editProject, deleteProject } from '../redux/actions/projects/Actions'
+import { getProject, deleteProject } from '../redux/actions/projects/Actions'
 import { deleteMilestone } from '../redux/actions/milestones/Actions'
 
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx";
-import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Card from "../components/theme/Card/Card";
-import CardBody from "../components/theme/Card/CardBody.jsx";
-import Button from "../components/theme/CustomButtons/Button.jsx";
-import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import Table from "../components/theme/Table/Table.jsx";
-import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
+import Button from "../components/theme/CustomButtons/Button.jsx";
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
+import CardBody from "../components/theme/Card/CardBody.jsx";
+import GridItem from "../components/theme/Grid/GridItem.jsx";
+import CardFooter from "../components/theme/Card/CardFooter.jsx";
+import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
+import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 
 // Material UI components
 import Tooltip from "@material-ui/core/Tooltip";
-import TextField from '@material-ui/core/TextField'
-import InputLabel from '@material-ui/core/InputLabel';
 import IconButton from "@material-ui/core/IconButton";
 import TablePagination from '@material-ui/core/TablePagination';
 
@@ -41,6 +40,9 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import '../assets/sass/main.sass';
 
+import EditProjectForm from '../components/project/EditProjectForm';
+import ProjectContent from '../components/project/ProjectContent';
+
 
 class Project extends Component {
     constructor(props) {
@@ -54,26 +56,13 @@ class Project extends Component {
         tr: false,
         page: 0,
         rowsPerPage: 5,
-        ticketRowsPerPage: 5
+        ticketRowsPerPage: 5,
+        edit: false
       }
-  
-      this.editMilestone = this.editMilestone.bind(this);
       this.deleteMilestone = this.deleteMilestone.bind(this);
       this.invitePeople = this.invitePeople.bind(this);
-      this.handleChange = this.handleChange.bind(this);
   }
 
-  submit = event => {
-    event.preventDefault();
-    const project = {
-      id: this.state.id,
-      client_id: this.state.client_id,
-      name: this.state.name,
-      description: this.state.description,
-    };
-
-    this.props.editProject(project).then(this.showNotification('tr'))
-  }
   
     componentWillMount() {
       const cookies = new Cookies()
@@ -112,27 +101,51 @@ class Project extends Component {
 
     editMilestone(id) { this.props.history.push(`/home/milestone/${id}`) }
 
-    deleteMilestone(id) { this.props.deleteMilestone(id).then(this.showNotification('tr')) }
+    deleteMilestone(id) { 
+      this.props.deleteMilestone(id)
+      .then(this.showNotification('tr')) 
+      this.props.getProject(this.props.match.params.id)
+      .then(res => {
+        this.setState({ 
+          id: res.project.id,
+          name: res.project.name,
+          description: res.project.description,
+          client_id: res.project.client_id
+         })
+      });
+    
+    }
 
-    deleteProject(id) { this.props.deleteProject(id).then(this.showNotification('tr')) }
+    deleteProject(id) { 
+      this.props.deleteProject(id)
+      .then(this.showNotification('tr'))
+      .then(this.props.history.push('/home/projects')) }
 
     invitePeople() { this.props.history.push(`/home/project-invite/${this.props.match.params.id}`) }
-
-    handleChange = event => {
-      const { name, value } = event.target;
-      this.setState({ [name]: value });
-    }
 
     handleChangePage = (event, page) => { this.setState({ page }) }
 
     handleChangeRowsPerPage = event => { this.setState({ rowsPerPage: event.target.value }) }
   
+    getSuccess = successMessage => {
+      this.setState({ successMessage })
+      this.showNotification('tr')
+      this.props.getProject(this.props.match.params.id)
+      .then(res => {
+        this.setState({ 
+          id: res.project.id,
+          name: res.project.name,
+          description: res.project.description,
+          client_id: res.project.client_id
+         })
+      });
+      }
 
-
+    getEdit = edit => { this.setState({ edit }) }  
     
     render() {
       const { classes, team, project, successMessage, successMessageMilestone, tickets } = this.props;
-      const { rowsPerPage, page } = this.state;
+      const { rowsPerPage, page, edit } = this.state;
       const emptyRows = 0
       const TicketEmptyRows = 0
 
@@ -146,7 +159,6 @@ class Project extends Component {
         return (
           project ?
             <div>
-            {successMessage || successMessageMilestone ? 
               <Snackbar
                 place="tr"
                 color="success"
@@ -154,8 +166,7 @@ class Project extends Component {
                 open={this.state.tr}
                 closeNotification={() => this.setState({ tr: false })}
                 close
-              /> : null }
-
+              /> 
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                 <Card>
@@ -167,37 +178,20 @@ class Project extends Component {
                       tabName: "Info",
                       tabIcon: LibraryBooks,
                       tabContent: (
-                          <form className={classes.form} onSubmit={this.submit}>
-                            <CardBody>
-                              <GridContainer>
-                                <GridItem xs={12} sm={12} md={12}>
-                                  <InputLabel>Name</InputLabel>
-                                  <TextField 
-                                      name="name" 
-                                      type="text"
-                                      value={this.state.name}
-                                      onChange={this.handleChange}
-                                      fullWidth
-                                      className="my-input"
-                                  />
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
-                                  <InputLabel>Description</InputLabel>
-                                  <TextField 
-                                      name="description" 
-                                      type="text"
-                                      value={this.state.description}
-                                      onChange={this.handleChange}
-                                      fullWidth
-                                      className="my-input"
-                                    />
-                                </GridItem>
-                              </GridContainer>
-                            </CardBody>
-                            <CardFooter>
-                              <Button color="success" type="submit">Edit Project</Button>
-                            </CardFooter>
-                          </form>  
+                        edit ?
+                          <EditProjectForm 
+                            classes={classes} 
+                            project={project}
+                            getSuccess={this.getSuccess.bind(this)}
+                            getEdit={this.getEdit.bind(this)}
+                          />
+                        :
+                          <ProjectContent
+                            project={project} 
+                            getEdit={this.getEdit.bind(this)}
+                            classes={classes}
+                            team={team}
+                          />
                         ) 
                       },{ 
                       tabName: "Milestones",
@@ -209,13 +203,13 @@ class Project extends Component {
                               rowsPerPage={rowsPerPage}
                               emptyRows={emptyRows}
                               tableHeaderColor="success"
-                              tableHead={["Title", "Focus", "Last updated", "Edit", "Remove"] }
+                              tableHead={["Title", "Focus", "Last updated", "Details", "Remove"] }
                               tableData={[
                                 project.milestones ? project.milestones.map(milestone => {
                                   return ([
                                     `${milestone.title}`, 
                                     `${milestone.focus}`,
-                                    `${milestone.updated_at}`,
+                                    `${moment(milestone.updated_at).format('YYYY-MM-DD')}`,
                                       (
                                         <Tooltip
                                           id="tooltip-top"
@@ -226,7 +220,7 @@ class Project extends Component {
                                           <IconButton
                                             aria-label="Edit"
                                             className={classes.tableActionButton}>
-                                            <Edit className={ classes.tableActionButtonIcon + " " + classes.edit}/>
+                                            <ExitToApp style={{color:'#66bb6a'}} className={ classes.tableActionButtonIcon + " " + classes.edit}/>
                                           </IconButton>
                                         </Tooltip>
                                       ), 
@@ -240,7 +234,7 @@ class Project extends Component {
                                           <IconButton
                                             aria-label="Close"
                                             className={classes.tableActionButton}>
-                                            <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
+                                            <Close style={{color:'#f44336'}} className={ classes.tableActionButtonIcon + " " + classes.close}/>
                                           </IconButton>
                                         </Tooltip>
                                       ) 
@@ -269,7 +263,7 @@ class Project extends Component {
                               rowsPerPage={rowsPerPage}
                               emptyRows={TicketEmptyRows}
                               tableHeaderColor="success"
-                              tableHead={["Priority", "Type", "Title", "Assigned to", "Status", "Due date", "Edit", "Details"]}
+                              tableHead={["Priority", "Type", "Title", "Assigned to", "Status", "Due date", "Details"]}
                               tableData={[
                                 tickets.map(ticket => {
                                 return [
@@ -278,21 +272,7 @@ class Project extends Component {
                                     `${ticket.title}`, 
                                     `${ticket.assigned_user.name}`,
                                     `${ticket.status.status}`,
-                                    `${ticket.due_date}`,
-                                      (this.state.auth_user_id == ticket.creator_id) || (this.state.auth_user_id == ticket.assigned_user_id) ?
-                                      <Tooltip
-                                        id="tooltip-top"
-                                        title="Edit Ticket"
-                                        placement="top"
-                                        classes={{ tooltip: classes.tooltip }}
-                                        onClick={this.goToTicket.bind(this, ticket.id)}>
-                                        <IconButton
-                                          aria-label="Edit"
-                                          className={classes.tableActionButton}>
-                                          <Edit className={ classes.tableActionButtonIcon + " " + classes.edit}/>
-                                        </IconButton>
-                                      </Tooltip>
-                                      : null,
+                                    `${moment(ticket.due_date).format('YYYY-MM-DD')}`,
                                       <Tooltip
                                         id="tooltip-top"
                                         title="Go to Ticket"
@@ -301,7 +281,7 @@ class Project extends Component {
                                         onClick={this.goToTicket.bind(this, ticket.id)}
                                     >
                                       <IconButton aria-label="Go to" className={classes.tableActionButton}>
-                                        <ExitToApp className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                        <ExitToApp style={{color:'#66bb6a'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                                       </IconButton>
                                     </Tooltip>
                                     ]
@@ -472,7 +452,6 @@ const mapDispatchToProps = dispatch => {
   return { 
     getProject: id => dispatch(getProject(id)),
     deleteMilestone: id => dispatch(deleteMilestone(id)),
-    editProject: id => dispatch(editProject(id)),
     deleteProject: id => dispatch(deleteProject(id))
    }
 }
