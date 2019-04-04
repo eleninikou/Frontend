@@ -57,7 +57,6 @@ class EditTicketForm extends Component {
 
   submit = event => {
     event.preventDefault();
-
     let date = '';
     if (this.state.selectedDate === '') {
       this.date = this.state.due_date
@@ -230,13 +229,12 @@ class EditTicketForm extends Component {
                             editorClassName="editorClassName"
                             onEditorStateChange={this.onEditorStateChange}
                           />
+                        <Button color="primary" type="submit" style={{ float: 'right'}}> Save</Button>
+                        <Button color="danger" onClick={this.deleteTicket} style={{ float: 'right'}}>Delete</Button>
                       </GridItem>
                   </GridContainer>
                 </CardBody>
-                <CardFooter>
-                  <Button color="primary" type="submit"> Save</Button>
-                </CardFooter>
-                <Button color="danger" onClick={this.deleteTicket} className="my-add-comment-button">Delete ticket</Button>
+
               </form> 
       )
   }

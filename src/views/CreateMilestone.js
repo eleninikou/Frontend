@@ -84,7 +84,6 @@ render() {
   const { classes, allProjects, successMessage } = this.props;
   return (
       <GridContainer>
-        {successMessage ? 
           <Snackbar
           place="tr"
           color="success"
@@ -92,8 +91,8 @@ render() {
           open={this.state.tr}
           closeNotification={() => this.setState({ tr: false })}
           close
-          /> : null }
-        <GridItem xs={12} sm={12} md={8}>
+          /> 
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>Create new milestone</h4>
@@ -124,7 +123,7 @@ render() {
                       fullWidth
                       />
                   </GridItem>
-              <GridItem xs={12} sm={12} md={12}>
+              <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
                       <InputLabel htmlFor="project_id">Project</InputLabel>
                         <Select
@@ -132,19 +131,13 @@ render() {
                           value={this.state.project_id}
                           onChange={this.handleChange}
                           inputProps={{ name: 'project_id', id: 'project_id'}} >
-                        <MenuItem > <em>None</em></MenuItem>
                         {allProjects ? allProjects.map(project => {
-                          return (
-                            <MenuItem 
-                              key={project.project_id}
-                              value={project.project_id}> 
-                                {project.project.name}
-                            </MenuItem>) 
+                          return  <MenuItem key={project.project_id} value={project.project_id}> {project.project.name} </MenuItem>
                           }): null }
                         </Select>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
                     <TextField
                         id="date"

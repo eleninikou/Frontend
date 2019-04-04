@@ -70,8 +70,7 @@ submit = event => {
     assigned_user_id: this.state.assigned_user_id,
     milestone_id: this.state.milestone_id,
   }
-  debugger;
-
+  
   this.props.ticketCreate(ticket)
   .then(res => {
       if(!res.error) {

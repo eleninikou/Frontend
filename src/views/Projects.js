@@ -40,7 +40,7 @@ class Projects extends Component {
     this.goToProject = this.goToProject.bind(this);
 }
 
-  componentWillMount() {
+  componentWillMount = () => {
     const cookies = new Cookies()
     var auth_user_id = cookies.get('user')
     this.setState({ auth_user_id })

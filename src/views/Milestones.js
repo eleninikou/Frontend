@@ -56,11 +56,10 @@ class Milestones extends Component {
   render() {
     const { classes, milestones } = this.props;
     const { rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, milestones.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, milestones ? milestones.length : 0 - page * rowsPerPage);
     
     return (
       <GridContainer> 
-        {console.log(milestones)}
         <Button color="warning"  onClick={this.createNewMilestone}>Create new Milestone</Button>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
@@ -109,7 +108,7 @@ class Milestones extends Component {
                   <TablePagination
                     rowsPerPageOptions={[5, 10, 20]}
                     component="div"
-                    count={milestones.length}
+                    count={milestones ? milestones.length : 0}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     backIconButtonProps={{ 'aria-label': 'Previous Page' }}
@@ -126,7 +125,9 @@ class Milestones extends Component {
 }
 
 
-const mapDispatchToProps = dispatch => { return { getAllProjects: (token, id) => dispatch(getAllProjects(token, id)) }}
+const mapDispatchToProps = dispatch => { 
+  return { getAllProjects: (token, id) => dispatch(getAllProjects(token, id)) }
+}
 
 const mapStateToProps = state => ({ 
   milestones: state.project.milestones,

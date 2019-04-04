@@ -52,7 +52,7 @@ const CommentReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                successMessage: action.payload
+                successMessage: action.payload.message
             } 
         case DELETE_COMMENT_FAILURE:
             return {

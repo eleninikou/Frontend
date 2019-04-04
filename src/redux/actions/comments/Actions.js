@@ -3,11 +3,6 @@ import {
     CREATE_COMMENT_FAILURE,
     DELETE_COMMENT_SUCCESS,
     DELETE_COMMENT_FAILURE,
-    GET_COMMENTS_REQUEST,
-    GET_COMMENTS_SUCCESS,
-    GET_COMMENTS_FAILURE,
-    EDIT_COMMENT_SUCCESS,
-    EDIT_COMMENT_FAILURE,
   } from '../comments/Action-Types.js';
 
   import Cookies from 'universal-cookie';
@@ -33,6 +28,27 @@ import {
         const success = await res.json();
         return commentSuccess(success);
   
-      } catch (error) { dispatch ({ type: CREATE_COMMENT_FAILURE, message: 'Could not create milestone' }); return error; }
+      } catch (error) { dispatch ({ type: CREATE_COMMENT_FAILURE, message: 'Could not create comment' }); return error; }
     }
+}
+
+
+export const commentDelete = id=> {
+  return async dispatch => {  
+    const deleteSuccess = success => { 
+      dispatch ({ type: DELETE_COMMENT_SUCCESS, payload: success}); return success; }
+
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/comments/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      return deleteSuccess(success);
+
+    } catch (error) { dispatch ({ type: DELETE_COMMENT_FAILURE, message: 'Could not delete milestone' }); return error; }
+  }
 }

@@ -68,11 +68,6 @@ class Tickets extends Component {
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value, filter: name })
-
-    // let filters = {
-    //   color: ["Blue", "Black"],
-    //   size: [70, 50]
-    // };
   }
 
   render() {
