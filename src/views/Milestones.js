@@ -40,16 +40,16 @@ class Milestones extends Component {
     this.createNewMilestone = this.createNewMilestone.bind(this);
   }
 
-  componentWillMount() { 
+  componentWillMount = () => { 
     const cookies = new Cookies()
     var auth_user_id = cookies.get('user')
     this.setState({ auth_user_id })
     this.props.getAllProjects()
   }
 
-  createNewMilestone() { this.props.history.push('/home/create-milestone') }
+  createNewMilestone = () => { this.props.history.push('/home/create-milestone') }
 
-  goToMilestone(id) { this.props.history.push(`/home/milestone/${id}`)}
+  goToMilestone = id => { this.props.history.push(`/home/milestone/${id}`)}
 
   handleChangePage = (event, page) => { this.setState({ page }) }
 
@@ -61,13 +61,6 @@ class Milestones extends Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, milestones ? milestones.length : 0 - page * rowsPerPage);
     
     return (
-      <div>
-      <GridContainer>
-        <GridItem xs={12} sm={2} md={2}>
-          <Button color="warning"  onClick={this.createNewMilestone}>Create new Milestone</Button>
-        </GridItem>
-      </GridContainer>
-
       <GridContainer> 
           <GridItem xs={12} sm={12} md={12}>
             <Card>
@@ -113,11 +106,15 @@ class Milestones extends Component {
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                   />
+                  <GridContainer>
+                    <GridItem xs={12} sm={2} md={2}>
+                      <Button color="warning"  onClick={this.createNewMilestone}>Create new Milestone</Button>
+                    </GridItem>
+                  </GridContainer>
                 </CardBody>
               </Card>
             </GridItem>
           </GridContainer>
-        </div>  
         );
       }
 }

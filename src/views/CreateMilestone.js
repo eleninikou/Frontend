@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom"
 // Redux
 import { connect } from 'react-redux'
 import { milestoneCreate } from '../redux/actions/milestones/Actions'
-import { getAllProjects } from '../redux/actions/projects/Actions'
+import { getAllProjects, getProject } from '../redux/actions/projects/Actions'
 
 // Theme Components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
@@ -26,6 +26,7 @@ import Select from '@material-ui/core/Select';
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import { Typography } from '@material-ui/core';
 
 
 class CreateMilestone extends Component {
@@ -37,6 +38,8 @@ class CreateMilestone extends Component {
       due_date: '',
       project_id: '',
       selectedDate: '',
+      project_name: '',
+      backToProject: false
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -67,7 +70,7 @@ submit = event => {
   })
 }
 
-showNotification(place) {
+showNotification = place => {
   var x = [];
   x[place] = true;
   this.setState(x);
@@ -81,14 +84,17 @@ showNotification(place) {
 }
 
 componentWillMount = () => {
-  this.props.getAllProjects();
-      // If redirected from specific project select project
-      if (this.props.location.state ? this.props.location.state.project_id : null) {
-        this.setState({ 
-          project_id: this.props.location.state.project_id ,
-          backToProject: true
-        })
-      }
+  // If redirected from specific project select project
+  if (this.props.location.state ? this.props.location.state.project_id && this.props.location.state.project_name : null) {
+    this.setState({ 
+      project_id: this.props.location.state.project_id,
+      project_name: this.props.location.state.project_name,
+      backToProject: true
+    })
+    this.props.getProject(this.props.location.state.project_id);
+  } else {
+    this.props.getAllProjects();
+  }
 }
 
 componentWillUnmount = () => {
@@ -101,9 +107,11 @@ handleChange = event => {
 }
 
 handleDateChange = event => { this.setState({ selectedDate: event.target.value }) }
+createNewProject = () => { this.props.history.push('/home/create-project/') }
 
 render() {
-  const { classes, allProjects, successMessage } = this.props;
+  const { classes, allProjects, successMessage, project  } = this.props;
+  const { project_id, project_name, backToProject } = this.state;
   return (
       <GridContainer>
           <Snackbar
@@ -119,6 +127,7 @@ render() {
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>Create new milestone</h4>
             </CardHeader>
+            {allProjects.length || project ? 
             <form className={classes.form} onSubmit={this.submit}>
             <CardBody>
               <GridContainer>
@@ -145,18 +154,30 @@ render() {
                       fullWidth
                       />
                   </GridItem>
-              <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
-                      <InputLabel htmlFor="project_id">Project</InputLabel>
-                        <Select
+                        <TextField
+                          Select
+                          label="Project"
+                          variant="outlined"
+                          margin="normal"
                           className="my-input"
                           value={this.state.project_id}
                           onChange={this.handleChange}
                           inputProps={{ name: 'project_id', id: 'project_id'}} >
-                        {allProjects ? allProjects.map(project => {
-                          return  <MenuItem key={project.project_id} value={project.project_id}> {project.project.name} </MenuItem>
-                          }): null }
-                        </Select>
+                          {allProjects.length ? allProjects.map(project => {
+                            return  (
+                              <MenuItem key={project.project_id} value={project.project_id}> 
+                                {project.project.name} 
+                              </MenuItem>
+                            )
+                          })
+                          : 
+                          <MenuItem key={project.id} value={project.id}> 
+                            {project.name} 
+                          </MenuItem>
+                          }
+                        </TextField>
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
@@ -165,6 +186,8 @@ render() {
                         id="date"
                         label="Due date"
                         type="date"
+                        variant="outlined"
+                        margin="normal"
                         className="my-input"
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
@@ -180,6 +203,19 @@ render() {
               <Button color="warning" type="submit">Create milestone</Button>
             </CardFooter>
             </form> 
+            : 
+            <CardBody>
+              <Typography>
+                You don't have any active projects yet
+              </Typography>
+              <GridContainer>
+                <GridItem xs={12} sm={2} md={2}>
+                  <Button color="warning" onClick={this.createNewProject.bind(this)}>Create new Project</Button>
+                </GridItem>
+              </GridContainer>
+            </CardBody>
+          }
+            
           </Card>
         </GridItem>
       </GridContainer>
@@ -191,12 +227,14 @@ render() {
 const mapDispatchToProps = dispatch => { 
   return { 
       milestoneCreate: milestone => dispatch(milestoneCreate(milestone)),
+      getProject: id => dispatch(getProject(id)),
       getAllProjects: () => dispatch(getAllProjects()) 
     }
 }
 
 const mapStateToProps = state => ({ 
     allProjects: state.project.allProjects,
+    project: state.project.project,
     successMessage: state.milestone.successMessage
 })
 

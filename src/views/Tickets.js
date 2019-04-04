@@ -82,13 +82,6 @@ class Tickets extends Component {
       }) : tickets
 
     return (
-      <div>
-      <GridContainer>
-        <GridItem xs={12} sm={2} md={2}>
-          <Button color="primary" onClick={this.createNewTicket}>Create new Ticket</Button>
-        </GridItem>
-      </GridContainer>
-
       <GridContainer>              
           <GridItem xs={12} sm={12} md={12}>        
             <Card>
@@ -203,11 +196,15 @@ class Tickets extends Component {
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
                   />
                 </div>
+                  <GridContainer>
+                    <GridItem xs={12} sm={2} md={2}>
+                      <Button color="primary" onClick={this.createNewTicket}>Create new Ticket</Button>
+                    </GridItem>
+                  </GridContainer>
                 </CardBody>
               </Card>
             </GridItem>
           </GridContainer>
-        </div>  
         );
       }
 }

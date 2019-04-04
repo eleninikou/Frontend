@@ -157,7 +157,10 @@ class Project extends Component {
   createNewMilestone = () => { 
     this.props.history.push({
       pathname: '/home/create-milestone',
-      state: { project_id: this.state.id }
+      state: { 
+        project_id: this.state.id,
+        project_name: this.state.name
+      }
     }) 
   }
 

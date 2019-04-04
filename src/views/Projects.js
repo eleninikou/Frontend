@@ -107,12 +107,6 @@ class Projects extends Component {
             closeNotification={() => this.setState({ tr: false })}
             close
           />
-          <GridContainer>
-            <GridItem xs={12} sm={2} md={2}>
-              <Button color="success"  onClick={this.createNewProject}>Create new Project</Button>
-            </GridItem>
-          </GridContainer>
-
           <GridContainer> 
             <GridItem xs={12} sm={12} md={12}>
               <Card>
@@ -158,6 +152,11 @@ class Projects extends Component {
                       nextIconButtonProps={{ 'aria-label': 'Next Page' }}
                       onChangePage={this.handleChangePage}
                       onChangeRowsPerPage={this.handleChangeRowsPerPage} />
+                      <GridContainer>
+                        <GridItem xs={12} sm={2} md={2}>
+                          <Button color="success"  onClick={this.createNewProject}>Create new Project</Button>
+                        </GridItem>
+                      </GridContainer>
                   </CardBody>
                 </Card>
               </GridItem>
