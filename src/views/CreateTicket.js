@@ -72,15 +72,32 @@ submit = event => {
   }
   
   this.props.ticketCreate(ticket)
-  .then(res => {
-      if(!res.error) {
-        this.props.history.push('/home/tickets')
-      } 
+  .then(() => {
+    if(this.state.backToProject) {
+      debugger;
+        if(this.props.successMessage) {
+          this.props.history.push({
+            pathname: `/home/project/${this.state.project_id}`,
+            state: { successMessage: this.props.successMessage}
+          })
+      }
+    } else {
+      this.showNotification('tr')
+    }
   })
 }
 
 componentWillMount = () => {
-  this.props.getAllProjects();
+    // If redirected from specific project select project
+    if (this.props.location.state ? this.props.location.state.project_id : null) {
+      this.setState({ 
+        backToProject: true, 
+        project_id: this.props.location.state.project_id 
+      })
+      this.props.getProject(this.props.location.state.project_id)
+    } else {
+      this.props.getAllProjects();
+    }
   this.props.getTicketTypes();
   this.props.getTicketStatus();
 }
@@ -112,6 +129,8 @@ render() {
   
   let projects = getUnique(allProjects,'project_id')
   let team_members = getUnique(team,'user_id')
+
+  console.log(project)
 
   return (
       <GridContainer>
@@ -145,9 +164,9 @@ render() {
                           onChange={this.handleChange}
                           className="my-input"
                           inputProps={{  name: 'project_id',  id: 'project_id'}} >
-                        {projects ? projects.map(project => {
-                          return (
-                            <MenuItem  key={project.project.id} value={project.project.id}>  {project.project.name} </MenuItem>) 
+                        {project ?  <MenuItem  key={project.id} value={project.id}> {project.name} </MenuItem>
+                        : projects ? projects.map(project => {
+                          return  <MenuItem  key={project.project.id} value={project.project.id}>  {project.project.name} </MenuItem>
                           }): null }
                         </TextField>
                     </FormControl>
@@ -293,7 +312,8 @@ const mapStateToProps = state => ({
   allProjects: state.project.allProjects,
   isFetching: state.project.isFetching,
   ticketTypes: state.ticket.ticketTypes,
-  ticketStatus: state.ticket.ticketStatus
+  ticketStatus: state.ticket.ticketStatus,
+  successMessage: state.ticket.successMessage
 })
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateTicket)));
   

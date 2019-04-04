@@ -13,7 +13,9 @@ import {
     GET_TICKET_SUCCESS,
     GET_TICKET_FAILURE,
     DELETE_TICKET_SUCCESS,
-    DELETE_TICKET_FAILURE
+    DELETE_TICKET_FAILURE,
+    CREATE_TICKET_SUCCESS,
+    CREATE_TICKET_FAILURE,
 } from '../actions/tickets/Action-types';
 
 const initialState = {
@@ -98,7 +100,19 @@ const TicketReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errorMessage: action.message
-            }     
+            }    
+        case CREATE_TICKET_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                successMessage: action.payload.message
+            } 
+        case CREATE_TICKET_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }      
         case UPDATE_TICKET_SUCCESS:
             return {
                 ...state,

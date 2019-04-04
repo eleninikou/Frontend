@@ -100,9 +100,7 @@ handleChange = event => {
   this.setState({ [name]: value });
 }
 
-handleDateChange = event => {
-    this.setState({ selectedDate: event.target.value });
-  };
+handleDateChange = event => { this.setState({ selectedDate: event.target.value }) }
 
 render() {
   const { classes, allProjects, successMessage } = this.props;

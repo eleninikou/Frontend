@@ -59,7 +59,7 @@ const ProjectContent = ({ project, getEdit, classes, team, tickets }) => {
                               </Avatar>
                             </Tooltip>
                           </ListItemAvatar>
-                          <ListItemText primary={tickets ? tickets.length : 0 } />
+                          <ListItemText primary={project.tickets ? project.tickets.length : 0 } />
                         </ListItem>
                         <ListItem>
                           <ListItemAvatar>

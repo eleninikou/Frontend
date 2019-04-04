@@ -63,113 +63,126 @@ class Project extends Component {
   }
 
   
-    componentWillMount = () => {
-      const cookies = new Cookies()
-      var user = cookies.get('user')
-      this.setState({ user })
+  componentWillMount = () => {
+    const cookies = new Cookies()
+    var user = cookies.get('user')
+    this.setState({ user })
 
-      this.props.getProject(this.props.match.params.id)
-      .then(res => {
-        this.setState({ 
-          id: res.project.id,
-          name: res.project.name,
-          description: res.project.description,
-          client_id: res.project.client_id
-         })
-      });
+    // Fetch project and set to state
+    this.props.getProject(this.props.match.params.id)
+    .then(res => {
+      this.setState({ 
+        id: res.project.id,
+        name: res.project.name,
+        description: res.project.description,
+        client_id: res.project.client_id
+       })
+    });
 
-      var id = window.setTimeout(null, 0);
-      while (id--) {
-        window.clearTimeout(id);
-      }
-
-
-      if (this.props.location.state ? this.props.location.state.successMessage : null) {
-        this.setState({ successMessage : this.props.location.state.successMessage })
-        this.showNotification('tr')
-      }
+    // Snackbar
+    var id = window.setTimeout(null, 0);
+    while (id--) {
+      window.clearTimeout(id);
     }
 
-    componentWillUnmount = () => {
-      this.setState({ successMessage: '' })
+    // If previous create ticket or milestone, show notification with success
+    if (this.props.location.state ? this.props.location.state.successMessage : null) {
+      this.setState({ successMessage : this.props.location.state.successMessage })
+      this.showNotification('tr')
     }
+  }
 
-    showNotification = place => {
-      var x = [];
-      x[place] = true;
-      this.setState(x);
-      this.alertTimeout = setTimeout(
-        function() {
-          x[place] = false;
-          this.setState(x);
-        }.bind(this), 4000);
+  
+  showNotification = place => {
+    var x = [];
+    x[place] = true;
+    this.setState(x);
+    this.alertTimeout = setTimeout(
+      function() {
+        x[place] = false;
+        this.setState(x);
+      }.bind(this), 4000);
     }
+    
+    
+  componentWillUnmount = () => { this.setState({ successMessage: '' })}
 
+  goToTicket = id => { this.props.history.push(`/home/ticket/${id}`) }
 
-    goToTicket = id => { this.props.history.push(`/home/ticket/${id}`) }
+  editMilestone = id => { this.props.history.push(`/home/milestone/${id}`) }
 
-    editMilestone = id => { this.props.history.push(`/home/milestone/${id}`) }
+  deleteMilestone = id => { 
 
-    deleteMilestone = id => { 
-      this.props.deleteMilestone(id)
-      .then(res => {
-        this.setState({ successMessage: res.message})
-      }).then(this.showNotification('tr')) 
+    // Delete milestone and show notification
+    this.props.deleteMilestone(id).then(res => {
+      this.setState({ successMessage: res.message })
+    }).then(this.showNotification('tr')) 
 
-      this.props.getProject(this.props.match.params.id)
-      .then(res => {
-        this.setState({ 
-          id: res.project.id,
-          name: res.project.name,
-          description: res.project.description,
-          client_id: res.project.client_id,
-        })
+    // Fetch updated project
+    this.props.getProject(this.props.match.params.id)
+    .then(res => {
+      this.setState({ 
+        id: res.project.id,
+        name: res.project.name,
+        description: res.project.description,
+        client_id: res.project.client_id,
       })
-      this.forceUpdate()
-    }
+    })
+    this.forceUpdate()
+  }
 
-    deleteProject = id => { 
-      this.props.deleteProject(id)
-      .then(() => {
-        if(this.props.successMessage) {
-          this.props.history.push({
-            pathname: '/home/projects',
-            state: { successMessage: this.props.successMessage}
-          })
+
+  // Redirect to projects
+  deleteProject = id => { 
+    this.props.deleteProject(id)
+    .then(() => {
+      if(this.props.successMessage) {
+        this.props.history.push({
+          pathname: '/home/projects', 
+          state: { successMessage: this.props.successMessage}
+        })
       }
     })
   }
 
-    createNewMilestone = () => { 
-      this.props.history.push({
-        pathname: '/home/create-milestone',
-        state: { project_id: this.state.id }
-      }) 
-    }
+  // Redirect to create ticket
+  createNewTicket = () => { 
+    this.props.history.push({
+      pathname: '/home/create-ticket', 
+      state: { project_id: this.state.id }
+    }) 
+  }
 
-    invitePeople = () => { this.props.history.push(`/home/project-invite/${this.props.match.params.id}`) }
+  // Redirect to create milestone
+  createNewMilestone = () => { 
+    this.props.history.push({
+      pathname: '/home/create-milestone',
+      state: { project_id: this.state.id }
+    }) 
+  }
 
-    handleChangePage = (event, page) => { this.setState({ page }) }
+  invitePeople = () => { this.props.history.push(`/home/project-invite/${this.props.match.params.id}`) }
 
-    handleChangeRowsPerPage = event => { this.setState({ rowsPerPage: event.target.value }) }
+  handleChangePage = (event, page) => { this.setState({ page }) }
+  handleChangeRowsPerPage = event => { this.setState({ rowsPerPage: event.target.value }) }
   
-    getSuccess = successMessage => {
-      this.setState({ successMessage })
-      this.showNotification('tr')
-      this.props.getProject(this.props.match.params.id)
-      .then(res => {
-        this.setState({ 
-          id: res.project.id,
-          name: res.project.name,
-          description: res.project.description,
-          client_id: res.project.client_id
-         })
-      });
-      }
+  getSuccess = successMessage => {
+    this.setState({ successMessage })
+    this.showNotification('tr')
+    this.props.getProject(this.props.match.params.id)
+    .then(res => {
+      this.setState({ 
+        id: res.project.id,
+        name: res.project.name,
+        description: res.project.description,
+        client_id: res.project.client_id
+       })
+    });
+  }
 
-    getEdit = edit => { this.setState({ edit }) }  
+  getEdit = edit => { this.setState({ edit }) }  
     
-    render() {
+  render() {
       const { classes, team, project, tickets } = this.props;
       const { rowsPerPage, page, edit, successMessage, user } = this.state;
       const emptyRows = 0
@@ -331,6 +344,11 @@ class Project extends Component {
                               onChangePage={this.handleChangePage}
                               onChangeRowsPerPage={this.handleChangeRowsPerPage} 
                             />   
+                              <GridContainer>
+                                <GridItem xs={12} sm={2} md={2}>
+                                  <Button color="success"  onClick={this.createNewTicket.bind(this)}>Create new Ticket</Button>
+                                </GridItem>
+                              </GridContainer>
                          </div>
                       )
                     },{
