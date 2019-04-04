@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+import Cookies from 'universal-cookie';
+
+// Redux
 import { connect } from 'react-redux'
 import { getProject, editProject, deleteProject } from '../redux/actions/projects/Actions'
 import { deleteMilestone } from '../redux/actions/milestones/Actions'
-import Cookies from 'universal-cookie';
 
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";

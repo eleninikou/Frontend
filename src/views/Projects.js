@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
+import Cookies from 'universal-cookie';
+import moment from 'moment';
+
+// Redux
 import { connect } from 'react-redux'
 import { getAllProjects } from '../redux/actions/projects/Actions'
-import Cookies from 'universal-cookie';
 
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
@@ -19,7 +22,6 @@ import IconButton from "@material-ui/core/IconButton";
 import TablePagination from '@material-ui/core/TablePagination';
 
 // Icons
-import Edit from "@material-ui/icons/Edit";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 
 // Styles
@@ -71,8 +73,14 @@ class Projects extends Component {
         let projects = getUnique(allProjects,'project_id')
 
       return (
-         <GridContainer> 
-          <Button color="success"  onClick={this.createNewProject}>Create new Project</Button>
+        <div>
+          <GridContainer>
+            <GridItem xs={12} sm={2} md={2}>
+              <Button color="success"  onClick={this.createNewProject}>Create new Project</Button>
+            </GridItem>
+          </GridContainer>
+
+          <GridContainer> 
             <GridItem xs={12} sm={12} md={12}>
               <Card>
                 <CardHeader color="success">
@@ -84,27 +92,16 @@ class Projects extends Component {
                     rowsPerPage={rowsPerPage}
                     emptyRows={emptyRows}
                     tableHeaderColor="success"
-                    tableHead={["Name", "Created", "Open Tickets", "Total Tickets", "Last updated", "Edit", "Details" ]}
-                    tableData={[ projects ? projects.map(project => {
+                    tableHead={["Name", "Created", "Open Tickets", "Total Tickets", "Last updated", "Details" ]}
+                    tableData={[ 
+                      projects ? projects.map(project => {
                       let active_tickets = project.tickets.filter(ticket => (ticket.status_id !== (7 && 4)))
-                        return ( project.project ?  project.project.creator_id == auth_user_id ? 
-                          [ 
+                        return ([ 
                             `${project.project.name}`, 
-                            `${project.project.created_at}`, 
+                            `${moment(project.project.created_at).format('YYYY-MM-DD')}`, 
                             (active_tickets).length, 
                             `${(project.tickets).length}`, 
-                            `${project.updated_at}`,
-                            <Tooltip
-                              id="tooltip-top"
-                              title="Edit Project"
-                              placement="top"
-                              classes={{ tooltip: classes.tooltip }}
-                              onClick={this.goToProject.bind(this, project.project.id)}>
-                              <IconButton aria-label="Edit" className={classes.tableActionButton}>
-                                <Edit style={{color:'#4caf50'}}
-                                  className={ classes.tableActionButtonIcon + " " + classes.edit }/>
-                              </IconButton>
-                            </Tooltip>,
+                            `${moment(project.updated_at).format('YYYY-MM-DD')}`,
                             <Tooltip
                               id="tooltip-top"
                               title="Go to Project"
@@ -114,17 +111,10 @@ class Projects extends Component {
                               <IconButton aria-label="Go to" className={classes.tableActionButton}>
                                 <ExitToApp style={{color:'#4caf50'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                               </IconButton>
-                          </Tooltip>,
-                          ]
-                        : [
-                          `${project.project.name}`, 
-                          `${project.project.created_at}`, 
-                          (active_tickets).length, 
-                          `${(project.tickets).length}`, 
-                          `${project.updated_at}`
-                          ]  
-                         : null )}) : null
-                    ]}/>
+                          </Tooltip>
+                          ]) 
+                      }): null
+                    ]} />
                     <TablePagination
                       rowsPerPageOptions={[5, 10, 20]}
                       component="div"
@@ -139,6 +129,7 @@ class Projects extends Component {
                 </Card>
               </GridItem>
             </GridContainer>
+          </div>
         );
       }
 }

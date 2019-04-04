@@ -19,7 +19,6 @@ import IconButton from "@material-ui/core/IconButton";
 import TablePagination from '@material-ui/core/TablePagination';
 
 //Icons
-import Edit from "@material-ui/icons/Edit";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 
 // Styles
@@ -72,7 +71,7 @@ class Milestones extends Component {
                   rowsPerPage={rowsPerPage}
                   emptyRows={emptyRows}
                   tableHeaderColor="warning"
-                  tableHead={["Name", "Focus", "Project", "Last updated", "Edit", "Details" ]}
+                  tableHead={["Name", "Focus", "Project", "Last updated", "Details" ]}
                   tableData={[
                       milestones ? milestones.map(milestone => {
                         return [
@@ -80,18 +79,6 @@ class Milestones extends Component {
                           `${milestone.focus}`,
                           `${milestone.project ? milestone.project.name : null}`, 
                           `${milestone.updated_at}`,
-                            milestone.project ? milestone.project.creator_id == this.state.auth_user_id ?  
-                              <Tooltip
-                                id="tooltip-top"
-                                title="Edit Milestone"
-                                placement="top"
-                                classes={{ tooltip: classes.tooltip }}
-                                onClick={this.goToMilestone.bind(this, milestone.id)} >
-                                <IconButton aria-label="Edit" className={classes.tableActionButton}>
-                                  <Edit className={classes.tableActionButtonIcon + " " + classes.edit} style={{color:'#ffa726'}} />
-                                </IconButton>
-                              </Tooltip>
-                            : null : null,
                             <Tooltip
                               id="tooltip-top"
                               title="Go to Milestone"
@@ -103,7 +90,8 @@ class Milestones extends Component {
                               </IconButton>
                             </Tooltip>,
                           ]
-                          }) : null  
+                          }) 
+                      : null  
                   ]} /> 
                   <TablePagination
                     rowsPerPageOptions={[5, 10, 20]}

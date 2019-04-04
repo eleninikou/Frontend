@@ -36,7 +36,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
 
-class EditMilestone extends Component {
+class Milestone extends Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -135,7 +135,6 @@ class EditMilestone extends Component {
     const { classes, tickets, successMessage } = this.props;
       return (
         <GridContainer>
-          {successMessage ? 
             <Snackbar
               place="tr"
               color="success"
@@ -143,8 +142,8 @@ class EditMilestone extends Component {
               open={this.state.tr}
               closeNotification={() => this.setState({ tr: false })}
               close
-            /> : null }
-                <GridItem xs={12} sm={12} md={12}>
+            /> 
+              <GridItem xs={12} sm={12} md={12}>
                   <Card>
                   <CustomTabs
                     headerColor="primary"
@@ -297,5 +296,5 @@ const mapStateToProps = state => ({
   successMessage: state.milestone.successMessage
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(EditMilestone)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Milestone)));
   

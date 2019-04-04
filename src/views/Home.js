@@ -16,7 +16,7 @@ import CreateProject from './CreateProject'
 import Project from './Project'
 import CreateTicket from './CreateTicket'
 import Ticket from './Ticket'
-import EditMilestone from './EditMilestone'
+import Milestone from './Milestone'
 import CreateMilestone from "./CreateMilestone.js";
 import Invite from "./Invite.js";
 import Dashboard from "./Dashboard.js";
@@ -35,7 +35,7 @@ const switchRoutes = (
         );}
     })}
       <Route exact path='/home/create-milestone' component={CreateMilestone} />
-      <Route path='/home/milestone/:id' component={EditMilestone} />
+      <Route path='/home/milestone/:id' component={Milestone} />
       <Route exact path='/home/create-project' component={CreateProject} />
       <Route path='/home/project/:id' component={Project} />
       <Route exact path='/home/create-ticket' component={CreateTicket} />

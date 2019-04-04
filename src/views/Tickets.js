@@ -18,14 +18,9 @@ import Button from "../components/theme/CustomButtons/Button.jsx";
 // Material UI components
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import Edit from "@material-ui/icons/Edit";
+import ExitToApp from "@material-ui/icons/ExitToApp";
 import TablePagination from '@material-ui/core/TablePagination';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import Paper from '@material-ui/core/Paper';
-
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -72,7 +67,7 @@ class Tickets extends Component {
 
   render() {
     const { classes, allTickets, ticketStatus, ticketTypes, allProjects } = this.props;
-    const { rowsPerPage, page, filter, status_id, type_id, priority, project_id, tickets } = this.state;
+    const { rowsPerPage, page, status_id, type_id, priority, project_id, tickets } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, allTickets.length - page * rowsPerPage);
 
 
@@ -165,7 +160,7 @@ class Tickets extends Component {
                   rowsPerPage={rowsPerPage}
                   emptyRows={emptyRows}
                   tableHeaderColor="primary"
-                  tableHead={["Title", "Project", "Type", "Status", "Priority", "Milestone", "Due Date", "Edit"]}
+                  tableHead={["Title", "Project", "Type", "Status", "Priority", "Milestone", "Due Date", "Details"]}
                   tableData={[ filteredTickets ? filteredTickets.map(ticket => {
                     return [
                       `${ticket.title}`,
@@ -182,7 +177,7 @@ class Tickets extends Component {
                           classes={{ tooltip: classes.tooltip }}
                           onClick={this.goToTicket.bind(this, ticket.id)} >
                         <IconButton aria-label="Edit" className={classes.tableActionButton}>
-                          <Edit style={{ color:'#ab47bc' }} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                          <ExitToApp style={{color:'#ab47bc'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                         </IconButton>
                       </Tooltip>,
                       ]
