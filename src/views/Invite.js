@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 
 // Redux
-import { getProjectsByUser, getProject, getRoles, getTeam, invite } from '../redux/actions/projects/Actions'
+import { getProjectsByUser, getProject, getRoles, getTeam, invite, getEmails } from '../redux/actions/projects/Actions'
 import { connect } from 'react-redux'
 
 // Theme componets
@@ -17,15 +17,13 @@ import Table from "../components/theme/Table/Table.jsx";
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
 // Material UI components
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField'
-
 
 //Icons
 import People from "@material-ui/icons/People";
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -40,6 +38,7 @@ class Invite extends Component {
       project_role: '',
       project_id: '',
       email: '',
+      emails: [],
       team: '',
       page: 0,
       rowsPerPage: 5,
@@ -50,12 +49,17 @@ class Invite extends Component {
     // From invite to specific project
     if(this.props.match.params.id) {
       this.props.getProject(this.props.match.params.id)
-      .then(res => {  
+      .then(() => {  
         this.setState({ 
           project_id: this.props.project.id,
           team: this.props.team
+        })
       }) 
-    
+      this.props.getEmails(this.props.match.params.id)
+      .then(() => {
+        this.setState({ 
+          emails: this.props.emails
+        }) 
       })
     } else {
       // From dashboard. Get all projects
@@ -72,7 +76,11 @@ class Invite extends Component {
       project_role: this.state.project_role,
     }
     this.props.invite(invitation)
-    .then(() => { if (this.props.successMessage) { this.showNotification('tr') } })
+    .then(() => { 
+      if (this.props.successMessage) { 
+        this.showNotification('tr') 
+        this.props.getEmails(this.props.match.params.id)
+      } })
   }
 
   showNotification(place) {
@@ -91,24 +99,29 @@ class Invite extends Component {
     this.setState({ [event.target.name]: event.target.value }) 
 
     if([event.target.name] == 'project_id') {
-      this.props.getTeam(event.target.value).then(
-        res => {
+      this.props.getTeam(event.target.value)
+      .then(res => {
           this.setState({ team : res.team })
-        }
-      )
+        })
+      this.props.getEmails(event.target.value)
+      .then(res => {
+        this.setState({ emails: res.emails })
+      })
     }
   
   }
 
   render() {
-  const { classes, projects, project, roles, successMessage } = this.props;
+  const { classes, projects, project, roles, successMessage, emails } = this.props;
   const { rowsPerPage, page, team } = this.state;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
+  
   return (
     <form className={classes.form} onSubmit={this.submit}>
       <Snackbar
         place="tr"
         color="success"
+        icon={CheckCircleOutline}
         message={successMessage}
         open={this.state.tr}
         closeNotification={() => this.setState({ tr: false })}
@@ -137,8 +150,12 @@ class Invite extends Component {
                         id: 'project_id',
                       }}>
                       {project ? 
-                        <MenuItem defaultValue key={project.id} value={project.id}> {project.name} </MenuItem>
-                    : projects.projects ? projects.projects.map(project => {
+                        <MenuItem defaultValue key={project.id} value={project.id}> 
+                          {project.name} 
+                        </MenuItem>
+                      : null }
+
+                    {projects.projects ? projects.projects.map(project => {
                       return <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
                     }) : null
                   }
@@ -206,9 +223,25 @@ class Invite extends Component {
                         `${user.user ? user.user.name : null}`, 
                         `${user.role ? user.role.role : null }`,
                       ] }) : null
-                      ]} />
-                    </div>
-                    : null}
+                  ]} />
+              </div>
+              : null}
+              {emails.length ? 
+              <div>
+                <Table
+                  page={page}
+                  rowsPerPage={rowsPerPage}
+                  emptyRows={emptyRows}
+                  tableHeaderColor="info"
+                  tableHead={["Invited", ]}
+                  tableData={[
+                    emails ? emails.map(email => {
+                      return [
+                        `${ email }`,
+                      ] }) : null
+                  ]} />
+              </div>
+              : null}
             </CardBody>
           </Card>
         </GridItem>
@@ -225,7 +258,8 @@ const mapDispatchToProps = dispatch => {
     getProject: id => dispatch(getProject(id)),
     getRoles: () => dispatch(getRoles()),
     getTeam: id => dispatch(getTeam(id)),
-    invite: invitation => dispatch(invite(invitation))
+    invite: invitation => dispatch(invite(invitation)),
+    getEmails: id => dispatch(getEmails(id))
    }
 }
 
@@ -236,6 +270,7 @@ const mapStateToProps = state => ({
   isFetching: state.project.isFetching,
   roles: state.project.roles,
   successMessage: state.project.successMessage,
+  emails: state.project.emails
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Invite)));

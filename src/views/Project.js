@@ -8,23 +8,16 @@ import { getProject, deleteProject } from '../redux/actions/projects/Actions'
 
 // Theme components
 import Card from "../components/theme/Card/Card";
-import Table from "../components/theme/Table/Table.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import GridItem from "../components/theme/Grid/GridItem.jsx";
-import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
-
-// Material UI components
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
 
 // Icons
 import Note from "@material-ui/icons/Note";
 import Info from "@material-ui/icons/Info";
-import Close from "@material-ui/icons/Close";
 import People from "@material-ui/icons/People";
 import Timeline from "@material-ui/icons/Timeline";
 import DeleteForever from "@material-ui/icons/DeleteForever";
@@ -39,6 +32,7 @@ import EditProjectForm from '../components/project/EditProjectForm';
 import ProjectContent from '../components/project/ProjectContent';
 import ProjectMilestones from '../components/project/ProjectMilestones';
 import ProjectTickets from '../components/project/ProjectTickets';
+import ProjectTeam from '../components/project/ProjectTeam';
 
 
 class Project extends Component {
@@ -51,11 +45,13 @@ class Project extends Component {
         client_id: '',
         id: '',
         tr: false,
+        page: 0,
+        rowsPerPage: 5,
+        ticketRowsPerPage: 5,
         milestones: [],
         edit: false,
         successMessage: this.props.successMessage
       }
-      this.invitePeople = this.invitePeople.bind(this);
   }
 
   
@@ -117,9 +113,6 @@ class Project extends Component {
     })
   }
 
-
-  invitePeople = () => { this.props.history.push(`/home/project-invite/${this.props.match.params.id}`) }
-
   getSuccess = successMessage => {
     this.setState({ successMessage })
     this.showNotification('tr')
@@ -139,9 +132,7 @@ class Project extends Component {
     
   render() {
       const { classes, team, project, tickets } = this.props;
-      const { rowsPerPage, page, edit, successMessage, user, milestones } = this.state;
-      const emptyRows = 0
-      const TicketEmptyRows = 0
+      const { edit, successMessage, user, milestones } = this.state;
 
         return (
           project ?
@@ -179,85 +170,52 @@ class Project extends Component {
                             getEdit={this.getEdit.bind(this)}
                             classes={classes}
                             team={team}
-                            ticket={tickets}
                           />
                         ) 
                       },{ 
-                      tabName: "Milestones",
-                      tabIcon: Timeline,
-                      tabContent: ( 
-                        <ProjectMilestones 
-                          classes={classes}
-                          milestones={milestones}
-                          project={project}
-                          getSuccess={this.getSuccess.bind(this)}
+                        tabName: "Milestones",
+                        tabIcon: Timeline,
+                        tabContent: ( 
+                          <ProjectMilestones 
+                            classes={classes}
+                            milestones={milestones}
+                            project={project}
+                            getSuccess={this.getSuccess.bind(this)}
+                            />
+                        
+                          )
+                      },{
+                        tabName: "Tickets",
+                        tabIcon: Note,
+                        tabContent: (
+                          <ProjectTickets 
+                            tickets={tickets}
+                            classes={classes}
+                            project={project}
+                            getSuccess={this.getSuccess.bind(this)}
                           />
-   
                         )
-                    },{
-                      tabName: "Tickets",
-                      tabIcon: Note,
-                      tabContent: (
-                        <ProjectTickets 
-                          tickets={tickets}
-                          classes={classes}
-                          getSuccess={this.getSuccess.bind(this)}
-                          />
-                      )
-                    },{
-                      tabName: "Team",
-                      tabIcon: People,
-                      tabContent: (
-                        <div>
-                          <Table
-                            page={page}
-                            rowsPerPage={rowsPerPage}
-                            emptyRows={TicketEmptyRows}
-                            tableHeaderColor="success"
-                            tableHead={["Name", "Role", "Remove" ]}
-                            tableData={[
-                              team ? team.map(person => {
-                                return ([
-                                    `${person.user.name}`, 
-                                    `${person.role ? person.role.role : null }`,
-                                        person.role ? person.role.id !== 1 ?
-                                          <Tooltip
-                                            id="tooltip-top-start"
-                                            title="Remove"
-                                            placement="top"
-                                            classes={{ tooltip: classes.tooltip }}>
-                                            <IconButton
-                                              aria-label="Close"
-                                              className={classes.tableActionButton}>
-                                              <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
-                                            </IconButton>
-                                          </Tooltip>
-                                        : null : null
-                                    ]) 
-                                  }) : null
-                                ]} 
-                           />
-                          <CardFooter>
-                              {project.creator_id == this.state.auth_user_id ?
-                                <Button 
-                                  color="success" 
-                                  onClick={this.invitePeople}>
-                                    Invite people
-                                </Button>
-                              : null}
-                            </CardFooter>
-                          </div>
-                      )
-                    },{
-                      tabName: "Delete",
-                      tabIcon: DeleteForever,
-                      tabContent: (
-                        <CardBody>
-                          <Button color="success" onClick={this.deleteProject.bind(this, project.id)}>Delete project</Button>
-                       </CardBody>
+                      },{
+                        tabName: "Team",
+                        tabIcon: People,
+                        tabContent: (
+                          <ProjectTeam 
+                            team={team}
+                            classes={classes}
+                            project={project}
+                            user={user}
+                            />
                         )
-                    }
-                  ]}/> 
+                      },{
+                        tabName: "Delete",
+                        tabIcon: DeleteForever,
+                        tabContent: (
+                          <CardBody>
+                            <Button color="success" onClick={this.deleteProject.bind(this, project.id)}>Delete project</Button>
+                         </CardBody>
+                          )
+                      }
+                    ]}/> 
                     : null }   
                   </Card>
                 </GridItem>

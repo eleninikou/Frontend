@@ -28,6 +28,7 @@ import FormControl from '@material-ui/core/FormControl';
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import '../assets/sass/main.sass';
 
 
 
@@ -87,7 +88,7 @@ submit = event => {
 
 componentWillMount = () => {
     // If redirected from specific project select project
-    if (this.props.location.state ? this.props.location.state.project_id : null) {
+    if (this.props.location.state ? this.props.location.state.project_id || this.props.location.state.backToProject : null) {
       this.setState({ 
         backToProject: true, 
         project_id: this.props.location.state.project_id 

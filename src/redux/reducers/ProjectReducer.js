@@ -23,6 +23,8 @@ import {
     GET_TEAM_FAILURE,
     INVITATION_SUCCESS,
     INVITATION_FAILURE,
+    GET_INVITATIONS_SUCCESS,
+    GET_INVITATIONS_FAILURE,
 } from '../actions/projects/Action-types';
 
 const initialState = {
@@ -31,6 +33,7 @@ const initialState = {
     tickets:[],
     milestones: [],
     team: [],
+    emails: [],
     roles: [],
     allProjects: [],
     activity: [],
@@ -185,7 +188,19 @@ const ProjectReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errorMessage: action.message
-            }                           
+            } 
+        case GET_INVITATIONS_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                emails: action.payload.emails
+            } 
+        case GET_INVITATIONS_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }                               
         default:
             return state;
         }

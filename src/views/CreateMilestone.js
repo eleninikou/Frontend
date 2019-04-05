@@ -28,6 +28,7 @@ import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import '../assets/sass/main.sass';
 
 
 class CreateMilestone extends Component {

@@ -23,6 +23,8 @@ import {
   GET_TEAM_FAILURE,
   INVITATION_SUCCESS,
   INVITATION_FAILURE,
+  GET_INVITATIONS_SUCCESS,
+  GET_INVITATIONS_FAILURE,
 } from './Action-types';
 
 import Cookies from 'universal-cookie';
@@ -269,5 +271,27 @@ export const invite = invitation => {
       return inviteSuccess(success);
 
     } catch (error) { dispatch ({ type: INVITATION_FAILURE, message: 'Could not fetch roles' }); return error;  }
+  }
+};
+
+
+export const getEmails = id => {
+  return async dispatch => {
+    const inviteSuccess = success => { 
+      dispatch ({ type: GET_INVITATIONS_SUCCESS, payload: success }); 
+      return success; 
+  }
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/projects/${id}/invited`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      return inviteSuccess(success);
+
+    } catch (error) { dispatch ({ type: GET_INVITATIONS_FAILURE, message: 'Could not fetch emails' }); return error;  }
   }
 };

@@ -53,13 +53,18 @@ class ProjectTickets extends Component {
         this.setState({ [name]: value })
     }
 
-    goToTicket = id => { this.props.history.push(`/home/ticket/${id}`) }
+    goToTicket = id => { 
+        this.props.history.push( {
+            pathname: `/home/ticket/${id}`,
+            state: { project_id: this.props.project.id }
+        })
+    }
 
     // Redirect to create ticket
     createNewTicket = () => { 
         this.props.history.push({
           pathname: '/home/create-ticket', 
-          state: { project_id: this.state.id }
+          state: { project_id: this.props.project.id }
         }) 
       }
 

@@ -22,9 +22,8 @@ import Timeline from "@material-ui/icons/Timeline";
 // Material UI components
 import Typography from '@material-ui/core/Typography';
 
-const ProjectContent = ({ project, getEdit, classes, team, tickets }) => {
+const ProjectContent = ({ project, getEdit, classes, team  }) => {
 
-  console.log(project)
     const showForm = () => { getEdit(true)  }
     return (
         <GridContainer>          
