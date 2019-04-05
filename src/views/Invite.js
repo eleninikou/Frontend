@@ -79,8 +79,12 @@ class Invite extends Component {
     .then(() => { 
       if (this.props.successMessage) { 
         this.showNotification('tr') 
-        this.props.getEmails(this.props.match.params.id)
-      } })
+      } 
+    })
+    this.props.getEmails(this.state.project_id)
+    .then(res => {
+      this.setState({ emails: res.emails })
+    })
   }
 
   showNotification(place) {
@@ -102,7 +106,8 @@ class Invite extends Component {
       this.props.getTeam(event.target.value)
       .then(res => {
           this.setState({ team : res.team })
-        })
+      })
+
       this.props.getEmails(event.target.value)
       .then(res => {
         this.setState({ emails: res.emails })
@@ -115,7 +120,7 @@ class Invite extends Component {
   const { classes, projects, project, roles, successMessage, emails } = this.props;
   const { rowsPerPage, page, team } = this.state;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
-  
+
   return (
     <form className={classes.form} onSubmit={this.submit}>
       <Snackbar
