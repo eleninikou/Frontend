@@ -24,8 +24,8 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Icon
-import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 import Edit from "@material-ui/icons/Edit";
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -118,7 +118,7 @@ class Ticket extends Component {
   showForm = event => {
     this.state.edit ?  
       this.setState({ edit: false, ButtonText: 'Edit Ticket' }) 
-    : this.setState({ edit: true, ButtonText: 'Hide edit view' })
+    : this.setState({ edit: true, ButtonText: 'Close edit' })
     
     if(this.state.showComments || this.state.addComment) {
       this.setState({ 

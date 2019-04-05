@@ -22,11 +22,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import IconButton from "@material-ui/core/IconButton";
 import TablePagination from '@material-ui/core/TablePagination';
+import { TextField } from '@material-ui/core';
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { TextField } from '@material-ui/core';
+import '../assets/css/main.css'
 
 
 class Tickets extends Component {

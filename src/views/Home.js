@@ -19,6 +19,7 @@ import CreateMilestone from "./CreateMilestone.js";
 import Invite from "./Invite.js";
 
 import "perfect-scrollbar/css/perfect-scrollbar.css";
+import '../assets/css/main.css'
 
 const switchRoutes = (
   <Switch>

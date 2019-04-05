@@ -17,6 +17,7 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // Icons
+import Save from "@material-ui/icons/Save";
 
 import { Editor } from 'react-draft-wysiwyg';
 
@@ -231,7 +232,7 @@ class EditTicketForm extends Component {
                             editorClassName="editorClassName"
                             onEditorStateChange={this.onEditorStateChange}
                           />
-                        <Button color="primary" type="submit" style={{ float: 'right'}}> Save</Button>
+                        <Button color="primary" type="submit" style={{ float: 'right'}}> Save </Button>
                       </GridItem>
                   </GridContainer>
                 </CardBody>

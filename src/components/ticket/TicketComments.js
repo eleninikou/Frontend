@@ -28,7 +28,7 @@ const TicketComments = ({ comments, user, classes, deleteComment }) => {
     <List>
         {comments ? comments.map(comment => {
           return(
-            <ListItem>
+            <ListItem style={{ borderBottom: '1px solid grey', padding: '20px 0px'}}>
               <ListItemAvatar>                         
                 <Avatar>
                   <Person /> 

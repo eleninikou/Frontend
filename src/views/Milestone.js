@@ -34,6 +34,7 @@ import DeleteForever from "@material-ui/icons/DeleteForever";
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import '../assets/css/main.css'
 
 
 class Milestone extends Component {

@@ -29,7 +29,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import '../assets/sass/main.sass';
+import '../assets/css/main.css'
 
 import EditProjectForm from '../components/project/EditProjectForm';
 import ProjectContent from '../components/project/ProjectContent';

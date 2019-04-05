@@ -16,35 +16,44 @@
 .MuiFormLabel-root-532.MuiFormLabel-focused-533 {
   color: #9c27b0 !important; }
 
-.Invite-formControl-126 {
-  min-width: 100% !important; }
-
-.my-input {
-  margin-bottom: 25px !important; }
-
-.my-select {
-  padding: 15px; }
-
-.my-label {
-  margin-left: 15px; }
-
 .EditTicket-formControl-257 {
   min-width: 100% !important; }
 
-.Ticket-formControl-126, .MuiFormControl-marginNormal-244, .MuiFormControl-marginNormal-294 {
-  min-width: 100% !important; }
-
 .MuiInput-underline-269:after {
-  border-bottom: 2px solid #ab47bc !important; }
+  border-bottom: 2px solid #9c27b0 !important; }
 
 .MuiFormLabel-root-258.MuiFormLabel-focused-259 {
-  color: #ab47bc !important; }
+  color: #9c27b0 !important; }
+
+.MuiFormLabel-root-466.MuiFormLabel-focused-467 {
+  color: #9c27b0 !important; }
 
 .MuiOutlinedInput-root-302.MuiOutlinedInput-focused-303 .MuiOutlinedInput-notchedOutline-309 {
-  border-color: #ab47bc !important; }
+  border-color: #9c27b0 !important; }
 
-.my-spinner {
-  margin: auto !important; }
+.MuiInput-underline-422:after {
+  border-bottom: 2px solid #9c27b0 !important; }
+
+.MuiOutlinedInput-root-480.MuiOutlinedInput-focused-481 .MuiOutlinedInput-notchedOutline-487 {
+  border-color: #9c27b0 !important; }
+
+.MuiFormControl-fullWidth-417 {
+  margin-top: 15px !important; }
+
+.Invite-formControl-126 {
+  min-width: 100% !important; }
+
+.rdw-editor-main {
+  border: 1px solid rgba(128, 128, 128, 0.1);
+  min-height: 150px; }
+
+.MuiAvatar-root-551 {
+  width: 35px !important;
+  height: 35px !important; }
+
+.MuiSvgIcon-root-104 {
+  width: 0.9em !important;
+  height: 0.9em !important; }
 
 .my-ticket-list {
   margin-bottom: 30px !important; }
@@ -77,6 +86,21 @@
   margin-top: 10px !important;
   padding: 0 !important; }
 
+.my-spinner {
+  margin: auto !important; }
+
+.my-input {
+  margin-bottom: 25px !important; }
+
+.my-select {
+  padding: 15px; }
+
+.my-label {
+  margin-left: 15px; }
+
+.Ticket-formControl-126, .MuiFormControl-marginNormal-244, .MuiFormControl-marginNormal-294 {
+  min-width: 100% !important; }
+
 @media (min-width: 600px) {
   .MuiGrid-grid-md-9-352, .MuiGrid-grid-md-9-221 {
     max-width: 100% !important;
@@ -85,11 +109,3 @@
 .MuiFormControl-marginNormal-287 {
   margin: 0px 0px 30px !important;
   width: 100% !important; }
-
-.MuiAvatar-root-551 {
-  width: 35px !important;
-  height: 35px !important; }
-
-.rdw-editor-main {
-  border: 1px solid rgba(128, 128, 128, 0.1);
-  min-height: 150px; }

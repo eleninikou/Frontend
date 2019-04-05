@@ -16,6 +16,7 @@ import TextField from '@material-ui/core/TextField'
 
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import '../assets/css/main.css'
 
 
 class CreateProject extends Component {

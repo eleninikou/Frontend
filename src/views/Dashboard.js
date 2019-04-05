@@ -34,6 +34,7 @@ import Comment from "@material-ui/icons/Comment";
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import '../assets/css/main.css'
 
 
 
