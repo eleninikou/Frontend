@@ -177,7 +177,7 @@ class Tickets extends Component {
                           classes={{ tooltip: classes.tooltip }}
                           onClick={this.goToTicket.bind(this, ticket.id)} >
                         <IconButton aria-label="Edit" className={classes.tableActionButton}>
-                          <ExitToApp style={{color:'#ab47bc'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                          <ExitToApp style={{ color:'#ab47bc' }} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                         </IconButton>
                       </Tooltip>,
                       ]

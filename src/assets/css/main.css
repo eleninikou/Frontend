@@ -1,3 +1,24 @@
+.MuiFormLabel-root-286.MuiFormLabel-focused-287 {
+  color: #ff9800 !important; }
+
+.MuiInput-underline-297:after {
+  border-bottom: 2px solid #ff9800 !important; }
+
+.MuiOutlinedInput-root-326.MuiOutlinedInput-focused-327 .MuiOutlinedInput-notchedOutline-333 {
+  border-color: #ff9800 !important; }
+
+.CreateTicket-formControl-126 {
+  min-width: 100% !important; }
+
+.MuiOutlinedInput-root-272.MuiOutlinedInput-focused-273 .MuiOutlinedInput-notchedOutline-279 {
+  border-color: #9c27b0 !important; }
+
+.MuiFormLabel-root-532.MuiFormLabel-focused-533 {
+  color: #9c27b0 !important; }
+
+.Invite-formControl-126 {
+  min-width: 100% !important; }
+
 .my-input {
   margin-bottom: 25px !important; }
 
@@ -10,7 +31,7 @@
 .EditTicket-formControl-257 {
   min-width: 100% !important; }
 
-.Ticket-formControl-126, .Invite-formControl-126, .CreateTicket-formControl-126, .MuiFormControl-marginNormal-244, .MuiFormControl-marginNormal-294 {
+.Ticket-formControl-126, .MuiFormControl-marginNormal-244, .MuiFormControl-marginNormal-294 {
   min-width: 100% !important; }
 
 .MuiInput-underline-269:after {
@@ -21,15 +42,6 @@
 
 .MuiOutlinedInput-root-302.MuiOutlinedInput-focused-303 .MuiOutlinedInput-notchedOutline-309 {
   border-color: #ab47bc !important; }
-
-.MuiFormLabel-root-286.MuiFormLabel-focused-287 {
-  color: #ff9800 !important; }
-
-.MuiInput-underline-297:after {
-  border-bottom: 2px solid #ff9800 !important; }
-
-.MuiOutlinedInput-root-326.MuiOutlinedInput-focused-327 .MuiOutlinedInput-notchedOutline-333 {
-  border-color: #ff9800 !important; }
 
 .my-spinner {
   margin: auto !important; }
@@ -69,9 +81,6 @@
   .MuiGrid-grid-md-9-352, .MuiGrid-grid-md-9-221 {
     max-width: 100% !important;
     width: 100% !important; } }
-
-.my-add-comment-button {
-  float: right !important; }
 
 .MuiFormControl-marginNormal-287 {
   margin: 0px 0px 30px !important;

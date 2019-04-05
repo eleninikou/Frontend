@@ -31,6 +31,7 @@ class AddComment extends Component {
     .then(res => { 
       if(this.props.successMessage) {
         this.props.getSuccess(this.props.successMessage) 
+        this.props.hideForm(false)
       } 
     })
   }

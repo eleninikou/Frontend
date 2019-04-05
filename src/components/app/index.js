@@ -6,6 +6,7 @@ import CreateProject from '../../views/CreateProject'
 import Project from '../../views/Project'
 
 import  NotFoundPage  from '../../views/NotFound';
+import '../../assets/css/main.css'
 
 class App extends Component {
   render() {

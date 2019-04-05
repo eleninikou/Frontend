@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+import PropTypes from 'prop-types';
 
 // Redux
 import { connect } from 'react-redux'
@@ -24,12 +25,12 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import '../assets/sass/main.sass';
-
+import '../assets/css/main.css'
 
 
 class CreateTicket extends Component {
@@ -48,7 +49,8 @@ class CreateTicket extends Component {
         milestone_id: '',
         selectedDate: '',
         project_name: '',
-        editorState: EditorState.createEmpty()
+        editorState: EditorState.createEmpty(),
+        ErrorText: 'oops'
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -73,7 +75,6 @@ submit = event => {
   this.props.ticketCreate(ticket)
   .then(() => {
     if(this.state.backToProject) {
-      debugger;
         if(this.props.successMessage) {
           this.props.history.push({
             pathname: `/home/project/${this.state.project_id}`,
@@ -119,8 +120,7 @@ handleDateChange = event => {this.setState({ selectedDate: event.target.value })
 
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
-  const { editorState, backToProject } = this.state
-
+  const { editorState, backToProject, ErrorText, } = this.state
 
   // https://reactgo.com/removeduplicateobjects/
   function getUnique(arr, comp) {
@@ -133,7 +133,7 @@ render() {
   let projects = getUnique(allProjects,'project_id')
   let team_members = getUnique(team,'user_id')
 
-
+  console.log(classes)
   return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
@@ -145,15 +145,18 @@ render() {
             <CardBody>
               <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <TextField 
-                      name="title" 
-                      type="text"
-                      label="Title" 
-                      className="my-input"
-                      value={this.state.textFieldValue}
-                      onChange={this.handleChange}
-                      fullWidth
-                     />
+                    <FormControl className={classes.formControl}>                    
+                      <TextField 
+                        name="title" 
+                        type="text"
+                        label="Title" 
+                        className="my-input"
+                        value={this.state.title}
+                        onChange={this.handleChange}
+                        fullWidth
+                        aria-describedby="component-error-text"
+                      />
+                    </FormControl> 
                   </GridItem>
                   <GridItem xs={12} sm={12} md={3}>
                     <FormControl className={classes.formControl}>                    
@@ -284,7 +287,6 @@ render() {
                           onEditorStateChange={this.onEditorStateChange}
                         />
                   </GridItem>
-
               </GridContainer>
             </CardBody>
             <CardFooter>
@@ -320,6 +322,11 @@ const mapStateToProps = state => ({
   ticketStatus: state.ticket.ticketStatus,
   successMessage: state.ticket.successMessage
 })
+
+TextField.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateTicket)));
   
 

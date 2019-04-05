@@ -23,8 +23,11 @@ import Timeline from "@material-ui/icons/Timeline";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 
-// Styles
+// Material UI components
 import withStyles from "@material-ui/core/styles/withStyles";
+
+
+// Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import '../assets/sass/main.sass';
 
@@ -128,7 +131,17 @@ class Project extends Component {
     });
   }
 
-  getEdit = edit => { this.setState({ edit }) }  
+  getEdit = edit => { 
+    this.setState({ edit }) 
+  }  
+
+  handleOpen = () => {
+    this.setState({ open: true })
+  };
+
+  handleClose = () => {
+    this.setState({ open: false })
+  };
     
   render() {
       const { classes, team, project, tickets } = this.props;

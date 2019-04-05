@@ -2,11 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Switch, Route } from "react-router-dom";
 import PerfectScrollbar from "perfect-scrollbar";
-import "perfect-scrollbar/css/perfect-scrollbar.css";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Footer from "../components/theme/Footer/Footer.jsx";
 import Sidebar from "../components/theme/Sidebar/Sidebar.jsx";
-import Navbar from "../components/theme/Navbars/Navbar.jsx";
 import logo from "../assets/img/reactlogo.png";
 
 import routes from "../routes.js";
@@ -19,8 +17,8 @@ import Ticket from './Ticket'
 import Milestone from './Milestone'
 import CreateMilestone from "./CreateMilestone.js";
 import Invite from "./Invite.js";
-import Dashboard from "./Dashboard.js";
 
+import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 const switchRoutes = (
   <Switch>

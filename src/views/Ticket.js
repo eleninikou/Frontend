@@ -23,6 +23,10 @@ import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+// Icon
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
+import Edit from "@material-ui/icons/Edit";
+
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
@@ -116,25 +120,36 @@ class Ticket extends Component {
       this.setState({ edit: false, ButtonText: 'Edit Ticket' }) 
     : this.setState({ edit: true, ButtonText: 'Hide edit view' })
     
-    if(this.state.showComments) {
-      this.setState({ showComments: false, CommentText: 'Show Comments' }) 
+    if(this.state.showComments || this.state.addComment) {
+      this.setState({ 
+        showComments: false, 
+        CommentText: 'Show Comments', 
+        addComment: false,
+        ButtonTextComment: 'Add Comment'
+      }) 
     }
   }
 
   showComments = event => {
     this.state.showComments ?  
       this.setState({ showComments: false, CommentText: 'Show Comments' }) 
-    : this.setState({ showComments: true, CommentText: 'Hide Comments' })
-
-      if(this.state.edit) {
-        this.setState({ edit: false, ButtonText: 'Edit Ticket' }) 
-      }
+    : this.setState({ 
+        showComments: true, 
+        CommentText: 'Hide Comments',
+        edit: false, 
+        ButtonText: 'Edit Ticket'
+      })
   }
 
   showCommentForm = event => {
     this.state.addComment ?  
       this.setState({ addComment: false, ButtonTextComment: 'Add Comment'}) 
-    : this.setState({ addComment: true, ButtonTextComment: 'Close'})
+    : this.setState({ 
+        addComment: true, 
+        ButtonTextComment: 'Close',
+        edit: false,
+        ButtonText: 'Edit Ticket' 
+      })
   }
 
   deleteComment = id => { 
@@ -144,6 +159,11 @@ class Ticket extends Component {
         this.getSuccess(this.props.successMessage)
       }
     })
+  }
+
+  hideForm = hide => {
+    this.setState({ addComment: hide, ButtonTextComment: 'Add Comment'}) 
+    this.setState({ showComments: true, CommentText: 'Hide Comments' })
   }
 
 
@@ -175,11 +195,37 @@ class Ticket extends Component {
 
 
   render() {
-    const { classes, team, milestones, isFetching, comments, description } = this.props;
-    const { show_ticket, user, creator, edit, ButtonText, addComment, 
-            ButtonTextComment, successMessage, assigned_user_id, due_date, 
-            milestone_id, priority, status_id, title, type_id, project_name, 
-            project_id, CommentText, showComments } = this.state;
+
+    const { 
+      classes, 
+      team, 
+      milestones, 
+      isFetching, 
+      comments, 
+      description 
+    } = this.props;
+
+    const { 
+      show_ticket, 
+      user, 
+      creator, 
+      edit, 
+      ButtonText, 
+      addComment, 
+      ButtonTextComment, 
+      successMessage, 
+      assigned_user_id, 
+      due_date, 
+      milestone_id, 
+      priority, 
+      status_id, 
+      title, 
+      type_id, 
+      project_name, 
+      project_id, 
+      CommentText, 
+      showComments 
+    } = this.state;
 
     return (
       <div> 
@@ -188,6 +234,7 @@ class Ticket extends Component {
         <Snackbar 
           place="tr" 
           color="success" 
+          icon={CheckCircleOutline}
           message={successMessage} 
           open={this.state.tr}
           closeNotification={() => this.setState({ tr: false })} 
@@ -198,10 +245,10 @@ class Ticket extends Component {
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="primary"> 
-                <h4 className={classes.cardTitleWhite}>{show_ticket.title} </h4> 
-                <p className={classes.cardCategoryWhite}>created by {
+                <h4 className={classes.cardTitleWhite} style={{ fontSize: '2em' }}>{show_ticket.title} </h4> 
+                <h4 className={classes.cardTitleWhite}>created by {
                     show_ticket.creator ? show_ticket.creator.name : null} |  {moment(show_ticket.created_at).format('YYYY-MM-DD')}
-                </p>
+                </h4>
               </CardHeader>
                 <CardBody>
                 <GridContainer>          
@@ -215,73 +262,85 @@ class Ticket extends Component {
               </CardBody> 
               <CardFooter>
 
+                {comments.length && !addComment ?
+                <div>
+                  <Button color="primary" onClick={this.showComments} >
+                    {CommentText}
+                  </Button> 
+                  {showComments ? 
+                    <Button color="primary" onClick={this.showCommentForm}>
+                      {ButtonTextComment}
+                    </Button>
+                  : null}  
+                </div>  
+                : 
+                  <Button color="primary" onClick={this.showCommentForm}>
+                    {ButtonTextComment}
+                  </Button>
+                }  
+                <Button color="primary" onClick={this.showForm}>
+                  {ButtonText}
+                </Button> 
               </CardFooter>
             </Card>
           </GridItem> 
         </GridContainer>
 
-        <GridContainer>
-          <GridItem xs={12} sm={2} md={2}>
-            <Button color="primary" onClick={this.showComments} >
-              {CommentText}
-            </Button> 
-         </GridItem>
-         <GridItem xs={12} sm={2} md={2}>
-            <Button color="primary" onClick={this.showForm}>
-              {ButtonText}
-            </Button> 
-         </GridItem>
-         <GridItem xs={12} sm={2} md={8}>
-            <Button color="danger" onClick={this.deleteTicket} style={{ float: 'right'}}>
-              Delete Ticket
-            </Button>
-        </GridItem>
-        </GridContainer>
 
         {/* Edit Ticket if authorized */}
+        {(creator == user) && edit ? 
           <Card>
-            {(creator == user) && edit ? 
-              <EditTicketForm 
-                classes={classes}
-                team={team}
-                milestones={milestones}
-                description={description}
-                assigned_user_id={assigned_user_id}
-                due_date={due_date}
-                milestone_id={milestone_id}
-                priority={priority}
-                status_id={status_id}
-                title={title}
-                type_id={type_id}
-                project_id={project_id}
-                project_name={project_name}
-                getSuccess={this.getSuccess.bind(this)}
-              />
-            : null }    
+            <CardHeader color="primary"> <h4 className={classes.cardTitleWhite}> <Edit /> </h4> </CardHeader>
+            <GridContainer>          
+              <GridItem xs={12} sm={12} md={12}>
+                <Button color="danger" onClick={this.deleteTicket} style={{ float: 'right', marginRight: '18px' }}>
+                  Delete 
+                </Button>
+              </GridItem>
+
+              <GridItem xs={12} sm={12} md={12}>
+                <EditTicketForm 
+                  classes={classes}
+                  team={team}
+                  milestones={milestones}
+                  description={description}
+                  assigned_user_id={assigned_user_id}
+                  due_date={due_date}
+                  milestone_id={milestone_id}
+                  priority={priority}
+                  status_id={status_id}
+                  title={title}
+                  type_id={type_id}
+                  project_id={project_id}
+                  project_name={project_name}
+                  getSuccess={this.getSuccess.bind(this)}
+                />
+              </GridItem>
+            </GridContainer>
+ 
            </Card>
+            : null }    
 
         {/* Display Comments */}
-        {showComments ? 
-            <Card>
-              <CardBody>
-                <GridItem xs={12} sm={2} md={3}>
-                  <Button color="primary" onClick={this.showCommentForm}>{ButtonTextComment}</Button>
-                </GridItem>  
-                {addComment ? 
-                  <AddComment 
-                    ticket_id={show_ticket.id} 
-                    getSuccess={this.getSuccess.bind(this)}
-                  /> 
-                : null}
-                <TicketComments 
-                  comments={comments} 
-                  user={user} 
-                  classes={classes}
-                  deleteComment={this.deleteComment.bind(this)}
-                  />    
-              </CardBody>
-            </Card>
-            : null }
+        {showComments || addComment ? 
+          <Card>
+            <CardBody>
+              {addComment ? 
+                <AddComment 
+                  ticket_id={show_ticket.id} 
+                  getSuccess={this.getSuccess.bind(this)}
+                  hideForm={this.hideForm.bind(this)}
+                /> 
+              : null}
+              <TicketComments 
+                comments={comments} 
+                user={user} 
+                classes={classes}
+                deleteComment={this.deleteComment.bind(this)}
+                />    
+            </CardBody>
+          </Card>
+        : null }
 
           {isFetching ? <CircularProgress className="my-spinner" color="primary" /> : null } 
       </div> 

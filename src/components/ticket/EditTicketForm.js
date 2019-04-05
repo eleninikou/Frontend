@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { updateTicket, getTicketTypes, getTicketStatus, deleteTicket } from '../../redux/actions/tickets/Actions'
 
 // Theme components
-import CardHeader from "../theme/Card/CardHeader.jsx";
 import CardBody from "../theme/Card/CardBody.jsx";
 import GridContainer from "../theme/Grid/GridContainer.jsx";
 import GridItem from "../theme/Grid/GridItem.jsx";
@@ -18,7 +17,6 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // Icons
-import Edit from "@material-ui/icons/Edit";
 
 import { Editor } from 'react-draft-wysiwyg';
 
@@ -98,7 +96,6 @@ class EditTicketForm extends Component {
 
       return (
             <form onSubmit={this.submit}>
-              <CardHeader color="primary"> <h4 className={classes.cardTitleWhite}> <Edit /> </h4> </CardHeader>
                 <CardBody>
                   <GridContainer>
                       <GridItem xs={12} sm={12} md={12}>
