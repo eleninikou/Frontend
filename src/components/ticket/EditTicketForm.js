@@ -16,9 +16,6 @@ import TextField from '@material-ui/core/TextField'
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 
-// Icons
-import Save from "@material-ui/icons/Save";
-
 import { Editor } from 'react-draft-wysiwyg';
 
 

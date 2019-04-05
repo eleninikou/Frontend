@@ -1,24 +1,17 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import moment from 'moment'
-
-// Redux
-import { connect } from 'react-redux'
-import { deleteMilestone } from '../../redux/actions/milestones/Actions'
-
 // Theme components
 import Table from "../theme/Table/Table.jsx";
 import TablePagination from '@material-ui/core/TablePagination'
-
 // Material UI components
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-
 // Icons
 import ExitToApp from "@material-ui/icons/ExitToApp";
 
 
-class ProjectTable extends Component {
+class ProjectsTable extends Component {
     constructor(props) {
       super(props);
       this.state = { 
@@ -87,8 +80,5 @@ class ProjectTable extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => { return {  deleteMilestone: id => dispatch(deleteMilestone(id)) } }
-const mapStateToProps = state => ({ successMessage: state.milestone.successMessage });
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectTable))
+export default withRouter(ProjectsTable)
  

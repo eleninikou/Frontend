@@ -56,6 +56,12 @@ const dashboardRoutes = [
       component: UserProfile,
       layout: "/home"
     },
+    {
+      path: "/logout",
+      name: "Log out",
+      icon: Person,
+      layout: "/home"
+    },
 ];
 
 export default dashboardRoutes;

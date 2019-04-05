@@ -9,28 +9,11 @@ import Cookies from 'universal-cookie';
 
 import GoogleLogin from 'react-google-login'
 import { login, googleLogin } from '../../../redux/actions/auth/Actions'
+import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import GridContainer from "../../theme/Grid/GridContainer.jsx";
+import GridItem from "../../theme/Grid/GridItem.jsx";
+import CardBody from '../../theme/Card/CardBody';
 
-
-const styles = theme => ({
-    button: {
-      margin: theme.spacing.unit,
-      marginTop: "20px"
-    },
-    form: {
-        flexGrow: 1,
-        justifyContent: "center",
-        textAlign: "center",
-        padding: "50px"
-      },
-    card: {
-        maxWidth: 345,
-        margin: "auto",
-        marginTop: "50vh",
-        transform: "translateY(-50%)"
-      }
-  });
-
-  
 
 class LoginForm extends Component {
   constructor(props) {
@@ -50,7 +33,7 @@ class LoginForm extends Component {
       this.props.googleLogin(response.profileObj)
       .then(res => {
           if(!res.error) {
-            this.props.history.push('/home')
+            this.props.history.push('/home/dashboard')
           }
         })
     }
@@ -68,7 +51,7 @@ class LoginForm extends Component {
           const cookies = new Cookies()
           var creator_id = cookies.get('user')
           if (creator_id) {
-            this.props.history.push('/home')
+            this.props.history.push('/home/dashboard')
           }
         }
       })
@@ -80,37 +63,54 @@ class LoginForm extends Component {
   }
 
   render () {
-    const {classes } = this.props
+    const { classes } = this.props
   return (
-    <Card className={classes.card}>
-        <form className={classes.form} onSubmit={this.submit}>
-            <div>
+    <GridContainer >
+        <GridItem xs={12} sm={12} md={6}>
+          <Card style={{ marginTop: '300px', transform: 'TranslateX(50%)'}}>
+          <GridContainer>
+            <CardBody>
+            <form style={{ width: '100%'}} onSubmit={this.submit}>
+              <GridItem xs={12} sm={12} md={12}>
                 <TextField 
                     name="email" 
                     type="email"
                     label="Email" 
+                    fullWidth
                     value={this.state.textFieldValue}
                     onChange={this.handleChange}
                 />
-            </div> 
-            <div>
-                <TextField 
-                    name="password" 
-                    type="password"
-                    label="Password"
-                    value={this.state.textFieldValue}
-                    onChange={this.handleChange}
-                />
-            </div> 
-            <Button type="submit" variant="contained" color="primary" className={classes.button}>Login</Button> 
-        </form>
-            <GoogleLogin
-              clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
-              buttonText="Login"
-              onSuccess={this.responseGoogle}
-              onFailure={this.responseGoogle}
-            />
-    </Card >
+              </GridItem>
+              <GridItem xs={12} sm={12} md={12}>
+                  <TextField 
+                      name="password" 
+                      type="password"
+                      label="Password"
+                      fullWidth
+                      value={this.state.textFieldValue}
+                      onChange={this.handleChange}
+                  />
+                </GridItem> 
+                <GridItem xs={12} sm={12} md={12}>
+                  <Button type="submit" variant="contained" color="primary" className={classes.button}>
+                    Login
+                  </Button> 
+                </GridItem> 
+            </form>
+              <GridItem xs={12} sm={12} md={12}>
+                <GoogleLogin
+                  clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
+                  buttonText="Login"
+                  onSuccess={this.responseGoogle}
+                  onFailure={this.responseGoogle}
+                  width="100%"
+                  />
+                </GridItem> 
+            </CardBody>
+            </GridContainer>    
+          </Card >
+        </GridItem>
+      </GridContainer>    
   )
   }
 }
@@ -124,5 +124,5 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => ({});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(LoginForm)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(LoginForm)));
 

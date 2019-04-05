@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
-
 // Redux
 import { connect } from 'react-redux'
 import { getAllProjects } from '../redux/actions/projects/Actions'
-
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
@@ -13,15 +11,13 @@ import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CardBody from "../components/theme/Card/CardBody.jsx"
 import Button from "../components/theme/CustomButtons/Button.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
-
+// Material UI components
+import withStyles from "@material-ui/core/styles/withStyles"
 // Icons
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
-
 // Components
-import ProjectTable from '../components/project/ProjectTable';
-
+import ProjectsTable from '../components/project/ProjectsTable';
 // Styles
-import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
 
@@ -59,9 +55,6 @@ class Projects extends Component {
     createNewProject() { this.props.history.push('/home/create-project/') }
 
     render() {
-      const { classes, allProjects } = this.props;
-      const { successMessage } = this.state;
-
         // https://reactgo.com/removeduplicateobjects/
         function getUnique(arr, comp) {
           const unique = arr.map(e => e[comp])
@@ -69,8 +62,7 @@ class Projects extends Component {
               .filter(e => arr[e]).map(e => arr[e]);
            return unique;
         }
-  
-        let projects = getUnique(allProjects,'project_id')
+        let projects = getUnique(this.props.allProjects,'project_id')
 
       return (
         <GridContainer> 
@@ -78,7 +70,7 @@ class Projects extends Component {
             place="tr"
             color="success"
             icon={CheckCircleOutline}
-            message={successMessage}
+            message={this.state.successMessage}
             open={this.state.tr}
             closeNotification={() => this.setState({ tr: false })}
             close
@@ -86,16 +78,18 @@ class Projects extends Component {
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="success">
-                <h4 className={classes.cardTitleWhite}>Projects</h4>
+                <h4 className={this.props.classes.cardTitleWhite}>Projects</h4>
               </CardHeader>
                 <CardBody>
-                  <ProjectTable 
+                  <ProjectsTable 
                     projects={projects}
-                    classes={classes}
+                    classes={this.props.classes}
                     />
                   <GridContainer>
                     <GridItem xs={12} sm={2} md={2}>
-                      <Button color="success"  onClick={this.createNewProject.bind(this)}>Create new Project</Button>
+                      <Button color="success"  onClick={this.createNewProject.bind(this)}>
+                        Create new Project
+                      </Button>
                     </GridItem>
                   </GridContainer>
                 </CardBody>
@@ -115,7 +109,6 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => ({ 
   allProjects: state.project.allProjects,
-  isFetching: state.project.isFetching
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Projects)));

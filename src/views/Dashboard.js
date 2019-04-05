@@ -45,23 +45,9 @@ class Dashboard extends Component {
       page: 0,
       rowsPerPage: 5,
     }
-    this.logout = this.logout.bind(this);
-}
-
-  logout() {
-    this.props.logout().then(res => {
-      const cookies = new Cookies()
-      cookies.remove('token')
-      cookies.remove('user')
-      if(!res.error) {
-        this.props.history.push('/')
-      }
-    })
   }
 
-  goToTicket(id) {
-    this.props.history.push(`/home/ticket/${id}`)
-  }
+
 
   componentWillMount() {
     this.props.getProjectsByUser();
@@ -70,24 +56,20 @@ class Dashboard extends Component {
     this.props.getAllTickets();
   }
 
+  goToTicket(id) { this.props.history.push(`/home/ticket/${id}`) }
 
-  handleChangePage = (event, page) => {
-    this.setState({ page });
-  };
+  handleChangePage = (event, page) => { this.setState({ page }) }
 
-  handleChangeRowsPerPage = event => {
-    this.setState({ rowsPerPage: event.target.value });
-  };
+  handleChangeRowsPerPage = event => { this.setState({ rowsPerPage: event.target.value }) }
 
 
-    render() {
+  render() {
       const { classes, allTickets, activity } = this.props;
       const { rowsPerPage, page } = this.state;
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage);
 
         return (
           <div>
-            <Button onClick={this.logout}>Logout</Button>
             <GridContainer> 
               <GridItem xs={12} sm={12} md={12}>
                 <Card>

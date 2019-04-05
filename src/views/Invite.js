@@ -1,33 +1,28 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-
 // Redux
 import { getProjectsByUser, getProject, getRoles, getTeam, invite, getEmails } from '../redux/actions/projects/Actions'
 import { connect } from 'react-redux'
-
 // Theme componets
-import GridItem from "../components/theme/Grid/GridItem.jsx";
-import GridContainer from "../components/theme/Grid/GridContainer.jsx";
-import Card from "../components/theme/Card/Card";
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
-import CardBody from "../components/theme/Card/CardBody.jsx";
-import Button from "../components/theme/CustomButtons/Button.jsx";
-import CardFooter from "../components/theme/Card/CardFooter.jsx";
-import Table from "../components/theme/Table/Table.jsx";
-import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
-
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
+import Card from "../components/theme/Card/Card"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import Button from "../components/theme/CustomButtons/Button.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import Table from "../components/theme/Table/Table.jsx"
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 // Material UI components
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
 import TextField from '@material-ui/core/TextField'
-
 //Icons
-import People from "@material-ui/icons/People";
-import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
-
+import People from "@material-ui/icons/People"
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Styles
-import withStyles from "@material-ui/core/styles/withStyles";
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import withStyles from "@material-ui/core/styles/withStyles"
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
 
 
