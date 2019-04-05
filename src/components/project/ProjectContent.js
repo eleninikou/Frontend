@@ -31,7 +31,7 @@ const ProjectContent = ({ project, getEdit, classes, team, tickets }) => {
             <GridItem xs={12} sm={12} md={12}>
               <CardBody>
                 <GridContainer>          
-                  <GridItem xs={12} sm={12} md={4}>
+                  <GridItem xs={12} sm={12} md={2}>
                     <List className="my-ticket-list">
                         <ListItem>
                           <ListItemAvatar>
@@ -77,19 +77,37 @@ const ProjectContent = ({ project, getEdit, classes, team, tickets }) => {
                         </ListItem>
                     </List> 
                   </GridItem> 
-                  <GridItem xs={12} sm={12} md={8}>
-                    <Typography>
-                      Name: {project.name}
-                    </Typography>
-                    <Typography>
-                      Description: {project.description}
-                    </Typography>
-                    <Typography>
-                      Created by: {project.creator ? project.creator.name : null}
-                    </Typography>
-                    <Typography>
-                      Client: {project.client ? project.client : null}
-                    </Typography>
+                  <GridItem xs={12} sm={12} md={10}>
+                  <List className="my-ticket-list">
+                    <ListItem>
+                      <ListItemText primary={
+                        <Typography>
+                          Name:  {project.name}
+                        </Typography>
+                      } />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={
+                        <Typography>
+                          Description: {project.description}
+                        </Typography>
+                      } />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={
+                        <Typography>
+                          Created by: {project.creator ? project.creator.name : null}
+                        </Typography>
+                        } />
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary={
+                          <Typography>
+                          Client: {project.client ? project.client : null}
+                          </Typography>
+                        } />
+                    </ListItem>
+                  </List>        
                   </GridItem>    
                 </GridContainer>
               </CardBody> 

@@ -18,10 +18,10 @@ import Button from "../components/theme/CustomButtons/Button.jsx";
 
 // Material UI components
 import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import TablePagination from '@material-ui/core/TablePagination';
 import MenuItem from '@material-ui/core/MenuItem';
+import ExitToApp from "@material-ui/icons/ExitToApp";
+import IconButton from "@material-ui/core/IconButton";
+import TablePagination from '@material-ui/core/TablePagination';
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
@@ -63,7 +63,6 @@ class Tickets extends Component {
 
   handleChange = event => {
     const { name, value } = event.target;
-    this.setState({ [name]: value, filter: name })
   }
 
   render() {
@@ -154,7 +153,7 @@ class Tickets extends Component {
                      }): null}
               </TextField> 
           </GridItem>
-            </GridContainer> 
+        </GridContainer> 
             <div>
                 <Table
                   page={page}

@@ -22,8 +22,6 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx";
 
 // Material UI components
 import TextField from '@material-ui/core/TextField'
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 
@@ -112,11 +110,15 @@ handleChange = event => {
   }
 }
 
+goBack = () => {          
+  this.props.history.push({ pathname: `/home/project/${this.state.project_id}`})
+}
+
 handleDateChange = event => {this.setState({ selectedDate: event.target.value }) }
 
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
-  const { editorState } = this.state
+  const { editorState, backToProject } = this.state
 
 
   // https://reactgo.com/removeduplicateobjects/
@@ -130,7 +132,6 @@ render() {
   let projects = getUnique(allProjects,'project_id')
   let team_members = getUnique(team,'user_id')
 
-  console.log(project)
 
   return (
       <GridContainer>
@@ -287,6 +288,9 @@ render() {
             </CardBody>
             <CardFooter>
               <Button color="primary" type="submit">Create Ticket</Button>
+              {backToProject ? 
+              <Button color="primary" onClick={this.goBack.bind(this)}>Back to project</Button>
+              : null}
             </CardFooter>
             </form> 
           </Card>

@@ -18,15 +18,16 @@ import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
 // Material UI Components
 import TextField from '@material-ui/core/TextField'
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import withStyles from "@material-ui/core/styles/withStyles";
+import { Typography } from '@material-ui/core';
+
+// Icon
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 
 // Styles
-import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import { Typography } from '@material-ui/core';
 
 
 class CreateMilestone extends Component {
@@ -78,27 +79,31 @@ showNotification = place => {
     function() {
       x[place] = false;
       this.setState(x);
-    }.bind(this),
-    6000
-  );
+    }.bind(this), 6000);
 }
 
 componentWillMount = () => {
   // If redirected from specific project select project
-  if (this.props.location.state ? this.props.location.state.project_id && this.props.location.state.project_name : null) {
+  if (this.props.location.state ? 
+      this.props.location.state.project_id && this.props.location.state.project_name 
+      : null) {
+
     this.setState({ 
       project_id: this.props.location.state.project_id,
       project_name: this.props.location.state.project_name,
       backToProject: true
     })
+
     this.props.getProject(this.props.location.state.project_id);
   } else {
     this.props.getAllProjects();
   }
 }
 
-componentWillUnmount = () => {
-  this.setState({ backToProject: false})
+componentWillUnmount = () => { this.setState({ backToProject: false}) }
+
+goBack = () => {          
+  this.props.history.push({ pathname: `/home/project/${this.state.project_id}`})
 }
 
 handleChange = event => {
@@ -112,11 +117,13 @@ createNewProject = () => { this.props.history.push('/home/create-project/') }
 render() {
   const { classes, allProjects, successMessage, project  } = this.props;
   const { project_id, project_name, backToProject } = this.state;
+
   return (
       <GridContainer>
           <Snackbar
           place="tr"
           color="success"
+          icon={CheckCircleOutline}
           message={successMessage}
           open={this.state.tr}
           closeNotification={() => this.setState({ tr: false })}
@@ -155,14 +162,26 @@ render() {
                       />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
-                    <FormControl className={classes.formControl}>
+                      {backToProject ? 
+                      <FormControl className={classes.formControl}>
+                        <TextField
+                          label="Project"
+                          variant="outlined"
+                          margin="normal"
+                          className="my-input"
+                          value={project_name}
+                          onChange={this.handleChange}
+                          inputProps={{ name: 'project_id', id: 'project_id'}} />
+                        </FormControl>
+                      :
+                      <FormControl className={classes.formControl}>
                         <TextField
                           Select
                           label="Project"
                           variant="outlined"
                           margin="normal"
                           className="my-input"
-                          value={this.state.project_id}
+                          value={project_id}
                           onChange={this.handleChange}
                           inputProps={{ name: 'project_id', id: 'project_id'}} >
                           {allProjects.length ? allProjects.map(project => {
@@ -171,14 +190,9 @@ render() {
                                 {project.project.name} 
                               </MenuItem>
                             )
-                          })
-                          : 
-                          <MenuItem key={project.id} value={project.id}> 
-                            {project.name} 
-                          </MenuItem>
-                          }
-                        </TextField>
-                    </FormControl>
+                            }) : null }
+                        </TextField> 
+                    </FormControl>}
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
@@ -201,6 +215,9 @@ render() {
             </CardBody>
             <CardFooter>
               <Button color="warning" type="submit">Create milestone</Button>
+                {backToProject ? 
+              <Button color="warning" onClick={this.goBack.bind(this)}>Back to {project_name}</Button>
+              : null}
             </CardFooter>
             </form> 
             : 

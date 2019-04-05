@@ -24,6 +24,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 
 // Icons
 import ExitToApp from "@material-ui/icons/ExitToApp";
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -102,6 +103,7 @@ class Projects extends Component {
           <Snackbar
             place="tr"
             color="success"
+            icon={CheckCircleOutline}
             message={successMessage}
             open={this.state.tr}
             closeNotification={() => this.setState({ tr: false })}
