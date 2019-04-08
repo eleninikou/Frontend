@@ -29,12 +29,15 @@ import Note from "@material-ui/icons/Note";
 import Timeline from "@material-ui/icons/Timeline";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import LibraryBooks from "@material-ui/icons/LibraryBooks";
+import Info from "@material-ui/icons/Info";
 import DeleteForever from "@material-ui/icons/DeleteForever";
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import '../assets/css/main.css'
+import MilestoneContent from '../components/milestone/MilestoneContent';
+import EditMilestoneForm from '../components/milestone/EditMilestoneForm';
 
 
 class Milestone extends Component {
@@ -52,7 +55,6 @@ class Milestone extends Component {
         id: ''
       }
       this.milestoneDelete = this.milestoneDelete.bind(this);
-
   }
   
   componentWillMount() {
@@ -70,7 +72,8 @@ class Milestone extends Component {
           project: res.milestone.project.name,
           project_id: res.milestone.project.id,
           due_date: res.milestone.due_date,
-          creator: res.milestone.project.creator_id
+          creator: res.milestone.project.creator_id,
+          milestone: res.milestone
          })
       } else {
         this.props.history.push(`/home`)
@@ -83,25 +86,6 @@ class Milestone extends Component {
     }
   }
 
-
-  submit = event => {
-    event.preventDefault();
-    const date = null;
-    if (this.state.selectedDate === '') {
-      this.date = this.state.due_date
-    } else {
-      this.date = this.state.selectedDate
-    }
-    const milestone = {
-      project_id: this.state.project_id,
-      title: this.state.title,
-      focus: this.state.focus,
-      due_date: this.date
-    };
-
-    this.props.milestoneEdit(milestone, this.props.match.params.id)
-    .then(this.showNotification('tr'))
-  }
 
   showNotification(place) {
     var x = [];
@@ -118,6 +102,10 @@ class Milestone extends Component {
     this.props.history.push(`/home/ticket/${id}`)
   }
 
+  getEdit = edit => { 
+    this.setState({ edit }) 
+  }  
+
   milestoneDelete() {
     this.props.deleteMilestone(this.state.id)
     .then(this.showNotification('tr'))
@@ -128,12 +116,30 @@ class Milestone extends Component {
     this.setState({ [name]: value });
   }
 
-  handleDateChange = event => {
-    this.setState({ selectedDate: event.target.value });
-  };
+  // handleDateChange = event => {
+  //   this.setState({ selectedDate: event.target.value });
+  // };
+
+  getSuccess = successMessage => {
+    this.setState({ successMessage })
+    this.showNotification('tr')
+    this.props.getProject(this.props.match.params.id)
+    .then(res => {
+      this.setState({ 
+        id: res.project.id,
+        name: res.project.name,
+        description: res.project.description,
+        client_id: res.project.client_id,
+        milestones: res.project.milestones
+       })
+    });
+  }
 
   render() {
     const { classes, tickets, successMessage } = this.props;
+    const { edit, creator, auth_user_id, milestone } = this.state;
+
+    console.log(tickets)
       return (
         <GridContainer>
             <Snackbar
@@ -146,69 +152,28 @@ class Milestone extends Component {
             /> 
               <GridItem xs={12} sm={12} md={12}>
                   <Card>
+                  {milestone ? 
                   <CustomTabs
-                    headerColor="primary"
+                    headerColor="warning"
                     tabs={[
                       {
                         tabName: "Info",
-                        tabIcon: LibraryBooks,
+                        tabIcon: Info,
                         tabContent: (
-                          <form className={classes.form} onSubmit={this.submit}>
-                            <CardBody>
-                              <GridContainer>
-                                <GridItem xs={12} sm={12} md={12}>
-                                  <InputLabel>Title</InputLabel>
-                                  <TextField 
-                                      name="title" 
-                                      type="text"
-                                      value={this.state.title}
-                                      onChange={this.handleChange}
-                                      fullWidth
-                                      className="my-input"
-                                  />
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
-                                  <InputLabel>Focus</InputLabel>
-                                  <TextField 
-                                      name="focus" 
-                                      type="text"
-                                      value={this.state.focus}
-                                      onChange={this.handleChange}
-                                      fullWidth
-                                      className="my-input"
-                                    />
-                                </GridItem>
-                                <GridItem xs={12} sm={12} md={12}>
-                                  <InputLabel>Project</InputLabel>
-                                  <TextField 
-                                      disabled
-                                      name="project" 
-                                      type="text"
-                                      value={this.state.project}
-                                      fullWidth
-                                      className="my-input"
-                                    />
-                                </GridItem>
-                                <GridItem>
-                                  <TextField
-                                      id="date"
-                                      label="Due date"
-                                      type="date"
-                                      defaultValue={this.state.due_date}
-                                      value={this.state.selectedDate}
-                                      onChange={this.handleDateChange}
-                                      className="my-input"
-                                      InputLabelProps={{
-                                        shrink: true,
-                                      }}
-                                    />
-                                </GridItem>
-                              </GridContainer>
-                            </CardBody>
-                            <CardFooter>
-                              <Button color="primary" type="submit">Edit Info</Button>
-                            </CardFooter>
-                          </form>  
+                          edit ?
+                          <EditMilestoneForm 
+                            classes={classes} 
+                            milestone={milestone}
+                            getSuccess={this.getSuccess.bind(this)}
+                            getEdit={this.getEdit.bind(this)}
+                          />
+                          :
+                          <MilestoneContent 
+                            milestone={milestone}
+                            classes={classes}
+                            getEdit={this.getEdit.bind(this)}
+                            creator={creator === parseInt(auth_user_id) ? true : false}
+                            /> 
                         ) 
                       }, 
                     {
@@ -217,7 +182,7 @@ class Milestone extends Component {
                       tabContent: ( 
                         tickets ? 
                             <Table
-                              tableHeaderColor="primary"
+                              tableHeaderColor="warning"
                               tableHead={["Priority", "Type", "Title", "Assigned to", "Status", "Due date", "Edit", "Details"]}
                               tableData={[
                                 tickets.map(ticket => {
@@ -261,18 +226,20 @@ class Milestone extends Component {
                          : null 
                       )
                     },
-                    this.state.auth_user_id  == this.state.creator ?
+                    parseInt(auth_user_id)  === creator ?
                     {
                       tabName: "Delete",
                       tabIcon: DeleteForever,
                       tabContent: (
                         <CardBody>
-                          <Button color="primary" onClick={this.milestoneDelete}>Delete milestone</Button>
+                          <Button color="primary" onClick={this.milestoneDelete}>
+                            Delete milestone
+                          </Button>
                         </CardBody>
-                        )
-                      }
-                   : null
-                  ]}/>
+                      )
+                    }
+                    : null
+                  ]}/> : null}
                   </Card>
                 </GridItem>
               </GridContainer>

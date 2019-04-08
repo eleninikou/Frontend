@@ -11,6 +11,7 @@ import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 // Icons
 import Note from "@material-ui/icons/Note";
@@ -21,9 +22,10 @@ import DeleteForever from "@material-ui/icons/DeleteForever";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles";
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import '../assets/css/main.css'
 
 import EditProjectForm from '../components/project/EditProjectForm';
 import ProjectContent from '../components/project/ProjectContent';
@@ -138,45 +140,49 @@ class Project extends Component {
   };
     
   render() {
-      const { classes, team, project, tickets } = this.props;
+      const { classes, team, project, tickets, isFetching } = this.props;
       const { edit, successMessage, user, milestones } = this.state;
-
-        return (
-          project ?
-            <div>
+      return (
+        isFetching ?
+          <CircularProgress
+          className={classes.progress}
+          variant="determinate"
+          />
+          :
+          <div>
               <Snackbar
                 place="tr"
                 color="success"
                 icon={CheckCircleOutline}
-                message={successMessage}
+                message={successMessage ? successMessage : ''}
                 open={this.state.tr}
                 closeNotification={() => this.setState({ tr: false })}
                 close
-              /> 
+                /> 
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                 <Card>
-                  {project.creator_id == user ?
                   <CustomTabs
                     headerColor="success"
                     tabs={[
                       {
-                      tabName: "About",
-                      tabIcon: Info,
-                      tabContent: (
-                        edit ?
+                        tabName: "About",
+                        tabIcon: Info,
+                        tabContent: (
+                          edit ?
                           <EditProjectForm 
                             classes={classes} 
                             project={project}
                             getSuccess={this.getSuccess.bind(this)}
                             getEdit={this.getEdit.bind(this)}
                           />
-                        :
+                          :
                           <ProjectContent
                             project={project} 
                             getEdit={this.getEdit.bind(this)}
                             classes={classes}
                             team={team}
+                            creator={ project.creator_id === parseInt(user) ? true : false}
                           />
                         ) 
                       },{ 
@@ -188,8 +194,8 @@ class Project extends Component {
                             milestones={milestones}
                             project={project}
                             getSuccess={this.getSuccess.bind(this)}
-                            />
-                        
+                            creator={ project.creator_id === parseInt(user) ? true : false}
+                          />
                           )
                       },{
                         tabName: "Tickets",
@@ -211,24 +217,28 @@ class Project extends Component {
                             classes={classes}
                             project={project}
                             user={user}
-                            />
+                            creator= { project.creator_id === parseInt(user) ? true : false }
+                          />
                         )
-                      },{
+                      },
+                      project.creator_id === parseInt(user) ?
+                      {
                         tabName: "Delete",
                         tabIcon: DeleteForever,
                         tabContent: (
                           <CardBody>
-                            <Button color="success" onClick={this.deleteProject.bind(this, project.id)}>Delete project</Button>
+                            <Button color="success" onClick={this.deleteProject.bind(this, project.id)}>
+                              Delete project
+                            </Button>
                          </CardBody>
-                          )
+                        )
                       }
+                      : null
                     ]}/> 
-                    : null }   
                   </Card>
                 </GridItem>
               </GridContainer>
             </div>
-          : null 
           );
         }
   }

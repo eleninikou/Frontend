@@ -43,7 +43,7 @@ class ProjectTeam extends Component {
 
 
     render() {
-        const { milestones, classes, team, project, user } = this.props;
+        const { classes, team, creator } = this.props;
         const { rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length  - page * rowsPerPage);
       
@@ -54,13 +54,15 @@ class ProjectTeam extends Component {
           rowsPerPage={rowsPerPage}
           emptyRows={emptyRows}
           tableHeaderColor="success"
-          tableHead={["Name", "Role", "Remove" ]}
+
+          tableHead={ creator ? ["Name", "Role", "Remove"] : ["Name", "Role", '' ] }
           tableData={[
             team ? team.map(person => {
               return ([
                   `${person.user.name}`, 
                   `${person.role ? person.role.role : null }`,
                       person.role ? person.role.id !== 1 ?
+                        creator ?
                         <Tooltip
                           id="tooltip-top-start"
                           title="Remove"
@@ -72,13 +74,14 @@ class ProjectTeam extends Component {
                             <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
                           </IconButton>
                         </Tooltip>
+                        : null
                       : null : null
                   ]) 
                 }) : null
               ]} 
          />
         <CardFooter>
-            {project.creator_id == user ?
+            {creator ?
               <Button 
                 color="success" 
                 onClick={this.invitePeople}>

@@ -63,7 +63,7 @@ class ProjectMilestones extends Component {
     }
 
     render() {
-        const { milestones, classes } = this.props;
+        const { milestones, classes, creator } = this.props;
         const { rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, milestones.length  - page * rowsPerPage);
       
@@ -74,7 +74,7 @@ class ProjectMilestones extends Component {
           rowsPerPage={rowsPerPage}
           emptyRows={emptyRows}
           tableHeaderColor="success"
-          tableHead={["Title", "Focus", "Last updated", "Details", "Remove"] }
+          tableHead={ creator ? ["Title", "Focus", "Last updated", "Details", "Remove"] : ["Title", "Focus", "Last updated", "Details", ""] }
           tableData={[
             milestones ? milestones.map(milestone => {
               return ([
@@ -95,6 +95,7 @@ class ProjectMilestones extends Component {
                       </IconButton>
                     </Tooltip>
                   ), 
+                  creator ? 
                   (
                     <Tooltip
                       id="tooltip-top-start"
@@ -109,6 +110,7 @@ class ProjectMilestones extends Component {
                       </IconButton>
                     </Tooltip>
                   ) 
+                  : null
                 ])
             }) : null
           ]} />   
@@ -123,9 +125,11 @@ class ProjectMilestones extends Component {
             onChangePage={this.handleChangePage}
             onChangeRowsPerPage={this.handleChangeRowsPerPage} /> 
           <GridContainer>
+            { creator ?
             <GridItem xs={12} sm={2} md={2}>
               <Button color="success"  onClick={this.createNewMilestone.bind(this)}>Create new Milestone</Button>
             </GridItem>
+            : null }
           </GridContainer>
       </div>  
       )

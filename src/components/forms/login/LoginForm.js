@@ -32,9 +32,12 @@ class LoginForm extends Component {
     if (!response.error) {
       this.props.googleLogin(response.profileObj)
       .then(res => {
-          if(!res.error) {
+        if(res.success.token){
             this.props.history.push('/home/dashboard')
           }
+        else {
+          console.log('display error message')
+        }  
         })
     }
   }
@@ -47,12 +50,10 @@ class LoginForm extends Component {
     };
     this.props.login(creds)
       .then(res => {
-        if(!res.error) {
-          const cookies = new Cookies()
-          var creator_id = cookies.get('user')
-          if (creator_id) {
+        if(res.email) {
             this.props.history.push('/home/dashboard')
-          }
+        } else {
+          console.log('display error message')
         }
       })
   }

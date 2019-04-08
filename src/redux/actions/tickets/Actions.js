@@ -16,7 +16,10 @@ import {
     UPDATE_TICKET_SUCCESS,
     UPDATE_TICKET_FAILURE,
     DELETE_TICKET_SUCCESS,
-    DELETE_TICKET_FAILURE
+    DELETE_TICKET_FAILURE,
+    IMG_UPLOAD_REQUEST,
+    IMG_UPLOAD_SUCCESS,
+    IMG_UPLOAD_FAILURE,
 } from './Action-types';
 
 import Cookies from 'universal-cookie';
@@ -189,4 +192,5 @@ export const deleteTicket = id => {
     } catch (error) { dispatch ({ type: DELETE_TICKET_FAILURE, message: 'Could not delete ticket' }); return error; }
   }
 };
+
 

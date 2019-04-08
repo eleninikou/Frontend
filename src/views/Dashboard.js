@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types";
 import { withRouter, } from "react-router-dom"
-import Cookies from 'universal-cookie'
 
 // Redux
 import { connect } from 'react-redux'
@@ -17,10 +16,9 @@ import Table from "../components/theme/Table/Table.jsx";
 import Card from "../components/theme/Card/Card";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
-import Button from "../components/theme/CustomButtons/Button.jsx";
+import TicketsTable from '../components/project/ProjectTickets';
 
 // Material UI components
-import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import TablePagination from '@material-ui/core/TablePagination';
 
@@ -28,7 +26,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import Note from "@material-ui/icons/Note";
 import Today from "@material-ui/icons/Today";
 import Timeline from "@material-ui/icons/Timeline";
-import ExitToApp from "@material-ui/icons/ExitToApp";
 import Comment from "@material-ui/icons/Comment";
 
 // Styles
@@ -62,11 +59,26 @@ class Dashboard extends Component {
 
   handleChangeRowsPerPage = event => { this.setState({ rowsPerPage: event.target.value }) }
 
+  getSuccess = successMessage => {
+    this.setState({ successMessage })
+    this.showNotification('tr')
+    this.props.getProject(this.props.match.params.id)
+    .then(res => {
+      this.setState({ 
+        id: res.project.id,
+        name: res.project.name,
+        description: res.project.description,
+        client_id: res.project.client_id,
+        milestones: res.project.milestones
+       })
+    });
+  }
 
   render() {
       const { classes, allTickets, activity } = this.props;
       const { rowsPerPage, page } = this.state;
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage);
+      const emptyRows2 = rowsPerPage - Math.min(rowsPerPage, allTickets.length - page * rowsPerPage);
 
         return (
           <div>
@@ -75,46 +87,46 @@ class Dashboard extends Component {
                 <Card>
                   <CardBody>
                   <CustomTabs
-                  headerColor="primary"
-                  tabs={[
-                    {
-                      tabName: "Activity",
-                      tabIcon: Today,
-                      tabContent: (
-                        <CardBody>
-                          <Table
-                            page={page}
-                            rowsPerPage={rowsPerPage}
-                            emptyRows={emptyRows}
-                            tableHeaderColor="primary"
-                            tableHead={[" ", "Project", "Type", "Date"]}
-                            tableData={[ activity ? activity.map(A => {
+                    headerColor="primary"
+                    tabs={[
+                      {
+                        tabName: "Activity",
+                        tabIcon: Today,
+                        tabContent: (
+                          <CardBody>
+                            <Table
+                              page={page}
+                              rowsPerPage={rowsPerPage}
+                              emptyRows={emptyRows}
+                              tableHeaderColor="primary"
+                              tableHead={[" ", "Project", "Type", "Date"]}
+                              tableData={[ activity ? activity.map(A => {
 
-                                  const icon = '';
-                                  switch(A.type) {
-                                    case 'milestone':
-                                      this.icon = <Timeline style={{color:'#ffa726'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
-                                      break;
-                                    case 'ticket':
-                                      this.icon = <Note style={{color:'#ab47bc'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
-                                      break;
-                                    case 'comment':
-                                      this.icon = <Comment style={{color:'#00acc1'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
-                                      break;  
-                                    default:
-                                      return '';
-                                  }
-                        
-                                  return [
-                                    `${A.user.name} ${A.text}`,
-                                    `${A.project.name}`,
-                                    <IconButton aria-label="Go to" className={classes.tableActionButton}>
-                                      {this.icon}
-                                    </IconButton>,
-                                    `${A.created_at}`,
-                                  ]
-                                }) : null
-                            ]}
+                                    const icon = '';
+                                    switch(A.type) {
+                                      case 'milestone':
+                                        this.icon = <Timeline style={{color:'#ffa726'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                        break;
+                                      case 'ticket':
+                                        this.icon = <Note style={{color:'#ab47bc'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                        break;
+                                      case 'comment':
+                                        this.icon = <Comment style={{color:'#00acc1'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
+                                        break;  
+                                      default:
+                                        return '';
+                                    }
+                                  
+                                    return [
+                                      `${A.user.name} ${A.text}`,
+                                      `${A.project.name}`,
+                                      <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                        {this.icon}
+                                      </IconButton>,
+                                      `${A.created_at}`,
+                                    ]
+                                  }) : null
+                              ]}
                           />
                           <TablePagination
                             rowsPerPageOptions={[5, 10, 20]}
@@ -137,54 +149,12 @@ class Dashboard extends Component {
                       tabName: "Tickets",
                       tabIcon: Note,
                       tabContent: (
-                        <div>
-                          <Table
-                            // page={page}
-                            // rowsPerPage={rowsPerPage}
-                            // emptyRows={emptyRows}
-                            tableHeaderColor="primary"
-                            tableHead={["Status", "Title", "Priority", "Due Date", "Details"]}
-                            tableData={[
-                                allTickets ? allTickets.map(ticket => {
-                                  return [
-                                    `${ticket.status ? ticket.status.status: null}`, 
-                                    `${ticket.title}`, 
-                                    `${ticket.priority}`, 
-                                    `${ticket.due_date}`, 
-                                    <Tooltip
-                                    id="tooltip-top"
-                                    title="Go to Ticket"
-                                    placement="top"
-                                    classes={{ tooltip: classes.tooltip }}
-                                    onClick={this.goToTicket.bind(this, ticket.id)}
-                                    >
-                                    {console.log(ticket)}
-                                      <IconButton aria-label="Go to" className={classes.tableActionButton}>
-                                        <ExitToApp 
-                                          className={ classes.tableActionButtonIcon + " " + classes.edit }
-                                          style={{color:'#ab47bc'}}
-                                        />
-                                      </IconButton>
-                                    </Tooltip>
-                                ] }) : 'hej'
-                            ]} />
-                            {/* <TablePagination
-                              rowsPerPageOptions={[5, 10, 20]}
-                              component="div"
-                              count={allTickets.length}
-                              rowsPerPage={rowsPerPage}
-                              page={page}
-                              backIconButtonProps={{
-                                'aria-label': 'Previous Page',
-                              }}
-                              nextIconButtonProps={{
-                                'aria-label': 'Next Page',
-                              }}
-                              onChangePage={this.handleChangePage}
-                              onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                            /> */}
-                        </div>
-                      )
+                          <TicketsTable 
+                            tickets={allTickets}
+                            classes={classes}
+                            getSuccess={this.getSuccess.bind(this)}
+                          />
+                        )
                     },
                   ]}/>
                   </CardBody>

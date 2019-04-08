@@ -30,10 +30,10 @@ class TicketsTable extends Component {
     render() {
         const { classes, tickets } = this.props;
         const { rowsPerPage, page } = this.state;
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, tickets.length  - page * rowsPerPage);
-      
-    return (
-        <div>
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, tickets ? tickets.length : 0 - page * rowsPerPage);
+          
+        return (
+          <div>
             <Table
               page={page}
               rowsPerPage={rowsPerPage}
@@ -65,7 +65,7 @@ class TicketsTable extends Component {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 20]}
                 component="div"
-                count={tickets.length}
+                count={tickets ? tickets.length : 0}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 backIconButtonProps={{ 'aria-label': 'Previous Page' }}
@@ -73,7 +73,7 @@ class TicketsTable extends Component {
                 onChangePage={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
-        </div>
+            </div>
     )
   }
 }

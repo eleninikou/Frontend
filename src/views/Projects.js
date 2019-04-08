@@ -55,6 +55,7 @@ class Projects extends Component {
     createNewProject() { this.props.history.push('/home/create-project/') }
 
     render() {
+
         // https://reactgo.com/removeduplicateobjects/
         function getUnique(arr, comp) {
           const unique = arr.map(e => e[comp])

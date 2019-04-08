@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import PropTypes from 'prop-types';
+import axios from "axios";
+import Cookies from "universal-cookie";
 
 // Redux
 import { connect } from 'react-redux'
-import { ticketCreate, getTicketTypes, getTicketStatus } from '../redux/actions/tickets/Actions'
+import { ticketCreate, getTicketTypes, getTicketStatus} from '../redux/actions/tickets/Actions'
 import { getAllProjects, getProject } from '../redux/actions/projects/Actions'
 
 // Wysiwyg
@@ -25,7 +27,6 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -50,7 +51,8 @@ class CreateTicket extends Component {
         selectedDate: '',
         project_name: '',
         editorState: EditorState.createEmpty(),
-        ErrorText: 'oops'
+        imagePreviewUrl: false,
+        image: ''
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -87,6 +89,41 @@ submit = event => {
   })
 }
 
+uploadCallback(file) {
+  const cookies = new Cookies()
+  var token = cookies.get('token')
+
+  let reader = new FileReader();
+  reader.onload = (e) => {
+    this.setState({ image: file })
+  }
+  reader.readAsDataURL(file);
+
+  return new Promise(
+    (resolve, reject) => {
+
+      debugger;
+      return axios
+       .put("http://127.0.0.1:8000/api/tickets/image",
+       file,
+       { headers: { 
+         "X-Requested-With": "XMLHttpRequest",
+         'Access-Control-Allow-Origin': '*',
+         "Authorization": `Bearer ${token}`
+       }
+     }
+     ).then(res => {
+        console.log(res)
+        debugger;
+        reject(res.error)
+        resolve({ data: res.data.url})
+         })
+    
+  });
+
+  
+}
+
 componentWillMount = () => {
     // If redirected from specific project select project
     if (this.props.location.state ? this.props.location.state.project_id || this.props.location.state.backToProject : null) {
@@ -120,7 +157,7 @@ handleDateChange = event => {this.setState({ selectedDate: event.target.value })
 
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
-  const { editorState, backToProject, ErrorText, } = this.state
+  const { editorState, backToProject } = this.state
 
   // https://reactgo.com/removeduplicateobjects/
   function getUnique(arr, comp) {
@@ -133,7 +170,6 @@ render() {
   let projects = getUnique(allProjects,'project_id')
   let team_members = getUnique(team,'user_id')
 
-  console.log(classes)
   return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
@@ -221,9 +257,9 @@ render() {
                             value={this.state.priority}
                             onChange={this.handleChange}
                             inputProps={{ name: 'priority', id: 'priority' }} >
-                          <MenuItem value="low"> low </MenuItem>
-                          <MenuItem value="normal"> normal </MenuItem>
-                          <MenuItem value="high"> high </MenuItem>
+                              <MenuItem value="low"> low </MenuItem>
+                              <MenuItem value="normal"> normal </MenuItem>
+                              <MenuItem value="high"> high </MenuItem>
                           </TextField>
                       </FormControl>
                   </GridItem>
@@ -285,6 +321,13 @@ render() {
                           wrapperClassName="wrapperClassName"
                           editorClassName="editorClassName"
                           onEditorStateChange={this.onEditorStateChange}
+                          toolbar = {{
+                            image: {
+                              uploadEnabled: true,
+                              uploadCallback: this.uploadCallback.bind(this),
+                              urlEnabled: false
+                            }
+                          }}
                         />
                   </GridItem>
               </GridContainer>
@@ -309,7 +352,7 @@ const mapDispatchToProps = dispatch => {
             getTicketTypes: () => dispatch(getTicketTypes()),
             getTicketStatus: () => dispatch(getTicketStatus()),
             getAllProjects: () => dispatch(getAllProjects()),
-            getProject: id => dispatch(getProject(id)) 
+            getProject: id => dispatch(getProject(id)),
           }
 }
 
@@ -320,7 +363,8 @@ const mapStateToProps = state => ({
   isFetching: state.project.isFetching,
   ticketTypes: state.ticket.ticketTypes,
   ticketStatus: state.ticket.ticketStatus,
-  successMessage: state.ticket.successMessage
+  successMessage: state.ticket.successMessage,
+  url: state.ticket.url
 })
 
 TextField.propTypes = {

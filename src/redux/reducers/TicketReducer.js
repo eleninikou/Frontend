@@ -16,6 +16,9 @@ import {
     DELETE_TICKET_FAILURE,
     CREATE_TICKET_SUCCESS,
     CREATE_TICKET_FAILURE,
+    IMG_UPLOAD_REQUEST,
+    IMG_UPLOAD_SUCCESS,
+    IMG_UPLOAD_FAILURE,
 } from '../actions/tickets/Action-types';
 
 const initialState = {
@@ -29,7 +32,8 @@ const initialState = {
     allTickets: [],
     isFetching: false,
     errorMessage: null,
-    succesMessage: ''
+    succesMessage: '',
+    url: ''
 };
 
 const TicketReducer = (state = initialState, action) => {
@@ -137,7 +141,24 @@ const TicketReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errorMessage: action.message
-            }                     
+            } 
+        case IMG_UPLOAD_REQUEST:
+            return {
+                ...state,
+                isFetching: true,
+            } 
+        case IMG_UPLOAD_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                url: action.payload.url
+            } 
+        case IMG_UPLOAD_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }                         
         default:
             return state;
     }

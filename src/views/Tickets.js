@@ -19,7 +19,6 @@ import withStyles from "@material-ui/core/styles/withStyles"
 import TicketsTable from '../components/ticket/TicketsTable'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import '../assets/css/main.css'
 
 
 class Tickets extends Component {
@@ -66,7 +65,7 @@ class Tickets extends Component {
           (project_id ? ticket.project_id == project_id : ticket)
         )
       }) : tickets
-
+     
     return (
       <GridContainer>              
           <GridItem xs={12} sm={12} md={12}>        

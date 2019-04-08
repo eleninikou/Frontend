@@ -22,7 +22,7 @@ import Timeline from "@material-ui/icons/Timeline";
 // Material UI components
 import Typography from '@material-ui/core/Typography';
 
-const ProjectContent = ({ project, getEdit, classes, team  }) => {
+const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
 
     const showForm = () => { getEdit(true)  }
     return (
@@ -30,7 +30,7 @@ const ProjectContent = ({ project, getEdit, classes, team  }) => {
             <GridItem xs={12} sm={12} md={12}>
               <CardBody>
                 <GridContainer>          
-                  <GridItem xs={12} sm={12} md={2}>
+                  <GridItem xs={12} sm={12} md={3}>
                     <List className="my-ticket-list">
                         <ListItem>
                           <ListItemAvatar>
@@ -76,7 +76,7 @@ const ProjectContent = ({ project, getEdit, classes, team  }) => {
                         </ListItem>
                     </List> 
                   </GridItem> 
-                  <GridItem xs={12} sm={12} md={10}>
+                  <GridItem xs={12} sm={12} md={9}>
                   <List className="my-ticket-list">
                     <ListItem>
                       <ListItemText primary={
@@ -101,18 +101,20 @@ const ProjectContent = ({ project, getEdit, classes, team  }) => {
                     </ListItem>
                     <ListItem>
                       <ListItemText primary={
-                          <Typography>
-                          Client: {project.client ? project.client : null}
-                          </Typography>
+                        <Typography>
+                          Client: {project.client ? project.client.name : null}
+                        </Typography>
                         } />
                     </ListItem>
                   </List>        
                   </GridItem>    
                 </GridContainer>
               </CardBody> 
+                    {creator ? 
                     <Button color="success" onClick={showForm} style={{ float: 'right' }}>
                       Edit Project
                     </Button> 
+                    : null }
             </GridItem> 
           </GridContainer>
     )
