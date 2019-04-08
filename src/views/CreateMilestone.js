@@ -84,6 +84,7 @@ showNotification = place => {
 }
 
 componentWillMount = () => {
+  console.log(this.props.location.state)
   // If redirected from specific project select project
   if (this.props.location.state ? 
       this.props.location.state.project_id && this.props.location.state.project_name 
@@ -118,7 +119,7 @@ createNewProject = () => { this.props.history.push('/home/create-project/') }
 render() {
   const { classes, allProjects, successMessage, project  } = this.props;
   const { project_id, project_name, backToProject } = this.state;
-
+  console.log(backToProject)
   return (
       <GridContainer>
           <Snackbar
@@ -163,21 +164,10 @@ render() {
                       />
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
-                      {backToProject ? 
                       <FormControl className={classes.formControl}>
                         <TextField
-                          label="Project"
-                          variant="outlined"
-                          margin="normal"
-                          className="my-input"
-                          value={project_name}
-                          onChange={this.handleChange}
-                          inputProps={{ name: 'project_id', id: 'project_id'}} />
-                        </FormControl>
-                      :
-                      <FormControl className={classes.formControl}>
-                        <TextField
-                          Select
+                          select
+                          disabled={ backToProject ? true : false}
                           label="Project"
                           variant="outlined"
                           margin="normal"
@@ -185,15 +175,16 @@ render() {
                           value={project_id}
                           onChange={this.handleChange}
                           inputProps={{ name: 'project_id', id: 'project_id'}} >
+
                           {allProjects.length ? allProjects.map(project => {
                             return  (
                               <MenuItem key={project.project_id} value={project.project_id}> 
                                 {project.project.name} 
                               </MenuItem>
-                            )
-                            }) : null }
+                            ) 
+                          }) : null }
                         </TextField> 
-                    </FormControl>}
+                    </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>

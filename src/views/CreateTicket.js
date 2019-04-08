@@ -118,10 +118,7 @@ uploadCallback(file) {
         reject(res.error)
         resolve({ data: res.data.url})
          })
-    
-  });
-
-  
+  }); 
 }
 
 componentWillMount = () => {
@@ -169,6 +166,7 @@ render() {
   
   let projects = getUnique(allProjects,'project_id')
   let team_members = getUnique(team,'user_id')
+  console.log(backToProject)
 
   return (
       <GridContainer>
@@ -198,6 +196,7 @@ render() {
                     <FormControl className={classes.formControl}>                    
                         <TextField
                           select
+                          disabled={ backToProject ? true : false}
                           label="Project"
                           variant="outlined"
                           margin="normal"

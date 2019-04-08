@@ -6,6 +6,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Footer from "../components/theme/Footer/Footer.jsx";
 import Sidebar from "../components/theme/Sidebar/Sidebar.jsx";
 import logo from "../assets/img/reactlogo.png";
+import Cookies from 'universal-cookie';
 
 import routes from "../routes.js";
 import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
@@ -102,6 +103,11 @@ class Home extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.resizeFunction);
+    const cookies = new Cookies()
+    var token = cookies.get('token')
+    if(!token) {
+      this.props.history.push('/')
+    }
   }
 
 

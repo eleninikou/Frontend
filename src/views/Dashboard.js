@@ -44,8 +44,6 @@ class Dashboard extends Component {
     }
   }
 
-
-
   componentWillMount() {
     this.props.getProjectsByUser();
     this.props.getAllProjects();

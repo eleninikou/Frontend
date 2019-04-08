@@ -1,21 +1,28 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
-import LoginForm from '../components/forms/login/LoginForm'
+
+// Components
 import Card from "../components/theme/Card/Card";
+import LoginForm from '../components/forms/login/LoginForm'
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import withStyles from "@material-ui/core/styles/withStyles"
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import CardBody from '../components/theme/Card/CardBody';
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-    }
+    this.state = {}
   }
     
     componentWillMount = () => {
       const cookies = new Cookies()
         if(this.props.match.url === '/home/logout') {
-          cookies.remove('token')
-          cookies.remove('user')
+          cookies.remove('token', { path: '/' })
+          cookies.remove('user', { path: '/' })
           this.props.history.push('/')
         }
 
@@ -23,13 +30,22 @@ class Login extends Component {
 
   render() {
     return (
-      <div style={{ width: '100%', textAlign: 'center' }}>
-        <LoginForm/>
-      </div>
+      <GridContainer style={{}}> 
+        <GridItem xs={12} sm={12} md={6}>
+        <Card>
+          <CardHeader color="success">
+            <h4 className={this.props.classes.cardTitleWhite}>Login</h4>
+          </CardHeader>
+          <CardBody>
+            <LoginForm/>
+          </CardBody>
+        </Card>
+        </GridItem>
+      </GridContainer>
     )
   }
 }
 
-export default withRouter(Login)
+export default withRouter(withStyles(dashboardStyle)(Login))
   
 

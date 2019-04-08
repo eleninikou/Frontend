@@ -4,7 +4,7 @@ import moment from 'moment';
 
 // Redux
 import { connect } from 'react-redux'
-import { editProject } from '../../redux/actions/projects/Actions'
+import { milestoneEdit } from '../../redux/actions/milestones/Actions'
 
 // Theme components
 import CardBody from "../theme/Card/CardBody.jsx";
@@ -71,8 +71,7 @@ class EditMilestoneForm extends Component {
   setSuccess = successMessage => { this.props.getSuccess(successMessage) }
 
   render() {
-      const { classes, milestone } = this.props
-        console.log(this.state.due_date)
+      const { classes } = this.props
         return ( 
         <form className={classes.form} onSubmit={this.submit}>
           <CardBody>
@@ -133,7 +132,10 @@ class EditMilestoneForm extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => { return {  editProject: id => dispatch(editProject(id)) } }
+const mapDispatchToProps = dispatch => { return {  
+    milestoneEdit: (milestone, id) => dispatch(milestoneEdit(milestone, id)),
+    } 
+}
 const mapStateToProps = state => ({ successMessage: state.ticket.successMessage });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditMilestoneForm))

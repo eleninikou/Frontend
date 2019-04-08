@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+import moment from 'moment';
 
 // Redux
 import { connect } from 'react-redux'
@@ -34,7 +35,7 @@ class EditTicketForm extends Component {
         type_id: this.props.type_id,
         project_id: this.props.project_id,
         project_name: this.props.project_name,
-        selectedDate: '',
+        selectedDate: moment(this.props.due_date).format('YYYY-MM-DD'),
         editorState: '',
       }
       this.handleChange = this.handleChange.bind(this);
@@ -89,15 +90,17 @@ class EditTicketForm extends Component {
   setSuccess = successMessage => { this.props.getSuccess(successMessage) }
 
   render() {
-    const { classes, ticketStatus, ticketTypes, team, milestones } = this.props;
-    const { editorState } = this.state;
+    const { classes, ticketStatus, ticketTypes, team, milestones, creator, user } = this.props;
+    const { editorState, assigned_user_id } = this.state;
 
       return (
             <form onSubmit={this.submit}>
                 <CardBody>
                   <GridContainer>
                       <GridItem xs={12} sm={12} md={12}>
+                      <div>
                         <TextField 
+                          disabled={ user !== creator ? true : false}
                           name="title" 
                           type="text"
                           label="Title" 
@@ -105,6 +108,7 @@ class EditTicketForm extends Component {
                           value={this.state.title}
                           onChange={this.handleChange}
                           fullWidth />
+                        </div>
                       </GridItem>
                       <GridItem xs={12} sm={12} md={12}>
                         <TextField 
@@ -119,6 +123,7 @@ class EditTicketForm extends Component {
                         <GridItem xs={12} sm={12} md={4}>
                         <FormControl className={classes.formControl}>
                           <TextField
+                            disabled={ user !== creator || assigned_user_id ? true : false}
                             select
                             label="Type"
                             variant="outlined"
@@ -147,7 +152,15 @@ class EditTicketForm extends Component {
                               inputProps={{ name: 'status_id', id: 'status_id', }}
                             >
                             {ticketStatus ? ticketStatus.map(status => {
-                              return  <MenuItem key={status.id} value={status.id}> {status.status} </MenuItem>}): null}
+                            return  (
+                              <MenuItem 
+                                disabled={(user === assigned_user_id) && (status.id !== 3) }
+                                key={status.id} 
+                                value={status.id}> 
+                                {status.status} 
+                              </MenuItem>
+                              )}
+                            ): null }
                             </TextField>
                         </FormControl>
                       </GridItem>
@@ -155,6 +168,7 @@ class EditTicketForm extends Component {
                         <FormControl className={classes.formControl}>
                             <TextField
                               select
+                              disabled={ user !== creator ? true : false}
                               label="Milestone"
                               variant="outlined"
                               margin="normal"
@@ -173,6 +187,7 @@ class EditTicketForm extends Component {
                       <FormControl className={classes.formControl}>
                             <TextField
                               select
+                              disabled={ user !== creator ? true : false}
                               label="Priority"
                               variant="outlined"
                               margin="normal"
@@ -191,6 +206,7 @@ class EditTicketForm extends Component {
                           <FormControl className={classes.formControl}>
                             <TextField
                               select
+                              disabled={ user !== creator ? true : false}
                               label="Assinged user"
                               variant="outlined"
                               margin="normal"
@@ -211,6 +227,7 @@ class EditTicketForm extends Component {
                               id="date"
                               label="Due date"
                               type="date"
+                              disabled={ user !== creator ? true : false}
                               className="my-input"
                               fullWidth
                               variant="outlined"

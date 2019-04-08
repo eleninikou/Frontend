@@ -38,6 +38,7 @@ class Invite extends Component {
       team: '',
       page: 0,
       rowsPerPage: 5,
+      backToProject: false
     }
   }
 
@@ -48,14 +49,13 @@ class Invite extends Component {
       .then(() => {  
         this.setState({ 
           project_id: this.props.project.id,
-          team: this.props.team
+          team: this.props.team,
+          backToProject: true
         })
       }) 
       this.props.getEmails(this.props.match.params.id)
       .then(() => {
-        this.setState({ 
-          emails: this.props.emails
-        }) 
+        this.setState({ emails: this.props.emails }) 
       })
     } else {
       // From dashboard. Get all projects
@@ -81,6 +81,10 @@ class Invite extends Component {
     .then(res => {
       this.setState({ emails: res.emails })
     })
+  }
+
+  goBack = () => {          
+    this.props.history.push({ pathname: `/home/project/${this.state.project_id}`})
   }
 
   showNotification(place) {
@@ -114,7 +118,7 @@ class Invite extends Component {
 
   render() {
   const { classes, projects, project, roles, successMessage, emails } = this.props;
-  const { rowsPerPage, page, team } = this.state;
+  const { rowsPerPage, page, team, backToProject } = this.state;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
 
   return (
@@ -140,6 +144,7 @@ class Invite extends Component {
                   <FormControl className={classes.formControl}>                    
                     <TextField
                       select
+                      disabled={backToProject ? true : false}
                       label="Project"
                       variant="outlined"
                       margin="normal"
@@ -201,6 +206,9 @@ class Invite extends Component {
             </CardBody>
             <CardFooter>
               <Button type="submit" color="info">Invite</Button>
+              {backToProject ?
+              <Button color="info" onClick={this.goBack.bind(this)}>Back to project</Button>
+              : null }
             </CardFooter>
           </Card>
         </GridItem>

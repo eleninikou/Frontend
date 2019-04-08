@@ -37,6 +37,7 @@ import TicketContent from '../components/ticket/TicketContent'
 import EditTicketForm from '../components/ticket/EditTicketForm'
 import TicketComments from '../components/ticket/TicketComments'
 import AddComment from '../components/ticket/AddComment';
+import '../assets/css/main.css'
 
 class Ticket extends Component {
     constructor(props) {
@@ -56,7 +57,7 @@ class Ticket extends Component {
         name: '',
         user: '',
         edit: '',
-        ButtonText: 'Edit Ticket',
+        ButtonText: 'Update Ticket',
         editorState: '',
         addComment: false,
         ButtonTextComment: 'Add Comment',
@@ -86,7 +87,7 @@ class Ticket extends Component {
           edit: false,
          })
       } else {
-        this.props.history.push(`/home `)
+        console.log(res)
       }})
 
     // Notification bar
@@ -137,7 +138,7 @@ class Ticket extends Component {
         showComments: true, 
         CommentText: 'Hide Comments',
         edit: false, 
-        ButtonText: 'Edit Ticket'
+        ButtonText: 'Update Ticket'
       })
   }
 
@@ -148,7 +149,7 @@ class Ticket extends Component {
         addComment: true, 
         ButtonTextComment: 'Close',
         edit: false,
-        ButtonText: 'Edit Ticket' 
+        ButtonText: 'Update Ticket' 
       })
   }
 
@@ -240,7 +241,8 @@ class Ticket extends Component {
           closeNotification={() => this.setState({ tr: false })} 
           close /> 
 
-        {/* Display Ticket */}
+        {isFetching ? <CircularProgress className="my-spinner" color="primary" /> 
+        : 
         <GridContainer>          
           <GridItem xs={12} sm={12} md={12}>
             <Card>
@@ -271,13 +273,13 @@ class Ticket extends Component {
                     <Button color="primary" onClick={this.showCommentForm}>
                       {ButtonTextComment}
                     </Button>
-                  : null}  
+                    : null }  
                 </div>  
                 : 
                   <Button color="primary" onClick={this.showCommentForm}>
                     {ButtonTextComment}
-                  </Button>
-                }  
+                  </Button> }  
+
                 <Button color="primary" onClick={this.showForm}>
                   {ButtonText}
                 </Button> 
@@ -285,21 +287,26 @@ class Ticket extends Component {
             </Card>
           </GridItem> 
         </GridContainer>
+        }
 
 
         {/* Edit Ticket if authorized */}
-        {(creator == user) && edit ? 
+        {((creator === parseInt(user)) || (assigned_user_id === parseInt(user))) && edit ? 
           <Card>
             <CardHeader color="primary"> <h4 className={classes.cardTitleWhite}> <Edit /> </h4> </CardHeader>
             <GridContainer>          
+            { creator === parseInt(user) ?
               <GridItem xs={12} sm={12} md={12}>
                 <Button color="danger" onClick={this.deleteTicket} style={{ float: 'right', marginRight: '18px' }}>
                   Delete 
                 </Button>
               </GridItem>
+            : null}  
 
               <GridItem xs={12} sm={12} md={12}>
                 <EditTicketForm 
+                  creator={creator}
+                  user={parseInt(user)}
                   classes={classes}
                   team={team}
                   milestones={milestones}
@@ -341,8 +348,6 @@ class Ticket extends Component {
             </CardBody>
           </Card>
         : null }
-
-          {isFetching ? <CircularProgress className="my-spinner" color="primary" /> : null } 
       </div> 
       )
     }

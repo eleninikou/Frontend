@@ -39,7 +39,12 @@ class ProjectTeam extends Component {
 
     editMilestone = id => { this.props.history.push(`/home/milestone/${id}`) }
 
-    invitePeople = () => { this.props.history.push(`/home/project-invite/${this.props.match.params.id}`) }
+    invitePeople = () => { 
+      this.props.history.push( {
+        pathname: `/home/project-invite/${this.props.match.params.id}`,
+        state: { project_id: this.props.project.id }
+      })
+     }
 
 
     render() {

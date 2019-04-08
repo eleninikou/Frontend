@@ -16,7 +16,7 @@ const TicketContent = ({ description }) => {
             <Typography className="my-ticket-time"> 
               <div dangerouslySetInnerHTML={{ __html: convertFromJSONToHTML(description) }} />
             </Typography> 
-          : <CircularProgress className="my-spinner" color="primary" />}     
+          : <CircularProgress className="my-spinner" color="primary" /> }     
         </div>
     )
 }

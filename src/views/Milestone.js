@@ -12,32 +12,24 @@ import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Card from "../components/theme/Card/Card";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
-import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
-import Table from "../components/theme/Table/Table.jsx";
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 
-// Material UI components
-import Tooltip from "@material-ui/core/Tooltip";
-import TextField from '@material-ui/core/TextField'
-import InputLabel from '@material-ui/core/InputLabel';
-import IconButton from "@material-ui/core/IconButton";
-
 // Icons
-import Edit from "@material-ui/icons/Edit";
 import Note from "@material-ui/icons/Note";
-import Timeline from "@material-ui/icons/Timeline";
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import Info from "@material-ui/icons/Info";
 import DeleteForever from "@material-ui/icons/DeleteForever";
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import '../assets/css/main.css'
+
+// Components
 import MilestoneContent from '../components/milestone/MilestoneContent';
 import EditMilestoneForm from '../components/milestone/EditMilestoneForm';
+import MilestoneTickets from '../components/milestone/MilestoneTickets';
 
 
 class Milestone extends Component {
@@ -108,7 +100,14 @@ class Milestone extends Component {
 
   milestoneDelete() {
     this.props.deleteMilestone(this.state.id)
-    .then(this.showNotification('tr'))
+    .then(() => {
+      if(this.props.successMessage) {
+        this.props.history.push({
+          pathname: '/home/projects', 
+          state: { successMessage: this.props.successMessage}
+        })
+      }
+    })
   }
 
   handleChange = event => {
@@ -116,23 +115,26 @@ class Milestone extends Component {
     this.setState({ [name]: value });
   }
 
-  // handleDateChange = event => {
-  //   this.setState({ selectedDate: event.target.value });
-  // };
 
   getSuccess = successMessage => {
     this.setState({ successMessage })
     this.showNotification('tr')
-    this.props.getProject(this.props.match.params.id)
+    this.props.getMilestone(this.props.match.params.id)
     .then(res => {
-      this.setState({ 
-        id: res.project.id,
-        name: res.project.name,
-        description: res.project.description,
-        client_id: res.project.client_id,
-        milestones: res.project.milestones
-       })
-    });
+      if(res.milestone) {
+        this.setState({ 
+          id: res.milestone.id,
+          title: res.milestone.title,
+          focus: res.milestone.focus,
+          project: res.milestone.project.name,
+          project_id: res.milestone.project.id,
+          due_date: res.milestone.due_date,
+          creator: res.milestone.project.creator_id,
+          milestone: res.milestone
+         })
+      } else {
+        this.props.history.push(`/home`)
+      }})
   }
 
   render() {
@@ -145,6 +147,7 @@ class Milestone extends Component {
             <Snackbar
               place="tr"
               color="success"
+              icon={CheckCircleOutline}
               message={successMessage}
               open={this.state.tr}
               closeNotification={() => this.setState({ tr: false })}
@@ -181,48 +184,10 @@ class Milestone extends Component {
                       tabIcon: Note,
                       tabContent: ( 
                         tickets ? 
-                            <Table
-                              tableHeaderColor="warning"
-                              tableHead={["Priority", "Type", "Title", "Assigned to", "Status", "Due date", "Edit", "Details"]}
-                              tableData={[
-                                tickets.map(ticket => {
-                                return [
-                                    `${ticket.priority}`,
-                                    `${ticket.type.type}`, 
-                                    `${ticket.title}`, 
-                                    `${ticket.assigned_user.name}`,
-                                    `${ticket.status.status}`,
-                                    `${ticket.due_date}`,
-                                      (this.state.auth_user_id == ticket.creator_id) && (this.state.auth_user_id == ticket.assigned_user_id) ?
-                                      <Tooltip
-                                        id="tooltip-top"
-                                        title="Edit Ticket"
-                                        placement="top"
-                                        classes={{ tooltip: classes.tooltip }}
-                                        onClick={this.goToTicket.bind(this, ticket.id)}
-                                        >
-                                        <IconButton
-                                          aria-label="Edit"
-                                          className={classes.tableActionButton}>
-                                          <Edit className={ classes.tableActionButtonIcon + " " + classes.edit}/>
-                                        </IconButton>
-                                      </Tooltip>
-                                      : null,
-                                      <Tooltip
-                                        id="tooltip-top"
-                                        title="Go to Ticket"
-                                        placement="top"
-                                        classes={{ tooltip: classes.tooltip }}
-                                        onClick={this.goToTicket.bind(this, ticket.id)}
-                                    >
-                                      <IconButton aria-label="Go to" className={classes.tableActionButton}>
-                                        <ExitToApp className={ classes.tableActionButtonIcon + " " + classes.edit }/>
-                                      </IconButton>
-                                    </Tooltip>
-                                    ]
-                                })
-                              ]} 
-                            />    
+                          <MilestoneTickets 
+                            tickets={tickets} 
+                            classes={classes}
+                            project_id={this.state.project_id} />   
                          : null 
                       )
                     },
@@ -232,7 +197,7 @@ class Milestone extends Component {
                       tabIcon: DeleteForever,
                       tabContent: (
                         <CardBody>
-                          <Button color="primary" onClick={this.milestoneDelete}>
+                          <Button color="warning" onClick={this.milestoneDelete}>
                             Delete milestone
                           </Button>
                         </CardBody>

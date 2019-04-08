@@ -86,8 +86,14 @@
   margin-top: 10px !important;
   padding: 0 !important; }
 
+.MuiFormControl-marginNormal-426 {
+  width: 100% !important; }
+
 .my-spinner {
   margin: auto !important; }
+
+.MuiCircularProgress-colorPrimary-324 {
+  color: light-grey !important; }
 
 .my-input {
   margin-bottom: 25px !important; }
@@ -114,3 +120,9 @@
   width: 100% !important;
   margin: 5px !important;
   padding: 5px !important; }
+
+.MuiButton-containedPrimary-225 {
+  height: 35px !important; }
+
+.GridItem-grid-107 {
+  margin: auto !important; }
