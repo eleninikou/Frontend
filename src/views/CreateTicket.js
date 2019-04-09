@@ -51,8 +51,11 @@ class CreateTicket extends Component {
         selectedDate: '',
         project_name: '',
         editorState: EditorState.createEmpty(),
+        image: '',
+        success: false,
+        error: false,
         imagePreviewUrl: false,
-        image: ''
+        url: ''
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -90,36 +93,41 @@ submit = event => {
 }
 
 uploadCallback(file) {
-  const cookies = new Cookies()
-  var token = cookies.get('token')
-
-  let reader = new FileReader();
-  reader.onload = (e) => {
-    this.setState({ image: file })
-  }
-  reader.readAsDataURL(file);
 
   return new Promise(
     (resolve, reject) => {
-
-      debugger;
-      return axios
-       .put("http://127.0.0.1:8000/api/tickets/image",
-       file,
-       { headers: { 
-         "X-Requested-With": "XMLHttpRequest",
-         'Access-Control-Allow-Origin': '*',
-         "Authorization": `Bearer ${token}`
-       }
-     }
-     ).then(res => {
-        console.log(res)
-        debugger;
-        reject(res.error)
-        resolve({ data: res.data.url})
-         })
-  }); 
+      
+      let reader = new FileReader();
+      reader.onload = () => {
+        this.setState({ image: file })
+      };
+      reader.readAsDataURL(file);
+      
+      this.fileUpload(file)
+      resolve({ url: this.state.url });
+      reject('error')
+    } 
+    )
 }
+
+fileUpload = async (file) => {
+  const cookies = new Cookies()
+  var token = cookies.get('token')
+
+  const formData = new FormData()
+  formData.append('file', file)
+  
+  await axios.post('http://127.0.0.1:8000/api/tickets/image',  
+  formData, { headers: { 
+    "X-Requested-With": "XMLHttpRequest",
+    'Access-Control-Allow-Origin': '*',
+    "Authorization": `Bearer ${token}`
+  }}).then((res) => {
+    this.setState({ url: res.data.url })
+  })
+  }
+
+
 
 componentWillMount = () => {
     // If redirected from specific project select project

@@ -254,10 +254,10 @@ class Ticket extends Component {
               </CardHeader>
                 <CardBody>
                 <GridContainer>          
-                  <GridItem xs={12} sm={12} md={4}>
+                  <GridItem xs={12} sm={12} md={5}>
                     <TicketIconList ticket={show_ticket} classes={classes}/>
                   </GridItem> 
-                  <GridItem xs={12} sm={12} md={8}>
+                  <GridItem xs={12} sm={12} md={7}>
                     <TicketContent description={description}/>
                   </GridItem>    
                 </GridContainer>
@@ -293,7 +293,11 @@ class Ticket extends Component {
         {/* Edit Ticket if authorized */}
         {((creator === parseInt(user)) || (assigned_user_id === parseInt(user))) && edit ? 
           <Card>
-            <CardHeader color="primary"> <h4 className={classes.cardTitleWhite}> <Edit /> </h4> </CardHeader>
+            <CardHeader color="primary"> 
+            <h4 className={classes.cardTitleWhite}> <Edit /> </h4> 
+            <h4 className={classes.cardTitleWhite}> Update ticket</h4> 
+
+            </CardHeader>
             <GridContainer>          
             { creator === parseInt(user) ?
               <GridItem xs={12} sm={12} md={12}>

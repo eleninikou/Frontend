@@ -37,7 +37,7 @@ const TicketIconList = ({ ticket, classes }) => {
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
-              <ListItemText primary={moment(ticket.due_date).format('YYYY-MM-DD')} />
+              <ListItemText primary={'Due date: ' + moment(ticket.due_date).format('YYYY-MM-DD')} />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -51,7 +51,7 @@ const TicketIconList = ({ ticket, classes }) => {
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
-              <ListItemText primary={ticket.assigned_user ? ticket.assigned_user.name : null} />
+              <ListItemText primary={ticket.assigned_user ? 'Assigned: ' + ticket.assigned_user.name : null} />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -65,7 +65,7 @@ const TicketIconList = ({ ticket, classes }) => {
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
-              <ListItemText primary={ticket.status ? ticket.status.status : null} />
+              <ListItemText primary={ticket.status ? 'Status: ' + ticket.status.status : null} />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -86,7 +86,7 @@ const TicketIconList = ({ ticket, classes }) => {
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
-              <ListItemText primary={ticket.type ? ticket.type.type : null} />
+              <ListItemText primary={ticket.type ? 'Type: ' + ticket.type.type : null} />
             </ListItem>
             <ListItem>
               <ListItemAvatar> 
@@ -109,7 +109,7 @@ const TicketIconList = ({ ticket, classes }) => {
                       </Avatar> }
                 </Tooltip>
               </ListItemAvatar>
-              <ListItemText primary={ticket.priority} />
+              <ListItemText primary={'Priority: ' + ticket.priority} />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -123,7 +123,7 @@ const TicketIconList = ({ ticket, classes }) => {
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
-              <ListItemText primary={ticket.milestone ? ticket.milestone.title : null} />
+              <ListItemText primary={ticket.milestone ? 'Milestone: ' + ticket.milestone.title : null} />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -137,7 +137,7 @@ const TicketIconList = ({ ticket, classes }) => {
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
-              <ListItemText primary={ticket.comments ? ticket.comments.length : 0} />
+              <ListItemText primary={ticket.comments ? 'Comments: ' + ticket.comments.length : 0} />
             </ListItem>
           </List>
 
