@@ -52,17 +52,16 @@ class Tickets extends Component {
   }
 
   render() {
-    const { classes, allTickets, ticketStatus, ticketTypes, allProjects } = this.props;
-    const { rowsPerPage, page, status_id, type_id, priority, project_id, tickets } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, allTickets.length - page * rowsPerPage);
+    const { classes, ticketStatus, ticketTypes, allProjects } = this.props;
+    const { status_id, type_id, priority, project_id, tickets } = this.state;
 
 
         let filteredTickets = tickets ? tickets.filter(ticket => {
         return (
-          (status_id ? ticket.status_id == status_id : ticket) &&
-          (type_id ? ticket.type_id == type_id : ticket) &&
-          (priority ? ticket.priority == priority : ticket) &&
-          (project_id ? ticket.project_id == project_id : ticket)
+          (status_id ? parseInt(ticket.status_id) === parseInt(status_id) : ticket) &&
+          (type_id ? parseInt(ticket.type_id) === parseInt(type_id) : ticket) &&
+          (priority ? ticket.priority === priority : ticket) &&
+          (project_id ? parseInt(ticket.project_id) === parseInt(project_id) : ticket)
         )
       }) : tickets
      

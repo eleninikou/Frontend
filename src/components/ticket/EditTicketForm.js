@@ -18,6 +18,7 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { Editor } from 'react-draft-wysiwyg';
+import { EditorState, convertFromRaw } from 'draft-js';
 
 
 class EditTicketForm extends Component {
@@ -43,9 +44,12 @@ class EditTicketForm extends Component {
       // this.deleteTicket = this.deleteTicket.bind(this);
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.getTicketTypes();
     this.props.getTicketStatus();
+    this.setState({
+      editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.description)))
+    })
   }
 
   handleChange = event => {

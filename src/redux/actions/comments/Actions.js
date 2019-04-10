@@ -17,7 +17,7 @@ import {
       }
 
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/comments`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/comments`, {
           method: "POST",
           body: JSON.stringify(comment),
           headers: {
@@ -39,7 +39,7 @@ export const commentDelete = id=> {
       dispatch ({ type: DELETE_COMMENT_SUCCESS, payload: success}); return success; }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/comments/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/comments/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,

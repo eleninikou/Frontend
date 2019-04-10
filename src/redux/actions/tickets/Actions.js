@@ -17,9 +17,6 @@ import {
     UPDATE_TICKET_FAILURE,
     DELETE_TICKET_SUCCESS,
     DELETE_TICKET_FAILURE,
-    IMG_UPLOAD_REQUEST,
-    IMG_UPLOAD_SUCCESS,
-    IMG_UPLOAD_FAILURE,
 } from './Action-types';
 
 import Cookies from 'universal-cookie';
@@ -35,7 +32,7 @@ export const getTicket = id => {
 
   try {
       dispatch({ type: GET_TICKET_REQUEST })
-      const res = await fetch(`http://127.0.0.1:8000/api/tickets/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/${id}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -58,7 +55,7 @@ export const getAllTickets = () => {
     }
         try {
         dispatch({ type: GET_ALL_TICKETS_USER_REQUEST })
-        const res = await fetch(`http://127.0.0.1:8000/api/tickets/user`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/user`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -81,7 +78,7 @@ export const getAllTickets = () => {
       const createTicketError = error => { dispatch ({ type: CREATE_TICKET_FAILURE, message: 'Could not fetch projects' }); return error; }
   
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/tickets`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tickets`, {
           method: "POST",
           body: JSON.stringify(ticket),
           headers: {
@@ -104,7 +101,7 @@ export const getAllTickets = () => {
     }
     
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/tickets/${id}`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/${id}`, {
           method: "PUT",
           body: JSON.stringify(ticket),
           headers: {
@@ -131,7 +128,7 @@ export const getTicketTypes = () => {
       const TicketTypesError = error => { dispatch ({ type: GET_TICKET_TYPES_FAILURE, message: 'Could not fetch ticket types' }); return error; }
       try {
         getTicketTypesRequest();
-        const res = await fetch(`http://127.0.0.1:8000/api/types`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/types`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -156,7 +153,7 @@ export const getTicketStatus = () => {
 
     try {
       dispatch({ type: GET_TICKET_STATUS_REQUEST})
-      const res = await fetch(`http://127.0.0.1:8000/api/status`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/status`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -179,7 +176,7 @@ export const deleteTicket = id => {
   }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/tickets/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,

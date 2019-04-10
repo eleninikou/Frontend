@@ -5,6 +5,8 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../redux/reducers'
 import App from '../components/app/index'
+require('dotenv').config() 
+
 
 const middleware = [thunk]
 

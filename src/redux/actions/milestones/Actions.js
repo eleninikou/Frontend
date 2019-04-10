@@ -24,7 +24,7 @@ export const getMilestone = id => {
 
     try {
       dispatch({ type: GET_MILESTONE_REQUEST })
-      const res = await fetch(`http://127.0.0.1:8000/api/milestones/${id}`,  {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/milestones/${id}`,  {
         method: "GET",
         headers: { 
           "Authorization": `Bearer ${token}`, 
@@ -48,7 +48,7 @@ export const milestoneCreate = milestone => {
       }
 
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/milestones`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/milestones`, {
           method: "POST",
           body: JSON.stringify(milestone),
           headers: {
@@ -74,7 +74,7 @@ export const milestoneEdit = (milestone, id) => {
       return edited_milestone; 
   }
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/milestones/${id}`,  {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/milestones/${id}`,  {
         method: "PUT",
         body: JSON.stringify(milestone),
         headers: { 
@@ -100,7 +100,7 @@ export const deleteMilestone = id => {
   }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/milestones/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/milestones/${id}`, {
         method: "DELETE",
         body: JSON.stringify(id),
         headers: {

@@ -32,7 +32,8 @@ const switchRoutes = (
             component={prop.component}
             key={key}
           />
-        );}
+        );
+      }
     })}
       <Route exact path='/home/create-milestone' component={CreateMilestone} />
       <Route path='/home/milestone/:id' component={Milestone} />

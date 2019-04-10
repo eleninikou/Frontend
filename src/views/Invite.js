@@ -102,7 +102,7 @@ class Invite extends Component {
   handleChange = event => { 
     this.setState({ [event.target.name]: event.target.value }) 
 
-    if([event.target.name] == 'project_id') {
+    if([event.target.name] === 'project_id') {
       this.props.getTeam(event.target.value)
       .then(res => {
           this.setState({ team : res.team })

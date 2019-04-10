@@ -27,11 +27,11 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import '../assets/css/main.css'
 
 
 class CreateTicket extends Component {
@@ -87,51 +87,52 @@ submit = event => {
           })
       }
     } else {
-      this.showNotification('tr')
+      this.props.history.push({
+        pathname: `/home/project/${this.state.project_id}`,
+        state: { successMessage: this.props.successMessage}
+      })
     }
   })
 }
 
+
 uploadCallback(file) {
 
-  return new Promise(
-    (resolve, reject) => {
-      
+  return new Promise((resolve, reject) => {      
       let reader = new FileReader();
       reader.onload = () => {
-        this.setState({ image: file })
+
+        const cookies = new Cookies()
+        var token = cookies.get('token')
+
+        const formData = new FormData()
+        formData.append('file', file)
+
+        return axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,  
+        formData, { headers: { 
+          "X-Requested-With": "XMLHttpRequest",
+          'Access-Control-Allow-Origin': '*',
+          "Authorization": `Bearer ${token}`
+        }}).then((res) => {
+          console.log(process.env.REACT_APP_API_BASE_URL+res.data.url )
+          resolve({ data: { link: process.env.REACT_APP_API_BASE_URL+res.data.url  }});
+        })
+
       };
-      reader.readAsDataURL(file);
-      
-      this.fileUpload(file)
-      resolve({ url: this.state.url });
       reject('error')
-    } 
-    )
+      reader.readAsDataURL(file);
+      })
 }
 
-fileUpload = async (file) => {
-  const cookies = new Cookies()
-  var token = cookies.get('token')
-
-  const formData = new FormData()
-  formData.append('file', file)
-  
-  await axios.post('http://127.0.0.1:8000/api/tickets/image',  
-  formData, { headers: { 
-    "X-Requested-With": "XMLHttpRequest",
-    'Access-Control-Allow-Origin': '*',
-    "Authorization": `Bearer ${token}`
-  }}).then((res) => {
-    this.setState({ url: res.data.url })
-  })
-  }
 
 
 
 componentWillMount = () => {
     // If redirected from specific project select project
-    if (this.props.location.state ? this.props.location.state.project_id || this.props.location.state.backToProject : null) {
+    if (this.props.location.state ? 
+        this.props.location.state.project_id || this.props.location.state.backToProject 
+      : null
+      ) {
       this.setState({ 
         backToProject: true, 
         project_id: this.props.location.state.project_id 
@@ -140,6 +141,7 @@ componentWillMount = () => {
     } else {
       this.props.getAllProjects();
     }
+    
   this.props.getTicketTypes();
   this.props.getTicketStatus();
 }
@@ -158,7 +160,9 @@ goBack = () => {
   this.props.history.push({ pathname: `/home/project/${this.state.project_id}`})
 }
 
-handleDateChange = event => {this.setState({ selectedDate: event.target.value }) }
+handleDateChange = event => {
+  this.setState({ selectedDate: event.target.value }) 
+}
 
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
@@ -174,11 +178,17 @@ render() {
   
   let projects = getUnique(allProjects,'project_id')
   let team_members = getUnique(team,'user_id')
-  console.log(backToProject)
+
+  const styles = {
+    input: {
+      marginBottom: '25px',
+      minWidth: '100%'
+    }
+  }
 
   return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Create new ticket</h4>
@@ -187,22 +197,28 @@ render() {
             <CardBody>
               <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <FormControl className={classes.formControl}>                    
+                    <FormControl 
+                      className={classes.formControl}
+                      >                    
                       <TextField 
                         name="title" 
                         type="text"
                         label="Title" 
-                        className="my-input"
+                        style={styles.input}  
                         value={this.state.title}
                         onChange={this.handleChange}
                         fullWidth
+                        variant="outlined"
+                        margin="normal"
                         aria-describedby="component-error-text"
                       />
                     </FormControl> 
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={3}>
+                  <GridItem xs={12} sm={12} md={6}>
+                  {projects || project ?
                     <FormControl className={classes.formControl}>                    
                         <TextField
+                          style={styles.input}
                           select
                           disabled={ backToProject ? true : false}
                           label="Project"
@@ -210,25 +226,30 @@ render() {
                           margin="normal"
                           value={this.state.project_id}
                           onChange={this.handleChange}
-                          className="my-input"
                           inputProps={{  name: 'project_id',  id: 'project_id'}} >
-                        {project ?  <MenuItem  key={project.id} value={project.id}> {project.name} </MenuItem>
-                        : projects ? projects.map(project => {
-                          return  <MenuItem  key={project.project.id} value={project.project.id}>  {project.project.name} </MenuItem>
-                          }): null }
+                            {project ?  <MenuItem  key={project.id} value={project.id}> {project.name} </MenuItem>
+                          : projects ? projects.map(project => {
+                            return  (
+                              <MenuItem  key={project.project.id} value={project.project.id}>  
+                                {project.project.name} 
+                              </MenuItem>
+                              )
+                            }): null }
                         </TextField>
-                    </FormControl>
+                    </FormControl>  
+                    : <CircularProgress className="my-spinner" color="primary" /> }
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={3}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
                         <TextField
+                          classes={classes}
                           select
                           label="Type"
                           variant="outlined"
                           margin="normal"
                           value={this.state.type_id}
                           onChange={this.handleChange}
-                          className="my-input"
+                          style={styles.input}
                           inputProps={{ name: 'type_id', id: 'type_id'}} >
                         {ticketTypes ? ticketTypes.map(type => {
                           return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>
@@ -236,7 +257,7 @@ render() {
                         </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={3}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
                         <TextField
                           select
@@ -245,7 +266,7 @@ render() {
                           margin="normal"
                           value={this.state.status_id}
                           onChange={this.handleChange}
-                          className="my-input"
+                          style={styles.input}
                           inputProps={{ name: 'status_id', id: 'status_id', }} >
                         {ticketStatus ? ticketStatus.map(status => {
                           return <MenuItem key={status.id} value={status.id}> {status.status} </MenuItem>
@@ -253,14 +274,14 @@ render() {
                         </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={3}>
-                  <FormControl component="fieldset" className={classes.formControl}>
+                  <GridItem xs={12} sm={12} md={6}>
+                  <FormControl className={classes.formControl}>
                           <TextField
                             select
                             label="Priority"
                             variant="outlined"
                             margin="normal"
-                            className="my-input"
+                            style={styles.input}
                             value={this.state.priority}
                             onChange={this.handleChange}
                             inputProps={{ name: 'priority', id: 'priority' }} >
@@ -270,16 +291,16 @@ render() {
                           </TextField>
                       </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={3}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
                         <TextField
                           select
                           label="Assign user"
                           variant="outlined"
                           margin="normal"
+                          style={styles.input}
                           value={this.state.assigned_user_id}
                           onChange={this.handleChange}
-                          className="my-input"
                           inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
                         {team_members ? team_members.map(member => {
                           return <MenuItem key={member.user.id} value={member.user.id}> {member.user.name} </MenuItem>
@@ -287,16 +308,16 @@ render() {
                         </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={3}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
                         <TextField
                           select
                           label="milestone"
                           variant="outlined"
                           margin="normal"
+                          style={styles.input}
                           value={this.state.milestone_id}
                           onChange={this.handleChange}
-                          className="my-input"
                           inputProps={{ name: 'milestone_id', id: 'milestone_id' }} >
                           {project ? project.milestones ? project.milestones.map(milestone => {
                             return  <MenuItem key={milestone.id} value={milestone.id}> {milestone.title}</MenuItem>
@@ -304,7 +325,7 @@ render() {
                         </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={3}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
                     <TextField
                         id="date"
@@ -312,7 +333,7 @@ render() {
                         type="date"
                         variant="outlined"
                         margin="normal"
-                        className="my-input"
+                        style={styles.input}
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
                         InputLabelProps={{
@@ -331,8 +352,14 @@ render() {
                           toolbar = {{
                             image: {
                               uploadEnabled: true,
-                              uploadCallback: this.uploadCallback.bind(this),
-                              urlEnabled: false
+                              uploadCallback: this.uploadCallback,
+                              urlEnabled: true,
+                              previewImage: true,
+                              alt: { present: false, mandatory: false},
+                              defaultSize: {
+                                height: 'auto',
+                                width: 'auto',
+                              },
                             }
                           }}
                         />
@@ -375,7 +402,7 @@ const mapStateToProps = state => ({
 })
 
 TextField.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateTicket)));

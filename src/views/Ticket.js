@@ -37,58 +37,39 @@ import TicketContent from '../components/ticket/TicketContent'
 import EditTicketForm from '../components/ticket/EditTicketForm'
 import TicketComments from '../components/ticket/TicketComments'
 import AddComment from '../components/ticket/AddComment';
-import '../assets/css/main.css'
 
 class Ticket extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        assigned_user_id: '',
-        description: '',
-        due_date: '',
-        milestone_id: '',
-        priority: '',
-        status_id: '',
-        title: '',
-        type_id: '',
+        assigned_user_id: this.props.ticket.assigned_user_id,
+        description: this.props.description,
+        due_date: this.props.ticket.due_date,
+        milestone_id: this.props.ticket.milestone_id,
+        priority: this.props.ticket.priority,
+        status_id: this.props.ticket.status_id,
+        title: this.props.ticket.title,
+        type_id: this.props.ticket.type_id,
         project_name: '',
-        project_id: '',
-        show_ticket: '',
-        name: '',
-        user: '',
-        edit: '',
+        project_id: this.props.ticket.project_id,
+        ticket: this.props.ticket,
+        creator: this.props.ticket.creator_id,
+        name: this.props.user.name,
+        user: this.props.user.id,
+        edit: false,
         ButtonText: 'Update Ticket',
         editorState: '',
         addComment: false,
         ButtonTextComment: 'Add Comment',
         CommentText: 'Show Comments',
-        showComments: false
+        showComments: false,
+        successMessage: ''
       }
   }
   
-  componentWillMount = () => {
+  componentDidMount = () => {
     // Fetch ticket and set to state
     this.props.getTicket(this.props.match.params.id)
-    .then(res => {
-      if(res.ticket) {
-        this.setState({ 
-          assigned_user_id: res.ticket.assigned_user_id,
-          description: res.ticket.description,
-          due_date: res.ticket.due_date,
-          milestone_id: res.ticket.milestone_id,
-          priority: res.ticket.priority,
-          status_id: res.ticket.status_id,
-          title: res.ticket.title,
-          type_id: res.ticket.type_id,
-          project_name: res.ticket.project.name,
-          project_id: res.ticket.project_id,
-          creator: res.ticket.project.creator_id,
-          show_ticket: res.ticket,
-          edit: false,
-         })
-      } else {
-        console.log(res)
-      }})
 
     // Notification bar
     var id = window.setTimeout(null, 0)
@@ -97,11 +78,8 @@ class Ticket extends Component {
     // Get loged in user for comments
     const cookies = new Cookies()
     const user = cookies.get('user')
-    this.props.getUser(user).then(res => {
-      this.setState({ 
-        name: res.user.name,
-        user })
-    })
+    this.props.getUser(user)
+
   }
 
   // Show notification bar
@@ -185,7 +163,7 @@ class Ticket extends Component {
           project_name: res.ticket.project.name,
           project_id: res.ticket.project_id,
           creator: res.ticket.project.creator_id,
-          show_ticket: res.ticket,
+          ticket: res.ticket,
           comment: null,
           edit: false,
           ButtonText: 'Edit Ticket'
@@ -203,11 +181,11 @@ class Ticket extends Component {
       milestones, 
       isFetching, 
       comments, 
-      description 
+      description,
+      ticket 
     } = this.props;
 
     const { 
-      show_ticket, 
       user, 
       creator, 
       edit, 
@@ -229,8 +207,9 @@ class Ticket extends Component {
     } = this.state;
 
     return (
-      <div> 
 
+      <div> 
+      {console.log(ticket)}
         {/* Display Success message */}
         <Snackbar 
           place="tr" 
@@ -247,18 +226,20 @@ class Ticket extends Component {
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="primary"> 
-                <h4 className={classes.cardTitleWhite} style={{ fontSize: '2em' }}>{show_ticket.title} </h4> 
+                <h4 className={classes.cardTitleWhite} style={{ fontSize: '2em' }}>{ticket.title} </h4> 
                 <h4 className={classes.cardTitleWhite}>created by {
-                    show_ticket.creator ? show_ticket.creator.name : null} |  {moment(show_ticket.created_at).format('YYYY-MM-DD')}
+                    ticket.creator ? ticket.creator.name : null} |  {moment(ticket.created_at).format('YYYY-MM-DD')}
                 </h4>
               </CardHeader>
                 <CardBody>
                 <GridContainer>          
                   <GridItem xs={12} sm={12} md={5}>
-                    <TicketIconList ticket={show_ticket} classes={classes}/>
+                    <TicketIconList ticket={ticket} classes={classes}/>
                   </GridItem> 
                   <GridItem xs={12} sm={12} md={7}>
-                    <TicketContent description={description}/>
+                    {description ?
+                      <TicketContent description={description}/>
+                    : null}  
                   </GridItem>    
                 </GridContainer>
               </CardBody> 
@@ -338,7 +319,7 @@ class Ticket extends Component {
             <CardBody>
               {addComment ? 
                 <AddComment 
-                  ticket_id={show_ticket.id} 
+                  ticket_id={ticket.id} 
                   getSuccess={this.getSuccess.bind(this)}
                   hideForm={this.hideForm.bind(this)}
                 /> 

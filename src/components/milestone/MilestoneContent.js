@@ -24,12 +24,10 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import CenterFocusStrong from "@material-ui/icons/CenterFocusStrong";
 
 // Material UI components
-import Typography from '@material-ui/core/Typography';
 
 const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
 
     const showForm = () => { getEdit(true)  }
-    console.log(creator)
 
     return (
         <GridContainer>          

@@ -41,7 +41,7 @@ const TicketComments = ({ comments, user, classes, deleteComment }) => {
                     <div dangerouslySetInnerHTML={{ __html: convertFromJSONToHTML(comment.comment) }} />
                   : <CircularProgress className="my-spinner" color="primary" />
                 } />
-                {comment.user_id == user ?
+                {comment.user_id === parseInt(user) ?
                   <Tooltip
                     id="tooltip-top-start"
                     title="Delete comment"

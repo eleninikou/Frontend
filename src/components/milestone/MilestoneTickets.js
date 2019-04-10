@@ -8,7 +8,6 @@ import { getTicketStatus, getTicketTypes } from '../../redux/actions/tickets/Act
 
 // Theme components
 import Table from "../theme/Table/Table.jsx";
-import Button from "../theme/CustomButtons/Button.jsx";
 import GridItem from "../theme/Grid/GridItem.jsx";
 import GridContainer from "../theme/Grid/GridContainer.jsx";
 
@@ -67,9 +66,9 @@ class MilestoneTickets extends Component {
   
     let filteredTickets = tickets ? tickets.filter(ticket => {
         return (
-          (status_id ? ticket.status_id == status_id : ticket) &&
-          (type_id ? ticket.type_id == type_id : ticket) &&
-          (priority ? ticket.priority == priority : ticket) 
+          (status_id ? parseInt(ticket.status_id) === parseInt(status_id) : ticket) &&
+          (type_id ? parseInt(ticket.type_id) === parseInt(type_id) : ticket) &&
+          (priority ? ticket.priority === priority : ticket) 
         )
       }) : tickets
 

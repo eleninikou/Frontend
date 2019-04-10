@@ -20,7 +20,8 @@ class LoginForm extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      errorMessage: ''
     }
     this.handleChange = this.handleChange.bind(this);
     this.submit = this.submit.bind(this);
@@ -31,11 +32,11 @@ class LoginForm extends Component {
     if (!response.error) {
       this.props.googleLogin(response.profileObj)
       .then(res => {
-        if(res.success.token){
+        if(res.success){
             this.props.history.push('/home/dashboard')
           }
         else {
-          console.log('display error message')
+          this.setState({ errorMessage: 'Could not log in, show error message'})
         }  
         })
     }
@@ -52,7 +53,7 @@ class LoginForm extends Component {
         if(res.email) {
             this.props.history.push('/home/dashboard')
         } else {
-          console.log('display error message')
+          this.setState({ errorMessage: 'Could not log in, show error message'})
         }
       })
   }
@@ -113,6 +114,9 @@ class LoginForm extends Component {
                   width="100%"
                   />
                 </FormControl>
+                </GridItem> 
+                <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
+                  {this.state.errorMessage}
                 </GridItem> 
             </CardBody>
             </GridContainer>    

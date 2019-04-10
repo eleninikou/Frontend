@@ -33,7 +33,7 @@ export const login = creds => {
   
       try {
         dispatch({ type: LOGIN_REQUEST });
-        const res = await fetch(`http://127.0.0.1:8000/api/login`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, {
           method: "POST",
           body: JSON.stringify(creds),
           headers: { 
@@ -62,7 +62,7 @@ export const googleLogin = (googleAuth) => {
 
       try {
         dispatch({ type: GOOGLE_AUTH_REQUEST });
-        const res = await fetch(`http://127.0.0.1:8000/api/google`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/google`, {
             method: "POST",
             body: JSON.stringify(googleAuth),
             headers: { "Content-Type": "application/json" }
@@ -82,7 +82,7 @@ export const logout = (token) => {
   return async dispatch => {
     const logoutSuccess = success => { dispatch ({ type: LOGOUT_SUCCESS, payload: success}); return success; }
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/logout`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/logout`, {
           method: "POST",
           headers: { 
             "Authorization": `Bearer ${token}`,
@@ -102,7 +102,7 @@ export const getUser = (id) => {
   return async dispatch => {
     const getUserSuccess = user=> { dispatch ({ type: GET_USER_SUCCESS, payload: user}); return user; }
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/${id}`, {
           method: "GET",
           headers: { 
             "Authorization": `Bearer ${token}`,
@@ -125,7 +125,7 @@ export const updateUser = (user) => {
   }
   
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/users`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users`, {
         method: "PUT",
         body: JSON.stringify(user),
         headers: {

@@ -11,7 +11,6 @@ import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
-import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 // Icons
 import Note from "@material-ui/icons/Note";

@@ -42,7 +42,7 @@ export const getProject = id => {
 
     try {
       dispatch({ type: GET_PROJECT_REQUEST })
-      const res = await fetch(`http://127.0.0.1:8000/api/projects/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/${id}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -67,7 +67,7 @@ export const getProjectsByUser = () => {
     
       try {
         dispatch({ type: GET_PROJECTS_BY_USER_REQUEST })
-        const res = await fetch(`http://127.0.0.1:8000/api/projects/user`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/user`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -93,7 +93,7 @@ export const getAllProjects = () => {
     
       try {
         dispatch({ type: GET_ALL_PROJECTS_USER_REQUEST })
-        const res = await fetch(`http://127.0.0.1:8000/api/projects/user/all`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/user/all`, {
           method: "GET",
           headers: {
             "Authorization": `Bearer ${token}`,
@@ -118,7 +118,7 @@ export const projectCreate = project => {
       }
   
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/projects`, {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects`, {
           method: "POST",
           body: JSON.stringify(project),
           headers: { "Authorization": `Bearer ${token}`, 'Access-Control-Allow-Origin': '*', "Content-Type": "application/json"}
@@ -140,7 +140,7 @@ export const editProject = project => {
     }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/projects/${project.id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/${project.id}`, {
         method: "PUT",
         body: JSON.stringify(project),
         headers: {
@@ -165,7 +165,7 @@ export const deleteProject = id => {
   }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/projects/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -191,7 +191,7 @@ export const getActivity = () => {
 
     try {
       dispatch({ type: GET_ACTIVITY_REQUEST });
-      const res = await fetch(`http://127.0.0.1:8000/api/activity/user`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/activity/user`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -215,7 +215,7 @@ export const getRoles = () => {
   }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/roles`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/roles`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -237,7 +237,7 @@ export const getTeam = id => {
       return team; 
   }
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/projects/team/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/team/${id}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -259,7 +259,7 @@ export const invite = invitation => {
       return success; 
   }
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/projects/${invitation.project_id}/invite`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/${invitation.project_id}/invite`, {
         method: "POST",
         body: JSON.stringify(invitation),
         headers: {
@@ -282,7 +282,7 @@ export const getEmails = id => {
       return success; 
   }
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/projects/${id}/invited`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/${id}/invited`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,

@@ -1,24 +1,21 @@
 import React from 'react';
 
-import {stateToHTML} from 'draft-js-export-html'; 
-import { convertFromRaw } from 'draft-js';
-
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import draftToHtml from 'draftjs-to-html';
 
 const TicketContent = ({ description }) => {
 
-    const convertFromJSONToHTML = (text) => { return stateToHTML(convertFromRaw(text))   }
-  
     return(
         <div>
-          {description.blocks ? 
+          {description.blocks && description.entityMap ? 
             <Typography className="my-ticket-time"> 
-              <div dangerouslySetInnerHTML={{ __html: convertFromJSONToHTML(description) }} />
+              <div dangerouslySetInnerHTML={{ __html: draftToHtml(description) }} />
             </Typography> 
           : <CircularProgress className="my-spinner" color="primary" /> }     
         </div>
     )
+
 }
 
 export default TicketContent;

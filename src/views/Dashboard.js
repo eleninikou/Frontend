@@ -16,7 +16,7 @@ import Table from "../components/theme/Table/Table.jsx";
 import Card from "../components/theme/Card/Card";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
-import TicketsTable from '../components/project/ProjectTickets';
+import TicketsTable from '../components/ticket/TicketsTable';
 
 // Material UI components
 import IconButton from "@material-ui/core/IconButton";

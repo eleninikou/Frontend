@@ -86,7 +86,7 @@ class ProjectTickets extends Component {
         <GridContainer>              
           <GridItem xs={12} sm={12} md={12}>        
             <GridContainer>
-              <GridItem xs={12} sm={12} md={4}>
+              <GridItem xs={12} sm={12} md={6}>
                 <TextField
                   value={this.state.type_id}
                   select
@@ -102,7 +102,7 @@ class ProjectTickets extends Component {
                     }): null}
                 </TextField>   
               </GridItem>   
-              <GridItem xs={12} sm={12} md={4}>
+              <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     value={this.state.status_id}
                     select
@@ -118,7 +118,7 @@ class ProjectTickets extends Component {
                       }): null}
                   </TextField> 
               </GridItem> 
-              <GridItem xs={12} sm={12} md={4}>
+              <GridItem xs={12} sm={12} md={6}>
                 <TextField
                   select
                   label="Priority"
