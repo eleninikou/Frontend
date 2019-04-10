@@ -42,21 +42,9 @@ class Ticket extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        assigned_user_id: this.props.ticket.assigned_user_id,
-        description: this.props.description,
-        due_date: this.props.ticket.due_date,
-        milestone_id: this.props.ticket.milestone_id,
-        priority: this.props.ticket.priority,
-        status_id: this.props.ticket.status_id,
-        title: this.props.ticket.title,
-        type_id: this.props.ticket.type_id,
-        project_name: '',
-        project_id: this.props.ticket.project_id,
-        ticket: this.props.ticket,
-        creator: this.props.ticket.creator_id,
-        name: this.props.user.name,
-        user: this.props.user.id,
-        edit: false,
+        ticket: '',
+        user: '',
+        edit: '',
         ButtonText: 'Update Ticket',
         editorState: '',
         addComment: false,
@@ -80,6 +68,7 @@ class Ticket extends Component {
     const user = cookies.get('user')
     this.props.getUser(user)
 
+    this.setState({ edit: false})
   }
 
   // Show notification bar
@@ -182,34 +171,25 @@ class Ticket extends Component {
       isFetching, 
       comments, 
       description,
-      ticket 
+      ticket, 
+      user
     } = this.props;
 
     const { 
-      user, 
       creator, 
       edit, 
       ButtonText, 
       addComment, 
       ButtonTextComment, 
       successMessage, 
-      assigned_user_id, 
-      due_date, 
-      milestone_id, 
-      priority, 
-      status_id, 
-      title, 
-      type_id, 
-      project_name, 
-      project_id, 
       CommentText, 
       showComments 
     } = this.state;
 
+
     return (
 
       <div> 
-      {console.log(ticket)}
         {/* Display Success message */}
         <Snackbar 
           place="tr" 
@@ -237,9 +217,9 @@ class Ticket extends Component {
                     <TicketIconList ticket={ticket} classes={classes}/>
                   </GridItem> 
                   <GridItem xs={12} sm={12} md={7}>
-                    {description ?
-                      <TicketContent description={description}/>
-                    : null}  
+                  {description ? 
+                    <TicketContent description={description}/>
+                    : null }
                   </GridItem>    
                 </GridContainer>
               </CardBody> 
@@ -272,7 +252,7 @@ class Ticket extends Component {
 
 
         {/* Edit Ticket if authorized */}
-        {((creator === parseInt(user)) || (assigned_user_id === parseInt(user))) && edit ? 
+        {((ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id))) && edit ? 
           <Card>
             <CardHeader color="primary"> 
             <h4 className={classes.cardTitleWhite}> <Edit /> </h4> 
@@ -290,21 +270,21 @@ class Ticket extends Component {
 
               <GridItem xs={12} sm={12} md={12}>
                 <EditTicketForm 
-                  creator={creator}
-                  user={parseInt(user)}
+                  creator={ticket.creator_id}
+                  user={user.id}
                   classes={classes}
                   team={team}
                   milestones={milestones}
                   description={description}
-                  assigned_user_id={assigned_user_id}
-                  due_date={due_date}
-                  milestone_id={milestone_id}
-                  priority={priority}
-                  status_id={status_id}
-                  title={title}
-                  type_id={type_id}
-                  project_id={project_id}
-                  project_name={project_name}
+                  assigned_user_id={ticket.assigned_user_id}
+                  due_date={ticket.due_date}
+                  milestone_id={ticket.milestone_id}
+                  priority={ticket.priority}
+                  status_id={ticket.status_id}
+                  title={ticket.title}
+                  type_id={ticket.type_id}
+                  project_id={ticket.project_id}
+                  project_name={ticket.project ? ticket.project.name : null }
                   getSuccess={this.getSuccess.bind(this)}
                 />
               </GridItem>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import moment from 'moment';
+import Cookies from "universal-cookie";
+import axios from "axios";
 
 // Redux
 import { connect } from 'react-redux'
@@ -18,7 +20,9 @@ import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertFromRaw } from 'draft-js';
+import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-js';
+
+import draftToHtml from 'draftjs-to-html';
 
 
 class EditTicketForm extends Component {
@@ -41,14 +45,20 @@ class EditTicketForm extends Component {
       }
       this.handleChange = this.handleChange.bind(this);
       this.submit = this.submit.bind(this);
-      // this.deleteTicket = this.deleteTicket.bind(this);
   }
 
   componentDidMount = () => {
     this.props.getTicketTypes();
     this.props.getTicketStatus();
+    let html = draftToHtml(this.props.description)
+    const blocksFromHTML = convertFromHTML(html);
+    const state = ContentState.createFromBlockArray(
+      blocksFromHTML.contentBlocks,
+      blocksFromHTML.entityMap
+    );
+
     this.setState({
-      editorState: EditorState.createWithContent(convertFromRaw(JSON.parse(this.props.description)))
+      editorState: EditorState.createWithContent(state)
     })
   }
 
@@ -61,6 +71,34 @@ class EditTicketForm extends Component {
 
   handleDateChange = event => {this.setState({ selectedDate: event.target.value }) }
 
+  uploadCallback(file) {
+
+    return new Promise((resolve, reject) => {      
+        let reader = new FileReader();
+        reader.onload = () => {
+  
+          const cookies = new Cookies()
+          var token = cookies.get('token')
+  
+          const formData = new FormData()
+          formData.append('file', file)
+  
+          return axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,  
+          formData, { headers: { 
+            "X-Requested-With": "XMLHttpRequest",
+            'Access-Control-Allow-Origin': '*',
+            "Authorization": `Bearer ${token}`
+          }}).then((res) => {
+            console.log(process.env.REACT_APP_API_BASE_URL+res.data.url )
+            resolve({ data: { link: process.env.REACT_APP_API_BASE_URL+res.data.url  }});
+          })
+  
+        };
+        reject('error')
+        reader.readAsDataURL(file);
+        })
+  }
+
   submit = event => {
     event.preventDefault();
     let date = '';
@@ -72,7 +110,7 @@ class EditTicketForm extends Component {
 
     const ticket = {
       assigned_user_id: this.state.assigned_user_id,
-      description: this.state.description,
+      description: convertToRaw(this.state.editorState.getCurrentContent()),
       due_date: this.date,
       milestone_id: this.state.milestone_id,
       priority: this.state.priority,
@@ -81,6 +119,7 @@ class EditTicketForm extends Component {
       type_id: this.state.type_id,
       project_id: this.state.project_id
     };
+    debugger;
 
     this.props.updateTicket(ticket, this.props.match.params.id)
     .then(res => { this.setSuccess(res.message) })
@@ -96,6 +135,7 @@ class EditTicketForm extends Component {
   render() {
     const { classes, ticketStatus, ticketTypes, team, milestones, creator, user } = this.props;
     const { editorState, assigned_user_id } = this.state;
+
 
       return (
             <form onSubmit={this.submit}>
@@ -127,7 +167,7 @@ class EditTicketForm extends Component {
                         <GridItem xs={12} sm={12} md={4}>
                         <FormControl className={classes.formControl}>
                           <TextField
-                            disabled={ user !== creator || assigned_user_id ? true : false}
+                            disabled={ user !== creator ? true : false}
                             select
                             label="Type"
                             variant="outlined"
@@ -235,7 +275,6 @@ class EditTicketForm extends Component {
                               className="my-input"
                               fullWidth
                               variant="outlined"
-                              defaultValue={this.state.due_date}
                               value={this.state.selectedDate}
                               onChange={this.handleDateChange}
                               InputLabelProps={{ shrink: true }}
@@ -249,6 +288,19 @@ class EditTicketForm extends Component {
                             wrapperClassName="wrapperClassName"
                             editorClassName="editorClassName"
                             onEditorStateChange={this.onEditorStateChange}
+                            toolbar = {{
+                              image: {
+                                uploadEnabled: true,
+                                uploadCallback: this.uploadCallback,
+                                urlEnabled: true,
+                                previewImage: true,
+                                alt: { present: false, mandatory: false},
+                                defaultSize: {
+                                  height: 'auto',
+                                  width: 'auto',
+                                },
+                              }
+                            }}
                           />
                         <Button color="primary" type="submit" style={{ float: 'right'}}> Save </Button>
                       </GridItem>
