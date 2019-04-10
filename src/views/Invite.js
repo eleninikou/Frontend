@@ -102,7 +102,7 @@ class Invite extends Component {
   handleChange = event => { 
     this.setState({ [event.target.name]: event.target.value }) 
 
-    if([event.target.name] === 'project_id') {
+    if([event.target.name] == 'project_id') {
       this.props.getTeam(event.target.value)
       .then(res => {
           this.setState({ team : res.team })
@@ -120,7 +120,6 @@ class Invite extends Component {
   const { classes, projects, project, roles, successMessage, emails } = this.props;
   const { rowsPerPage, page, team, backToProject } = this.state;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
-
   return (
     <form className={classes.form} onSubmit={this.submit}>
       <Snackbar

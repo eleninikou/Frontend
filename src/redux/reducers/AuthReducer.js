@@ -13,10 +13,16 @@ import {
     GET_USER_FAILURE,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_FAILURE,
+    GET_EMAIL_SUCCESS,
+    GET_EMAIL_FAILURE,
+    ACCEPT_INVITATION_SUCCESS,
+    ACCEPT_INVITATION_FAILURE,
 } from '../actions/auth/Action-types';
 
 const initialState = {
     user: {},
+    email: '',
+    existing: false,
     isFetching: false,
     isAuthenticated: false,
     errorMessage: null,
@@ -107,7 +113,33 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errorMessage: action.message
-            }      
+            }   
+        case GET_EMAIL_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                email: action.payload.email.email,
+                existing: action.payload.email.existing
+            } 
+        case GET_EMAIL_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            } 
+        case ACCEPT_INVITATION_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                isAuthenticated: true,
+                user: action.payload
+           } 
+        case ACCEPT_INVITATION_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }        
         default:
             return state;
     }

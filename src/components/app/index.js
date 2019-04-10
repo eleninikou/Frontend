@@ -7,7 +7,7 @@ import Project from '../../views/Project'
 import Cookies from 'universal-cookie';
 
 import  NotFoundPage  from '../../views/NotFound';
-import '../../assets/css/main.css'
+import AcceptInvitation from '../../views/AcceptInvitation';
 
 function PrivateRoute({ component: Component, ...rest }) {
   const cookies = new Cookies()
@@ -38,6 +38,7 @@ class App extends Component {
       <div className='App'>
         <Switch>
           <Route exact path='/' component={Login} />
+          <Route path='/accept/:id' component={AcceptInvitation} />
           <PrivateRoute path='/home/logout' component={Login} />
           <PrivateRoute path='/home' component={Home} />
           <PrivateRoute exact path='/home/create-project' component={CreateProject} />

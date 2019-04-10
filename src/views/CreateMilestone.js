@@ -119,7 +119,6 @@ createNewProject = () => { this.props.history.push('/home/create-project/') }
 render() {
   const { classes, allProjects, successMessage, project  } = this.props;
   const { project_id, project_name, backToProject } = this.state;
-  console.log(backToProject)
   return (
       <GridContainer>
           <Snackbar

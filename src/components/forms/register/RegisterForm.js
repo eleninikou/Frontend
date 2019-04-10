@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
 import GoogleLogin from 'react-google-login'
-import { login, googleLogin, acceptInvitation } from '../../../redux/actions/auth/Actions'
+import { register, googleLogin } from '../../../redux/actions/auth/Actions'
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import GridContainer from "../../theme/Grid/GridContainer.jsx";
 import GridItem from "../../theme/Grid/GridItem.jsx";
@@ -15,13 +15,15 @@ import { FormControl } from '@material-ui/core';
 import Cookies from 'universal-cookie'
 
 
-class LoginForm extends Component {
+class RegisterForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      name: '',
       email: this.props.email,
       password: '',
+      repeatPassword: '',
       errorMessage: ''
     }
     this.handleChange = this.handleChange.bind(this);
@@ -46,16 +48,18 @@ class LoginForm extends Component {
   submit = event => {
     
     event.preventDefault();
-    const creds = {
-      email: this.state.email,
-      password: this.state.password
-    };
+
+    if(this.state.password === this.state.repeatPassword) {
+        const creds = {
+          email: this.state.email,
+          password: this.state.password
+        };
 
 
     const cookies = new Cookies()
     var invitation = cookies.get('invitation')
 
-    this.props.login(creds)
+    this.props.register(creds)
     .then(res => {
       if (invitation) {
         this.props.acceptInvitation(invitation).then(res => {
@@ -72,6 +76,7 @@ class LoginForm extends Component {
           this.setState({ errorMessage: 'Could not log in, show error message'})
         }
       })
+    }
   }
   
   handleChange = event => {
@@ -87,6 +92,18 @@ class LoginForm extends Component {
           <GridContainer>
             <CardBody>
             <form style={{ width: '100%', textAlign: 'center'}} onSubmit={this.submit}>
+            <GridItem xs={12} sm={12} md={12}>
+              <FormControl className={classes.formControl}>
+                <TextField 
+                    name="name" 
+                    type="text"
+                    label="Full name" 
+                    fullWidth
+                    value={this.state.name}
+                    onChange={this.handleChange}
+                />
+              </FormControl>
+              </GridItem>
               <GridItem xs={12} sm={12} md={12}>
               <FormControl className={classes.formControl}>
                 <TextField 
@@ -110,12 +127,23 @@ class LoginForm extends Component {
                       onChange={this.handleChange}
                   />
                 </FormControl>
-
+                </GridItem> 
+                <GridItem xs={12} sm={12} md={12}>
+              <FormControl className={classes.formControl}>
+                <TextField 
+                      name="repeatPassword" 
+                      type="repeatPassword"
+                      label="Repeat Password"
+                      fullWidth
+                      value={this.state.repeatPassword}
+                      onChange={this.handleChange}
+                  />
+                </FormControl>
                 </GridItem> 
                 <GridItem xs={12} sm={12} md={12} style={{ marginTop: '30px'}}>
                 <FormControl className={classes.formControl}>
                   <Button type="submit" variant="contained" color="primary" >
-                    Login
+                    Register
                   </Button> 
                   </FormControl>
                 </GridItem> 
@@ -144,14 +172,12 @@ class LoginForm extends Component {
 
 const mapDispatchToProps = dispatch => { 
   return { 
-    login: creds => dispatch(login(creds)),
+    register: creds => dispatch(register(creds)),
     googleLogin: googleAuth => dispatch(googleLogin(googleAuth)),
-    acceptInvitation: token => dispatch(acceptInvitation(token))
-
   }
 }
 
 const mapStateToProps = state => ({});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(LoginForm)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(RegisterForm)));
 
