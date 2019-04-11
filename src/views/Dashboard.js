@@ -8,7 +8,6 @@ import { getAllTickets } from '../redux/actions/tickets/Actions'
 import { getProjectsByUser, getAllProjects, getActivity } from '../redux/actions/projects/Actions'
 import { logout } from '../redux/actions/auth/Actions'
 
-
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
@@ -21,6 +20,7 @@ import TicketsTable from '../components/ticket/TicketsTable';
 // Material UI components
 import IconButton from "@material-ui/core/IconButton";
 import TablePagination from '@material-ui/core/TablePagination';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Icons
 import Note from "@material-ui/icons/Note";
@@ -73,17 +73,15 @@ class Dashboard extends Component {
   }
 
   render() {
-      const { classes, allTickets, activity } = this.props;
+      const { classes, allTickets, activity, isFetching } = this.props;
       const { rowsPerPage, page } = this.state;
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage);
-      const emptyRows2 = rowsPerPage - Math.min(rowsPerPage, allTickets.length - page * rowsPerPage);
 
         return (
           <div>
             <GridContainer> 
               <GridItem xs={12} sm={12} md={12}>
                 <Card>
-                  <CardBody>
                   <CustomTabs
                     headerColor="primary"
                     tabs={[
@@ -91,7 +89,10 @@ class Dashboard extends Component {
                         tabName: "Activity",
                         tabIcon: Today,
                         tabContent: (
-                          <CardBody>
+                          isFetching ?
+                            <CircularProgress className="my-spinner" color="primary" />
+                          :
+                          <div>
                             <Table
                               page={page}
                               rowsPerPage={rowsPerPage}
@@ -118,9 +119,9 @@ class Dashboard extends Component {
                                     return [
                                       `${A.user.name} ${A.text}`,
                                       `${A.project.name}`,
-                                      <IconButton aria-label="Go to" className={classes.tableActionButton}>
-                                        {this.icon}
-                                      </IconButton>,
+                                        <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                          {this.icon}
+                                        </IconButton>,
                                       `${A.created_at}`,
                                     ]
                                   }) : null
@@ -141,7 +142,7 @@ class Dashboard extends Component {
                             onChangePage={this.handleChangePage}
                             onChangeRowsPerPage={this.handleChangeRowsPerPage}
                           />
-                        </CardBody>
+                        </div>
                       )
                     },{
                       tabName: "Tickets",
@@ -155,7 +156,6 @@ class Dashboard extends Component {
                         )
                     },
                   ]}/>
-                  </CardBody>
                 </Card>
               </GridItem>
             </GridContainer>

@@ -14,6 +14,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+
 // Icons
 import Note from "@material-ui/icons/Note";
 import People from "@material-ui/icons/People";
@@ -29,86 +35,62 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
         <GridContainer>          
             <GridItem xs={12} sm={12} md={12}>
               <CardBody>
-                <GridContainer>          
-                  <GridItem xs={12} sm={12} md={3}>
-                    <List className="my-ticket-list">
-                        <ListItem>
-                          <ListItemAvatar>
-                          <Tooltip
-                            id="tooltip-top-start"
-                            title="Milestones"
-                            placement="top"
-                            classes={{ tooltip: classes.tooltip }}>  
-                              <Avatar style={{backgroundColor: '#ff9800'}}> 
-                                <Timeline /> 
-                              </Avatar>
-                            </Tooltip>
-                          </ListItemAvatar>
-                          <ListItemText primary={project.milestones ? project.milestones.length : 0 } />
-                        </ListItem>
-                        <ListItem>
-                          <ListItemAvatar>
-                          <Tooltip
-                            id="tooltip-top-start"
-                            title="Tickets"
-                            placement="top"
-                            classes={{ tooltip: classes.tooltip }}>  
-                              <Avatar style={{backgroundColor: '#9c27b0'}}> 
-                                <Note /> 
-                              </Avatar>
-                            </Tooltip>
-                          </ListItemAvatar>
-                          <ListItemText primary={project.tickets ? project.tickets.length : 0 } />
-                        </ListItem>
-                        <ListItem>
-                          <ListItemAvatar>
-                          <Tooltip
-                            id="tooltip-top-start"
-                            title="Team"
-                            placement="top"
-                            classes={{ tooltip: classes.tooltip }}>  
-                              <Avatar style={{backgroundColor: '#26c6da'}}> 
-                                <People /> 
-                              </Avatar>
-                            </Tooltip>
-                          </ListItemAvatar>
-                          <ListItemText primary={team ? team.length : 0 } />
-                        </ListItem>
-                    </List> 
-                  </GridItem> 
-                  <GridItem xs={12} sm={12} md={9}>
-                  <List className="my-ticket-list">
-                    <ListItem>
-                      <ListItemText primary={
-                        <Typography>
-                          Name:  {project.name}
-                        </Typography>
-                      } />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary={
-                        <Typography>
-                          Description: {project.description}
-                        </Typography>
-                      } />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary={
-                        <Typography>
-                          Created by: {project.creator ? project.creator.name : null}
-                        </Typography>
-                        } />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemText primary={
-                        <Typography>
-                          Client: {project.client ? project.client.name : null}
-                        </Typography>
-                        } />
-                    </ListItem>
-                  </List>        
-                  </GridItem>    
-                </GridContainer>
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">Name</TableCell>
+                    <TableCell align="center">Description</TableCell>
+                    <TableCell align="center">Creator</TableCell>
+                    <TableCell align="center">Client</TableCell>
+                    <TableCell align="center">
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="Milestones"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}>  
+                          <Avatar style={{backgroundColor: '#ff9800'}}> 
+                            <Timeline /> 
+                          </Avatar>
+                        </Tooltip>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="Tickets"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}>  
+                          <Avatar style={{backgroundColor: '#9c27b0'}}> 
+                            <Note /> 
+                          </Avatar>
+                        </Tooltip>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="Team"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}>  
+                          <Avatar style={{backgroundColor: '#26c6da'}}> 
+                            <People /> 
+                          </Avatar>
+                        </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                    <TableRow key={project.id}>
+                      <TableCell component="th" scope="row">
+                        {project.name}
+                      </TableCell>
+                      <TableCell align="center">{project.description}</TableCell>
+                      <TableCell align="center">{project.creator ? project.creator.name : null}</TableCell>
+                      <TableCell align="center">{project.client ? project.client.name : null}</TableCell>
+                      <TableCell align="center">{project.milestones ? project.milestones.length : 0}</TableCell>
+                      <TableCell align="center">{project.tickets ? project.tickets.length : 0}</TableCell>
+                      <TableCell align="center">{team ? team.length : 0 }</TableCell>
+                    </TableRow>
+                </TableBody>
+              </Table>
               </CardBody> 
                     {creator ? 
                     <Button color="success" onClick={showForm} style={{ float: 'right' }}>

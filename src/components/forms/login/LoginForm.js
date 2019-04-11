@@ -13,6 +13,7 @@ import GridItem from "../../theme/Grid/GridItem.jsx";
 import CardBody from '../../theme/Card/CardBody';
 import { FormControl } from '@material-ui/core';
 import Cookies from 'universal-cookie'
+import Typography from '@material-ui/core/Typography';
 
 
 class LoginForm extends Component {
@@ -83,9 +84,9 @@ class LoginForm extends Component {
     const { classes } = this.props
   return (
     <GridContainer >
-        <GridItem xs={12} sm={12} md={12}>
-          <GridContainer>
-            <CardBody>
+        <GridItem xs={12} sm={12} md={12} >
+          <GridContainer >
+            <CardBody >
             <form style={{ width: '100%', textAlign: 'center'}} onSubmit={this.submit}>
               <GridItem xs={12} sm={12} md={12}>
               <FormControl className={classes.formControl}>
@@ -119,7 +120,7 @@ class LoginForm extends Component {
                     color="primary" 
                     style={{ 
                       marginTop: '30px', 
-                      backgroundColor: '#43a047', 
+                      backgroundColor: '#66bb6a', 
                       padding: '10px' 
                     }} 
                     >
@@ -129,13 +130,20 @@ class LoginForm extends Component {
                 </GridItem> 
             </form>
               <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
+                  <Typography style={{ margin: '20px'}}>
+                    OR
+                  </Typography>
+              </GridItem> 
+
+              <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
               <FormControl className={classes.formControl}>
                 <GoogleLogin
                   clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
-                  buttonText="Login"
+                  buttonText="SIGN IN WITH GOOGLE"
                   onSuccess={this.responseGoogle}
                   onFailure={this.responseGoogle}
                   width="100%"
+                  className="google-btn"
                   />
                 </FormControl>
                 </GridItem> 
@@ -145,7 +153,7 @@ class LoginForm extends Component {
             </CardBody>
             </GridContainer>    
         </GridItem>
-      </GridContainer>    
+      </GridContainer>   
   )
   }
 }

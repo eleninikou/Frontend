@@ -114,12 +114,10 @@ uploadCallback(file) {
           'Access-Control-Allow-Origin': '*',
           "Authorization": `Bearer ${token}`
         }}).then((res) => {
-          console.log(process.env.REACT_APP_API_BASE_URL+res.data.url )
-          resolve({ data: { link: process.env.REACT_APP_API_BASE_URL+res.data.url  }});
+          const url = process.env.REACT_APP_API_BASE_URL+res.data.url;
+          resolve({ data: { link: url }});
         })
-
       };
-      reject('error')
       reader.readAsDataURL(file);
       })
 }

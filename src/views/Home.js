@@ -6,8 +6,9 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Footer from "../components/theme/Footer/Footer.jsx";
 import Sidebar from "../components/theme/Sidebar/Sidebar.jsx";
 import logo from "../assets/img/reactlogo.png";
-import Cookies from 'universal-cookie';
-
+import { withRouter } from "react-router-dom"
+import Cookies from 'universal-cookie'
+import { connect } from 'react-redux'
 import routes from "../routes.js";
 import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
 import image from "../assets/img/sidebar-2.jpg";
@@ -18,6 +19,7 @@ import Ticket from './Ticket'
 import Milestone from './Milestone'
 import CreateMilestone from "./CreateMilestone.js";
 import Invite from "./Invite.js";
+import { getUser} from '../redux/actions/auth/Actions'
 
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import '../assets/css/main.css'
@@ -87,12 +89,25 @@ class Home extends React.Component {
     }
   };
 
-  componentDidMount() {
+
+  componentDidMount = () => {
     if (navigator.platform.indexOf("Win") > -1) {
       const ps = new PerfectScrollbar(this.refs.mainPanel);
     }
     window.addEventListener("resize", this.resizeFunction);
+
+    const cookies = new Cookies()
+    var token = cookies.get('token')
+    if(!token) {
+      this.props.history.push('/')
+    }
+
+    var user = cookies.get('user')
+    this.props.getUser(user)
   }
+
+
+
   componentDidUpdate(e) {
     if (e.history.location.pathname !== e.location.pathname) {
       this.refs.mainPanel.scrollTop = 0;
@@ -104,22 +119,17 @@ class Home extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.resizeFunction);
-    const cookies = new Cookies()
-    var token = cookies.get('token')
-    if(!token) {
-      this.props.history.push('/')
-    }
   }
 
 
 
   render() {
-    const { classes, ...rest } = this.props;
+    const { user, classes, ...rest } = this.props;
     return (
       <div className={classes.wrapper}>
         <Sidebar
           routes={routes}
-          logoText={""}
+          logoText={user ? user.name : '' }
           logo={logo}
           image={this.state.image}
           handleDrawerToggle={this.handleDrawerToggle}
@@ -150,4 +160,16 @@ class Home extends React.Component {
 
 Home.propTypes = { classes: PropTypes.object.isRequired };
 
-export default withStyles(dashboardStyle)(Home);
+
+const mapDispatchToProps = dispatch => { 
+  return { 
+    getUser: id=> dispatch(getUser(id)),
+
+  }
+}
+
+const mapStateToProps = state => ({
+    user: state.auth.user,
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Home)))

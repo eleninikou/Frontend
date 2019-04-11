@@ -164,6 +164,7 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                       <FormControl className={classes.formControl}>
+                      {console.log(project.name)}
                         <TextField
                           select
                           disabled={ backToProject ? true : false}
@@ -181,7 +182,11 @@ render() {
                                 {project.project.name} 
                               </MenuItem>
                             ) 
-                          }) : null }
+                          }) : 
+                          <MenuItem key={project.id} value={project.id}> 
+                            {project.name} 
+                          </MenuItem>
+                          }
                         </TextField> 
                     </FormControl>
                   </GridItem>

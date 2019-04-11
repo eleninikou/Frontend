@@ -77,7 +77,7 @@
 .my-label {
   margin-left: 15px; }
 
-.Ticket-formControl-126, .MuiFormControl-marginNormal-244, .MuiFormControl-marginNormal-294 {
+.Ticket-formControl-126, .MuiFormControl-marginNormal-244, .MuiFormControl-marginNormal-294, .MuiFormControl-marginNormal-372, .CreateMilestone-formControl-793, .CreateMilestone-formControl-126 {
   min-width: 100% !important; }
 
 @media (min-width: 600px) {
@@ -99,3 +99,17 @@
 
 .GridItem-grid-107 {
   margin: auto !important; }
+
+.google-btn {
+  display: flex !important;
+  justify-content: center !important; }
+
+.Home-content-3 {
+  margin-top: 0px !important; }
+
+.Sidebar-img-12 {
+  display: none !important; }
+
+.MuiAvatar-root-670 {
+  width: 35px !important;
+  height: 35px !important; }

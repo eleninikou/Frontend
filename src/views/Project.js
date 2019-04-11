@@ -165,7 +165,7 @@ class Project extends Component {
                     headerColor="success"
                     tabs={[
                       {
-                        tabName: "About",
+                        tabName: "Info",
                         tabIcon: Info,
                         tabContent: (
                           edit ?

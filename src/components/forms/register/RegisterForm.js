@@ -163,7 +163,7 @@ class RegisterForm extends Component {
                   <Button type="submit" variant="contained" color="primary" 
                     style={{ 
                       marginTop: '30px', 
-                      backgroundColor: '#43a047', 
+                      backgroundColor: '#66bb6a', 
                       padding: '10px' 
                     }} 
                   >
@@ -184,17 +184,17 @@ class RegisterForm extends Component {
                   <FormControl className={classes.formControl}>
                     <GoogleLogin
                       clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
-                      buttonText="Login with google"
+                      buttonText="User your google account"
                       onSuccess={this.responseGoogle}
                       onFailure={this.responseGoogle}
                       width="100%"
                       style={{ 
-                        padding: '0px', 
-                        display: 'flex !important', 
-                        justifyContent: 'center', 
-                        fontSize: '0.875rem',
-                        fontWeight: '500',
-                        textTransform: 'uppercase'
+                        // padding: '0px', 
+                        // display: 'flex !important', 
+                        // justifyContent: 'center', 
+                        // fontSize: '0.875rem',
+                        // fontWeight: '500',
+                        // textTransform: 'uppercase'
                       }}
                       />
                     </FormControl>

@@ -26,12 +26,11 @@ class Login extends Component {
           cookies.remove('invitation', { path: '/' })
           this.props.history.push('/')
         }
-
     }
 
   render() {
     return (
-      <GridContainer style={{}}> 
+      <GridContainer style={{ transform: 'translateY(50%)'}}> 
         <GridItem xs={12} sm={12} md={6}>
         <Card>
           <CardHeader color="success">
