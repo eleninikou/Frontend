@@ -13,7 +13,6 @@ import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Table from "../components/theme/Table/Table.jsx";
 import Card from "../components/theme/Card/Card";
-import CardBody from "../components/theme/Card/CardBody.jsx";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
 import TicketsTable from '../components/ticket/TicketsTable';
 

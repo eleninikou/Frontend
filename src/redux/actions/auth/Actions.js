@@ -150,14 +150,15 @@ export const getUser = (id) => {
 };  
 
 
-export const updateUser = user => {
+export const updateUser = (user, id) => {
+  debugger;
   return async dispatch => {  
     const editProjectSuccess = success => { 
       dispatch ({ type: UPDATE_USER_SUCCESS, payload: success}); return success; 
   }
   
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/${id}`, {
         method: "PUT",
         body: JSON.stringify(user),
         headers: {
@@ -166,6 +167,7 @@ export const updateUser = user => {
           "Content-Type": "application/json"}
       })
       const success = await res.json();
+      debugger;
       return editProjectSuccess(success);
 
     } catch (error) { dispatch ({ type: UPDATE_USER_FAILURE, message: 'Could not update user' }); return error; }

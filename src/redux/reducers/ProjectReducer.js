@@ -21,6 +21,7 @@ import {
     GET_ROLES_FAILURE,
     GET_TEAM_SUCCESS,
     GET_TEAM_FAILURE,
+    INVITATION_REQUEST,
     INVITATION_SUCCESS,
     INVITATION_FAILURE,
     GET_INVITATIONS_SUCCESS,
@@ -177,6 +178,11 @@ const ProjectReducer = (state = initialState, action) => {
                 isFetching: false,
                 errorMessage: action.message
             }   
+        case INVITATION_REQUEST:
+            return {
+                ...state,
+                isFetching: true,
+            } 
         case INVITATION_SUCCESS:
             return {
                 ...state,

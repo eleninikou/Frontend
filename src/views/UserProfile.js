@@ -4,7 +4,7 @@ import Cookies from 'universal-cookie'
 
 // Redux
 import { connect } from 'react-redux'
-import { getUser } from '../redux/actions/auth/Actions'
+import { getUser, updateUser } from '../redux/actions/auth/Actions'
 
 
 // Theme components
@@ -16,6 +16,7 @@ import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 
 
 // Material UI components
@@ -46,22 +47,31 @@ class UserProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: '',
       name: '',
       email: '',
-      password: '',
-      repeat_password: '',
+      password: null,
+      repeatPassword: '',
+      successMessage: ''
     }
   }
 
   componentWillMount = () => {
     const cookies = new Cookies()
     const user = cookies.get('user')
+
     this.props.getUser(user).then(res => {
       this.setState({
+        user,
         name: res.user.name,
         email: res.user.email,
       })
     })
+
+
+    var id = window.setTimeout(null, 0);
+    while (id--) { window.clearTimeout(id); }
+
   }
 
   handleChange = event => {
@@ -69,27 +79,57 @@ class UserProfile extends Component {
     this.setState({ [name]: value });
   }
 
+
   submit = event => {
     event.preventDefault();
 
-    const user = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.password,
-    };
-
-    this.props.updateUser(user)
-    .then(this.showNotification('tr'))
+    if(this.state.password !== null) {
+      if(this.state.repeatPassword === this.state.password) {
+        const user = {
+          name: this.state.name,
+          email: this.state.email,
+          password: this.state.password,
+        }
+        this.props.updateUser(user, this.state.user).then(res => {
+          this.setState({ successMessage: res.message })
+        }).then(() => {
+          this.showNotification('tr')
+        })
+      }
+    } else {
+      const user = {
+        name: this.state.name,
+        email: this.state.email,
+      }
+      this.props.updateUser(user, this.state.user).then(res => {
+        this.setState({ successMessage: res.message })
+      }).then(() => {
+        this.showNotification('tr')
+      })
+    }
+    
   }
 
-  render() {
-    const { classes, successMessage } = this.props;
+  showNotification(place) {
+    var x = [];
+    x[place] = true;
+    this.setState(x);
+    this.alertTimeout = setTimeout(
+      function() {
+        x[place] = false;
+        this.setState(x);
+      }.bind(this), 6000);
+    }
 
+  render() {
+    const { classes } = this.props;
+    const { successMessage } = this.state;
   return (
     <form className={classes.form} onSubmit={this.submit}>
       <Snackbar
         place="tr"
         color="success"
+        icon={CheckCircleOutline}
         message={successMessage}
         open={this.state.tr}
         closeNotification={() => this.setState({ tr: false })}
@@ -100,50 +140,61 @@ class UserProfile extends Component {
           <Card>
             <CardHeader color="danger">
               <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              {/* <p className={classes.cardCategoryWhite}>Complete your profile</p> */}
             </CardHeader>
             <CardBody>
               <GridContainer>
+
                 <GridItem xs={12} sm={12} md={6}>
-                  <TextField
-                    label="name"
-                    id="name"
-                    className="my-input"
-                    value={this.state.name}
-                    onChange={this.handleChange}
-                    fullWidth
-                    
-                  />
+                    <TextField
+                      label="name"
+                      id="name"
+                      type="text"
+                      name="name"
+                      className="my-input"
+                      value={this.state.name}
+                      onChange={this.handleChange.bind(this)}
+                      fullWidth
+                    />
                 </GridItem>
+
                 <GridItem xs={12} sm={12} md={6}>
-                  <TextField
-                    label="email"
-                    id="email-address"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                    className="my-input"
-                    fullWidth
-                  />
+                    <TextField
+                      label="email"
+                      type="email"
+                      name="email"
+                      id="email-address"
+                      value={this.state.email}
+                      onChange={this.handleChange.bind(this)}
+                      className="my-input"
+                      fullWidth
+                    />
+
                 </GridItem>
               </GridContainer>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                  <TextField
-                    label="password"
-                    id="password"
-                    type="password"
-                    className="my-input"
-                    fullWidth
-                  />
+                    <TextField
+                      label="password"
+                      id="password"
+                      type="password"
+                      name="password"
+                      className="my-input"
+                      onChange={this.handleChange.bind(this)}
+                      fullWidth
+                    />
+
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
                     label="repeat password"
                     id="password"
                     type="password"
+                    name="repeatPassword"
+                    onChange={this.handleChange.bind(this)}
                     className="my-input"
                     fullWidth
                   />
+
                 </GridItem>
               </GridContainer>
             </CardBody>
@@ -160,7 +211,8 @@ class UserProfile extends Component {
 
 const mapDispatchToProps = dispatch => { 
   return { 
-    getUser: (id) => dispatch(getUser(id)),
+    getUser: id => dispatch(getUser(id)),
+    updateUser: (user, id) => dispatch(updateUser(user, id))
    }
 }
 

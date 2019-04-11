@@ -89,7 +89,11 @@ class AcceptInvitation extends Component {
       // If existing in login form, if not in register form
       } else {
         this.props.getEmailFromInvitation(invitation).then(res => {
-          this.setState({ invitedUserEmail: res.email[0], existingUser: res.existing })
+          debugger;
+          console.log(res)
+          if(res.email) {
+            this.setState({ invitedUserEmail: res.email[0], existingUser: res.existing })
+          }
         })
       } 
 

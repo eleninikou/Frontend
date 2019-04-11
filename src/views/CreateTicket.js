@@ -11,7 +11,7 @@ import { getAllProjects, getProject } from '../redux/actions/projects/Actions'
 
 // Wysiwyg
 import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, editorContent, } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 // Theme components
@@ -32,6 +32,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+// import draftToHtml from 'draftjs-to-html';
 
 
 class CreateTicket extends Component {
@@ -55,12 +56,15 @@ class CreateTicket extends Component {
         success: false,
         error: false,
         imagePreviewUrl: false,
-        url: ''
+        url: '',
+        editorContent: ''
     }
     this.handleChange = this.handleChange.bind(this);
 }
 
-onEditorStateChange = editorState => { this.setState({ editorState }) }
+onEditorStateChange = editorState => { 
+  this.setState({ editorState }) 
+}
 
 submit = event => {
   event.preventDefault()

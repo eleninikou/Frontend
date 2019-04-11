@@ -15,11 +15,14 @@ import Table from "../components/theme/Table/Table.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 // Material UI components
 import MenuItem from '@material-ui/core/MenuItem'
-import FormControl from '@material-ui/core/FormControl'
 import TextField from '@material-ui/core/TextField'
+import FormControl from '@material-ui/core/FormControl'
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 //Icons
 import People from "@material-ui/icons/People"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
+
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
@@ -38,7 +41,8 @@ class Invite extends Component {
       team: '',
       page: 0,
       rowsPerPage: 5,
-      backToProject: false
+      backToProject: false,
+      isFetching: false
     }
   }
 
@@ -117,9 +121,12 @@ class Invite extends Component {
   }
 
   render() {
-  const { classes, projects, project, roles, successMessage, emails } = this.props;
-  const { rowsPerPage, page, team, backToProject } = this.state;
+  const { classes, projects, project, roles, successMessage, emails, isFetching } = this.props;
+  const { rowsPerPage, page, team, backToProject} = this.state;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
+
+  console.log(isFetching)
+
   return (
     <form className={classes.form} onSubmit={this.submit}>
       <Snackbar
@@ -221,8 +228,8 @@ class Invite extends Component {
               <div>
                 <Table
                   page={page}
-                  rowsPerPage={rowsPerPage}
-                  emptyRows={emptyRows}
+                  rowsPerPage={team.length}
+                  emptyRows={0}
                   tableHeaderColor="info"
                   tableHead={["Name", "Role", ]}
                   tableData={[
@@ -234,19 +241,24 @@ class Invite extends Component {
                   ]} />
               </div>
               : null}
-              {emails.length ? 
+              <div style={{ margin: '20px', textAlign: 'center'}}>
+              {isFetching ? <CircularProgress className="my-spinner" classes={{ colorPrimary:'#26c6da' }} />  : null }
+
+              </div>
+              {emails.length && !isFetching ? 
               <div>
                 <Table
                   page={page}
-                  rowsPerPage={rowsPerPage}
-                  emptyRows={emptyRows}
+                  rowsPerPage={emails.length}
+                  emptyRows={0}
                   tableHeaderColor="info"
                   tableHead={["Invited", ]}
                   tableData={[
                     emails ? emails.map(email => {
                       return [
                         `${ email }`,
-                      ] }) : null
+                      ] }) 
+                      : null  
                   ]} />
               </div>
               : null}

@@ -21,6 +21,7 @@ import {
   GET_ROLES_FAILURE,
   GET_TEAM_SUCCESS,
   GET_TEAM_FAILURE,
+  INVITATION_REQUEST,
   INVITATION_SUCCESS,
   INVITATION_FAILURE,
   GET_INVITATIONS_SUCCESS,
@@ -259,6 +260,7 @@ export const invite = invitation => {
       return success; 
   }
     try {
+      dispatch ({ type: INVITATION_REQUEST})
       const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/${invitation.project_id}/invite`, {
         method: "POST",
         body: JSON.stringify(invitation),

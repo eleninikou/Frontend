@@ -52,26 +52,20 @@ class LoginForm extends Component {
       password: this.state.password
     };
 
-
     const cookies = new Cookies()
     var invitation = cookies.get('invitation')
 
     this.props.login(creds)
     .then(res => {
-      if (invitation) {
-        this.props.acceptInvitation(invitation).then(res => {
-          console.log(res)
-          debugger;
-        } )
-      }
-
-
-
-        if(res.email) {
-            this.props.history.push('/home/dashboard')
+      if(res.email) {
+        if (invitation) {
+          this.props.acceptInvitation(invitation)        
         } else {
-          this.setState({ errorMessage: 'Could not log in, show error message'})
+          this.props.history.push('/home/dashboard')
         }
+      } else {
+          this.setState({ errorMessage: 'Could not log in, show error message'})
+      }
       })
   }
   
@@ -129,6 +123,8 @@ class LoginForm extends Component {
                   </FormControl>
                 </GridItem> 
             </form>
+            {!this.props.email ?
+            <div>
               <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
                   <Typography style={{ margin: '20px'}}>
                     OR
@@ -150,6 +146,8 @@ class LoginForm extends Component {
                 <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
                   {this.state.errorMessage}
                 </GridItem> 
+                </div>
+                : null }
             </CardBody>
             </GridContainer>    
         </GridItem>

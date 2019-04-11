@@ -50,6 +50,7 @@ class EditTicketForm extends Component {
   componentDidMount = () => {
     this.props.getTicketTypes();
     this.props.getTicketStatus();
+
     let html = draftToHtml(this.props.description)
     const blocksFromHTML = convertFromHTML(html);
     const state = ContentState.createFromBlockArray(

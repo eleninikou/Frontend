@@ -51,7 +51,8 @@ class Ticket extends Component {
         ButtonTextComment: 'Add Comment',
         CommentText: 'Show Comments',
         showComments: false,
-        successMessage: ''
+        successMessage: '',
+        description: ''
       }
   }
   
@@ -170,8 +171,8 @@ class Ticket extends Component {
       milestones, 
       isFetching, 
       comments, 
-      description,
       ticket, 
+      description, 
       user
     } = this.props;
 
@@ -183,12 +184,12 @@ class Ticket extends Component {
       ButtonTextComment, 
       successMessage, 
       CommentText, 
-      showComments 
+      showComments,
     } = this.state;
 
+    console.log(description)
 
     return (
-
       <div> 
         {/* Display Success message */}
         <Snackbar 
@@ -218,8 +219,10 @@ class Ticket extends Component {
                   </GridItem> 
                   <GridItem xs={12} sm={12} md={7}>
                   {description ? 
-                    <TicketContent description={description}/>
-                    : null }
+                  <TicketContent description={description}/>
+                  : 
+                  <CircularProgress className="my-spinner" color="primary" /> 
+                  }
                   </GridItem>    
                 </GridContainer>
               </CardBody> 

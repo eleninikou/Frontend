@@ -7,12 +7,16 @@ const TicketContent = ({ description }) => {
 
     return(
         <div>
-          {description && description.blocks && description.entityMap ? 
+          {description ? 
             <div dangerouslySetInnerHTML={{ __html: draftToHtml(description) }} />
+          : description && description.entityMap ?
+          <div>
+            {/* <div dangerouslySetInnerHTML={{ __html: draftToHtml(JSON.parse(description)) }} /> */}
+          </div>
           : <CircularProgress className="my-spinner" color="primary" /> }     
         </div>
     )
 
 }
 
-export default TicketContent;
+export default TicketContent; 
