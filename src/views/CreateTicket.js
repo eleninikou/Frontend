@@ -23,10 +23,12 @@ import CardBody from "../components/theme/Card/CardBody.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 
+
 // Material UI components
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Styles
@@ -57,7 +59,9 @@ class CreateTicket extends Component {
         error: false,
         imagePreviewUrl: false,
         url: '',
-        editorContent: ''
+        editorContent: '',
+        submitted: false,
+        hasError: false
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -68,40 +72,54 @@ onEditorStateChange = editorState => {
 
 submit = event => {
   event.preventDefault()
-
-  const ticket = {
-    title: this.state.title,
-    description: convertToRaw(this.state.editorState.getCurrentContent()),
-    type_id: this.state.type_id,
-    status_id: this.state.status_id,
-    project_id: this.state.project_id,
-    priority: this.state.priority,
-    due_date: this.state.selectedDate,
-    assigned_user_id: this.state.assigned_user_id,
-    milestone_id: this.state.milestone_id,
-  }
+  if (
+    this.state.title && 
+    this.state.description &&
+    this.state.type_id &&
+    this.state.status_id &&
+    this.state.project_id &&
+    this.state.priority &&
+    this.state.due_date &&
+    this.state.assigned_user_id &&
+    this.state.milestone_id
+    ) {
   
-  this.props.ticketCreate(ticket)
-  .then(() => {
-    if(this.state.backToProject) {
-        if(this.props.successMessage) {
-          this.props.history.push({
-            pathname: `/home/project/${this.state.project_id}`,
-            state: { successMessage: this.props.successMessage}
-          })
-      }
-    } else {
-      this.props.history.push({
-        pathname: `/home/project/${this.state.project_id}`,
-        state: { successMessage: this.props.successMessage}
-      })
+    const ticket = {
+      title: this.state.title,
+      description: convertToRaw(this.state.editorState.getCurrentContent()),
+      type_id: this.state.type_id,
+      status_id: this.state.status_id,
+      project_id: this.state.project_id,
+      priority: this.state.priority,
+      due_date: this.state.selectedDate,
+      assigned_user_id: this.state.assigned_user_id,
+      milestone_id: this.state.milestone_id,
     }
-  })
+    
+    this.props.ticketCreate(ticket)
+    .then(() => {
+      if(this.state.backToProject) {
+          if(this.props.successMessage) {
+            this.props.history.push({
+              pathname: `/home/project/${this.state.project_id}`,
+              state: { successMessage: this.props.successMessage}
+            })
+        }
+      } else {
+        this.props.history.push({
+          pathname: `/home/project/${this.state.project_id}`,
+          state: { successMessage: this.props.successMessage}
+        })
+      }
+    })
+  } else {
+    this.setState({ hasError: true });
+  }
+
 }
 
 
 uploadCallback(file) {
-
   return new Promise((resolve, reject) => {      
       let reader = new FileReader();
       reader.onload = () => {
@@ -123,7 +141,7 @@ uploadCallback(file) {
         })
       };
       reader.readAsDataURL(file);
-      })
+    })
 }
 
 
@@ -148,6 +166,9 @@ componentWillMount = () => {
   this.props.getTicketStatus();
 }
 
+
+
+
 handleChange = event => {
   const { name, value } = event.target;
   this.setState({ [name]: value });
@@ -157,6 +178,8 @@ handleChange = event => {
     this.props.getProject(value)
   }
 }
+
+
 
 goBack = () => {          
   this.props.history.push({ pathname: `/home/project/${this.state.project_id}`})
@@ -168,7 +191,7 @@ handleDateChange = event => {
 
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
-  const { editorState, backToProject } = this.state
+  const { editorState, backToProject, submitted, hasError } = this.state
 
   // https://reactgo.com/removeduplicateobjects/
   function getUnique(arr, comp) {
@@ -190,7 +213,7 @@ render() {
 
   return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Create new ticket</h4>
@@ -202,7 +225,9 @@ render() {
                     <FormControl 
                       className={classes.formControl}
                       >                    
+                      {hasError && !this.state.title && <FormHelperText id="title">Don't forget the title!</FormHelperText>}
                       <TextField 
+                        id="title"
                         name="title" 
                         type="text"
                         label="Title" 
@@ -219,6 +244,7 @@ render() {
                   <GridItem xs={12} sm={12} md={6}>
                   {projects || project ?
                     <FormControl className={classes.formControl}>                    
+                        {hasError && !this.state.project_id && <FormHelperText>Select Project</FormHelperText>}
                         <TextField
                           style={styles.input}
                           select
@@ -228,7 +254,7 @@ render() {
                           margin="normal"
                           value={this.state.project_id}
                           onChange={this.handleChange}
-                          inputProps={{  name: 'project_id',  id: 'project_id'}} >
+                          inputProps={{  name: 'project_id',  id: 'project_id' }} >
                             {project ?  <MenuItem  key={project.id} value={project.id}> {project.name} </MenuItem>
                           : projects ? projects.map(project => {
                             return  (
@@ -243,6 +269,7 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
+                      {hasError && !this.state.type_id && <FormHelperText>This is required!</FormHelperText>}
                         <TextField
                           classes={classes}
                           select
@@ -261,40 +288,43 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
-                        <TextField
-                          select
-                          label="Status"
-                          variant="outlined"
-                          margin="normal"
-                          value={this.state.status_id}
-                          onChange={this.handleChange}
-                          style={styles.input}
-                          inputProps={{ name: 'status_id', id: 'status_id', }} >
-                        {ticketStatus ? ticketStatus.map(status => {
-                          return <MenuItem key={status.id} value={status.id}> {status.status} </MenuItem>
-                        }): null}
-                        </TextField>
+                    {hasError && !this.state.status_id && <FormHelperText>Please select ticket status!</FormHelperText>}
+                      <TextField
+                        select
+                        label="Status"
+                        variant="outlined"
+                        margin="normal"
+                        value={this.state.status_id}
+                        onChange={this.handleChange}
+                        style={styles.input}
+                        inputProps={{ name: 'status_id', id: 'status_id', }} >
+                      {ticketStatus ? ticketStatus.map(status => {
+                        return <MenuItem key={status.id} value={status.id}> {status.status} </MenuItem>
+                      }): null}
+                      </TextField>
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
-                  <FormControl className={classes.formControl}>
-                          <TextField
-                            select
-                            label="Priority"
-                            variant="outlined"
-                            margin="normal"
-                            style={styles.input}
-                            value={this.state.priority}
-                            onChange={this.handleChange}
-                            inputProps={{ name: 'priority', id: 'priority' }} >
-                              <MenuItem value="low"> low </MenuItem>
-                              <MenuItem value="normal"> normal </MenuItem>
-                              <MenuItem value="high"> high </MenuItem>
-                          </TextField>
+                    <FormControl className={classes.formControl}>
+                    {hasError && !this.state.priority && <FormHelperText>Please select priority!</FormHelperText>}
+                        <TextField
+                          select
+                          label="Priority"
+                          variant="outlined"
+                          margin="normal"
+                          style={styles.input}
+                          value={this.state.priority}
+                          onChange={this.handleChange}
+                          inputProps={{ name: 'priority', id: 'priority' }} >
+                            <MenuItem value="low"> low </MenuItem>
+                            <MenuItem value="normal"> normal </MenuItem>
+                            <MenuItem value="high"> high </MenuItem>
+                        </TextField>
                       </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
+                      {hasError && !this.state.assigned_user_id && <FormHelperText>Assign the ticket to a user!</FormHelperText>}
                         <TextField
                           select
                           label="Assign user"
@@ -312,6 +342,7 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
+                      {hasError && !this.state.milestone_id && <FormHelperText>Select milestone!</FormHelperText>}
                         <TextField
                           select
                           label="milestone"
@@ -329,6 +360,7 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
+                    {hasError && !this.state.due_date && <FormHelperText>Select due date!</FormHelperText>}                      
                     <TextField
                         id="date"
                         label="Due date"
@@ -345,6 +377,7 @@ render() {
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
+                  <FormControl className={classes.formControl}>
                       <Editor
                           editorState={editorState}
                           toolbarClassName="toolbarClassName"
@@ -365,6 +398,7 @@ render() {
                             }
                           }}
                         />
+                    </FormControl>
                   </GridItem>
               </GridContainer>
             </CardBody>
