@@ -1,18 +1,25 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom"
-import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
 
-import GoogleLogin from 'react-google-login'
-import { register, googleLogin } from '../../../redux/actions/auth/Actions'
-import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import GridContainer from "../../theme/Grid/GridContainer.jsx";
-import GridItem from "../../theme/Grid/GridItem.jsx";
-import CardBody from '../../theme/Card/CardBody';
-import { FormControl } from '@material-ui/core';
+import { connect } from 'react-redux'
+import { register, googleLogin, acceptInvitation } from '../../../redux/actions/auth/Actions'
+
 import Cookies from 'universal-cookie'
+import GoogleLogin from 'react-google-login'
+
+import GridItem from "../../theme/Grid/GridItem.jsx";
+import CardBody from '../../theme/Card/CardBody'
+import GridContainer from "../../theme/Grid/GridContainer.jsx";
+
+// Material UI
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles'
+import { FormControl } from '@material-ui/core';
+
+// Style
+import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
 
 class RegisterForm extends Component {
@@ -21,10 +28,11 @@ class RegisterForm extends Component {
 
     this.state = {
       name: '',
-      email: this.props.email,
+      email: '',
       password: '',
       repeatPassword: '',
-      errorMessage: ''
+      errorMessage: '',
+      invitation: ''
     }
     this.handleChange = this.handleChange.bind(this);
     this.submit = this.submit.bind(this);
@@ -46,32 +54,31 @@ class RegisterForm extends Component {
   }
 
   submit = event => {
-    
+
     event.preventDefault();
-
     if(this.state.password === this.state.repeatPassword) {
-        const creds = {
-          email: this.state.email,
-          password: this.state.password
-        };
 
-
-    const cookies = new Cookies()
-    var invitation = cookies.get('invitation')
-
-    this.props.register(creds)
-    .then(res => {
-      if (invitation) {
-        this.props.acceptInvitation(invitation).then(res => {
-          console.log(res)
-          debugger;
-        } )
+      const email =  '';
+      if(this.props.email) {
+        this.email = this.props.email
+      } else {
+        this.email = this.state.email
       }
+      const creds = {
+        name: this.state.name,
+        email: this.email,
+        password: this.state.password
+      };
+      ;
 
-
-
+      this.props.register(creds)
+      .then(res => {
         if(res.email) {
+          if (this.state.invitation) {
+            this.props.redirect(this.state.invitation, true)
+          } else {
             this.props.history.push('/home/dashboard')
+          }
         } else {
           this.setState({ errorMessage: 'Could not log in, show error message'})
         }
@@ -84,8 +91,18 @@ class RegisterForm extends Component {
     this.setState({ [name]: value });
   }
 
+  componentWillMount = () => {
+    const cookies = new Cookies()
+    var invitation = cookies.get('invitation')
+    this.setState({ invitation })
+
+  }
+
+
   render () {
-    const { classes } = this.props
+
+  const { classes, email } = this.props
+
   return (
     <GridContainer >
         <GridItem xs={12} sm={12} md={12}>
@@ -107,11 +124,12 @@ class RegisterForm extends Component {
               <GridItem xs={12} sm={12} md={12}>
               <FormControl className={classes.formControl}>
                 <TextField 
+                    disabled={email ? true : false}
                     name="email" 
                     type="email"
                     label="Email" 
                     fullWidth
-                    value={this.state.email}
+                    value={email}
                     onChange={this.handleChange}
                 />
               </FormControl>
@@ -140,25 +158,49 @@ class RegisterForm extends Component {
                   />
                 </FormControl>
                 </GridItem> 
-                <GridItem xs={12} sm={12} md={12} style={{ marginTop: '30px'}}>
+                <GridItem xs={12} sm={12} md={12} >
                 <FormControl className={classes.formControl}>
-                  <Button type="submit" variant="contained" color="primary" >
+                  <Button type="submit" variant="contained" color="primary" 
+                    style={{ 
+                      marginTop: '30px', 
+                      backgroundColor: '#43a047', 
+                      padding: '10px' 
+                    }} 
+                  >
                     Register
                   </Button> 
                   </FormControl>
                 </GridItem> 
             </form>
-              <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
-              <FormControl className={classes.formControl}>
-                <GoogleLogin
-                  clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
-                  buttonText="Login"
-                  onSuccess={this.responseGoogle}
-                  onFailure={this.responseGoogle}
-                  width="100%"
-                  />
-                </FormControl>
+            {!this.state.invitation ?
+              <div>
+                <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
+                  <Typography style={{ margin: '20px'}}>
+                    OR
+                  </Typography>
+                </GridItem>    
+
+                <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
+                  <FormControl className={classes.formControl}>
+                    <GoogleLogin
+                      clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
+                      buttonText="Login with google"
+                      onSuccess={this.responseGoogle}
+                      onFailure={this.responseGoogle}
+                      width="100%"
+                      style={{ 
+                        padding: '0px', 
+                        display: 'flex !important', 
+                        justifyContent: 'center', 
+                        fontSize: '0.875rem',
+                        fontWeight: '500',
+                        textTransform: 'uppercase'
+                      }}
+                      />
+                    </FormControl>
                 </GridItem> 
+              </div>  
+            : null }
                 <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
                   {this.state.errorMessage}
                 </GridItem> 
@@ -174,6 +216,8 @@ const mapDispatchToProps = dispatch => {
   return { 
     register: creds => dispatch(register(creds)),
     googleLogin: googleAuth => dispatch(googleLogin(googleAuth)),
+    acceptInvitation: token => dispatch(acceptInvitation(token))
+
   }
 }
 

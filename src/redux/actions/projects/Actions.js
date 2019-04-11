@@ -233,7 +233,6 @@ export const getRoles = () => {
 export const getTeam = id => {
   return async dispatch => {
     const recieveProject = team => { 
-      debugger;
       dispatch ({ type: GET_TEAM_SUCCESS, payload: team }); 
       return team; 
   }

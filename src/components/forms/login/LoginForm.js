@@ -100,8 +100,8 @@ class LoginForm extends Component {
               </FormControl>
               </GridItem>
               <GridItem xs={12} sm={12} md={12}>
-              <FormControl className={classes.formControl}>
-                <TextField 
+                <FormControl className={classes.formControl}>
+                  <TextField 
                       name="password" 
                       type="password"
                       label="Password"
@@ -110,11 +110,19 @@ class LoginForm extends Component {
                       onChange={this.handleChange}
                   />
                 </FormControl>
-
-                </GridItem> 
-                <GridItem xs={12} sm={12} md={12} style={{ marginTop: '30px'}}>
+              </GridItem> 
+              <GridItem xs={12} sm={12} md={12} style={{ marginTop: '30px'}}>
                 <FormControl className={classes.formControl}>
-                  <Button type="submit" variant="contained" color="primary" >
+                  <Button 
+                    type="submit" 
+                    variant="contained" 
+                    color="primary" 
+                    style={{ 
+                      marginTop: '30px', 
+                      backgroundColor: '#43a047', 
+                      padding: '10px' 
+                    }} 
+                    >
                     Login
                   </Button> 
                   </FormControl>

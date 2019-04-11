@@ -23,6 +23,7 @@ class Login extends Component {
         if(this.props.match.url === '/home/logout') {
           cookies.remove('token', { path: '/' })
           cookies.remove('user', { path: '/' })
+          cookies.remove('invitation', { path: '/' })
           this.props.history.push('/')
         }
 

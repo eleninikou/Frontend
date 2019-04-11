@@ -172,22 +172,23 @@ export const updateUser = user => {
   }
 }; 
 
-export const getEmail = sendToken => {
+export const getEmailFromInvitation = InvitationToken => {
+
   return async dispatch => {  
-    const getEmailSuccess = email => { 
-      dispatch ({ type: GET_EMAIL_SUCCESS, payload: email }); return email ; 
+    const getEmailSuccess = success => { 
+      dispatch ({ type: GET_EMAIL_SUCCESS, payload: success }); return success ; 
   }
   
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/invitation/${sendToken}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/invitation/${InvitationToken}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
           'Access-Control-Allow-Origin': '*',
           "Content-Type": "application/json"}
       })
-      const email = await res.json();
-      return getEmailSuccess(email);
+      const success = await res.json();
+      return getEmailSuccess(success);
 
     } catch (error) { dispatch ({ type: GET_EMAIL_FAILURE, message: 'Could not get email' }); return error; }
   }

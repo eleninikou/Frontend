@@ -13,58 +13,94 @@ import GridItem from "../components/theme/Grid/GridItem.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import LoginForm from '../components/forms/login/LoginForm'
 
-import { getUser, getEmail, acceptInvitation } from '../redux/actions/auth/Actions'
+import { getUser, getEmailFromInvitation, acceptInvitation } from '../redux/actions/auth/Actions'
 import RegisterForm from '../components/forms/register/RegisterForm';
 
 class AcceptInvitation extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      loggedInEmail: null,
-      invitedEmail: '',
-      existing: '',
+      loggedInUserEmail: null,
+      invitedUserEmail: '',
+      existingUser: '',
+      register: false,
+      user: ''
     }
   }
+
+ 
+    redirect(invitation, register) {
+      const cookies = new Cookies()
+
+      if(this.state.loggedInUserEmail == this.state.invitedUserEmail) {
+        
+        this.props.acceptInvitation(invitation).then(res => {
+          this.props.history.push({
+            pathname: `/home/projects`,
+            state: { successMessage: res.message}
+          })
+          cookies.remove('invitation', { path: '/' })
+        })
+
+      } else if(register) {
+        this.props.acceptInvitation(invitation).then(res => {
+          this.props.history.push({
+            pathname: `/home/projects`,
+            state: { successMessage: res.message}
+          })
+          cookies.remove('invitation', { path: '/' })
+        })
+      } else {
+
+          this.props.getEmailFromInvitation(invitation).then(res => {
+              this.setState({ invitedUserEmail: res.email[0], existingUser: res.existing })
+          })
+      }
+    }
     
+
     componentWillMount = () => {
       const cookies = new Cookies()
-     cookies.set( "invitation", this.props.match.params.id, { path: "/", maxAge: 86399 });
-      var user = cookies.get('user')
-      var invitation = cookies.get('invitation')
 
+      // Check if user is logged in
+      var user = cookies.get('user')
+      this.setState({ user })
+      
+      // Set and get invitation token
+      cookies.set( "invitation", 
+        this.props.match.params.id, 
+        { path: "/", maxAge: 86399 });
+      var invitation = cookies.get('invitation')
+      
+      // If user is logged in. Check if same email address as invitation
       if (user) {
-          this.props.getUser(user).then(res => {
-            this.setState({ loggedInEmail: res.user.email })
+        this.props.getUser(user).then(res => {
+          this.setState({ loggedInUserEmail: res.user.email })
+        }).then(() => {
+          this.props.getEmailFromInvitation(invitation).then(res => {
+            this.setState({ invitedUserEmail: res.email[0], existingUser: res.existing })
+          }).then(() => {
+              this.redirect(invitation, false)
+            })
           })
 
-            this.props.getEmail(invitation).then(res => {
-              this.setState({ invitedEmail: res.email[0], existing: res.existing })
-            })
-  
-            debugger;
-            if(this.state.loggedInEmail == this.state.invitedEmail) {
-              this.props.acceptInvitation(invitation).then(res => {
-                debugger;
-                this.props.history.push({
-                  pathname: `/home/projects`,
-                  state: { successMessage: res.successMessage}
-                })
-              })
-            }
-  
-        // Redirect to project and accept invitation
+      // If no user is logged in. Set email from invitation in form.
+      // If existing in login form, if not in register form
       } else {
-          // Redirect to register page
-      }
+        this.props.getEmailFromInvitation(invitation).then(res => {
+          this.setState({ invitedUserEmail: res.email[0], existingUser: res.existing })
+        })
+      } 
+
 
     }
 
+
   render() {
-    const {loggedInEmail, invitedEmail, existing } = this.state;
+    const { invitedUserEmail, existingUser } = this.state;
 
-    
     return (
-
       <GridContainer style={{}}> 
         <GridItem xs={12} sm={12} md={6}>
         <Card>
@@ -72,10 +108,13 @@ class AcceptInvitation extends Component {
             <h4 className={this.props.classes.cardTitleWhite}>Accept Invitation</h4>
           </CardHeader>
           <CardBody>
-            {existing ?
-              <LoginForm email={invitedEmail}/>
+            {existingUser ?
+              <LoginForm email={invitedUserEmail}/>
             : 
-              <RegisterForm email={invitedEmail}/>}
+              <RegisterForm 
+                email={invitedUserEmail}
+                redirect={this.redirect.bind(this)}  
+                />}
           </CardBody>
         </Card>
         </GridItem>
@@ -87,7 +126,7 @@ class AcceptInvitation extends Component {
 const mapDispatchToProps = dispatch => { 
     return { 
       getUser: id=> dispatch(getUser(id)),
-      getEmail: token => dispatch(getEmail(token)),
+      getEmailFromInvitation: token => dispatch(getEmailFromInvitation(token)),
       acceptInvitation: token => dispatch(acceptInvitation(token))
 
     }

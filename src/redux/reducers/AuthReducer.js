@@ -118,8 +118,8 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                email: action.payload.email.email,
-                existing: action.payload.email.existing
+                email: action.payload.email,
+                existing: action.payload.existing
             } 
         case GET_EMAIL_FAILURE:
             return {

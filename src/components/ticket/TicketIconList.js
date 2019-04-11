@@ -11,6 +11,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 // Icons
 import Warning from "@material-ui/icons/Warning";
+import Comment from "@material-ui/icons/Comment";
 import Timeline from "@material-ui/icons/Timeline";
 import DateRange from "@material-ui/icons/DateRange";
 import PersonPin from "@material-ui/icons/PersonPin";
@@ -18,7 +19,6 @@ import BugReport from "@material-ui/icons/BugReport";
 import LowPriority from "@material-ui/icons/LowPriority";
 import LinearScale from '@material-ui/icons/LinearScale';
 import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor";
-import Comment from "@material-ui/icons/Comment";
 
 
 
