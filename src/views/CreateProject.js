@@ -1,22 +1,27 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import { projectCreate } from '../redux/actions/projects/Actions'
+
+// Redux
 import { connect } from 'react-redux'
+import { projectCreate } from '../redux/actions/projects/Actions'
 
-import GridItem from "../components/theme/Grid/GridItem.jsx";
-import GridContainer from "../components/theme/Grid/GridContainer.jsx";
-import Card from "../components/theme/Card/Card";
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
-import CardBody from "../components/theme/Card/CardBody.jsx";
-import Cookies from 'universal-cookie';
-import Button from "../components/theme/CustomButtons/Button.jsx";
-// import CustomInput from "../components/theme/CustomInput/CustomInput.jsx";
-import CardFooter from "../components/theme/Card/CardFooter.jsx";
+// Theme components
+import Card from "../components/theme/Card/Card"
+import Button from "../components/theme/CustomButtons/Button.jsx"
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
+
+// Material UI components
 import TextField from '@material-ui/core/TextField'
+import withStyles from "@material-ui/core/styles/withStyles"
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
 
-import withStyles from "@material-ui/core/styles/withStyles";
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import '../assets/css/main.css'
+
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
 
 class CreateProject extends Component {
@@ -25,46 +30,47 @@ class CreateProject extends Component {
     this.state = {
       name: null,
       description: null,
-      tr: false
+      tr: false,
+      hasError: false
     }
     this.handleChange = this.handleChange.bind(this);
 }
 
 submit = event => {
   event.preventDefault();
-  const project = {
-    name: this.state.name,
-    description: this.state.description
-  };
 
-  this.props.projectCreate(project)
-  .then(res => {
-    if (!res.error) {
-      if(this.props.successMessage) {
-        this.props.history.push({
-          pathname: '/home/projects',
-          state: { successMessage: this.props.successMessage}
-        })
-      }
-    } else {
-      console.log(res)
-    }
-  })
+  if(this.state.name && this.state.description) {
+    const project = {
+      name: this.state.name,
+      description: this.state.description
+    };
+  
+    this.props.projectCreate(project)
+    .then(res => {
+      if (!res.error) {
+        if(this.props.successMessage) {
+          this.props.history.push({
+            pathname: '/home/projects',
+            state: { successMessage: this.props.successMessage}
+          })
+        }
+      } 
+    })
+  } else {
+    this.setState({ hasError: true })
+  }
 }
 
-componentWillMount = () => {
-  const cookies = new Cookies()
-  var creator_id = cookies.get('user')
-  this.setState({ creator_id})
-}
 
 handleChange = event => {
-  const { name, value } = event.target;
-  this.setState({ [name]: value });
+  const { name, value } = event.target
+  this.setState({ [name]: value })
 }
 
 render() {
-  const { classes } = this.props;
+  const { classes } = this.props
+  const { hasError } = this.state
+
   return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
@@ -75,8 +81,11 @@ render() {
             <form className={classes.form} onSubmit={this.submit}>
             <CardBody>
               <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={12}>
+                  <FormControl className={classes.formControl} >                    
+                  {hasError && !this.state.name && <FormHelperText id="name">Please select name!</FormHelperText>}
                     <TextField 
+                      error={hasError && !this.state.name ? true : false}
                       name="name" 
                       type="text"
                       label="Name" 
@@ -85,9 +94,13 @@ render() {
                       onChange={this.handleChange}
                       fullWidth
                     />
+                  </FormControl> 
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
+                    <FormControl className={classes.formControl} >                    
+                    {hasError && !this.state.description && <FormHelperText id="description">Please write a description!</FormHelperText>}
                     <TextField 
+                      error={hasError && !this.state.description ? true : false}
                       name="description" 
                       type="text"
                       label="Description" 
@@ -97,6 +110,7 @@ render() {
                       multiline
                       fullWidth
                       />
+                    </FormControl> 
                   </GridItem>
               </GridContainer>
             </CardBody>

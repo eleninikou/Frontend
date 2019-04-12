@@ -29,7 +29,6 @@ import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import '../assets/css/main.css'
 
 
 class CreateMilestone extends Component {
@@ -169,12 +168,13 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                   <FormControl className={classes.formControl} >   
-                    {hasError && !this.state.focus && <FormHelperText id="title">Please select focus!</FormHelperText>}
+                    {hasError && !this.state.focus && <FormHelperText id="focus">Please select focus!</FormHelperText>}
                     <TextField 
                       error={hasError && !this.state.focus ? true : false}
                       name="focus" 
                       type="text"
                       label="Focus" 
+                      id="focus"
                       className="my-input"
                       value={this.state.focus}
                       onChange={this.handleChange}
@@ -185,7 +185,7 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                       <FormControl className={classes.formControl}>
-                        {hasError && !project_id && <FormHelperText id="title">Please select project!</FormHelperText>}
+                        {hasError && !project_id && <FormHelperText id="project_id">Please select project!</FormHelperText>}
                         <TextField
                           error={hasError && !project_id ? true : false}
                           select
@@ -214,7 +214,7 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
-                    {hasError && !this.state.selectedDate && <FormHelperText id="title">Please select due date!</FormHelperText>}
+                    {hasError && !this.state.selectedDate && <FormHelperText id="date">Please select due date!</FormHelperText>}
                     <TextField
                         error={hasError && !this.state.selectedDate ? true : false}
                         id="date"

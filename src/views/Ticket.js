@@ -23,6 +23,9 @@ import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
+// Components 
+import { TicketIconList, TicketContent, EditTicketForm, TicketComments, AddComment } from '../components'
+
 // Icon
 import Edit from "@material-ui/icons/Edit";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
@@ -30,13 +33,7 @@ import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
-// import { TicketIconList, TicketContent, EditTicketForm, TicketComments, AddComment } from '../components/ticket'
 
-import TicketIconList from '../components/ticket/TicketIconList'
-import TicketContent from '../components/ticket/TicketContent'
-import EditTicketForm from '../components/ticket/EditTicketForm'
-import TicketComments from '../components/ticket/TicketComments'
-import AddComment from '../components/ticket/AddComment';
 
 class Ticket extends Component {
     constructor(props) {

@@ -82,7 +82,7 @@ submit = event => {
     this.state.status_id &&
     this.state.project_id &&
     this.state.priority &&
-    this.state.due_date &&
+    this.state.selectedDate &&
     this.state.assigned_user_id &&
     this.state.milestone_id
     ) {
@@ -239,7 +239,7 @@ render() {
                           value={this.state.project_id}
                           onChange={this.handleChange}
                           inputProps={{  name: 'project_id',  id: 'project_id' }} >
-                            {project ?  <MenuItem  key={project.id} value={project.id}> {project.name} </MenuItem>
+                            {backToProject ?  <MenuItem  key={project.id} value={project.id}> {project.name} </MenuItem>
                           : projects ? projects.map(project => {
                             return  (
                               <MenuItem  key={project.project.id} value={project.project.id}>  
@@ -351,7 +351,7 @@ render() {
                     <FormControl className={classes.formControl}>
                     {hasError && !this.state.due_date && <FormHelperText>Please select due date!</FormHelperText>}                      
                     <TextField
-                        error={hasError && !this.state.due_date ? true : false}
+                        error={hasError && !this.state.selectedDate? true : false}
                         id="date"
                         label="Due date"
                         type="date"

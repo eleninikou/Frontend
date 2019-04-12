@@ -1,15 +1,11 @@
 import React, { Component } from 'react'
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom'
-import  Login from '../../views/Login';
-import Home from '../../views/Home'
-import CreateProject from '../../views/CreateProject'
-import Project from '../../views/Project'
-import Cookies from 'universal-cookie';
-
-import  NotFoundPage  from '../../views/NotFound';
-import AcceptInvitation from '../../views/AcceptInvitation';
+import Cookies from 'universal-cookie'
+import { Login, Home, CreateProject, Project, NotFoundPage, AcceptInvitation  } from '../../views'
 
 function PrivateRoute({ component: Component, ...rest }) {
+  
+  // token ? show components : redirect to login
   const cookies = new Cookies()
   var token = cookies.get('token');
 
@@ -17,19 +13,11 @@ function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props =>
-        token ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{
-              pathname: "/",
-              state: { from: props.location }
-            }}
-          />
-        )
+        token ? <Component {...props} />
+       : <Redirect to={{ pathname: "/", state: { from: props.location } }} />
       }
     />
-  );
+  )
 }
 
 class App extends Component {
@@ -38,11 +26,11 @@ class App extends Component {
       <div className='App'>
         <Switch>
           <Route exact path='/' component={Login} />
-          <Route path='/accept/:id' component={AcceptInvitation} />
           <PrivateRoute path='/home/logout' component={Login} />
           <PrivateRoute path='/home' component={Home} />
           <PrivateRoute exact path='/home/create-project' component={CreateProject} />
           <PrivateRoute exact path='/home/project/{id}' component={Project} />
+          <Route path='/accept/:id' component={AcceptInvitation} />
           <Route component={NotFoundPage} /> 
         </Switch>
       </div>

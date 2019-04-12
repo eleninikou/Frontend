@@ -5,32 +5,27 @@ import Cookies from 'universal-cookie'
 import { connect } from 'react-redux'
 import { getProject, deleteProject } from '../redux/actions/projects/Actions'
 // Theme components
-import Card from "../components/theme/Card/Card";
-import Button from "../components/theme/CustomButtons/Button.jsx";
-import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
-import CardBody from "../components/theme/Card/CardBody.jsx";
-import GridItem from "../components/theme/Grid/GridItem.jsx";
-import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
-import GridContainer from "../components/theme/Grid/GridContainer.jsx";
+import Card from "../components/theme/Card/Card"
+import Button from "../components/theme/CustomButtons/Button.jsx"
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Icons
-import Note from "@material-ui/icons/Note";
-import Info from "@material-ui/icons/Info";
-import People from "@material-ui/icons/People";
-import Timeline from "@material-ui/icons/Timeline";
-import DeleteForever from "@material-ui/icons/DeleteForever";
-import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
+import Note from "@material-ui/icons/Note"
+import Info from "@material-ui/icons/Info"
+import People from "@material-ui/icons/People"
+import Timeline from "@material-ui/icons/Timeline"
+import DeleteForever from "@material-ui/icons/DeleteForever"
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Material UI components
-import withStyles from "@material-ui/core/styles/withStyles";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from "@material-ui/core/styles/withStyles"
+import CircularProgress from '@material-ui/core/CircularProgress'
+// Style
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
-// Styles
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
-import EditProjectForm from '../components/project/EditProjectForm';
-import ProjectContent from '../components/project/ProjectContent';
-import ProjectMilestones from '../components/project/ProjectMilestones';
-import ProjectTickets from '../components/project/ProjectTickets';
-import ProjectTeam from '../components/project/ProjectTeam';
+import { EditProjectForm, ProjectContent, ProjectMilestones, ProjectTickets, ProjectTeam }  from '../components/'
 
 
 class Project extends Component {

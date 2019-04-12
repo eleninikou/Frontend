@@ -1,30 +1,34 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+
 // Redux
 import { getProjectsByUser, getProject, getRoles, getTeam, invite, getEmails } from '../redux/actions/projects/Actions'
 import { connect } from 'react-redux'
+
 // Theme componets
-import GridItem from "../components/theme/Grid/GridItem.jsx"
-import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import Card from "../components/theme/Card/Card"
-import CardHeader from "../components/theme/Card/CardHeader.jsx"
-import CardBody from "../components/theme/Card/CardBody.jsx"
-import Button from "../components/theme/CustomButtons/Button.jsx"
-import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import Table from "../components/theme/Table/Table.jsx"
+import Button from "../components/theme/CustomButtons/Button.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
+
 // Material UI components
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
+import withStyles from "@material-ui/core/styles/withStyles"
 import FormControl from '@material-ui/core/FormControl'
-import CircularProgress from '@material-ui/core/CircularProgress';
+import FormHelperText from '@material-ui/core/FormHelperText'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 //Icons
 import People from "@material-ui/icons/People"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 
 // Styles
-import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
 
@@ -42,12 +46,13 @@ class Invite extends Component {
       page: 0,
       rowsPerPage: 5,
       backToProject: false,
-      isFetching: false
+      isFetching: false,
+      hasError: false
     }
   }
 
   componentWillMount = () => {
-    // From invite to specific project
+    // If redirected from a specific project
     if(this.props.match.params.id) {
       this.props.getProject(this.props.match.params.id)
       .then(() => {  
@@ -70,26 +75,29 @@ class Invite extends Component {
 
   submit = event => {
     event.preventDefault();
-    const invitation = {
-      email: this.state.email,
-      project_id: this.state.project_id,
-      project_role: this.state.project_role,
+
+    if(this.state.email && this.state.project_id && this.state.project_role ) {
+      const invitation = {
+        email: this.state.email,
+        project_id: this.state.project_id,
+        project_role: this.state.project_role,
+      }
+      this.props.invite(invitation)
+      .then(() => { 
+        if (this.props.successMessage) { 
+          this.showNotification('tr') 
+        } 
+      })
+      this.props.getEmails(this.state.project_id)
+      .then(res => {
+        this.setState({ emails: res.emails })
+      })
+    } else {
+      this.setState({ hasError: true })
     }
-    this.props.invite(invitation)
-    .then(() => { 
-      if (this.props.successMessage) { 
-        this.showNotification('tr') 
-      } 
-    })
-    this.props.getEmails(this.state.project_id)
-    .then(res => {
-      this.setState({ emails: res.emails })
-    })
   }
 
-  goBack = () => {          
-    this.props.history.push({ pathname: `/home/project/${this.state.project_id}`})
-  }
+  goBack = () => { this.props.history.push({ pathname: `/home/project/${this.state.project_id}`})}
 
   showNotification(place) {
     var x = [];
@@ -106,6 +114,7 @@ class Invite extends Component {
   handleChange = event => { 
     this.setState({ [event.target.name]: event.target.value }) 
 
+    // Get team and invited emails when selecting projects
     if([event.target.name] == 'project_id') {
       this.props.getTeam(event.target.value)
       .then(res => {
@@ -122,11 +131,8 @@ class Invite extends Component {
 
   render() {
   const { classes, projects, project, roles, successMessage, emails, isFetching } = this.props;
-  const { rowsPerPage, page, team, backToProject} = this.state;
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
-
-  console.log(isFetching)
-
+  const { page, team, backToProject, hasError } = this.state;
+    console.log(classes)
   return (
     <form className={classes.form} onSubmit={this.submit}>
       <Snackbar
@@ -147,9 +153,11 @@ class Invite extends Component {
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
-                  <FormControl className={classes.formControl}>                    
+                  <FormControl className={classes.formControl}>       
+                  {hasError && !this.state.project_id && <FormHelperText id="project_id">Please select project!</FormHelperText>}
                     <TextField
                       select
+                      error={hasError && !this.state.project_id? true : false}
                       disabled={backToProject ? true : false}
                       label="Project"
                       variant="outlined"
@@ -170,34 +178,39 @@ class Invite extends Component {
                     {projects.projects ? projects.projects.map(project => {
                       return <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
                     }) : null
-                  }
+                    }
                     </TextField>
-                </FormControl>
+                  </FormControl>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
-                <FormControl className={classes.formControl}>
-                  <TextField
-                      select
-                      label="Role"
-                      variant="outlined"
-                      margin="normal"
-                      className="my-input"
-                      value={this.state.project_role}
-                      onChange={this.handleChange}
-                      inputProps={{
-                        name: 'project_role',
-                        id: 'project_role',
-                      }}>
-                      {roles ? roles.map(role => {
-                      return  <MenuItem key={role.id} value={role.id}> {role.role} </MenuItem>
-                    }) : null }
-                    </TextField>
-                </FormControl>
+                  <FormControl className={classes.formControl}>
+                  {hasError && !this.state.project_role && <FormHelperText id="project_role">Please select role in the project!</FormHelperText>}
+                    <TextField
+                        select
+                        error={hasError && !this.state.project_role ? true : false}
+                        label="Role"
+                        variant="outlined"
+                        margin="normal"
+                        className="my-input"
+                        value={this.state.project_role}
+                        onChange={this.handleChange}
+                        inputProps={{
+                          name: 'project_role',
+                          id: 'project_role',
+                        }}>
+                        {roles ? roles.map(role => {
+                        return  <MenuItem key={role.id} value={role.id}> {role.role} </MenuItem>
+                      }) : null }
+                      </TextField>
+                  </FormControl>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
+                  <FormControl className={classes.formControl}>
+                  {hasError && !this.state.email && <FormHelperText id="project_role">Please fill in email!</FormHelperText>}
                   <TextField
                     type="email"
                     label="email" 
+                    error={hasError && !this.state.email ? true : false}
                     className="my-input"
                     id="email"
                     formControlProps={{
@@ -207,6 +220,7 @@ class Invite extends Component {
                     name="email"
                     fullWidth
                   />
+                  </FormControl>
                 </GridItem>
               </GridContainer>
             </CardBody>

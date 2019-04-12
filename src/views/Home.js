@@ -1,27 +1,28 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Switch, Route } from "react-router-dom";
-import PerfectScrollbar from "perfect-scrollbar";
-import withStyles from "@material-ui/core/styles/withStyles";
-import Footer from "../components/theme/Footer/Footer.jsx";
-import Sidebar from "../components/theme/Sidebar/Sidebar.jsx";
-import logo from "../assets/img/reactlogo.png";
-import { withRouter } from "react-router-dom"
+import React from "react"
+import { Switch, Route, withRouter } from "react-router-dom"
+import PropTypes from "prop-types"
 import Cookies from 'universal-cookie'
+
+// Redux
 import { connect } from 'react-redux'
-import routes from "../routes.js";
-import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
-import image from "../assets/img/sidebar-2.jpg";
-import CreateProject from './CreateProject'
-import Project from './Project'
-import CreateTicket from './CreateTicket'
-import Ticket from './Ticket'
-import Milestone from './Milestone'
-import CreateMilestone from "./CreateMilestone.js";
-import Invite from "./Invite.js";
 import { getUser} from '../redux/actions/auth/Actions'
 
-import "perfect-scrollbar/css/perfect-scrollbar.css";
+import PerfectScrollbar from "perfect-scrollbar"
+
+// Theme componets
+import Footer from "../components/theme/Footer/Footer.jsx"
+import Sidebar from "../components/theme/Sidebar/Sidebar.jsx"
+// import Navbar from "../components/theme/Navbar/Navbar.jsx"
+
+
+import withStyles from "@material-ui/core/styles/withStyles"
+import image from "../assets/img/sidebar-2.jpg"
+
+import routes from "../routes.js"
+import { CreateProject, Project, CreateTicket, Ticket, Milestone, CreateMilestone, Invite } from '../views'
+
+import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx"
+import "perfect-scrollbar/css/perfect-scrollbar.css"
 import '../assets/css/main.css'
 
 const switchRoutes = (
@@ -59,42 +60,34 @@ class Home extends React.Component {
     };
   }
 
-  handleImageClick = image => {
-    this.setState({ image: image });
-  };
+  handleImageClick = image => { this.setState({ image: image }) }
 
-  handleColorClick = color => {
-    this.setState({ color: color });
-  };
+  handleColorClick = color => { this.setState({ color: color }) }
 
   handleFixedClick = () => {
     if (this.state.fixedClasses === "dropdown") {
-      this.setState({ fixedClasses: "dropdown show" });
+      this.setState({ fixedClasses: "dropdown show" })
     } else {
-      this.setState({ fixedClasses: "dropdown" });
+      this.setState({ fixedClasses: "dropdown" })
     }
   };
 
-  handleDrawerToggle = () => {
-    this.setState({ mobileOpen: !this.state.mobileOpen });
-  };
+  handleDrawerToggle = () => { this.setState({ mobileOpen: !this.state.mobileOpen }) }
 
-  getRoute() {
-    return this.props.location.pathname;
-  }
+  getRoute() { return this.props.location.pathname }
 
   resizeFunction = () => {
     if (window.innerWidth >= 960) {
-      this.setState({ mobileOpen: false });
+      this.setState({ mobileOpen: false })
     }
   };
 
 
   componentDidMount = () => {
     if (navigator.platform.indexOf("Win") > -1) {
-      const ps = new PerfectScrollbar(this.refs.mainPanel);
+      const ps = new PerfectScrollbar(this.refs.mainPanel)
     }
-    window.addEventListener("resize", this.resizeFunction);
+    window.addEventListener("resize", this.resizeFunction)
 
     const cookies = new Cookies()
     var token = cookies.get('token')
@@ -107,7 +100,6 @@ class Home extends React.Component {
   }
 
 
-
   componentDidUpdate(e) {
     if (e.history.location.pathname !== e.location.pathname) {
       this.refs.mainPanel.scrollTop = 0;
@@ -117,9 +109,7 @@ class Home extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.resizeFunction);
-  }
+  componentWillUnmount() { window.removeEventListener("resize", this.resizeFunction) }
 
 
 
@@ -130,7 +120,6 @@ class Home extends React.Component {
         <Sidebar
           routes={routes}
           logoText={user ? user.name : '' }
-          logo={logo}
           image={this.state.image}
           handleDrawerToggle={this.handleDrawerToggle}
           open={this.state.mobileOpen}
@@ -138,14 +127,13 @@ class Home extends React.Component {
           {...rest}
         />
         <div className={classes.mainPanel} ref="mainPanel">
-{/* 
-          <Navbar
+
+          {/* <Navbar
             routes={routes}
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
-          /> */}
+          />  */}
 
-          {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
           {this.getRoute() ? (
             <div className={classes.content}>
               <div className={classes.container}>{switchRoutes}</div>
@@ -162,14 +150,9 @@ Home.propTypes = { classes: PropTypes.object.isRequired };
 
 
 const mapDispatchToProps = dispatch => { 
-  return { 
-    getUser: id=> dispatch(getUser(id)),
-
-  }
+  return { getUser: id=> dispatch(getUser(id))}
 }
 
-const mapStateToProps = state => ({
-    user: state.auth.user,
-});
+const mapStateToProps = state => ({ user: state.auth.user })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Home)))

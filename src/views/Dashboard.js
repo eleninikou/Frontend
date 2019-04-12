@@ -144,7 +144,7 @@ class Dashboard extends Component {
                         </div>
                       )
                     },{
-                      tabName: "Tickets",
+                      tabName: " My Tickets",
                       tabIcon: Note,
                       tabContent: (
                           <TicketsTable 
