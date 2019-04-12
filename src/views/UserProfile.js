@@ -138,7 +138,7 @@ class UserProfile extends Component {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="danger">
+            <CardHeader color="rose">
               <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
             </CardHeader>
             <CardBody>
@@ -199,7 +199,7 @@ class UserProfile extends Component {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button type="submit" color="danger">Update Profile</Button>
+              <Button type="submit" color="rose">Update Profile</Button>
             </CardFooter>
           </Card>
         </GridItem>

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import PropTypes from 'prop-types';
-import axios from "axios";
-import Cookies from "universal-cookie";
+import PropTypes from 'prop-types'
+import axios from "axios"
+import Cookies from "universal-cookie"
 
 // Redux
 import { connect } from 'react-redux'
@@ -10,31 +10,30 @@ import { ticketCreate, getTicketTypes, getTicketStatus} from '../redux/actions/t
 import { getAllProjects, getProject } from '../redux/actions/projects/Actions'
 
 // Wysiwyg
-import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw, editorContent, } from 'draft-js';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { Editor } from 'react-draft-wysiwyg'
+import { EditorState, convertToRaw } from 'draft-js'
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx";
-import GridContainer from "../components/theme/Grid/GridContainer.jsx";
-import Card from "../components/theme/Card/Card";
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
-import CardBody from "../components/theme/Card/CardBody.jsx";
-import Button from "../components/theme/CustomButtons/Button.jsx";
-import CardFooter from "../components/theme/Card/CardFooter.jsx";
+import Card from "../components/theme/Card/Card"
+import Button from "../components/theme/CustomButtons/Button.jsx"
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 
 
 // Material UI components
+import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 // Styles
-import withStyles from "@material-ui/core/styles/withStyles";
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-// import draftToHtml from 'draftjs-to-html';
+import withStyles from "@material-ui/core/styles/withStyles"
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
 
 class CreateTicket extends Component {
@@ -66,12 +65,16 @@ class CreateTicket extends Component {
     this.handleChange = this.handleChange.bind(this);
 }
 
-onEditorStateChange = editorState => { 
-  this.setState({ editorState }) 
-}
+onEditorStateChange = editorState => { this.setState({ editorState }) }
+
+goBack = () => { this.props.history.push({ pathname: `/home/project/${this.state.project_id}`}) }
+
+handleDateChange = event => { this.setState({ selectedDate: event.target.value }) }
 
 submit = event => {
   event.preventDefault()
+
+  // Check that everything is filled in
   if (
     this.state.title && 
     this.state.description &&
@@ -96,31 +99,23 @@ submit = event => {
       milestone_id: this.state.milestone_id,
     }
     
+    // Create ticket. Redirect back to project
     this.props.ticketCreate(ticket)
     .then(() => {
-      if(this.state.backToProject) {
-          if(this.props.successMessage) {
-            this.props.history.push({
-              pathname: `/home/project/${this.state.project_id}`,
-              state: { successMessage: this.props.successMessage}
-            })
-        }
-      } else {
+      if(this.props.successMessage) {
         this.props.history.push({
           pathname: `/home/project/${this.state.project_id}`,
           state: { successMessage: this.props.successMessage}
         })
-      }
-    })
-  } else {
-    this.setState({ hasError: true });
-  }
-
+    }})
+  } else { this.setState({ hasError: true }) }
 }
 
 
+// Save img and get url
 uploadCallback(file) {
   return new Promise((resolve, reject) => {      
+      
       let reader = new FileReader();
       reader.onload = () => {
 
@@ -146,9 +141,8 @@ uploadCallback(file) {
 
 
 
-
 componentWillMount = () => {
-    // If redirected from specific project select project
+    // If redirected from specific project preselect project 
     if (this.props.location.state ? 
         this.props.location.state.project_id || this.props.location.state.backToProject 
       : null
@@ -167,31 +161,20 @@ componentWillMount = () => {
 }
 
 
-
-
 handleChange = event => {
   const { name, value } = event.target;
   this.setState({ [name]: value });
 
-  // Fetch project to get available values
+  // Fetch project to get team, milestones
   if (event.target.name === "project_id" ) {
     this.props.getProject(value)
   }
 }
 
 
-
-goBack = () => {          
-  this.props.history.push({ pathname: `/home/project/${this.state.project_id}`})
-}
-
-handleDateChange = event => {
-  this.setState({ selectedDate: event.target.value }) 
-}
-
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
-  const { editorState, backToProject, submitted, hasError } = this.state
+  const { editorState, backToProject, hasError } = this.state
 
   // https://reactgo.com/removeduplicateobjects/
   function getUnique(arr, comp) {
@@ -201,9 +184,10 @@ render() {
      return unique;
   }
   
-  let projects = getUnique(allProjects,'project_id')
+  let projects = getUnique(allProjects,'project_id') 
   let team_members = getUnique(team,'user_id')
 
+  // Styles to input
   const styles = {
     input: {
       marginBottom: '25px',
@@ -221,12 +205,11 @@ render() {
             <form className={classes.form} onSubmit={this.submit}>
             <CardBody>
               <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <FormControl 
-                      className={classes.formControl}
-                      >                    
-                      {hasError && !this.state.title && <FormHelperText id="title">Don't forget the title!</FormHelperText>}
+                  <GridItem xs={12} sm={12} md={8}>
+                    <FormControl className={classes.formControl} >                    
+                      {hasError && !this.state.title && <FormHelperText id="title">Please select title!</FormHelperText>}
                       <TextField 
+                        error={hasError && !this.state.title ? true : false}
                         id="title"
                         name="title" 
                         type="text"
@@ -241,11 +224,12 @@ render() {
                       />
                     </FormControl> 
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={4}>
                   {projects || project ?
                     <FormControl className={classes.formControl}>                    
-                        {hasError && !this.state.project_id && <FormHelperText>Select Project</FormHelperText>}
+                        {hasError && !this.state.project_id && <FormHelperText>Please select project!</FormHelperText>}
                         <TextField
+                          error={hasError && !this.state.project_id ? true : false}
                           style={styles.input}
                           select
                           disabled={ backToProject ? true : false}
@@ -262,15 +246,16 @@ render() {
                                 {project.project.name} 
                               </MenuItem>
                               )
-                            }): null }
+                            }) : null }
                         </TextField>
                     </FormControl>  
                     : <CircularProgress className="my-spinner" color="primary" /> }
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
-                      {hasError && !this.state.type_id && <FormHelperText>This is required!</FormHelperText>}
+                      {hasError && !this.state.type_id && <FormHelperText>Please select ticket type!</FormHelperText>}
                         <TextField
+                          error={hasError && !this.state.type_id ? true : false}
                           classes={classes}
                           select
                           label="Type"
@@ -282,14 +267,15 @@ render() {
                           inputProps={{ name: 'type_id', id: 'type_id'}} >
                         {ticketTypes ? ticketTypes.map(type => {
                           return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>
-                        }): null}
+                        }) : null}
                         </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
                     {hasError && !this.state.status_id && <FormHelperText>Please select ticket status!</FormHelperText>}
                       <TextField
+                        error={hasError && !this.state.status_id ? true : false}
                         select
                         label="Status"
                         variant="outlined"
@@ -300,14 +286,15 @@ render() {
                         inputProps={{ name: 'status_id', id: 'status_id', }} >
                       {ticketStatus ? ticketStatus.map(status => {
                         return <MenuItem key={status.id} value={status.id}> {status.status} </MenuItem>
-                      }): null}
+                      }) : null}
                       </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
                     {hasError && !this.state.priority && <FormHelperText>Please select priority!</FormHelperText>}
                         <TextField
+                          error={hasError && !this.state.priority ? true : false}
                           select
                           label="Priority"
                           variant="outlined"
@@ -322,10 +309,11 @@ render() {
                         </TextField>
                       </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
-                      {hasError && !this.state.assigned_user_id && <FormHelperText>Assign the ticket to a user!</FormHelperText>}
+                      {hasError && !this.state.assigned_user_id && <FormHelperText>Assign the ticket to a team member!</FormHelperText>}
                         <TextField
+                          error={hasError && !this.state.assigned_user_id ? true : false}
                           select
                           label="Assign user"
                           variant="outlined"
@@ -336,14 +324,15 @@ render() {
                           inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
                         {team_members ? team_members.map(member => {
                           return <MenuItem key={member.user.id} value={member.user.id}> {member.user.name} </MenuItem>
-                        }): null }
+                        }) : null }
                         </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
-                      {hasError && !this.state.milestone_id && <FormHelperText>Select milestone!</FormHelperText>}
+                      {hasError && !this.state.milestone_id && <FormHelperText>Please select milestone!</FormHelperText>}
                         <TextField
+                          error={hasError && !this.state.milestone_id ? true : false}
                           select
                           label="milestone"
                           variant="outlined"
@@ -354,14 +343,15 @@ render() {
                           inputProps={{ name: 'milestone_id', id: 'milestone_id' }} >
                           {project ? project.milestones ? project.milestones.map(milestone => {
                             return  <MenuItem key={milestone.id} value={milestone.id}> {milestone.title}</MenuItem>
-                          }): null : null}
+                          }) : null : null}
                         </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
-                    {hasError && !this.state.due_date && <FormHelperText>Select due date!</FormHelperText>}                      
+                    {hasError && !this.state.due_date && <FormHelperText>Please select due date!</FormHelperText>}                      
                     <TextField
+                        error={hasError && !this.state.due_date ? true : false}
                         id="date"
                         label="Due date"
                         type="date"
@@ -437,10 +427,8 @@ const mapStateToProps = state => ({
   url: state.ticket.url
 })
 
-TextField.propTypes = {
-  classes: PropTypes.object,
-};
+TextField.propTypes = { classes: PropTypes.object }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateTicket)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateTicket)))
   
 

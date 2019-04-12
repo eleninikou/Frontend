@@ -7,27 +7,28 @@ import { milestoneCreate } from '../redux/actions/milestones/Actions'
 import { getAllProjects, getProject } from '../redux/actions/projects/Actions'
 
 // Theme Components
-import GridItem from "../components/theme/Grid/GridItem.jsx";
-import GridContainer from "../components/theme/Grid/GridContainer.jsx";
-import Card from "../components/theme/Card/Card";
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
-import CardBody from "../components/theme/Card/CardBody.jsx";
-import Button from "../components/theme/CustomButtons/Button.jsx";
-import CardFooter from "../components/theme/Card/CardFooter.jsx";
-import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
+import Card from "../components/theme/Card/Card"
+import Button from "../components/theme/CustomButtons/Button.jsx"
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 
 // Material UI Components
+import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import withStyles from "@material-ui/core/styles/withStyles";
-import { Typography } from '@material-ui/core';
+import withStyles from "@material-ui/core/styles/withStyles"
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import { Typography } from '@material-ui/core'
 
 // Icon
-import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 
 // Styles
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
 
 
@@ -41,51 +42,62 @@ class CreateMilestone extends Component {
       project_id: '',
       selectedDate: '',
       project_name: '',
-      backToProject: false
+      backToProject: false,
+      hasError: false
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this)
 }
 
 submit = event => {
-  event.preventDefault();
-  const milestone = {
-    title: this.state.title,
-    focus: this.state.focus,
-    due_date: this.state.selectedDate,
-    project_id: this.state.project_id,
-    backToProject: false
-  };
+  event.preventDefault()
+
+  if (
+    this.state.title &&
+    this.state.focus &&
+    this.state.selectedDate &&
+    this.state.project_id
+  ) {
+    const milestone = {
+      title: this.state.title,
+      focus: this.state.focus,
+      due_date: this.state.selectedDate,
+      project_id: this.state.project_id,
+      backToProject: false
+    };
 
 
-  this.props.milestoneCreate(milestone)
-  .then(() => {
-    if(this.state.backToProject) {
-        if(this.props.successMessage) {
-          this.props.history.push({
-            pathname: `/home/project/${this.state.project_id}`,
-            state: { successMessage: this.props.successMessage}
-          })
+    this.props.milestoneCreate(milestone)
+    .then(() => {
+      if(this.state.backToProject) {
+          if(this.props.successMessage) {
+            this.props.history.push({
+              pathname: `/home/project/${this.state.project_id}`,
+              state: { successMessage: this.props.successMessage}
+            })
+        }
+      } else {
+        this.showNotification('tr')
       }
-    } else {
-      this.showNotification('tr')
-    }
-  })
+    })
+  } else {
+    this.setState({ hasError : true })
+  }
 }
 
 showNotification = place => {
-  var x = [];
-  x[place] = true;
-  this.setState(x);
+  var x = []
+  x[place] = true
+  this.setState(x)
   this.alertTimeout = setTimeout(
     function() {
-      x[place] = false;
-      this.setState(x);
-    }.bind(this), 6000);
+      x[place] = false
+      this.setState(x)
+    }.bind(this), 6000)
 }
 
+
 componentWillMount = () => {
-  console.log(this.props.location.state)
-  // If redirected from specific project select project
+  // If redirected from specific project preselect project
   if (this.props.location.state ? 
       this.props.location.state.project_id && this.props.location.state.project_name 
       : null) {
@@ -96,9 +108,9 @@ componentWillMount = () => {
       backToProject: true
     })
 
-    this.props.getProject(this.props.location.state.project_id);
+    this.props.getProject(this.props.location.state.project_id)
   } else {
-    this.props.getAllProjects();
+    this.props.getAllProjects()
   }
 }
 
@@ -109,19 +121,19 @@ goBack = () => {
 }
 
 handleChange = event => {
-  const { name, value } = event.target;
-  this.setState({ [name]: value });
+  const { name, value } = event.target
+  this.setState({ [name]: value })
 }
 
 handleDateChange = event => { this.setState({ selectedDate: event.target.value }) }
 createNewProject = () => { this.props.history.push('/home/create-project/') }
 
 render() {
-  const { classes, allProjects, successMessage, project  } = this.props;
-  const { project_id, project_name, backToProject } = this.state;
+  const { classes, allProjects, successMessage, project  } = this.props
+  const { project_id, project_name, backToProject, hasError } = this.state
   return (
       <GridContainer>
-          <Snackbar
+        <Snackbar
           place="tr"
           color="success"
           icon={CheckCircleOutline}
@@ -140,18 +152,26 @@ render() {
             <CardBody>
               <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
-                    <TextField 
-                      name="title" 
-                      type="text"
-                      label="Title" 
-                      className="my-input"
-                      value={this.state.title}
-                      onChange={this.handleChange}
-                      fullWidth
-                    />
+                    <FormControl className={classes.formControl} >                    
+                      {hasError && !this.state.title && <FormHelperText id="title">Please select title!</FormHelperText>}
+                      <TextField 
+                        error={hasError && !this.state.title ? true : false}
+                        name="title" 
+                        type="text"
+                        label="Title" 
+                        id="title"
+                        className="my-input"
+                        value={this.state.title}
+                        onChange={this.handleChange}
+                        fullWidth
+                      />
+                    </FormControl> 
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
+                  <FormControl className={classes.formControl} >   
+                    {hasError && !this.state.focus && <FormHelperText id="title">Please select focus!</FormHelperText>}
                     <TextField 
+                      error={hasError && !this.state.focus ? true : false}
                       name="focus" 
                       type="text"
                       label="Focus" 
@@ -161,11 +181,13 @@ render() {
                       multiline
                       fullWidth
                       />
+                    </FormControl> 
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                       <FormControl className={classes.formControl}>
-                      {console.log(project.name)}
+                        {hasError && !project_id && <FormHelperText id="title">Please select project!</FormHelperText>}
                         <TextField
+                          error={hasError && !project_id ? true : false}
                           select
                           disabled={ backToProject ? true : false}
                           label="Project"
@@ -192,7 +214,9 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl}>
+                    {hasError && !this.state.selectedDate && <FormHelperText id="title">Please select due date!</FormHelperText>}
                     <TextField
+                        error={hasError && !this.state.selectedDate ? true : false}
                         id="date"
                         label="Due date"
                         type="date"
@@ -232,7 +256,7 @@ render() {
           </Card>
         </GridItem>
       </GridContainer>
-    );
+    )
   }
 }
 
@@ -251,6 +275,6 @@ const mapStateToProps = state => ({
     successMessage: state.milestone.successMessage
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateMilestone)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateMilestone)))
   
 

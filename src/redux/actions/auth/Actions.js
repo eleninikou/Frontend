@@ -151,7 +151,6 @@ export const getUser = (id) => {
 
 
 export const updateUser = (user, id) => {
-  debugger;
   return async dispatch => {  
     const editProjectSuccess = success => { 
       dispatch ({ type: UPDATE_USER_SUCCESS, payload: success}); return success; 
@@ -167,7 +166,6 @@ export const updateUser = (user, id) => {
           "Content-Type": "application/json"}
       })
       const success = await res.json();
-      debugger;
       return editProjectSuccess(success);
 
     } catch (error) { dispatch ({ type: UPDATE_USER_FAILURE, message: 'Could not update user' }); return error; }

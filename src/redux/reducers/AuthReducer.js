@@ -103,7 +103,6 @@ const authReducer = (state = initialState, action) => {
                 errorMessage: action.message
             }  
         case UPDATE_USER_SUCCESS:
-        debugger;
             return {
                 ...state,
                 isFetching: false,
