@@ -97,7 +97,7 @@ class Dashboard extends Component {
                               rowsPerPage={rowsPerPage}
                               emptyRows={emptyRows}
                               tableHeaderColor="primary"
-                              tableHead={[" ", "Project", "Type", "Date"]}
+                              tableHead={[" ", " ", "Project", ""]}
                               tableData={[ activity ? activity.map(A => {
 
                                     const icon = '';
@@ -116,11 +116,11 @@ class Dashboard extends Component {
                                     }
                                   
                                     return [
+                                      <IconButton aria-label="Go to" className={classes.tableActionButton}>
+                                        {this.icon}
+                                      </IconButton>,
                                       `${A.user.name} ${A.text}`,
                                       `${A.project.name}`,
-                                        <IconButton aria-label="Go to" className={classes.tableActionButton}>
-                                          {this.icon}
-                                        </IconButton>,
                                       `${A.created_at}`,
                                     ]
                                   }) : null

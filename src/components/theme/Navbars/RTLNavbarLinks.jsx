@@ -15,7 +15,7 @@ import Notifications from "@material-ui/icons/Notifications";
 import Dashboard from "@material-ui/icons/Dashboard";
 import Search from "@material-ui/icons/Search";
 // core components
-import CustomInput from "../CustomInput/CustomInput.jsx";
+// import CustomInput from "../CustomInput/CustomInput.jsx";
 import Button from "../CustomButtons/Button.jsx";
 
 import rtlHeaderLinksStyle from "../../../assets/jss/material-dashboard-react/components/rtlHeaderLinksStyle.jsx";
@@ -42,7 +42,7 @@ class HeaderLinks extends React.Component {
     return (
       <div>
         <div className={classes.searchWrapper}>
-          <CustomInput
+          {/* <CustomInput
             formControlProps={{
               className: classes.margin + " " + classes.search
             }}
@@ -52,7 +52,7 @@ class HeaderLinks extends React.Component {
                 "aria-label": "Search"
               }
             }}
-          />
+          /> */}
           <Button color="white" aria-label="edit" justIcon round>
             <Search />
           </Button>

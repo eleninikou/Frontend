@@ -15,6 +15,8 @@ import Button from "../components/theme/CustomButtons/Button.jsx"
 import MenuItem from '@material-ui/core/MenuItem'
 import { TextField } from '@material-ui/core'
 import withStyles from "@material-ui/core/styles/withStyles"
+import FormControl from '@material-ui/core/FormControl'
+
 // COmponents
 import TicketsTable from '../components/ticket/TicketsTable'
 // Styles
@@ -75,6 +77,7 @@ class Tickets extends Component {
               <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={3}>
+                <FormControl className={classes.formControl}>       
                   <TextField
                     value={this.state.type_id}
                     select
@@ -89,8 +92,11 @@ class Tickets extends Component {
                           return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>    
                       }): null}
                   </TextField>   
+                  </FormControl>
+
                 </GridItem>   
                 <GridItem xs={12} sm={12} md={3}>
+                <FormControl className={classes.formControl}>       
                   <TextField
                     value={this.state.status_id}
                     select
@@ -109,8 +115,11 @@ class Tickets extends Component {
                           )
                       }): null}
                   </TextField> 
+                  </FormControl>
+
                 </GridItem> 
                 <GridItem xs={12} sm={12} md={3}>
+                  <FormControl className={classes.formControl}>       
                     <TextField
                       select
                       label="Priority"
@@ -125,8 +134,11 @@ class Tickets extends Component {
                         <MenuItem value='normal'>Normal</MenuItem>
                         <MenuItem value='high'>High</MenuItem>
                     </TextField> 
+                    </FormControl>
                 </GridItem>  
                 <GridItem xs={12} sm={12} md={3}>
+                  <FormControl className={classes.formControl}>       
+
                     <TextField
                       select
                       label="Project"
@@ -144,7 +156,9 @@ class Tickets extends Component {
                               </MenuItem>
                             )
                            }): null}
-                    </TextField> 
+                    </TextField>
+                    </FormControl>
+ 
                 </GridItem>
                 </GridContainer> 
                   <TicketsTable tickets={filteredTickets} classes={classes}/>   

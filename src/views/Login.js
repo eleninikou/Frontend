@@ -1,16 +1,43 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
+import PropTypes from 'prop-types'
 
 // Components
-import Card from "../components/theme/Card/Card";
+import Card from "../components/theme/Card/Card"
 import LoginForm from '../components/forms/login/LoginForm'
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
-import withStyles from "@material-ui/core/styles/withStyles"
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import CardBody from '../components/theme/Card/CardBody';
+import CardBody from '../components/theme/Card/CardBody'
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
+
+import withStyles from "@material-ui/core/styles/withStyles"
+import dashboardStyle from "../assets/styles/dashboardStyle.jsx"
+
+import { whiteColor, grayColor } from "../assets/jss/material-dashboard-react.jsx";
+
+const styles = {
+  center: {
+    width: '100vw',
+    transform: 'translateY(50%) translateX(15%)',
+    margin: 'auto'
+  },
+  cardTitleWhite: {
+    color: whiteColor,
+    marginTop: "0px",
+    minHeight: "auto",
+    fontWeight: "300",
+    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    marginBottom: "3px",
+    textDecoration: "none",
+    "& small": {
+      color: grayColor[1],
+      fontWeight: "400",
+      lineHeight: "1"
+    }
+  },
+
+};
 
 class Login extends Component {
   constructor(props) {
@@ -29,23 +56,30 @@ class Login extends Component {
     }
 
   render() {
+    const { classes, className } = this.props
+    console.log(className)
     return (
-      <GridContainer style={{ transform: 'translateY(50%)'}}> 
-        <GridItem xs={12} sm={12} md={6}>
-        <Card>
-          <CardHeader color="success">
-            <h4 className={this.props.classes.cardTitleWhite}>Login</h4>
-          </CardHeader>
-          <CardBody>
-            <LoginForm/>
-          </CardBody>
-        </Card>
-        </GridItem>
-      </GridContainer>
+        <GridContainer className={''} > 
+          <GridItem xs={12} sm={12} md={12} >
+          <Card >
+            <CardHeader color="success">
+              <h4 className={classes.cardTitleWhite}>Login</h4>
+            </CardHeader>
+            <CardBody>
+              <LoginForm/>
+            </CardBody>
+          </Card>
+          </GridItem>
+        </GridContainer>
     )
   }
 }
 
-export default withRouter(withStyles(dashboardStyle)(Login))
+Login.propTypes = {
+  classes: PropTypes.object.isRequired,
+  className: PropTypes.string,
+};
+
+export default withRouter(withStyles(styles)(Login))
   
 

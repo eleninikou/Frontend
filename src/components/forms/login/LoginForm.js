@@ -88,6 +88,7 @@ class LoginForm extends Component {
                     name="email" 
                     type="email"
                     label="Email" 
+                    className="my-input"
                     fullWidth
                     value={this.state.email}
                     onChange={this.handleChange}
@@ -100,6 +101,7 @@ class LoginForm extends Component {
                       name="password" 
                       type="password"
                       label="Password"
+                      className="my-input"
                       fullWidth
                       value={this.state.password}
                       onChange={this.handleChange}

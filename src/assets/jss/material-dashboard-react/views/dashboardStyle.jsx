@@ -81,7 +81,7 @@ const dashboardStyle = {
     }
   },
   formControl: {
-    minWidth: '50%',
+    minWidth: '100%',
   },
 };
 
