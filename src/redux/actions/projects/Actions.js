@@ -26,6 +26,8 @@ import {
   INVITATION_FAILURE,
   GET_INVITATIONS_SUCCESS,
   GET_INVITATIONS_FAILURE,
+  REMOVE_FROM_TEAM_SUCCESS,
+  REMOVE_FROM_TEAM_FAILURE
 } from './Action-types';
 
 import Cookies from 'universal-cookie';
@@ -157,8 +159,6 @@ export const editProject = project => {
 }; 
 
 
-
-
 export const deleteProject = id => {
   return async dispatch => {  
     const deleteProjectSuccess = success => { 
@@ -180,8 +180,6 @@ export const deleteProject = id => {
   }
 }; 
  
-
-
 
 export const getActivity = () => {
   return async dispatch => {
@@ -251,6 +249,27 @@ export const getTeam = id => {
     } catch (error) { dispatch ({ type: GET_TEAM_FAILURE, message: 'Could not fetch roles' }); return error;  }
   }
 };
+
+export const removeFromTeam = (id) => {
+  return async dispatch => {  
+    const removeSuccess = success => { 
+      dispatch ({ type: REMOVE_FROM_TEAM_SUCCESS, payload: success}); return success; 
+  }
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/team/user/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      return removeSuccess(success);
+
+    } catch (error) { dispatch ({ type: REMOVE_FROM_TEAM_FAILURE, message: 'Could not delete project' }); return error; }
+  }
+}; 
 
 
 export const invite = invitation => {

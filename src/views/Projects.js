@@ -16,7 +16,7 @@ import withStyles from "@material-ui/core/styles/withStyles"
 // Icons
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Components
-import ProjectsTable from '../components/project/ProjectsTable';
+import ProjectsTable from '../components/project/ProjectsTable'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
@@ -25,18 +25,24 @@ import '../assets/css/main.css'
 class Projects extends Component {
   constructor(props) {
     super(props);
-    this.state = { successMessage: this.props.successMessage }
+    this.state = { 
+      successMessage: this.props.successMessage,
+      errorMessage: ''
+     }
   }
 
   componentWillMount = () => {
     this.props.getAllProjects();
 
-    var id = window.setTimeout(null, 0);
-    while (id--) { window.clearTimeout(id); }
+    var id = window.setTimeout(null, 0)
+    while (id--) { window.clearTimeout(id) }
 
     // If redirected from create project display Success message
-    if (this.props.location.state ? this.props.location.state.successMessage : null) {
-      this.setState({ successMessage : this.props.location.state.successMessage })
+    if (this.props.location.state ? this.props.location.state.successMessage || this.props.location.state.errorMessage : null) {
+      this.setState({ 
+        successMessage : this.props.location.state.successMessage, 
+        errorMessage: this.props.location.state.errorMessage
+      })
       this.showNotification('tr')
     }
   }
@@ -60,22 +66,34 @@ class Projects extends Component {
         function getUnique(arr, comp) {
           const unique = arr.map(e => e[comp])
               .map((e, i, final) => final.indexOf(e) === i && i)
-              .filter(e => arr[e]).map(e => arr[e]);
+              .filter(e => arr[e]).map(e => arr[e])
            return unique;
         }
         let projects = getUnique(this.props.allProjects,'project_id')
 
       return (
         <GridContainer> 
-          <Snackbar
-            place="tr"
-            color="success"
-            icon={CheckCircleOutline}
-            message={this.state.successMessage}
-            open={this.state.tr}
-            closeNotification={() => this.setState({ tr: false })}
-            close
-          />
+          {this.state.errorMessage ? 
+            <Snackbar
+              place="tr"
+              color="danger"
+              icon={CheckCircleOutline}
+              message={this.state.errorMessage}
+              open={this.state.tr}
+              closeNotification={() => this.setState({ tr: false })}
+              close
+              />
+            :
+            <Snackbar
+              place="tr"
+              color="success"
+              icon={CheckCircleOutline}
+              message={this.state.successMessage}
+              open={this.state.tr}
+              closeNotification={() => this.setState({ tr: false })}
+              close
+            /> 
+          }
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="success">
@@ -97,21 +115,15 @@ class Projects extends Component {
             </Card>
           </GridItem>
         </GridContainer>
-      );
+      )
     }
 }
 
 
-const mapDispatchToProps = dispatch => { 
-  return { 
-    getAllProjects: () => dispatch(getAllProjects()) 
-  }
-}
+const mapDispatchToProps = dispatch => { return { getAllProjects: () => dispatch(getAllProjects()) }}
 
-const mapStateToProps = state => ({ 
-  allProjects: state.project.allProjects,
-})
+const mapStateToProps = state => ({ allProjects: state.project.allProjects })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Projects)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Projects)))
   
 

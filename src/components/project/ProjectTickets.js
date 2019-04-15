@@ -17,6 +17,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField'
 import IconButton from "@material-ui/core/IconButton";
+import FormControl from '@material-ui/core/FormControl'
 import TablePagination from '@material-ui/core/TablePagination';
 
 // Icons
@@ -87,6 +88,7 @@ class ProjectTickets extends Component {
           <GridItem xs={12} sm={12} md={12}>        
             <GridContainer>
               <GridItem xs={12} sm={12} md={4}>
+              <FormControl className={classes.formControl}>       
                 <TextField
                   value={this.state.type_id}
                   select
@@ -101,8 +103,10 @@ class ProjectTickets extends Component {
                         return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>    
                     }): null}
                 </TextField>   
+                </FormControl>
               </GridItem>   
               <GridItem xs={12} sm={12} md={4}>
+                <FormControl className={classes.formControl}>       
                   <TextField
                     value={this.state.status_id}
                     select
@@ -117,8 +121,11 @@ class ProjectTickets extends Component {
                         return <MenuItem  key={status.id} value={status.id}> {status.status} </MenuItem> 
                       }): null}
                   </TextField> 
+                  </FormControl>
               </GridItem> 
               <GridItem xs={12} sm={12} md={4}>
+              <FormControl className={classes.formControl}>       
+
                 <TextField
                   select
                   label="Priority"
@@ -133,6 +140,7 @@ class ProjectTickets extends Component {
                     <MenuItem value='normal'>Normal</MenuItem>
                     <MenuItem value='high'>High</MenuItem>
                 </TextField> 
+                </FormControl>
               </GridItem>  
             </GridContainer> 
             <Table

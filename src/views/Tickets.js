@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom"
 import { getAllTickets, getTicketStatus, getTicketTypes } from '../redux/actions/tickets/Actions'
 import { getAllProjects } from '../redux/actions/projects/Actions'
 import { connect } from 'react-redux'
+
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
@@ -11,13 +12,16 @@ import Card from "../components/theme/Card/Card"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CardBody from "../components/theme/Card/CardBody.jsx"
 import Button from "../components/theme/CustomButtons/Button.jsx"
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
+
 // Material UI components
 import MenuItem from '@material-ui/core/MenuItem'
 import { TextField } from '@material-ui/core'
 import withStyles from "@material-ui/core/styles/withStyles"
 import FormControl from '@material-ui/core/FormControl'
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 
-// COmponents
+// Components
 import TicketsTable from '../components/ticket/TicketsTable'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
@@ -44,7 +48,25 @@ class Tickets extends Component {
     this.props.getTicketStatus()
     this.props.getTicketTypes()
     this.props.getAllProjects()
+
+    if (this.props.location.state ? this.props.location.state.errorMessage : null) {
+      this.setState({ 
+        errorMessage: this.props.location.state.errorMessage
+      })
+      this.showNotification('tr')
+    }
   }
+
+  showNotification(place) {
+    var x = [];
+    x[place] = true;
+    this.setState(x);
+    this.alertTimeout = setTimeout(
+      function() {
+        x[place] = false;
+        this.setState(x);
+      }.bind(this), 6000);
+    }
 
   createNewTicket() { this.props.history.push('/home/create-ticket') }
 
@@ -68,7 +90,16 @@ class Tickets extends Component {
       }) : tickets
      
     return (
-      <GridContainer>              
+      <GridContainer>    
+        <Snackbar
+          place="tr"
+          color="danger"
+          icon={CheckCircleOutline}
+          message={this.state.errorMessage}
+          open={this.state.tr}
+          closeNotification={() => this.setState({ tr: false })}
+          close
+          />          
           <GridItem xs={12} sm={12} md={12}>        
             <Card>
               <CardHeader color="primary">
@@ -93,7 +124,6 @@ class Tickets extends Component {
                       }): null}
                   </TextField>   
                   </FormControl>
-
                 </GridItem>   
                 <GridItem xs={12} sm={12} md={3}>
                 <FormControl className={classes.formControl}>       
@@ -116,7 +146,6 @@ class Tickets extends Component {
                       }): null}
                   </TextField> 
                   </FormControl>
-
                 </GridItem> 
                 <GridItem xs={12} sm={12} md={3}>
                   <FormControl className={classes.formControl}>       
@@ -138,7 +167,6 @@ class Tickets extends Component {
                 </GridItem>  
                 <GridItem xs={12} sm={12} md={3}>
                   <FormControl className={classes.formControl}>       
-
                     <TextField
                       select
                       label="Project"
@@ -158,7 +186,6 @@ class Tickets extends Component {
                            }): null}
                     </TextField>
                     </FormControl>
- 
                 </GridItem>
                 </GridContainer> 
                   <TicketsTable tickets={filteredTickets} classes={classes}/>   

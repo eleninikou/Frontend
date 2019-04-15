@@ -1,25 +1,26 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import moment from 'moment';
+import moment from 'moment'
 
 // Redux
 import { connect } from 'react-redux'
 import { getTicketStatus, getTicketTypes } from '../../redux/actions/tickets/Actions'
 
 // Theme components
-import Table from "../theme/Table/Table.jsx";
-import GridItem from "../theme/Grid/GridItem.jsx";
-import GridContainer from "../theme/Grid/GridContainer.jsx";
+import Table from "../theme/Table/Table.jsx"
+import GridItem from "../theme/Grid/GridItem.jsx"
+import GridContainer from "../theme/Grid/GridContainer.jsx"
 
 // Material UI components
-import Tooltip from "@material-ui/core/Tooltip";
-import MenuItem from '@material-ui/core/MenuItem';
+import Tooltip from "@material-ui/core/Tooltip"
+import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
-import IconButton from "@material-ui/core/IconButton";
-import TablePagination from '@material-ui/core/TablePagination';
+import IconButton from "@material-ui/core/IconButton"
+import FormControl from '@material-ui/core/FormControl'
+import TablePagination from '@material-ui/core/TablePagination'
 
 // Icons
-import ExitToApp from "@material-ui/icons/ExitToApp";
+import ExitToApp from "@material-ui/icons/ExitToApp"
 
 
 
@@ -78,6 +79,7 @@ class MilestoneTickets extends Component {
           <GridItem xs={12} sm={12} md={12}>        
             <GridContainer>
               <GridItem xs={12} sm={12} md={4}>
+              <FormControl className={classes.formControl}>       
                 <TextField
                   value={this.state.type_id}
                   select
@@ -92,8 +94,10 @@ class MilestoneTickets extends Component {
                         return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>    
                     }): null}
                 </TextField>   
+              </FormControl>  
               </GridItem>   
               <GridItem xs={12} sm={12} md={4}>
+                <FormControl className={classes.formControl}>       
                   <TextField
                     value={this.state.status_id}
                     select
@@ -108,8 +112,10 @@ class MilestoneTickets extends Component {
                         return <MenuItem  key={status.id} value={status.id}> {status.status} </MenuItem> 
                       }): null}
                   </TextField> 
+                </FormControl>  
               </GridItem> 
               <GridItem xs={12} sm={12} md={4}>
+                <FormControl className={classes.formControl}>       
                 <TextField
                   select
                   label="Priority"
@@ -124,6 +130,7 @@ class MilestoneTickets extends Component {
                     <MenuItem value='normal'>Normal</MenuItem>
                     <MenuItem value='high'>High</MenuItem>
                 </TextField> 
+                </FormControl>  
               </GridItem>  
             </GridContainer> 
             <Table

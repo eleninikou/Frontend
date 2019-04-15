@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom'
 import Cookies from 'universal-cookie'
-import { Login, Home, CreateProject, Project, NotFoundPage, AcceptInvitation  } from '../../views'
+
+// import { Login, Home, CreateProject, Project, NotFoundPage, AcceptInvitation  } from '../../views'
+import  Login from '../../views/Login';
+import Home from '../../views/Home'
+import CreateProject from '../../views/CreateProject'
+import Project from '../../views/Project'
+import AcceptInvitation from '../../views/AcceptInvitation'
+import NotFoundPage from '../../views/NotFoundPage'
+
 
 function PrivateRoute({ component: Component, ...rest }) {
   
@@ -30,7 +38,7 @@ class App extends Component {
           <PrivateRoute path='/home' component={Home} />
           <PrivateRoute exact path='/home/create-project' component={CreateProject} />
           <PrivateRoute exact path='/home/project/{id}' component={Project} />
-          <Route path='/accept/:id' component={AcceptInvitation} />
+          <Route path='/accept/:id' component={AcceptInvitation} /> 
           <Route component={NotFoundPage} /> 
         </Switch>
       </div>

@@ -22,10 +22,12 @@ import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
 import CircularProgress from '@material-ui/core/CircularProgress'
+
 // Style
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
-import { EditProjectForm, ProjectContent, ProjectMilestones, ProjectTickets, ProjectTeam }  from '../components/'
+import { EditProjectForm, ProjectContent, ProjectMilestones, ProjectTickets, ProjectTeam }  from '../components'
+
 
 
 class Project extends Component {
@@ -43,7 +45,7 @@ class Project extends Component {
         ticketRowsPerPage: 5,
         milestones: [],
         edit: false,
-        successMessage: this.props.successMessage
+        successMessage: this.props.successMessage,
       }
   }
 
@@ -56,20 +58,25 @@ class Project extends Component {
     // Fetch project and set to state
     this.props.getProject(this.props.match.params.id)
     .then(res => {
-      this.setState({ 
-        id: res.project.id,
-        name: res.project.name,
-        description: res.project.description,
-        client_id: res.project.client_id,
-        milestones: res.project.milestones
-       })
-    });
+      if (res.project) {
+        this.setState({ 
+          id: res.project.id,
+          name: res.project.name,
+          description: res.project.description,
+          client_id: res.project.client_id,
+          milestones: res.project.milestones
+         })
+      } else {
+        this.props.history.push({
+          pathname: '/home/projects', 
+          state: { errorMessage: 'There is no project with that id' }
+        })
+      }
+    })
 
     // Snackbar
-    var id = window.setTimeout(null, 0);
-    while (id--) {
-      window.clearTimeout(id);
-    }
+    var id = window.setTimeout(null, 0)
+    while (id--) { window.clearTimeout(id) }
 
     // If previous create ticket or milestone, show notification with success
     if (this.props.location.state ? this.props.location.state.successMessage : null) {
@@ -118,31 +125,20 @@ class Project extends Component {
         client_id: res.project.client_id,
         milestones: res.project.milestones
        })
-    });
+    })
   }
 
-  getEdit = edit => { 
-    this.setState({ edit }) 
-  }  
+  getEdit = edit => { this.setState({ edit }) }  
 
-  handleOpen = () => {
-    this.setState({ open: true })
-  };
+  handleOpen = () => { this.setState({ open: true }) }
 
-  handleClose = () => {
-    this.setState({ open: false })
-  };
+  handleClose = () => { this.setState({ open: false }) }
     
   render() {
       const { classes, team, project, tickets, isFetching } = this.props;
       const { edit, successMessage, user, milestones } = this.state;
       return (
-        isFetching ?
-          <CircularProgress
-          className={classes.progress}
-          variant="determinate"
-          />
-          :
+        isFetching && !project ? <CircularProgress className={classes.progress} variant="determinate"/> :
           <div>
               <Snackbar
                 place="tr"
@@ -153,6 +149,7 @@ class Project extends Component {
                 closeNotification={() => this.setState({ tr: false })}
                 close
                 /> 
+              {project ?  
               <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                 <Card>
@@ -160,7 +157,7 @@ class Project extends Component {
                     headerColor="success"
                     tabs={[
                       {
-                        tabName: "Info",
+                        tabName: `${project.name}`,
                         tabIcon: Info,
                         tabContent: (
                           edit ?
@@ -232,6 +229,7 @@ class Project extends Component {
                   </Card>
                 </GridItem>
               </GridContainer>
+              : null }
             </div>
           );
         }

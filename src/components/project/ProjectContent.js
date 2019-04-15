@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment'
 
 // Theme components
 import GridItem from "../theme/Grid/GridItem.jsx";
@@ -7,12 +8,12 @@ import Button from "../theme/CustomButtons/Button.jsx";
 import GridContainer from "../theme/Grid/GridContainer.jsx";
 
 // Material UI
-// import List from '@material-ui/core/List';
+import List from '@material-ui/core/List';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from "@material-ui/core/Tooltip";
-// import ListItem from '@material-ui/core/ListItem';
-// import ListItemText from '@material-ui/core/ListItemText';
-// import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -25,6 +26,7 @@ import Note from "@material-ui/icons/Note";
 import People from "@material-ui/icons/People";
 import Timeline from "@material-ui/icons/Timeline";
 
+import IconButton from "@material-ui/core/IconButton";
 // Material UI components
 import Typography from '@material-ui/core/Typography';
 
@@ -32,18 +34,17 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
 
     const showForm = () => { getEdit(true)  }
     return (
-        <GridContainer>          
-            <GridItem xs={12} sm={12} md={12}>
-              <CardBody>
-              <Table className={classes.table}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Name</TableCell>
-                    <TableCell align="center">Description</TableCell>
-                    <TableCell align="center">Creator</TableCell>
-                    <TableCell align="center">Client</TableCell>
-                    <TableCell align="center">
-                      <Tooltip
+            <CardBody>
+              <Typography>
+                <div style={{ display: 'flex'}}><h1>{project.name} | </h1> <h4> {project.description}</h4></div>
+                <h4>Admin: {project.creator ? project.creator.name : null}</h4>
+                {project.client ? 
+                <h4>Client: {project.client.name} </h4> : null}
+              </Typography>
+              <List className="my-ticket-list">
+                <ListItem>
+                  <ListItemAvatar>
+                    <Tooltip
                         id="tooltip-top-start"
                         title="Milestones"
                         placement="top"
@@ -52,9 +53,12 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
                             <Timeline /> 
                           </Avatar>
                         </Tooltip>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Tooltip
+                  </ListItemAvatar>
+                  <ListItemText primary={project.milestones ? project.milestones.length : 0} />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Tooltip
                         id="tooltip-top-start"
                         title="Tickets"
                         placement="top"
@@ -63,9 +67,12 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
                             <Note /> 
                           </Avatar>
                         </Tooltip>
-                    </TableCell>
-                    <TableCell align="center">
-                      <Tooltip
+                  </ListItemAvatar>
+                  <ListItemText primary={project.tickets ? project.tickets.length : 0} />
+                </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                  <Tooltip
                         id="tooltip-top-start"
                         title="Team"
                         placement="top"
@@ -74,31 +81,17 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
                             <People /> 
                           </Avatar>
                         </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                    <TableRow key={project.id}>
-                      <TableCell component="th" scope="row">
-                        {project.name}
-                      </TableCell>
-                      <TableCell align="center">{project.description}</TableCell>
-                      <TableCell align="center">{project.creator ? project.creator.name : null}</TableCell>
-                      <TableCell align="center">{project.client ? project.client.name : null}</TableCell>
-                      <TableCell align="center">{project.milestones ? project.milestones.length : 0}</TableCell>
-                      <TableCell align="center">{project.tickets ? project.tickets.length : 0}</TableCell>
-                      <TableCell align="center">{team ? team.length : 0 }</TableCell>
-                    </TableRow>
-                </TableBody>
-              </Table>
-              </CardBody> 
-                    {creator ? 
-                    <Button color="success" onClick={showForm} style={{ float: 'right' }}>
-                      Edit Project
-                    </Button> 
-                    : null }
-            </GridItem> 
-          </GridContainer>
+                  </ListItemAvatar>
+                  <ListItemText primary={team ? team.length : 0 } />
+                </ListItem>
+              </List> 
+
+              {creator ? 
+              <Button color="success" onClick={showForm} style={{ float: 'right' }}>
+                Edit Project
+              </Button> 
+              : null }
+            </CardBody> 
     )
 }
 

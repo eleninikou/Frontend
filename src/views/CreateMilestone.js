@@ -75,7 +75,12 @@ submit = event => {
             })
         }
       } else {
-        this.showNotification('tr')
+        if(this.props.successMessage) {
+          this.props.history.push({
+            pathname: '/home/milestones',
+            state: { successMessage: this.props.successMessage}
+          })
+        }
       }
     })
   } else {

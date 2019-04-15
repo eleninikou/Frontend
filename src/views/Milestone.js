@@ -68,8 +68,10 @@ class Milestone extends Component {
           milestone: res.milestone
          })
       } else {
-        this.props.history.push(`/home`)
-      }
+        this.props.history.push({
+          pathname: '/home/milestones', 
+          state: { errorMessage: 'There is no milestone with that id' }
+        })      }
     });
 
     var id = window.setTimeout(null, 0);
@@ -90,13 +92,9 @@ class Milestone extends Component {
       }.bind(this), 4000);
   }
 
-  goToTicket(id) {
-    this.props.history.push(`/home/ticket/${id}`)
-  }
+  goToTicket(id) { this.props.history.push(`/home/ticket/${id}`) }
 
-  getEdit = edit => { 
-    this.setState({ edit }) 
-  }  
+  getEdit = edit => { this.setState({ edit }) }  
 
   milestoneDelete() {
     this.props.deleteMilestone(this.state.id)
@@ -141,7 +139,6 @@ class Milestone extends Component {
     const { classes, tickets, successMessage } = this.props;
     const { edit, creator, auth_user_id, milestone } = this.state;
 
-    console.log(tickets)
       return (
         <GridContainer>
             <Snackbar

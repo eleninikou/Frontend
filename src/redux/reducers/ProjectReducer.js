@@ -26,6 +26,8 @@ import {
     INVITATION_FAILURE,
     GET_INVITATIONS_SUCCESS,
     GET_INVITATIONS_FAILURE,
+    REMOVE_FROM_TEAM_SUCCESS,
+    REMOVE_FROM_TEAM_FAILURE
 } from '../actions/projects/Action-types';
 
 const initialState = {
@@ -91,7 +93,7 @@ const ProjectReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 allProjects: action.payload.projects,
-                milestones: action.payload.milestones[0]
+                milestones: action.payload.milestones
             } 
         case GET_ALL_PROJECTS_USER_FAILURE:
             return {
@@ -206,7 +208,19 @@ const ProjectReducer = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errorMessage: action.message
-            }                               
+            }  
+        case REMOVE_FROM_TEAM_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                successMessage: action.payload.message
+            } 
+        case REMOVE_FROM_TEAM_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errorMessage: action.message
+            }                                  
         default:
             return state;
         }

@@ -53,9 +53,16 @@ class Ticket extends Component {
       }
   }
   
-  componentDidMount = () => {
+  componentWillMount = () => {
     // Fetch ticket and set to state
     this.props.getTicket(this.props.match.params.id)
+    .then(res => {
+      if(!res.ticket)
+        this.props.history.push({
+          pathname: '/home/tickets', 
+          state: { errorMessage: 'There is no ticket with that id' }
+      })
+    })
 
     // Notification bar
     var id = window.setTimeout(null, 0)
@@ -184,7 +191,6 @@ class Ticket extends Component {
       showComments,
     } = this.state;
 
-    console.log(description)
 
     return (
       <div> 
@@ -198,7 +204,7 @@ class Ticket extends Component {
           closeNotification={() => this.setState({ tr: false })} 
           close /> 
 
-        {isFetching ? <CircularProgress className="my-spinner" color="primary" /> 
+        {isFetching && !ticket? <CircularProgress className="my-spinner" color="primary" /> 
         : 
         <GridContainer>          
           <GridItem xs={12} sm={12} md={12}>

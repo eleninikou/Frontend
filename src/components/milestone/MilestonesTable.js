@@ -27,9 +27,9 @@ class MilestonesTable extends Component {
 
     render() {
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.props.milestones.length  - this.state.page * this.state.rowsPerPage);
-      
+        const { milestones } = this.props;
         return (
-        <div>
+          <div>
             <Table
                 page={this.state.page}
                 rowsPerPage={this.state.rowsPerPage}
@@ -37,7 +37,7 @@ class MilestonesTable extends Component {
                 tableHeaderColor="warning"
                 tableHead={["Name", "Focus", "Project", "Last updated", "Details" ]}
                 tableData={[
-                    this.props.milestones ? this.props.milestones.map(milestone => {
+                    milestones ? milestones.map(milestone => {
                       return [
                         `${milestone.title}`, 
                         `${milestone.focus}`,
@@ -54,7 +54,7 @@ class MilestonesTable extends Component {
                             </IconButton>
                           </Tooltip>,
                         ]
-                        }) 
+                      })
                     : null  
                 ]} /> 
             <TablePagination
