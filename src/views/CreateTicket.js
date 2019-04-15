@@ -344,24 +344,24 @@ render() {
                           inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
                         
                           {// If admin -> choose from all members
-                          project.creator_id === parseInt(user) ? (
+                          project ? project.creator_id === parseInt(user) ? (
                             team_members ? team_members.map(member => {
                               return (
                                 <MenuItem key={member.user.id} value={member.user.id}> 
                                   {member.user.name} 
                                 </MenuItem>
                               )
-                            }) : null
+                            }) : null 
                           ) : (
                             // Choose admin or self
                             me_and_admin ? me_and_admin.map(member => {
                               return (
-                                  <MenuItem key={member.user.id} value={member.user.id}> 
-                                    {member.user.name} 
-                                  </MenuItem>
-                              )
-                            }) : null
-                          )}
+                                <MenuItem key={member.user.id} value={member.user.id}> 
+                                  {member.user.name} 
+                                </MenuItem>
+                              ) 
+                            }) : null 
+                          ) : null}
                         </TextField>
                     </FormControl>
                   </GridItem>

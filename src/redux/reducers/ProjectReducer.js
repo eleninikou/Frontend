@@ -148,7 +148,7 @@ const ProjectReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFetching: false,
-                activity: action.payload.activity
+                activity: action.payload.activity.flatMap(activity => activity)
             } 
         case GET_ACTIVITY_FAILURE:
             return {

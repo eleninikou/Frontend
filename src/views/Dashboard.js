@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import PropTypes from "prop-types";
+import PropTypes from "prop-types"
 import { withRouter, } from "react-router-dom"
 
 // Redux
@@ -9,29 +9,29 @@ import { getProjectsByUser, getAllProjects, getActivity } from '../redux/actions
 import { logout } from '../redux/actions/auth/Actions'
 
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx";
-import GridContainer from "../components/theme/Grid/GridContainer.jsx";
-import Table from "../components/theme/Table/Table.jsx";
-import Card from "../components/theme/Card/Card";
-import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
-import TicketsTable from '../components/ticket/TicketsTable';
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
+import Table from "../components/theme/Table/Table.jsx"
+import Card from "../components/theme/Card/Card"
+import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
+import TicketsTable from '../components/ticket/TicketsTable'
 
 // Material UI components
-import IconButton from "@material-ui/core/IconButton";
-import TablePagination from '@material-ui/core/TablePagination';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import IconButton from "@material-ui/core/IconButton"
+import TablePagination from '@material-ui/core/TablePagination'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 // Icons
-import Note from "@material-ui/icons/Note";
-import Today from "@material-ui/icons/Today";
-import Timeline from "@material-ui/icons/Timeline";
-import Comment from "@material-ui/icons/Comment";
+import Note from "@material-ui/icons/Note"
+import Today from "@material-ui/icons/Today"
+import Timeline from "@material-ui/icons/Timeline"
+import Comment from "@material-ui/icons/Comment"
 
 // Styles
-import withStyles from "@material-ui/core/styles/withStyles";
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import '../assets/css/main.css'
+import withStyles from "@material-ui/core/styles/withStyles"
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
+import Cookies from "universal-cookie"
 
 
 class Dashboard extends Component {
@@ -44,10 +44,10 @@ class Dashboard extends Component {
   }
 
   componentWillMount() {
-    this.props.getProjectsByUser();
-    this.props.getAllProjects();
-    this.props.getActivity();
-    this.props.getAllTickets();
+    this.props.getProjectsByUser()
+    this.props.getAllProjects()
+    this.props.getActivity()
+    this.props.getAllTickets()
   }
 
   goToTicket(id) { this.props.history.push(`/home/ticket/${id}`) }
@@ -68,18 +68,15 @@ class Dashboard extends Component {
         client_id: res.project.client_id,
         milestones: res.project.milestones
        })
-    });
+    })
   }
 
-  componentWillUnmount = () => {
-    
-  }
+
 
   render() {
       const { classes, allTickets, activity, isFetching } = this.props
       const { rowsPerPage, page } = this.state
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage)
-
         return (
           <div>
             <GridContainer> 
@@ -167,9 +164,7 @@ class Dashboard extends Component {
       }
 }
 
-Dashboard.propTypes = {
-  classes: PropTypes.object.isRequired
-};
+Dashboard.propTypes = { classes: PropTypes.object.isRequired }
 
 const mapDispatchToProps = dispatch => { 
   return { 
@@ -190,6 +185,6 @@ const mapStateToProps = state => ({
 })
 
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Dashboard)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Dashboard)))
   
 
