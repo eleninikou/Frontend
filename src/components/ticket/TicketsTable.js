@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import moment from 'moment'
 // Theme components
-import Table from "../theme/Table/Table.jsx";
+import Table from "../theme/Table/Table.jsx"
 import TablePagination from '@material-ui/core/TablePagination'
 // Material UI components
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip"
+import IconButton from "@material-ui/core/IconButton"
 // Icons
-import ExitToApp from "@material-ui/icons/ExitToApp";
+import ExitToApp from "@material-ui/icons/ExitToApp"
 
 
 class TicketsTable extends Component {

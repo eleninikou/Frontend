@@ -77,39 +77,6 @@
 .my-label {
   margin-left: 15px; }
 
-.Ticket-formControl-126, .MuiFormControl-marginNormal-244, .MuiFormControl-marginNormal-294, .MuiFormControl-marginNormal-372, .CreateMilestone-formControl-793, .CreateMilestone-formControl-126 {
-  min-width: 100% !important; }
-
-@media (min-width: 600px) {
-  .MuiGrid-grid-md-9-352, .MuiGrid-grid-md-9-221 {
-    max-width: 100% !important;
-    width: 100% !important; } }
-
-.MuiFormControl-marginNormal-287 {
-  margin: 0px 0px 30px !important;
-  width: 100% !important; }
-
-.MuiButton-containedPrimary-203 {
-  width: 100% !important;
-  margin: 5px !important;
-  padding: 5px !important; }
-
-.MuiButton-containedPrimary-225 {
-  height: 35px !important; }
-
-.GridItem-grid-107 {
-  margin: auto !important; }
-
-.google-btn {
-  display: flex !important;
-  justify-content: center !important; }
-
-.Home-content-3 {
-  margin-top: 0px !important; }
-
-.Sidebar-img-12 {
-  display: none !important; }
-
-.MuiAvatar-root-670 {
-  width: 35px !important;
-  height: 35px !important; }
+.selected-menu-item {
+  display: flex;
+  align-items: center; }

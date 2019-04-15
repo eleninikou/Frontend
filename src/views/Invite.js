@@ -74,27 +74,23 @@ class Invite extends Component {
   }
 
   submit = event => {
-    event.preventDefault();
+    event.preventDefault()
 
     if(this.state.email && this.state.project_id && this.state.project_role ) {
+      
       const invitation = {
         email: this.state.email,
         project_id: this.state.project_id,
         project_role: this.state.project_role,
       }
+
       this.props.invite(invitation)
-      .then(() => { 
-        if (this.props.successMessage) { 
-          this.showNotification('tr') 
-        } 
-      })
+      .then(() => { if (this.props.successMessage) { this.showNotification('tr') } })
+
       this.props.getEmails(this.state.project_id)
-      .then(res => {
-        this.setState({ emails: res.emails })
-      })
-    } else {
-      this.setState({ hasError: true })
-    }
+      .then(res => { this.setState({ emails: res.emails }) })
+
+    } else { this.setState({ hasError: true }) }
   }
 
   goBack = () => { this.props.history.push({ pathname: `/home/project/${this.state.project_id}`})}
@@ -112,27 +108,25 @@ class Invite extends Component {
   }
 
   handleChange = event => { 
+    if (event.target.value == 'create') {
+      this.props.history.push({ pathname: `/home/create-project`})
+    }
     this.setState({ [event.target.name]: event.target.value }) 
 
     // Get team and invited emails when selecting projects
     if([event.target.name] == 'project_id') {
+
       this.props.getTeam(event.target.value)
-      .then(res => {
-          this.setState({ team : res.team })
-      })
+      .then(res => { this.setState({ team : res.team }) })
 
       this.props.getEmails(event.target.value)
-      .then(res => {
-        this.setState({ emails: res.emails })
-      })
+      .then(res => { this.setState({ emails: res.emails }) })
     }
-  
   }
 
   render() {
-  const { classes, projects, project, roles, successMessage, emails, isFetching } = this.props;
-  const { page, team, backToProject, hasError } = this.state;
-    console.log(classes)
+  const { classes, projects, project, roles, successMessage, emails, isFetching } = this.props
+  const { page, team, backToProject, hasError } = this.state
   return (
     <form className={classes.form} onSubmit={this.submit}>
       <Snackbar
@@ -155,6 +149,7 @@ class Invite extends Component {
                 <GridItem xs={12} sm={12} md={6}>
                   <FormControl className={classes.formControl}>       
                   {hasError && !this.state.project_id && <FormHelperText id="project_id">Please select project!</FormHelperText>}
+                  {console.log(project)}
                     <TextField
                       select
                       error={hasError && !this.state.project_id? true : false}
@@ -173,11 +168,18 @@ class Invite extends Component {
                         <MenuItem defaultValue key={project.id} value={project.id}> 
                           {project.name} 
                         </MenuItem>
-                      : null }
+                      : 
+                        <MenuItem defaultValue key={''} value={'create'}> 
+                          You need to create a project first
+                        </MenuItem>   
+                      }
 
                     {projects.projects ? projects.projects.map(project => {
                       return <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
-                    }) : null
+                    }) : 
+                      <MenuItem defaultValue key={''} value={'create'}> 
+                        You need to create a project 
+                      </MenuItem>  
                     }
                     </TextField>
                   </FormControl>
@@ -186,6 +188,7 @@ class Invite extends Component {
                   <FormControl className={classes.formControl}>
                   {hasError && !this.state.project_role && <FormHelperText id="project_role">Please select role in the project!</FormHelperText>}
                     <TextField
+                        disabled={!project ? true : false}
                         select
                         error={hasError && !this.state.project_role ? true : false}
                         label="Role"
@@ -208,6 +211,7 @@ class Invite extends Component {
                   <FormControl className={classes.formControl}>
                   {hasError && !this.state.email && <FormHelperText id="project_role">Please fill in email!</FormHelperText>}
                   <TextField
+                    disabled={!project ? true : false}
                     type="email"
                     label="email" 
                     error={hasError && !this.state.email ? true : false}
@@ -225,7 +229,7 @@ class Invite extends Component {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button type="submit" color="info">Invite</Button>
+              <Button type="submit" color="info" disabled={!project ? true : false}>Invite</Button>
               {backToProject ?
               <Button color="info" onClick={this.goBack.bind(this)}>Back to project</Button>
               : null }
@@ -281,7 +285,7 @@ class Invite extends Component {
         </GridItem>
       </GridContainer>
     </form>
-        );
+        )
       }
 }
 
@@ -307,7 +311,7 @@ const mapStateToProps = state => ({
   emails: state.project.emails
 })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Invite)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Invite)))
   
 
 

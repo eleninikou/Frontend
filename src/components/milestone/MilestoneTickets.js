@@ -12,6 +12,7 @@ import GridItem from "../theme/Grid/GridItem.jsx"
 import GridContainer from "../theme/Grid/GridContainer.jsx"
 
 // Material UI components
+import Avatar from '@material-ui/core/Avatar'
 import Tooltip from "@material-ui/core/Tooltip"
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
@@ -21,27 +22,30 @@ import TablePagination from '@material-ui/core/TablePagination'
 
 // Icons
 import ExitToApp from "@material-ui/icons/ExitToApp"
-
-
+// Icons
+import Warning from "@material-ui/icons/Warning"
+import BugReport from "@material-ui/icons/BugReport"
+import LowPriority from "@material-ui/icons/LowPriority"
+import LinearScale from '@material-ui/icons/LinearScale'
+import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor"
 
 class MilestoneTickets extends Component {
     constructor(props) {
       super(props);
   
       this.state = { 
-            type_id: '',
-            priority: '',
-            status_id: '',
-            page: 0,
-            rowsPerPage: 5,
-            ticketRowsPerPage: 5,
+        type_id: '',
+        priority: '',
+        status_id: '',
+        page: 0,
+        rowsPerPage: 5,
+        ticketRowsPerPage: 5,
       }
-
   }
 
     componentWillMount = () => {
-        this.props.getTicketStatus()
-        this.props.getTicketTypes()
+      this.props.getTicketStatus()
+      this.props.getTicketTypes()
     }
 
     handleChangePage = (event, page) => { this.setState({ page }) }
@@ -91,7 +95,27 @@ class MilestoneTickets extends Component {
                   inputProps={{ name: 'type_id', id: 'type_id' }} >
                   <MenuItem value={null}>All</MenuItem>
                       {ticketTypes ? ticketTypes.map(type => {
-                        return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>    
+                        return (
+                          <MenuItem key={type.id} value={type.id}> 
+                              <Tooltip
+                                id="tooltip-top-start"
+                                title={type.type}
+                                placement="top"
+                                classes={{ tooltip: classes.tooltip }}
+                                >
+                                <Avatar style={{ backgroundColor: '#8e24aa', height: '30px', width: '30px', marginRight: '20px'}}> 
+                                  {type.id === 1 ?
+                                  <BugReport /> 
+                                  : type.id === 2 ?
+                                  <LowPriority />
+                                  : type.id === 3 ?
+                                  <LinearScale />
+                                  : <YoutubeSearchedFor /> }  
+                                </Avatar>
+                              </Tooltip>
+                            {type.type} 
+                          </MenuItem>   
+                        )   
                     }): null}
                 </TextField>   
               </FormControl>  
@@ -126,9 +150,24 @@ class MilestoneTickets extends Component {
                   margin="normal"
                   inputProps={{ name: 'priority', id: 'priority' }} >
                     <MenuItem value={null}>All</MenuItem>
-                    <MenuItem value='low'>Low</MenuItem>
-                    <MenuItem value='normal'>Normal</MenuItem>
-                    <MenuItem value='high'>High</MenuItem>
+                    <MenuItem value='low'>
+                        <Avatar style={{backgroundColor: '#FADC08', height: '30px', width: '30px', marginRight: '20px' }}> 
+                          <Warning /> 
+                        </Avatar>
+                          Low
+                      </MenuItem>
+                    <MenuItem value='normal'>
+                    <Avatar style={{backgroundColor: '#4caf50', height: '30px', width: '30px', marginRight: '20px' }}> 
+                        <Warning /> 
+                      </Avatar>
+                      Normal
+                    </MenuItem>
+                    <MenuItem value='high'>
+                      <Avatar style={{backgroundColor: '#f44336', height: '30px', width: '30px', marginRight: '20px'}}> 
+                        <Warning /> 
+                      </Avatar> 
+                      High
+                    </MenuItem>
                 </TextField> 
                 </FormControl>  
               </GridItem>  
@@ -138,13 +177,27 @@ class MilestoneTickets extends Component {
               rowsPerPage={rowsPerPage}
               emptyRows={emptyRows}
               tableHeaderColor="warning"
-              tableHead={["Priority", "Type", "Title", "Assigned to", "Status", "Due date", "Details"]}
+              tableHead={["Title", "Type", "Priority", "Assigned to", "Status", "Due date", "Details"]}
               tableData={[
                 filteredTickets.map(ticket => {
-                return [
+                  return [  
+                  `${ticket.title}`, 
+                  <Tooltip
+                    id="tooltip-top-start"
+                    title={ticket.type.type}
+                    placement="top"
+                    classes={{ tooltip: classes.tooltip }}>
+                      <Avatar style={{ backgroundColor: '#8e24aa', height: '30px', width: '30px' }}> 
+                        {ticket.type_id === 1 ?
+                          <BugReport /> 
+                          : ticket.type_id === 2 ?
+                          <LowPriority />
+                          : ticket.type_id === 3 ?
+                          <LinearScale />
+                          : <YoutubeSearchedFor /> }  
+                      </Avatar>
+                    </Tooltip>, 
                     `${ticket.priority}`,
-                    `${ticket.type.type}`, 
-                    `${ticket.title}`, 
                     `${ticket.assigned_user.name}`,
                     `${ticket.status.status}`,
                     `${moment(ticket.due_date).format('YYYY-MM-DD')}`,

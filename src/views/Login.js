@@ -12,7 +12,6 @@ import GridItem from "../components/theme/Grid/GridItem.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 
 import withStyles from "@material-ui/core/styles/withStyles"
-import dashboardStyle from "../assets/styles/dashboardStyle.jsx"
 
 import { whiteColor, grayColor } from "../assets/jss/material-dashboard-react.jsx";
 
@@ -40,10 +39,6 @@ const styles = {
 };
 
 class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {}
-  }
     
     componentWillMount = () => {
       const cookies = new Cookies()
@@ -56,14 +51,12 @@ class Login extends Component {
     }
 
   render() {
-    const { classes, className } = this.props
-    console.log(className)
     return (
         <GridContainer className={''} > 
-          <GridItem xs={12} sm={12} md={12} >
+          <GridItem xs={12} sm={12} md={6} >
           <Card >
             <CardHeader color="success">
-              <h4 className={classes.cardTitleWhite}>Login</h4>
+              <h4 className={this.props.classes.cardTitleWhite}>Login</h4>
             </CardHeader>
             <CardBody>
               <LoginForm/>

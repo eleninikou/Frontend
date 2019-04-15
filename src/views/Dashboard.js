@@ -71,10 +71,14 @@ class Dashboard extends Component {
     });
   }
 
+  componentWillUnmount = () => {
+    
+  }
+
   render() {
-      const { classes, allTickets, activity, isFetching } = this.props;
-      const { rowsPerPage, page } = this.state;
-      const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage);
+      const { classes, allTickets, activity, isFetching } = this.props
+      const { rowsPerPage, page } = this.state
+      const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage)
 
         return (
           <div>
@@ -147,12 +151,12 @@ class Dashboard extends Component {
                       tabName: " My Tickets",
                       tabIcon: Note,
                       tabContent: (
-                          <TicketsTable 
-                            tickets={allTickets}
-                            classes={classes}
-                            getSuccess={this.getSuccess.bind(this)}
-                          />
-                        )
+                        <TicketsTable 
+                          tickets={allTickets}
+                          classes={classes}
+                          getSuccess={this.getSuccess.bind(this)}
+                        />
+                      )
                     },
                   ]}/>
                 </Card>

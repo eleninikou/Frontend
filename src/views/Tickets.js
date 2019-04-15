@@ -15,11 +15,20 @@ import Button from "../components/theme/CustomButtons/Button.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 
 // Material UI components
+import Avatar from '@material-ui/core/Avatar'
+import Tooltip from "@material-ui/core/Tooltip"
 import MenuItem from '@material-ui/core/MenuItem'
-import { TextField } from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 import withStyles from "@material-ui/core/styles/withStyles"
 import FormControl from '@material-ui/core/FormControl'
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
+
+//Icons
+import Warning from "@material-ui/icons/Warning"
+import BugReport from "@material-ui/icons/BugReport"
+import LowPriority from "@material-ui/icons/LowPriority"
+import LinearScale from '@material-ui/icons/LinearScale'
+import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor"
 
 // Components
 import TicketsTable from '../components/ticket/TicketsTable'
@@ -120,7 +129,27 @@ class Tickets extends Component {
                     inputProps={{ name: 'type_id', id: 'type_id' }} >
                     <MenuItem value={null}>All</MenuItem>
                         {ticketTypes ? ticketTypes.map(type => {
-                          return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>    
+                          return (
+                            <MenuItem key={type.id} value={type.id}> 
+                            <Tooltip
+                              id="tooltip-top-start"
+                              title={type.type}
+                              placement="top"
+                              classes={{ tooltip: classes.tooltip }}
+                              >
+                              <Avatar style={{ backgroundColor: '#8e24aa', height: '30px', width: '30px', marginRight: '20px'}}> 
+                                {type.id === 1 ?
+                                <BugReport /> 
+                                : type.id === 2 ?
+                                <LowPriority />
+                                : type.id === 3 ?
+                                <LinearScale />
+                                : <YoutubeSearchedFor /> }  
+                              </Avatar>
+                            </Tooltip>
+                          {type.type} 
+                        </MenuItem>   
+                          )
                       }): null}
                   </TextField>   
                   </FormControl>
@@ -159,9 +188,24 @@ class Tickets extends Component {
                       margin="normal"
                       inputProps={{ name: 'priority', id: 'priority' }} >
                         <MenuItem value={null}>All</MenuItem>
-                        <MenuItem value='low'>Low</MenuItem>
-                        <MenuItem value='normal'>Normal</MenuItem>
-                        <MenuItem value='high'>High</MenuItem>
+                        <MenuItem value='low'>
+                          <Avatar style={{backgroundColor: '#FADC08', height: '30px', width: '30px', marginRight: '20px' }}> 
+                            <Warning /> 
+                          </Avatar>
+                          Low
+                        </MenuItem>
+                        <MenuItem value='normal'>
+                          <Avatar style={{backgroundColor: '#4caf50', height: '30px', width: '30px', marginRight: '20px' }}> 
+                            <Warning /> 
+                          </Avatar>
+                          Normal
+                        </MenuItem>
+                        <MenuItem value='high'>
+                          <Avatar style={{backgroundColor: '#f44336', height: '30px', width: '30px', marginRight: '20px'}}> 
+                            <Warning /> 
+                          </Avatar> 
+                          High
+                        </MenuItem>
                     </TextField> 
                     </FormControl>
                 </GridItem>  

@@ -8,65 +8,64 @@ import Button from '@material-ui/core/Button'
 import GoogleLogin from 'react-google-login'
 import { login, googleLogin, acceptInvitation } from '../../../redux/actions/auth/Actions'
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import GridContainer from "../../theme/Grid/GridContainer.jsx";
-import GridItem from "../../theme/Grid/GridItem.jsx";
-import CardBody from '../../theme/Card/CardBody';
-import { FormControl } from '@material-ui/core';
+import GridContainer from "../../theme/Grid/GridContainer.jsx"
+import GridItem from "../../theme/Grid/GridItem.jsx"
+import CardBody from '../../theme/Card/CardBody'
+import { FormControl } from '@material-ui/core'
 import Cookies from 'universal-cookie'
-import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography'
 
 
 class LoginForm extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       email: this.props.email,
       password: '',
       errorMessage: ''
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this)
     this.submit = this.submit.bind(this);
-    this.responseGoogle = this.responseGoogle.bind(this);
+    this.responseGoogle = this.responseGoogle.bind(this)
 }
 
   responseGoogle = response => {
     if (!response.error) {
       this.props.googleLogin(response.profileObj)
       .then(res => {
-        if(res.success){
-            this.props.history.push('/home/dashboard')
-          }
-        else {
-          this.setState({ errorMessage: 'Could not log in, show error message'})
-        }  
-        })
+        if(res.success){ this.props.history.push('/home/dashboard') }
+        else { this.setState({ errorMessage: 'Could not log in, show error message'})}  
+      })
     }
   }
 
   submit = event => {
-    
-    event.preventDefault();
+    event.preventDefault()
+    const cookies = new Cookies()
+    var invitation = cookies.get('invitation')
+
     const creds = {
       email: this.state.email,
       password: this.state.password
-    };
-
-    const cookies = new Cookies()
-    var invitation = cookies.get('invitation')
+    }
 
     this.props.login(creds)
     .then(res => {
       if(res.email) {
-        if (invitation) {
-          this.props.acceptInvitation(invitation)        
-        } else {
-          this.props.history.push('/home/dashboard')
-        }
-      } else {
-          this.setState({ errorMessage: 'Could not log in, show error message'})
-      }
-      })
+        if (invitation) { 
+          this.props.acceptInvitation(invitation)
+          .then(res => {
+            this.props.history.push({
+              pathname: `/home/projects`,
+              state: { successMessage: res.message}
+            })
+            cookies.remove('invitation', { path: '/' })
+          })
+        } 
+        else { this.props.history.push('/home/dashboard') }
+      } else { this.setState({ errorMessage: 'Could not log in, show error message'}) }
+    })
   }
   
   handleChange = event => {
@@ -75,7 +74,7 @@ class LoginForm extends Component {
   }
 
   render () {
-    const { classes } = this.props
+  const { classes } = this.props
   return (
     <GridContainer >
         <GridItem xs={12} sm={12} md={12} >
@@ -163,7 +162,6 @@ const mapDispatchToProps = dispatch => {
     login: creds => dispatch(login(creds)),
     googleLogin: googleAuth => dispatch(googleLogin(googleAuth)),
     acceptInvitation: token => dispatch(acceptInvitation(token))
-
   }
 }
 

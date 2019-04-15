@@ -31,7 +31,7 @@ import {
 } from '../actions/projects/Action-types';
 
 const initialState = {
-    project: {},
+    project: null,
     projects: [],
     tickets:[],
     milestones: [],

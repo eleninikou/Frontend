@@ -1,24 +1,24 @@
-import React from 'react';
-import moment from 'moment';
+import React from 'react'
+import moment from 'moment'
 
 // Material UI
-import List from '@material-ui/core/List';
-import Avatar from '@material-ui/core/Avatar';
-import Tooltip from "@material-ui/core/Tooltip";
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import List from '@material-ui/core/List'
+import Avatar from '@material-ui/core/Avatar'
+import Tooltip from "@material-ui/core/Tooltip"
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 
 // Icons
-import Warning from "@material-ui/icons/Warning";
-import Comment from "@material-ui/icons/Comment";
-import Timeline from "@material-ui/icons/Timeline";
-import DateRange from "@material-ui/icons/DateRange";
-import PersonPin from "@material-ui/icons/PersonPin";
-import BugReport from "@material-ui/icons/BugReport";
-import LowPriority from "@material-ui/icons/LowPriority";
-import LinearScale from '@material-ui/icons/LinearScale';
-import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor";
+import Warning from "@material-ui/icons/Warning"
+import Comment from "@material-ui/icons/Comment"
+import Timeline from "@material-ui/icons/Timeline"
+import DateRange from "@material-ui/icons/DateRange"
+import PersonPin from "@material-ui/icons/PersonPin"
+import BugReport from "@material-ui/icons/BugReport"
+import LowPriority from "@material-ui/icons/LowPriority"
+import LinearScale from '@material-ui/icons/LinearScale'
+import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor"
 
 
 
@@ -75,11 +75,11 @@ const TicketIconList = ({ ticket, classes }) => {
                   placement="top"
                   classes={{ tooltip: classes.tooltip }}>
                   <Avatar style={{ backgroundColor: '#8e24aa'}}> 
-                    {ticket.type_id == 1 ?
+                    {ticket.type_id === 1 ?
                       <BugReport /> 
-                      : ticket.type_id == 2 ?
+                      : ticket.type_id === 2 ?
                       <LowPriority />
-                      : ticket.type_id == 3 ?
+                      : ticket.type_id === 3 ?
                       <LinearScale />
                       : 
                       <YoutubeSearchedFor /> }  
@@ -95,7 +95,7 @@ const TicketIconList = ({ ticket, classes }) => {
                   title="Priority"
                   placement="top"
                   classes={{ tooltip: classes.tooltip }}>                        
-                  { ticket.priority == 'low' ?
+                    {ticket.priority == 'low' ?
                       <Avatar style={{backgroundColor: '#FADC08'}}> 
                         <Warning /> 
                       </Avatar>
@@ -140,7 +140,6 @@ const TicketIconList = ({ ticket, classes }) => {
               <ListItemText primary={ticket.comments ? 'Comments: ' + ticket.comments.length : 0} />
             </ListItem>
           </List>
-
     )
 }
 
