@@ -247,9 +247,11 @@ class Ticket extends Component {
                     {ButtonTextComment}
                   </Button> }  
 
+                {(ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id)) ?
                 <Button color="primary" onClick={this.showForm}>
                   {ButtonText}
                 </Button> 
+                : null }
               </CardFooter>
             </Card>
           </GridItem> 

@@ -1,28 +1,28 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import moment from 'moment';
-import Cookies from "universal-cookie";
-import axios from "axios";
+import moment from 'moment'
+import Cookies from "universal-cookie"
+import axios from "axios"
 
 // Redux
 import { connect } from 'react-redux'
 import { updateTicket, getTicketTypes, getTicketStatus, deleteTicket } from '../../redux/actions/tickets/Actions'
 
 // Theme components
-import CardBody from "../theme/Card/CardBody.jsx";
-import GridContainer from "../theme/Grid/GridContainer.jsx";
-import GridItem from "../theme/Grid/GridItem.jsx";
-import Button from "../theme/CustomButtons/Button.jsx";
+import CardBody from "../theme/Card/CardBody.jsx"
+import GridContainer from "../theme/Grid/GridContainer.jsx"
+import GridItem from "../theme/Grid/GridItem.jsx"
+import Button from "../theme/CustomButtons/Button.jsx"
 
 // Material UI components
 import TextField from '@material-ui/core/TextField'
-import FormControl from '@material-ui/core/FormControl';
-import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl'
+import MenuItem from '@material-ui/core/MenuItem'
 
-import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg'
+import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-js'
 
-import draftToHtml from 'draftjs-to-html';
+import draftToHtml from 'draftjs-to-html'
 
 
 class EditTicketForm extends Component {
@@ -43,13 +43,13 @@ class EditTicketForm extends Component {
         selectedDate: moment(this.props.due_date).format('YYYY-MM-DD'),
         editorState: '',
       }
-      this.handleChange = this.handleChange.bind(this);
-      this.submit = this.submit.bind(this);
+      this.handleChange = this.handleChange.bind(this)
+      this.submit = this.submit.bind(this)
   }
 
   componentDidMount = () => {
-    this.props.getTicketTypes();
-    this.props.getTicketStatus();
+    this.props.getTicketTypes()
+    this.props.getTicketStatus()
 
     let html = draftToHtml(this.props.description)
     const blocksFromHTML = convertFromHTML(html);
@@ -58,9 +58,7 @@ class EditTicketForm extends Component {
       blocksFromHTML.entityMap
     );
 
-    this.setState({
-      editorState: EditorState.createWithContent(state)
-    })
+    this.setState({ editorState: EditorState.createWithContent(state) })
   }
 
   handleChange = event => {
@@ -120,7 +118,6 @@ class EditTicketForm extends Component {
       type_id: this.state.type_id,
       project_id: this.state.project_id
     };
-    debugger;
 
     this.props.updateTicket(ticket, this.props.match.params.id)
     .then(res => { this.setSuccess(res.message) })

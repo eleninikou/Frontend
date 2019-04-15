@@ -23,7 +23,6 @@ import { convertFromRaw } from 'draft-js';
 const TicketComments = ({ comments, user, classes, deleteComment }) => {
 
   const convertFromJSONToHTML = (text) => { return stateToHTML(convertFromRaw((text)) )}
-
   return (
     <List>
         {comments ? comments.map(comment => {
@@ -41,7 +40,7 @@ const TicketComments = ({ comments, user, classes, deleteComment }) => {
                     <div dangerouslySetInnerHTML={{ __html: convertFromJSONToHTML(comment.comment) }} />
                   : <CircularProgress className="my-spinner" color="primary" />
                 } />
-                {comment.user_id === parseInt(user) ?
+                {comment.user_id === parseInt(user.id) ?
                   <Tooltip
                     id="tooltip-top-start"
                     title="Delete comment"

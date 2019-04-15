@@ -60,7 +60,8 @@ class CreateTicket extends Component {
         url: '',
         editorContent: '',
         submitted: false,
-        hasError: false
+        hasError: false,
+        user: ''
     }
     this.handleChange = this.handleChange.bind(this);
 }
@@ -116,32 +117,36 @@ submit = event => {
 uploadCallback(file) {
   return new Promise((resolve, reject) => {      
       
-      let reader = new FileReader();
-      reader.onload = () => {
+    let reader = new FileReader()
+    reader.onload = () => {
 
-        const cookies = new Cookies()
-        var token = cookies.get('token')
+      const cookies = new Cookies()
+      var token = cookies.get('token')
+      const formData = new FormData()
+      formData.append('file', file)
 
-        const formData = new FormData()
-        formData.append('file', file)
-
-        return axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,  
-        formData, { headers: { 
-          "X-Requested-With": "XMLHttpRequest",
-          'Access-Control-Allow-Origin': '*',
-          "Authorization": `Bearer ${token}`
-        }}).then((res) => {
-          const url = process.env.REACT_APP_API_BASE_URL+res.data.url;
-          resolve({ data: { link: url }});
-        })
-      };
-      reader.readAsDataURL(file);
-    })
+      return axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,  
+      formData, { headers: { 
+        "X-Requested-With": "XMLHttpRequest",
+        'Access-Control-Allow-Origin': '*',
+        "Authorization": `Bearer ${token}`
+      }}).then((res) => {
+        const url = process.env.REACT_APP_API_BASE_URL+res.data.url
+        resolve({ data: { link: url }})
+      })
+    }
+    reader.readAsDataURL(file)
+  })
 }
 
 
 
 componentWillMount = () => {
+
+    const cookies = new Cookies()
+    var user = cookies.get('user')
+    this.setState({ user })
+
     // If redirected from specific project preselect project 
     if (this.props.location.state ? 
         this.props.location.state.project_id || this.props.location.state.backToProject 
@@ -174,7 +179,7 @@ handleChange = event => {
 
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
-  const { editorState, backToProject, hasError } = this.state
+  const { editorState, backToProject, hasError, user } = this.state
 
   // https://reactgo.com/removeduplicateobjects/
   function getUnique(arr, comp) {
@@ -187,6 +192,10 @@ render() {
   let projects = getUnique(allProjects,'project_id') 
   let team_members = getUnique(team,'user_id')
 
+  let me_and_admin = team_members.filter(member => {
+    return member.role_id === 1|| member.user_id === parseInt(user) })
+
+
   // Styles to input
   const styles = {
     input: {
@@ -197,7 +206,7 @@ render() {
 
   return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={8}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
               <h4 className={classes.cardTitleWhite}>Create new ticket</h4>
@@ -205,7 +214,7 @@ render() {
             <form className={classes.form} onSubmit={this.submit}>
             <CardBody>
               <GridContainer>
-                  <GridItem xs={12} sm={12} md={8}>
+                  <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl} >                    
                       {hasError && !this.state.title && <FormHelperText id="title">Please select title!</FormHelperText>}
                       <TextField 
@@ -239,7 +248,10 @@ render() {
                           value={this.state.project_id}
                           onChange={this.handleChange}
                           inputProps={{  name: 'project_id',  id: 'project_id' }} >
-                            {backToProject ?  <MenuItem  key={project.id} value={project.id}> {project.name} </MenuItem>
+                            {backToProject ?  
+                              <MenuItem  key={project.id} value={project.id}> 
+                                {project.name} 
+                              </MenuItem>
                           : projects ? projects.map(project => {
                             return  (
                               <MenuItem  key={project.project.id} value={project.project.id}>  
@@ -322,9 +334,26 @@ render() {
                           value={this.state.assigned_user_id}
                           onChange={this.handleChange}
                           inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
-                        {team_members ? team_members.map(member => {
-                          return <MenuItem key={member.user.id} value={member.user.id}> {member.user.name} </MenuItem>
-                        }) : null }
+                        
+                          {// If admin -> choose from all members
+                          project.creator_id === parseInt(user) ? (
+                            team_members ? team_members.map(member => {
+                              return (
+                                <MenuItem key={member.user.id} value={member.user.id}> 
+                                  {member.user.name} 
+                                </MenuItem>
+                              )
+                            }) : null
+                          ) : (
+                            // Choose admin or self
+                            me_and_admin ? me_and_admin.map(member => {
+                              return (
+                                  <MenuItem key={member.user.id} value={member.user.id}> 
+                                    {member.user.name} 
+                                  </MenuItem>
+                              )
+                            }) : null
+                          )}
                         </TextField>
                     </FormControl>
                   </GridItem>
