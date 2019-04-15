@@ -88,7 +88,6 @@ class Tickets extends Component {
     const { classes, ticketStatus, ticketTypes, allProjects } = this.props;
     const { status_id, type_id, priority, project_id, tickets } = this.state;
 
-
         let filteredTickets = tickets ? tickets.filter(ticket => {
         return (
           (status_id ? parseInt(ticket.status_id) === parseInt(status_id) : ticket) &&

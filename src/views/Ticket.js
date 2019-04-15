@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
-import moment from 'moment';
+import moment from 'moment'
 
 // Redux
 import { connect } from 'react-redux'
@@ -10,29 +10,28 @@ import { commentDelete } from '../redux/actions/comments/Actions'
 import { getUser } from '../redux/actions/auth/Actions'
 
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx";
-import GridContainer from "../components/theme/Grid/GridContainer.jsx";
-import Card from "../components/theme/Card/Card";
-import CardBody from "../components/theme/Card/CardBody.jsx";
-import CardFooter from "../components/theme/Card/CardFooter.jsx";
-import Button from "../components/theme/CustomButtons/Button.jsx";
-import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
+import Card from "../components/theme/Card/Card"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import Button from "../components/theme/CustomButtons/Button.jsx"
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
 
 // Material UI components
-import withStyles from "@material-ui/core/styles/withStyles";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from "@material-ui/core/styles/withStyles"
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 // Components 
 import { TicketIconList, TicketContent, EditTicketForm, TicketComments, AddComment } from '../components'
 
 // Icon
-import Edit from "@material-ui/icons/Edit";
-import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
+import Edit from "@material-ui/icons/Edit"
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 
 // Styles
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
 
 class Ticket extends Component {
@@ -221,11 +220,8 @@ class Ticket extends Component {
                     <TicketIconList ticket={ticket} classes={classes}/>
                   </GridItem> 
                   <GridItem xs={12} sm={12} md={7}>
-                  {description ? 
-                  <TicketContent description={description}/>
-                  : 
-                  <CircularProgress className="my-spinner" color="primary" /> 
-                  }
+                  {description ? <TicketContent description={description}/>
+                  : <CircularProgress className="my-spinner" color="primary" />}
                   </GridItem>    
                 </GridContainer>
               </CardBody> 
@@ -268,7 +264,7 @@ class Ticket extends Component {
 
             </CardHeader>
             <GridContainer>          
-            { creator === parseInt(user) ?
+            {creator === parseInt(user) ?
               <GridItem xs={12} sm={12} md={12}>
                 <Button color="danger" onClick={this.deleteTicket} style={{ float: 'right', marginRight: '18px' }}>
                   Delete 
@@ -299,7 +295,7 @@ class Ticket extends Component {
             </GridContainer>
  
            </Card>
-            : null }    
+          : null }    
 
         {/* Display Comments */}
         {showComments || addComment ? 

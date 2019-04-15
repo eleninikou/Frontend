@@ -157,12 +157,22 @@ componentWillMount = () => {
         project_id: this.props.location.state.project_id 
       })
       this.props.getProject(this.props.location.state.project_id)
-    } else {
-      this.props.getAllProjects();
-    }
+      .then(res => {
+        // If project doesn't have milestones yet redirect
+        if(res.project.milestones) {
+          this.props.history.push({
+            pathname: '/home/create-milestone', 
+            state: { 
+              errorMessage: 'You have to create a milestone first!', 
+              project_id: this.state.project_id
+            }
+          })
+        }
+      })
+    } else { this.props.getAllProjects()}
     
-  this.props.getTicketTypes();
-  this.props.getTicketStatus();
+  this.props.getTicketTypes()
+  this.props.getTicketStatus()
 }
 
 
@@ -171,9 +181,7 @@ handleChange = event => {
   this.setState({ [name]: value });
 
   // Fetch project to get team, milestones
-  if (event.target.name === "project_id" ) {
-    this.props.getProject(value)
-  }
+  if (event.target.name === "project_id" ) { this.props.getProject(value) }
 }
 
 

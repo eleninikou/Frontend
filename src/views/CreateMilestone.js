@@ -42,7 +42,8 @@ class CreateMilestone extends Component {
       selectedDate: '',
       project_name: '',
       backToProject: false,
-      hasError: false
+      hasError: false,
+      errorMessage: ''
     }
     this.handleChange = this.handleChange.bind(this)
 }
@@ -83,9 +84,7 @@ submit = event => {
         }
       }
     })
-  } else {
-    this.setState({ hasError : true })
-  }
+  } else { this.setState({ hasError : true }) }
 }
 
 showNotification = place => {
@@ -103,45 +102,46 @@ showNotification = place => {
 componentWillMount = () => {
   // If redirected from specific project preselect project
   if (this.props.location.state ? 
-      this.props.location.state.project_id && this.props.location.state.project_name 
-      : null) {
+        this.props.location.state.project_id || 
+        this.props.location.state.project_name ||
+        this.props.location.state.errorMessage : null ) {
 
-    this.setState({ 
-      project_id: this.props.location.state.project_id,
-      project_name: this.props.location.state.project_name,
-      backToProject: true
-    })
+        this.setState({ 
+          project_id: this.props.location.state.project_id,
+          project_name: this.props.location.state.project_name,
+          backToProject: true,
+          errorMessage: this.props.location.state.errorMessage
+        })
+        this.showNotification('tr')
+        this.props.getProject(this.props.location.state.project_id)
 
-    this.props.getProject(this.props.location.state.project_id)
-  } else {
-    this.props.getAllProjects()
-  }
+  } else { this.props.getAllProjects() }
 }
 
 componentWillUnmount = () => { this.setState({ backToProject: false}) }
 
-goBack = () => {          
-  this.props.history.push({ pathname: `/home/project/${this.state.project_id}`})
-}
+goBack = () => { this.props.history.push({ pathname: `/home/project/${this.state.project_id}`}) }
+
+handleDateChange = event => { this.setState({ selectedDate: event.target.value }) }
+
+createNewProject = () => { this.props.history.push('/home/create-project/') }
 
 handleChange = event => {
   const { name, value } = event.target
   this.setState({ [name]: value })
 }
 
-handleDateChange = event => { this.setState({ selectedDate: event.target.value }) }
-createNewProject = () => { this.props.history.push('/home/create-project/') }
 
 render() {
   const { classes, allProjects, successMessage, project  } = this.props
-  const { project_id, project_name, backToProject, hasError } = this.state
+  const { project_id, project_name, backToProject, hasError, errorMessage } = this.state
   return (
       <GridContainer>
         <Snackbar
           place="tr"
           color="success"
           icon={CheckCircleOutline}
-          message={successMessage}
+          message={successMessage || errorMessage}
           open={this.state.tr}
           closeNotification={() => this.setState({ tr: false })}
           close
