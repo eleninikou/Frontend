@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom"
 import PropTypes from 'prop-types'
 import axios from "axios"
 import Cookies from "universal-cookie"
+import ImageUploader from 'react-images-upload'
 
 // Redux
 import { connect } from 'react-redux'
@@ -56,14 +57,17 @@ class CreateTicket extends Component {
         image: '',
         success: false,
         error: false,
-        imagePreviewUrl: false,
+        imagePreviewUrl: '',
         url: '',
         editorContent: '',
         submitted: false,
         hasError: false,
-        user: ''
+        user: '',
+        pictures: []
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.onDrop = this.onDrop.bind(this)
+
 }
 
 onEditorStateChange = editorState => { this.setState({ editorState }) }
@@ -71,6 +75,7 @@ onEditorStateChange = editorState => { this.setState({ editorState }) }
 goBack = () => { this.props.history.push({ pathname: `/home/project/${this.state.project_id}`}) }
 
 handleDateChange = event => { this.setState({ selectedDate: event.target.value }) }
+
 
 submit = event => {
   event.preventDefault()
@@ -87,6 +92,7 @@ submit = event => {
     this.state.assigned_user_id &&
     this.state.milestone_id
     ) {
+
   
     const ticket = {
       title: this.state.title,
@@ -98,6 +104,7 @@ submit = event => {
       due_date: this.state.selectedDate,
       assigned_user_id: this.state.assigned_user_id,
       milestone_id: this.state.milestone_id,
+      image_urls: this.state.url
     }
     
     // Create ticket. Redirect back to project
@@ -113,17 +120,26 @@ submit = event => {
 }
 
 
+
 // Save img and get url
-uploadCallback(file) {
-  return new Promise((resolve, reject) => {      
-      
+onDrop(file) {      
+  
+  const cookies = new Cookies()
+  var token = cookies.get('token')
+
+  var blob = new Blob(file);
+  var url = URL.createObjectURL(blob);
+
+  this.setState({ 
+    file: file,
+    imagePreviewUrl: url
+  })
+
     let reader = new FileReader()
     reader.onload = () => {
 
-      const cookies = new Cookies()
-      var token = cookies.get('token')
       const formData = new FormData()
-      formData.append('file', file)
+      formData.append('file', file[0])
 
       return axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,  
       formData, { headers: { 
@@ -132,11 +148,11 @@ uploadCallback(file) {
         "Authorization": `Bearer ${token}`
       }}).then((res) => {
         const url = process.env.REACT_APP_API_BASE_URL+res.data.url
-        resolve({ data: { link: url }})
+        this.setState({ url})
       })
     }
-    reader.readAsDataURL(file)
-  })
+    reader.readAsDataURL(blob)
+
 }
 
 
@@ -159,7 +175,7 @@ componentWillMount = () => {
       this.props.getProject(this.props.location.state.project_id)
       .then(res => {
         // If project doesn't have milestones yet redirect
-        if(res.project.milestones) {
+        if(!res.project.milestones.length) {
           this.props.history.push({
             pathname: '/home/create-milestone', 
             state: { 
@@ -190,17 +206,17 @@ render() {
   const { editorState, backToProject, hasError, user } = this.state
 
   // https://reactgo.com/removeduplicateobjects/
-  function getUnique(arr, comp) {
-    const unique = arr.map(e => e[comp])
-        .map((e, i, final) => final.indexOf(e) === i && i)
-        .filter(e => arr[e]).map(e => arr[e]);
-     return unique;
-  }
+  // function getUnique(arr, comp) {
+  //   const unique = arr.map(e => e[comp])
+  //       .map((e, i, final) => final.indexOf(e) === i && i)
+  //       .filter(e => arr[e]).map(e => arr[e]);
+  //    return unique;
+  // }
   
-  let projects = getUnique(allProjects,'project_id') 
-  let team_members = getUnique(team,'user_id')
+  // let projects = getUnique(allProjects,'project_id') 
+  // let team_members = getUnique(team,'user_id')
 
-  let me_and_admin = team_members.filter(member => {
+  let me_and_admin = team.filter(member => {
     return member.role_id === 1|| member.user_id === parseInt(user) })
 
 
@@ -211,6 +227,9 @@ render() {
       minWidth: '100%'
     }
   }
+
+  console.log(this.state.pictures)
+  console.log(this.state.imagePreviewUrl)
 
   return (
       <GridContainer>
@@ -242,7 +261,7 @@ render() {
                     </FormControl> 
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
-                  {projects || project ?
+                  {allProjects || project ?
                     <FormControl className={classes.formControl}>                    
                         {hasError && !this.state.project_id && <FormHelperText>Please select project!</FormHelperText>}
                         <TextField
@@ -260,7 +279,7 @@ render() {
                               <MenuItem  key={project.id} value={project.id}> 
                                 {project.name} 
                               </MenuItem>
-                          : projects ? projects.map(project => {
+                          : allProjects ? allProjects.map(project => {
                             return  (
                               <MenuItem  key={project.project.id} value={project.project.id}>  
                                 {project.project.name} 
@@ -345,7 +364,7 @@ render() {
                         
                           {// If admin -> choose from all members
                           project ? project.creator_id === parseInt(user) ? (
-                            team_members ? team_members.map(member => {
+                            team ? team.map(member => {
                               return (
                                 <MenuItem key={member.user.id} value={member.user.id}> 
                                   {member.user.name} 
@@ -412,19 +431,29 @@ render() {
                           editorClassName="editorClassName"
                           onEditorStateChange={this.onEditorStateChange}
                           toolbar = {{
-                            image: {
-                              uploadEnabled: true,
-                              uploadCallback: this.uploadCallback,
-                              urlEnabled: true,
-                              previewImage: true,
-                              alt: { present: false, mandatory: false},
-                              defaultSize: {
-                                height: 'auto',
-                                width: 'auto',
-                              },
+                            image:
+                            {
+                              uploadEnabled: false,
+                              // uploadCallback: this.uploadCallback,
+                              urlEnabled: false,
+                              // previewImage: false,
+                              // alt: { present: false, mandatory: false},
+                              // defaultSize: {
+                              //   height: 'auto',
+                              //   width: 'auto',
+                              // },
                             }
                           }}
                         />
+                          <ImageUploader
+                            withIcon={true}
+                            buttonText='Choose images'
+                            onChange={this.onDrop}
+                            imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg']}
+                            maxFileSize={5242880}
+                        />
+                        {this.state.imagePreviewUrl ?
+                        <img src={this.state.imagePreviewUrl} style={{ width: '100px', maxHeight: '200px', height: 'auto'}} alt="preview" /> : null }
                     </FormControl>
                   </GridItem>
               </GridContainer>

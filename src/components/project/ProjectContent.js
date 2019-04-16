@@ -1,34 +1,24 @@
-import React from 'react';
-import moment from 'moment'
+import React from 'react'
 
 // Theme components
-import GridItem from "../theme/Grid/GridItem.jsx";
-import CardBody from "../theme/Card/CardBody.jsx";
-import Button from "../theme/CustomButtons/Button.jsx";
-import GridContainer from "../theme/Grid/GridContainer.jsx";
+import CardBody from "../theme/Card/CardBody.jsx"
+import Button from "../theme/CustomButtons/Button.jsx"
 
 // Material UI
-import List from '@material-ui/core/List';
-import Avatar from '@material-ui/core/Avatar';
-import Tooltip from "@material-ui/core/Tooltip";
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import List from '@material-ui/core/List'
+import Avatar from '@material-ui/core/Avatar'
+import Tooltip from "@material-ui/core/Tooltip"
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 
 // Icons
-import Note from "@material-ui/icons/Note";
-import People from "@material-ui/icons/People";
-import Timeline from "@material-ui/icons/Timeline";
+import Note from "@material-ui/icons/Note"
+import People from "@material-ui/icons/People"
+import Timeline from "@material-ui/icons/Timeline"
 
-import IconButton from "@material-ui/core/IconButton";
 // Material UI components
-import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography'
 
 const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
 
@@ -36,7 +26,8 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
     return (
             <CardBody>
               <Typography>
-                <div style={{ display: 'flex'}}><h1>{project.name} | </h1> <h4> {project.description}</h4></div>
+                <h1>{project.name} </h1> 
+                <h4> {project.description}</h4>
                 <h4>Admin: {project.creator ? project.creator.name : null}</h4>
                 {project.client ? 
                 <h4>Client: {project.client.name} </h4> : null}
@@ -91,7 +82,7 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
                 Edit Project
               </Button> 
               : null }
-            </CardBody> 
+          </CardBody> 
     )
 }
 

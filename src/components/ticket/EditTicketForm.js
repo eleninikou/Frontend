@@ -20,7 +20,7 @@ import FormControl from '@material-ui/core/FormControl'
 import MenuItem from '@material-ui/core/MenuItem'
 
 import { Editor } from 'react-draft-wysiwyg'
-import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-js'
+import { EditorState, convertFromHTML, convertToRaw, ContentState, CompositeDecorator, findLinkEntities, Link, findImageEntities } from 'draft-js'
 
 import draftToHtml from 'draftjs-to-html'
 
@@ -28,7 +28,15 @@ import draftToHtml from 'draftjs-to-html'
 class EditTicketForm extends Component {
     constructor(props) {
       super(props);
-  
+
+        let html = draftToHtml(this.props.description)
+        const blocksFromHTML = convertFromHTML(html);
+
+        const state = ContentState.createFromBlockArray(
+          blocksFromHTML.contentBlocks,
+          blocksFromHTML.entityMap
+        );
+
       this.state = {
         assigned_user_id: this.props.assigned_user_id,
         description: this.props.description,
@@ -41,24 +49,16 @@ class EditTicketForm extends Component {
         project_id: this.props.project_id,
         project_name: this.props.project_name,
         selectedDate: moment(this.props.due_date).format('YYYY-MM-DD'),
-        editorState: '',
+        editorState: EditorState.createWithContent(state)
       }
       this.handleChange = this.handleChange.bind(this)
       this.submit = this.submit.bind(this)
+    
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     this.props.getTicketTypes()
     this.props.getTicketStatus()
-
-    let html = draftToHtml(this.props.description)
-    const blocksFromHTML = convertFromHTML(html);
-    const state = ContentState.createFromBlockArray(
-      blocksFromHTML.contentBlocks,
-      blocksFromHTML.entityMap
-    );
-
-    this.setState({ editorState: EditorState.createWithContent(state) })
   }
 
   handleChange = event => {
@@ -88,7 +88,6 @@ class EditTicketForm extends Component {
             'Access-Control-Allow-Origin': '*',
             "Authorization": `Bearer ${token}`
           }}).then((res) => {
-            console.log(process.env.REACT_APP_API_BASE_URL+res.data.url )
             resolve({ data: { link: process.env.REACT_APP_API_BASE_URL+res.data.url  }});
           })
   
@@ -133,8 +132,7 @@ class EditTicketForm extends Component {
   render() {
     const { classes, ticketStatus, ticketTypes, team, milestones, creator, user } = this.props;
     const { editorState, assigned_user_id } = this.state;
-
-
+    
       return (
             <form onSubmit={this.submit}>
                 <CardBody>

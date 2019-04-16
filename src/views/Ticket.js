@@ -176,7 +176,8 @@ class Ticket extends Component {
       comments, 
       ticket, 
       description, 
-      user
+      user,
+      images
     } = this.props;
 
     const { 
@@ -190,6 +191,7 @@ class Ticket extends Component {
       showComments,
     } = this.state;
 
+    console.log(images)
 
     return (
       <div> 
@@ -220,7 +222,7 @@ class Ticket extends Component {
                     <TicketIconList ticket={ticket} classes={classes}/>
                   </GridItem> 
                   <GridItem xs={12} sm={12} md={7}>
-                  {description ? <TicketContent description={description}/>
+                  {description || images ? <TicketContent description={description} images={images}/>
                   : <CircularProgress className="my-spinner" color="primary" />}
                   </GridItem>    
                 </GridContainer>
@@ -340,6 +342,7 @@ const mapStateToProps = state => ({
   comments: state.ticket.comments,
   description: state.ticket.description,
   successMessage: state.comment.successMessage,
+  images: state.ticket.images
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Ticket)));

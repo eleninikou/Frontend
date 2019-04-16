@@ -26,6 +26,7 @@ const initialState = {
     comments: [],
     team: [],
     description: [],
+    images:[],
     milestones: [],
     ticketTypes: [],
     ticketStatus:[],
@@ -46,7 +47,8 @@ const TicketReducer = (state = initialState, action) => {
                 team: action.payload.team,
                 milestones: action.payload.milestones,
                 comments: action.payload.comments,
-                description: action.payload.description
+                description: action.payload.description,
+                images: action.payload.images
             } 
         case GET_TICKET_FAILURE:
             return {

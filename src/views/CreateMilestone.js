@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+import Cookies from "universal-cookie"
 
 // Redux
 import { connect } from 'react-redux'
@@ -43,7 +44,7 @@ class CreateMilestone extends Component {
       project_name: '',
       backToProject: false,
       hasError: false,
-      errorMessage: ''
+      errorMessage: '',
     }
     this.handleChange = this.handleChange.bind(this)
 }
@@ -100,6 +101,7 @@ showNotification = place => {
 
 
 componentWillMount = () => {
+
   // If redirected from specific project preselect project
   if (this.props.location.state ? 
         this.props.location.state.project_id || 
@@ -134,7 +136,11 @@ handleChange = event => {
 
 render() {
   const { classes, allProjects, successMessage, project  } = this.props
-  const { project_id, project_name, backToProject, hasError, errorMessage } = this.state
+  const { project_id, project_name, backToProject, hasError, errorMessage, user } = this.state
+
+  const projects = allProjects.length ? allProjects.filter(project => project.role_id == 1) : null
+
+
   return (
       <GridContainer>
         <Snackbar
@@ -202,8 +208,8 @@ render() {
                           value={project_id}
                           onChange={this.handleChange}
                           inputProps={{ name: 'project_id', id: 'project_id'}} >
-
-                          {allProjects.length ? allProjects.map(project => {
+                          
+                          {projects ? projects.map(project => {
                             return  (
                               <MenuItem key={project.project_id} value={project.project_id}> 
                                 {project.project.name} 
