@@ -17,6 +17,10 @@ import {
     UPDATE_TICKET_FAILURE,
     DELETE_TICKET_SUCCESS,
     DELETE_TICKET_FAILURE,
+    DELETE_ATTACHMENT_SUCCESS,
+    DELETE_ATTACHMENT_FAILURE,
+    REMOVE_FROM_STORAGE_SUCCESS,
+    REMOVE_FROM_STORAGE_FAILURE,
 } from './Action-types';
 
 import Cookies from 'universal-cookie';
@@ -190,4 +194,50 @@ export const deleteTicket = id => {
   }
 };
 
+
+export const deleteAttachment = url => {
+  return async dispatch => {  
+    const deleteAttachmentSuccess = success => { 
+      dispatch ({ type: DELETE_ATTACHMENT_SUCCESS, payload: success}); return success; 
+  }
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`, {
+        method: "DELETE",
+        body: JSON.stringify(url),
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      debugger;
+      return deleteAttachmentSuccess(success);
+
+    } catch (error) { dispatch ({ type: DELETE_ATTACHMENT_FAILURE, message: 'Could not delete image' }); return error; }
+  }
+};
+
+export const removeFromStorage = url => {
+  return async dispatch => {  
+    const removeFromStorageSuccess = success => { 
+      dispatch ({ type: REMOVE_FROM_STORAGE_SUCCESS, payload: success}); return success; 
+  }
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/storage`, {
+        method: "DELETE",
+        body: JSON.stringify(url),
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      debugger;
+      return removeFromStorageSuccess(success);
+
+    } catch (error) { dispatch ({ type: REMOVE_FROM_STORAGE_FAILURE, message: 'Could not remove image' }); return error; }
+  }
+};
 

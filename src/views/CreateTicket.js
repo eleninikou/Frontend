@@ -7,7 +7,7 @@ import ImageUploader from 'react-images-upload'
 
 // Redux
 import { connect } from 'react-redux'
-import { ticketCreate, getTicketTypes, getTicketStatus} from '../redux/actions/tickets/Actions'
+import { ticketCreate, getTicketTypes, getTicketStatus,  deleteAttachment, removeFromStorage } from '../redux/actions/tickets/Actions'
 import { getAllProjects, getProject } from '../redux/actions/projects/Actions'
 
 // Wysiwyg
@@ -26,15 +26,20 @@ import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 
 
 // Material UI components
+import Avatar from '@material-ui/core/Avatar'
+import Tooltip from "@material-ui/core/Tooltip"
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Remove from "@material-ui/icons/Remove"
+
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import TicketPreviews from '../components/ticket/TicketPreviews';
 
 
 class CreateTicket extends Component {
@@ -57,17 +62,16 @@ class CreateTicket extends Component {
         image: '',
         success: false,
         error: false,
-        imagePreviewUrl: '',
-        url: '',
+        imagePreviewUrls: [],
+        url: null,
+        urls: [],
         editorContent: '',
         submitted: false,
         hasError: false,
         user: '',
-        pictures: []
     }
     this.handleChange = this.handleChange.bind(this)
     this.onDrop = this.onDrop.bind(this)
-
 }
 
 onEditorStateChange = editorState => { this.setState({ editorState }) }
@@ -104,8 +108,9 @@ submit = event => {
       due_date: this.state.selectedDate,
       assigned_user_id: this.state.assigned_user_id,
       milestone_id: this.state.milestone_id,
-      image_urls: this.state.url
+      image_urls: this.state.urls
     }
+    debugger;
     
     // Create ticket. Redirect back to project
     this.props.ticketCreate(ticket)
@@ -122,40 +127,39 @@ submit = event => {
 
 
 // Save img and get url
-onDrop(file) {      
-  
+onDrop(files) {      
   const cookies = new Cookies()
   var token = cookies.get('token')
 
-  var blob = new Blob(file);
-  var url = URL.createObjectURL(blob);
-
-  this.setState({ 
-    file: file,
-    imagePreviewUrl: url
-  })
-
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    
     let reader = new FileReader()
-    reader.onload = () => {
+    const scope = this
+      reader.onload = (function(file) {
 
-      const formData = new FormData()
-      formData.append('file', file[0])
+        const formData = new FormData()
+        formData.append('file', file)
 
-      return axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,  
-      formData, { headers: { 
-        "X-Requested-With": "XMLHttpRequest",
-        'Access-Control-Allow-Origin': '*',
-        "Authorization": `Bearer ${token}`
-      }}).then((res) => {
-        const url = process.env.REACT_APP_API_BASE_URL+res.data.url
-        this.setState({ url})
-      })
-    }
-    reader.readAsDataURL(blob)
-
+        return axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,  
+          formData, { headers: { 
+            "X-Requested-With": "XMLHttpRequest",
+            'Access-Control-Allow-Origin': '*',
+            "Authorization": `Bearer ${token}`
+          }}).then((res) => {
+            const url = process.env.REACT_APP_API_BASE_URL+res.data.url
+            scope.setState({ urls: [...scope.state.urls, url] })
+          })
+      })(file)
+      reader.readAsDataURL(file)
+  }
 }
 
-
+removeImage(url) {
+  this.props.removeFromStorage(url).then(res => { console.log(res)})
+  let filteredUrls = this.state.urls.filter(u => u !== url)
+  this.setState({ urls: filteredUrls });
+}
 
 componentWillMount = () => {
 
@@ -203,7 +207,7 @@ handleChange = event => {
 
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
-  const { editorState, backToProject, hasError, user } = this.state
+  const { editorState, backToProject, hasError, user, imagePreviewUrls, urls } = this.state
 
   // https://reactgo.com/removeduplicateobjects/
   // function getUnique(arr, comp) {
@@ -216,8 +220,7 @@ render() {
   // let projects = getUnique(allProjects,'project_id') 
   // let team_members = getUnique(team,'user_id')
 
-  let me_and_admin = team.filter(member => {
-    return member.role_id === 1|| member.user_id === parseInt(user) })
+  let me_and_admin = team.filter(member => { return member.role_id === 1|| member.user_id === parseInt(user) })
 
 
   // Styles to input
@@ -228,9 +231,7 @@ render() {
     }
   }
 
-  console.log(this.state.pictures)
-  console.log(this.state.imagePreviewUrl)
-
+  console.log(urls)
   return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
@@ -452,8 +453,25 @@ render() {
                             imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg']}
                             maxFileSize={5242880}
                         />
-                        {this.state.imagePreviewUrl ?
-                        <img src={this.state.imagePreviewUrl} style={{ width: '100px', maxHeight: '200px', height: 'auto'}} alt="preview" /> : null }
+                        {urls.length ? urls.map(url => {
+                          return(
+                            <div style={{ display: 'flex', width: '100%'}}>
+                              <img src={url} style={{ width: 'auto', maxWidth: '100%', maxHeight: '200px', display: 'block'}} alt="preview" /> 
+                                <Tooltip
+                                  id="tooltip-top-start"
+                                  title="Remove image"
+                                  placement="top"
+                                  onClick={this.removeImage.bind(this, url)}
+                                  classes={{ tooltip: classes.tooltip }}>  
+                                    <Avatar style={{ backgroundColor: '#f44336' }}> 
+                                      <Remove /> 
+                                    </Avatar>
+                                </Tooltip>
+                            </div>
+                          )
+                        })
+                          : null}
+                        {/* <TicketPreviews images={this.state.url ? this.state.url: null} classes={this.props.classes} /> */}
                     </FormControl>
                   </GridItem>
               </GridContainer>
@@ -479,6 +497,8 @@ const mapDispatchToProps = dispatch => {
             getTicketStatus: () => dispatch(getTicketStatus()),
             getAllProjects: () => dispatch(getAllProjects()),
             getProject: id => dispatch(getProject(id)),
+            deleteAttachment: url => dispatch(deleteAttachment(url)),
+            removeFromStorage: url => dispatch(removeFromStorage(url))
           }
 }
 
