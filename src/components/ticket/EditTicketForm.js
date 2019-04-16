@@ -6,7 +6,7 @@ import axios from "axios"
 
 // Redux
 import { connect } from 'react-redux'
-import { updateTicket, getTicketTypes, getTicketStatus, deleteTicket } from '../../redux/actions/tickets/Actions'
+import { updateTicket, getTicketTypes, getTicketStatus, deleteTicket, deleteAttachment, removeFromStorage } from '../../redux/actions/tickets/Actions'
 
 // Theme components
 import CardBody from "../theme/Card/CardBody.jsx"
@@ -18,11 +18,15 @@ import Button from "../theme/CustomButtons/Button.jsx"
 import TextField from '@material-ui/core/TextField'
 import FormControl from '@material-ui/core/FormControl'
 import MenuItem from '@material-ui/core/MenuItem'
+import Avatar from '@material-ui/core/Avatar'
+import Tooltip from "@material-ui/core/Tooltip"
+import Remove from "@material-ui/icons/Remove"
 
 import { Editor } from 'react-draft-wysiwyg'
-import { EditorState, convertFromHTML, convertToRaw, ContentState, CompositeDecorator, findLinkEntities, Link, findImageEntities } from 'draft-js'
+import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-js'
 
 import draftToHtml from 'draftjs-to-html'
+import ImageUploader from 'react-images-upload'
 
 
 class EditTicketForm extends Component {
@@ -31,13 +35,14 @@ class EditTicketForm extends Component {
 
         let html = draftToHtml(this.props.description)
         const blocksFromHTML = convertFromHTML(html);
-
         const state = ContentState.createFromBlockArray(
           blocksFromHTML.contentBlocks,
           blocksFromHTML.entityMap
         );
 
       this.state = {
+        ids_to_delete: [],
+        urls_to_delete: [],
         assigned_user_id: this.props.assigned_user_id,
         description: this.props.description,
         due_date: this.props.due_date,
@@ -48,8 +53,9 @@ class EditTicketForm extends Component {
         type_id: this.props.type_id,
         project_id: this.props.project_id,
         project_name: this.props.project_name,
+        urls: this.props.images,
         selectedDate: moment(this.props.due_date).format('YYYY-MM-DD'),
-        editorState: EditorState.createWithContent(state)
+        editorState: this.props.description ? EditorState.createWithContent(state) : EditorState.createEmpty()
       }
       this.handleChange = this.handleChange.bind(this)
       this.submit = this.submit.bind(this)
@@ -70,40 +76,75 @@ class EditTicketForm extends Component {
 
   handleDateChange = event => {this.setState({ selectedDate: event.target.value }) }
 
-  uploadCallback(file) {
-
-    return new Promise((resolve, reject) => {      
-        let reader = new FileReader();
-        reader.onload = () => {
+  onDrop = files => {      
+    const cookies = new Cookies()
+    var token = cookies.get('token')
   
-          const cookies = new Cookies()
-          var token = cookies.get('token')
+    // Remove old urls from storage, images will upload again
+    if(this.state.urls.length) {
+      this.state.urls.map(url => {
+        return this.props.removeFromStorage(url)
+      })
+    }
+  
+    // Loop trough files and get url from storage
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      
+      let reader = new FileReader()
+      const scope = this
+      scope.setState({ urls: []})
+        reader.onload = (function(file) {
   
           const formData = new FormData()
           formData.append('file', file)
   
           return axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,  
-          formData, { headers: { 
-            "X-Requested-With": "XMLHttpRequest",
-            'Access-Control-Allow-Origin': '*',
-            "Authorization": `Bearer ${token}`
-          }}).then((res) => {
-            resolve({ data: { link: process.env.REACT_APP_API_BASE_URL+res.data.url  }});
-          })
-  
-        };
-        reject('error')
-        reader.readAsDataURL(file);
-        })
+            formData, { headers: { 
+              "X-Requested-With": "XMLHttpRequest",
+              'Access-Control-Allow-Origin': '*',
+              "Authorization": `Bearer ${token}`
+            }}).then((res) => {
+              const url = process.env.REACT_APP_API_BASE_URL+res.data.url
+              scope.setState({ urls: [...scope.state.urls, url] })
+            })
+        })(file)
+        reader.readAsDataURL(file)
+    }
+  }
+
+  removeFromState = (id, url) => {
+    let filteredUrls = this.state.urls.filter(u => u.attachment !== url)
+    this.setState({ 
+      urls: filteredUrls,
+      ids_to_delete: [...this.state.ids_to_delete, id],
+      urls_to_delete: [...this.state.ids_to_delete, url]
+     });
   }
 
   submit = event => {
     event.preventDefault();
+    debugger;
     let date = '';
     if (this.state.selectedDate === '') {
       this.date = this.state.due_date
     } else {
       this.date = this.state.selectedDate
+    }
+
+    if(this.state.ids_to_delete.length) {
+      this.state.ids_to_delete.map(id => {
+        this.props.deleteAttachment(id)
+        .then(res => { console.log(res) })
+      })
+    }
+
+    if(this.state.urls_to_delete) {
+      this.state.urls_to_delete.map(url => {
+        this.props.removeFromStorage(url)
+        .then(res => { console.log(res) })
+
+      })
     }
 
     const ticket = {
@@ -115,11 +156,16 @@ class EditTicketForm extends Component {
       status_id: this.state.status_id,
       title: this.state.title,
       type_id: this.state.type_id,
-      project_id: this.state.project_id
+      project_id: this.state.project_id,
+      image_urls: this.state.urls
     };
+    debugger;
 
     this.props.updateTicket(ticket, this.props.match.params.id)
-    .then(res => { this.setSuccess(res.message) })
+    .then(res => {
+      debugger;
+       this.setSuccess(res.message)
+       })
   }
 
   ticketDelete() { 
@@ -131,7 +177,7 @@ class EditTicketForm extends Component {
 
   render() {
     const { classes, ticketStatus, ticketTypes, team, milestones, creator, user } = this.props;
-    const { editorState, assigned_user_id } = this.state;
+    const { editorState, assigned_user_id, urls } = this.state;
     
       return (
             <form onSubmit={this.submit}>
@@ -298,6 +344,33 @@ class EditTicketForm extends Component {
                               }
                             }}
                           />
+                        <ImageUploader
+                            withIcon={true}
+                            buttonText='Choose images'
+                            onChange={this.onDrop}
+                            imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg']}
+                            maxFileSize={5242880}
+                        />
+
+                        {// If creator -> delete images}
+                        {(user == creator) && urls.length ? urls.map(url => {
+                          return(
+                            <div style={{ display: 'flex', width: '100%'}}>
+                              <img src={url.attachment ? url.attachment : url} style={{ width: 'auto', maxWidth: '100%', maxHeight: '200px', display: 'block'}} alt="preview" /> 
+                                <Tooltip
+                                  id="tooltip-top-start"
+                                  title="Remove image"
+                                  placement="top"
+                                  onClick={this.removeFromState.bind(this, url.id ? url.id : 0, url.attachment? url.attachment : url)}
+                                  classes={{ tooltip: classes.tooltip }}>  
+                                    <Avatar style={{ backgroundColor: '#f44336' }}> 
+                                      <Remove /> 
+                                    </Avatar>
+                                </Tooltip>
+                            </div>
+                          )
+                        })
+                          : null}
                         <Button color="primary" type="submit" style={{ float: 'right'}}> Save </Button>
                       </GridItem>
                   </GridContainer>
@@ -314,6 +387,9 @@ class EditTicketForm extends Component {
     deleteTicket: id => dispatch(deleteTicket(id)),
     getTicketTypes: () => dispatch(getTicketTypes()),
     getTicketStatus: () => dispatch(getTicketStatus()),
+    deleteAttachment: id => dispatch(deleteAttachment(id)),
+    removeFromStorage: url => dispatch(removeFromStorage(url))
+
    } }
 
   const mapStateToProps = state => ({

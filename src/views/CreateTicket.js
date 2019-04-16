@@ -33,13 +33,13 @@ import TextField from '@material-ui/core/TextField'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Remove from "@material-ui/icons/Remove"
 
+// Icons
+import Remove from "@material-ui/icons/Remove"
 
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import TicketPreviews from '../components/ticket/TicketPreviews';
 
 
 class CreateTicket extends Component {
@@ -110,12 +110,12 @@ submit = event => {
       milestone_id: this.state.milestone_id,
       image_urls: this.state.urls
     }
-    debugger;
     
     // Create ticket. Redirect back to project
     this.props.ticketCreate(ticket)
     .then(() => {
       if(this.props.successMessage) {
+        this.setState({ urls: [] })
         this.props.history.push({
           pathname: `/home/project/${this.state.project_id}`,
           state: { successMessage: this.props.successMessage}
@@ -126,16 +126,24 @@ submit = event => {
 
 
 
-// Save img and get url
 onDrop(files) {      
   const cookies = new Cookies()
   var token = cookies.get('token')
 
+  // Remove old urls from storage, images will upload again
+  if(this.state.urls.length) {
+    this.state.urls.map(url => {
+      return this.props.removeFromStorage(url)
+    })
+  }
+
+  // Loop trough files and get url from storage
   for (var i = 0; i < files.length; i++) {
     var file = files[i];
     
     let reader = new FileReader()
     const scope = this
+    scope.setState({ urls: []})
       reader.onload = (function(file) {
 
         const formData = new FormData()
@@ -155,8 +163,9 @@ onDrop(files) {
   }
 }
 
+// remove url from storage with preview
 removeImage(url) {
-  this.props.removeFromStorage(url).then(res => { console.log(res)})
+  this.props.removeFromStorage(url)
   let filteredUrls = this.state.urls.filter(u => u !== url)
   this.setState({ urls: filteredUrls });
 }
@@ -195,6 +204,14 @@ componentWillMount = () => {
   this.props.getTicketStatus()
 }
 
+// If image are uploaded but no ticket is created -> delete them
+componentWillUnmount = () => {
+  if(this.state.urls.length) {
+    this.state.urls.map(url => {
+      return this.props.removeFromStorage(url)
+    })
+  }
+}
 
 handleChange = event => {
   const { name, value } = event.target;
@@ -207,7 +224,7 @@ handleChange = event => {
 
 render() {
   const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
-  const { editorState, backToProject, hasError, user, imagePreviewUrls, urls } = this.state
+  const { editorState, backToProject, hasError, user, urls } = this.state
 
   // https://reactgo.com/removeduplicateobjects/
   // function getUnique(arr, comp) {
@@ -231,7 +248,6 @@ render() {
     }
   }
 
-  console.log(urls)
   return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>

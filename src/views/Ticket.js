@@ -191,8 +191,6 @@ class Ticket extends Component {
       showComments,
     } = this.state;
 
-    console.log(images)
-
     return (
       <div> 
         {/* Display Success message */}
@@ -276,6 +274,7 @@ class Ticket extends Component {
 
               <GridItem xs={12} sm={12} md={12}>
                 <EditTicketForm 
+                  images={images}
                   creator={ticket.creator_id}
                   user={user.id}
                   classes={classes}

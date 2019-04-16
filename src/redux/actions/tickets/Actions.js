@@ -195,16 +195,15 @@ export const deleteTicket = id => {
 };
 
 
-export const deleteAttachment = url => {
+export const deleteAttachment = id => {
   return async dispatch => {  
     const deleteAttachmentSuccess = success => { 
       dispatch ({ type: DELETE_ATTACHMENT_SUCCESS, payload: success}); return success; 
   }
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image/${id}`, {
         method: "DELETE",
-        body: JSON.stringify(url),
         headers: {
           "Authorization": `Bearer ${token}`,
           'Access-Control-Allow-Origin': '*',
