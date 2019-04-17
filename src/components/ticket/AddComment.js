@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 
 // Redux
 import { commentCreate } from '../../redux/actions/comments/Actions'
+import { removeFromStorage } from '../../redux/actions/tickets/Actions'
+
 import { connect } from 'react-redux'
 
 import Cookies from "universal-cookie"
@@ -155,7 +157,11 @@ class AddComment extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => { return { commentCreate: comment => dispatch(commentCreate(comment)) } }
+const mapDispatchToProps = dispatch => { return { 
+  commentCreate: comment => dispatch(commentCreate(comment)),
+  removeFromStorage: url => dispatch(removeFromStorage(url))
+ 
+} }
 const mapStateToProps = state => ({ successMessage: state.comment.successMessage });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddComment)

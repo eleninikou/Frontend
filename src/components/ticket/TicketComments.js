@@ -22,6 +22,7 @@ import Person from "@material-ui/icons/Person"
 // Wysiwyg
 import {stateToHTML} from 'draft-js-export-html'
 import { convertFromRaw } from 'draft-js'
+import ImageGallery from 'react-image-gallery';
 
 
 const TicketComments = ({ comments, user, classes, deleteComment }) => {
@@ -63,9 +64,15 @@ const TicketComments = ({ comments, user, classes, deleteComment }) => {
                : null}
                </GridItem> 
                <GridItem xs={12} sm={12} md={12}>
-                  {comment.images ? comment.images.map(image => {
-                    return <img src={image.attachment} style={{ width: 'auto', height: 'auto', maxWidth: '200px',  display: 'block'}} alt="preview" />
-                  }) : null }
+
+
+              <ImageGallery items={
+                comment.images ? comment.images.map(image => {
+                  return ({ original: image.attachment ,
+                            thumbnail: image.attachment })                   
+                }) : null 
+              } />
+
                 </GridItem> 
               </GridContainer>
             </ListItem>
