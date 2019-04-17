@@ -33,7 +33,7 @@ const TicketIconList = ({ ticket, classes }) => {
                     placement="top"
                     classes={{ tooltip: classes.tooltip }}>
                   <Avatar style={{ backgroundColor: '#041031' }}> 
-                    <DateRange /> 
+                    <DateRange/> 
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>

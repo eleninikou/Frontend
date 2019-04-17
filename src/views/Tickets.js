@@ -122,14 +122,13 @@ class Tickets extends Component {
                     select
                     label="Type"
                     onChange={this.handleChange}
-                    className="my-select"
                     variant="outlined"
                     margin="normal"
                     inputProps={{ name: 'type_id', id: 'type_id' }} >
                     <MenuItem value={null}>All</MenuItem>
                         {ticketTypes ? ticketTypes.map(type => {
                           return (
-                            <MenuItem key={type.id} value={type.id}> 
+                            <MenuItem key={type.id} value={type.id} style={{ display: 'flex', alignItems: 'center'}}> 
                             <Tooltip
                               id="tooltip-top-start"
                               title={type.type}
@@ -160,7 +159,6 @@ class Tickets extends Component {
                     select
                     label="Status"
                     onChange={this.handleChange}
-                    className="my-select"
                     variant="outlined"
                     margin="normal"
                     inputProps={{ name: 'status_id', id: 'status_id' }} >
@@ -182,7 +180,6 @@ class Tickets extends Component {
                       label="Priority"
                       value={this.state.priority}
                       onChange={this.handleChange}
-                      className="my-select"
                       variant="outlined"
                       margin="normal"
                       inputProps={{ name: 'priority', id: 'priority' }} >
@@ -215,7 +212,6 @@ class Tickets extends Component {
                       label="Project"
                       value={this.state.project_id}
                       onChange={this.handleChange}
-                      className="my-select"
                       variant="outlined"
                       margin="normal"
                       inputProps={{ name: 'project_id', id: 'project_id' }} >

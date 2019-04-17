@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
 import moment from 'moment'
+import ImageGallery from 'react-image-gallery'
 
 // Redux
 import { connect } from 'react-redux'
@@ -32,6 +33,7 @@ import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import "react-image-gallery/styles/css/image-gallery.css"
 
 
 class Ticket extends Component {
@@ -127,7 +129,6 @@ class Ticket extends Component {
   deleteComment = id => { 
     this.props.commentDelete(id)
     .then(res => {
-      debugger;
       if (this.props.successMessage) {
         this.getSuccess(this.props.successMessage)
       }
@@ -192,6 +193,10 @@ class Ticket extends Component {
       showComments,
     } = this.state;
 
+    var galleryImages = [ images ? images.map(image => { 
+      return ({ original: image.attachment ,
+               thumbnail: image.attachment }) 
+    }) : null ]
 
     return (
       <div> 
@@ -212,9 +217,11 @@ class Ticket extends Component {
             <Card>
               <CardHeader color="primary"> 
                 <h4 className={classes.cardTitleWhite} style={{ fontSize: '2em' }}>{ticket.title} </h4> 
-                <h4 className={classes.cardTitleWhite}>created by {
-                    ticket.creator ? ticket.creator.name : null} |  {moment(ticket.created_at).format('YYYY-MM-DD')}
+                <h4 className={classes.cardTitleWhite}>Assigned to {ticket.assigned_user ? ticket.assigned_user.name : null}
                 </h4>
+                {/* <p className={classes.cardTitleWhite}>created by {
+                    ticket.creator ? ticket.creator.name : null} |  {moment(ticket.created_at).format('YYYY-MM-DD')}
+                </p> */}
               </CardHeader>
                 <CardBody>
                 <GridContainer>          
@@ -222,29 +229,25 @@ class Ticket extends Component {
                     <TicketIconList ticket={ticket} classes={classes}/>
                   </GridItem> 
                   <GridItem xs={12} sm={12} md={7}>
-                  {description || images ? 
-                  <TicketContent description={description} images={images}/>
+                  {description ? 
+                    <TicketContent description={description}/>
                   : <CircularProgress className="my-spinner" color="primary" />}
                   </GridItem>    
+                  <GridItem xs={12} sm={12} md={12}>
+                  {images.length ? <ImageGallery items={galleryImages[0]} /> : null}
+                  </GridItem> 
                 </GridContainer>
               </CardBody> 
               <CardFooter>
 
                 {comments.length && !addComment ?
                 <div>
-                  <Button color="primary" onClick={this.showComments} >
-                    {CommentText}
-                  </Button> 
+                  <Button color="primary" onClick={this.showComments}>{CommentText}</Button> 
                   {showComments ? 
-                    <Button color="primary" onClick={this.showCommentForm}>
-                      {ButtonTextComment}
-                    </Button>
-                    : null }  
+                  <Button color="primary" onClick={this.showCommentForm}>{ButtonTextComment}</Button>
+                  : null }  
                 </div>  
-                : 
-                  <Button color="primary" onClick={this.showCommentForm}>
-                    {ButtonTextComment}
-                  </Button> }  
+                : <Button color="primary" onClick={this.showCommentForm}>{ButtonTextComment}</Button> }  
 
                 {(ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id)) ?
                 <Button color="primary" onClick={this.showForm}>
@@ -264,16 +267,8 @@ class Ticket extends Component {
             <CardHeader color="primary"> 
             <h4 className={classes.cardTitleWhite}> <Edit /> </h4> 
             <h4 className={classes.cardTitleWhite}> Update ticket</h4> 
-
             </CardHeader>
-            <GridContainer>          
-            {creator === parseInt(user) ?
-              <GridItem xs={12} sm={12} md={12}>
-                <Button color="danger" onClick={this.deleteTicket} style={{ float: 'right', marginRight: '18px' }}>
-                  Delete 
-                </Button>
-              </GridItem>
-            : null}  
+            <GridContainer>         
 
               <GridItem xs={12} sm={12} md={12}>
                 <EditTicketForm 

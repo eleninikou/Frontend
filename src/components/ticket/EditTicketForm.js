@@ -22,11 +22,13 @@ import Avatar from '@material-ui/core/Avatar'
 import Tooltip from "@material-ui/core/Tooltip"
 import Remove from "@material-ui/icons/Remove"
 
+
 import { Editor } from 'react-draft-wysiwyg'
 import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-js'
 
 import draftToHtml from 'draftjs-to-html'
 import ImageUploader from 'react-images-upload'
+import TicketDialogWrapped from './TicketModal'
 
 
 class EditTicketForm extends Component {
@@ -48,7 +50,8 @@ class EditTicketForm extends Component {
         project_name: this.props.project_name,
         urls: this.props.images,
         selectedDate: moment(this.props.due_date).format('YYYY-MM-DD'),
-        editorState: ''
+        editorState: '',
+        open: false,
       }
       this.handleChange = this.handleChange.bind(this)
       this.submit = this.submit.bind(this)
@@ -167,17 +170,21 @@ class EditTicketForm extends Component {
     .then(res => { this.setSuccess(res.message) })
   }
 
-  ticketDelete() { 
-    this.props.deleteTicket(this.props.match.params.id)
-    .then((res) => {
-      if(this.props.successMessage) {
-        this.props.history.push({
-          pathname: '/home/projects', 
-          state: { successMessage: this.props.successMessage}
-        })
-      }
-    })
-  }
+  // ticketDelete() { 
+  //   this.props.deleteTicket(this.props.match.params.id)
+  //   .then((res) => {
+  //     if(this.props.successMessage) {
+  //       this.props.history.push({
+  //         pathname: '/home/projects', 
+  //         state: { successMessage: this.props.successMessage}
+  //       })
+  //     }
+  //   })
+  // }
+
+  handleClickOpen = () => { this.setState({ open: true }) }
+
+  handleClose = open => { this.setState({ open })}
 
   setSuccess = successMessage => { this.props.getSuccess(successMessage) }
 
@@ -367,7 +374,14 @@ class EditTicketForm extends Component {
                         })
                           : null}
                         {user == creator ?
-                          <Button color="danger" onClick={this.ticketDelete.bind(this)} style={{ float: 'right'}}> Delete </Button>
+                        <div>
+                          <Button color="danger" onClick={this.handleClickOpen} style={{ float: 'right'}}> Delete </Button>
+                          <TicketDialogWrapped 
+                            id={this.props.match.params.id}
+                            open={this.state.open}
+                            onClose={this.handleClose}
+                          />
+                        </div>
                         : null}
                         <Button color="primary" type="submit" style={{ float: 'right'}}> Save </Button>
                       </GridItem>
