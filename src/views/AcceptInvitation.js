@@ -1,29 +1,27 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
-
 // Redux
 import { connect } from 'react-redux'
 import { getUser, getEmailFromInvitation, acceptInvitation } from '../redux/actions/auth/Actions'
-
 // Components
+import LoginForm from '../components/forms/login/LoginForm'
+import RegisterForm from '../components/forms/register/RegisterForm'
+// Theme components
 import Card from "../components/theme/Card/Card"
 import CardBody from '../components/theme/Card/CardBody'
 import GridItem from "../components/theme/Grid/GridItem.jsx"
-import LoginForm from '../components/forms/login/LoginForm'
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
-import withStyles from "@material-ui/core/styles/withStyles"
-import RegisterForm from '../components/forms/register/RegisterForm'
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
-
+// Material UI
+import withStyles from "@material-ui/core/styles/withStyles"
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
 
 class AcceptInvitation extends Component {
   constructor(props) {
-    super(props);
-
+    super(props)
     this.state = {
       loggedInUserEmail: null,
       invitedUserEmail: '',
@@ -33,11 +31,10 @@ class AcceptInvitation extends Component {
     }
   }
 
- 
     redirect(invitation, register) {
       const cookies = new Cookies()
 
-      if(this.state.loggedInUserEmail == this.state.invitedUserEmail) {
+      if(this.state.loggedInUserEmail === this.state.invitedUserEmail) {
         
         this.props.acceptInvitation(invitation).then(res => {
           this.props.history.push({

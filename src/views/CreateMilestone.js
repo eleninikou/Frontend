@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import Cookies from "universal-cookie"
 
 // Redux
 import { connect } from 'react-redux'
@@ -136,7 +135,7 @@ handleChange = event => {
 
 render() {
   const { classes, allProjects, successMessage, project  } = this.props
-  const { project_id, project_name, backToProject, hasError, errorMessage, user } = this.state
+  const { project_id, project_name, backToProject, hasError, errorMessage } = this.state
   const projects = allProjects.length ? allProjects.filter(project => project.role_id == 1) : null
 
   return (
@@ -262,7 +261,6 @@ render() {
               </GridContainer>
             </CardBody>
           }
-            
           </Card>
         </GridItem>
       </GridContainer>

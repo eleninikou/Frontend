@@ -119,13 +119,12 @@ class EditTicketForm extends Component {
       urls: filteredUrls,
       ids_to_delete: [...this.state.ids_to_delete, id],
       urls_to_delete: [...this.state.ids_to_delete, url]
-     });
+     })
   }
 
   submit = event => {
-    event.preventDefault();
-    debugger;
-    let date = '';
+    event.preventDefault()
+    let date = ''
     if (this.state.selectedDate === '') {
       this.date = this.state.due_date
     } else {
@@ -155,7 +154,7 @@ class EditTicketForm extends Component {
       type_id: this.state.type_id,
       project_id: this.state.project_id,
       image_urls: this.state.urls
-    };
+    }
 
     this.props.updateTicket(ticket, this.props.match.params.id)
     .then(res => { this.setSuccess(res.message) })
@@ -176,8 +175,8 @@ class EditTicketForm extends Component {
   setSuccess = successMessage => { this.props.getSuccess(successMessage) }
 
   render() {
-    const { classes, ticketStatus, ticketTypes, team, milestones, creator, user } = this.props;
-    const { editorState, assigned_user_id, urls } = this.state;
+    const { classes, ticketStatus, ticketTypes, team, milestones, creator, user } = this.props
+    const { editorState, assigned_user_id, urls } = this.state
     
       return (
             <form onSubmit={this.submit}>
@@ -331,18 +330,7 @@ class EditTicketForm extends Component {
                             editorClassName="editorClassName"
                             onEditorStateChange={this.onEditorStateChange}
                             toolbar = {{
-                              image:
-                              {
-                                uploadEnabled: false,
-                                // uploadCallback: this.uploadCallback,
-                                urlEnabled: false,
-                                // previewImage: false,
-                                // alt: { present: false, mandatory: false},
-                                // defaultSize: {
-                                //   height: 'auto',
-                                //   width: 'auto',
-                                // },
-                              }
+                              options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji']
                             }}
                           />
                         <ImageUploader

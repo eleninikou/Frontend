@@ -15,9 +15,6 @@ class TicketContent extends Component {
     }
 }
 
-openLightbox = () => {
-  console.log('open')
-}
 
 render() {
   const { images, description } = this.props;
@@ -34,7 +31,9 @@ render() {
         <div dangerouslySetInnerHTML={{ __html: draftToHtml(description) }} />
       : null }   
 
-      <ImageGallery items={galleryImages[0]} />
+      <ImageGallery 
+      items={galleryImages[0]}
+      />
     </div>
       )
   }

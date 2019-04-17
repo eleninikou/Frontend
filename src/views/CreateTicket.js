@@ -448,18 +448,7 @@ render() {
                           editorClassName="editorClassName"
                           onEditorStateChange={this.onEditorStateChange}
                           toolbar = {{
-                            image:
-                            {
-                              uploadEnabled: false,
-                              // uploadCallback: this.uploadCallback,
-                              urlEnabled: false,
-                              // previewImage: false,
-                              // alt: { present: false, mandatory: false},
-                              // defaultSize: {
-                              //   height: 'auto',
-                              //   width: 'auto',
-                              // },
-                            }
+                            options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji']
                           }}
                         />
                           <ImageUploader
