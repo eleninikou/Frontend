@@ -10,14 +10,14 @@ import { commentDelete } from '../redux/actions/comments/Actions'
 import { getUser } from '../redux/actions/auth/Actions'
 
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx"
-import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import Card from "../components/theme/Card/Card"
-import CardBody from "../components/theme/Card/CardBody.jsx"
-import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import Button from "../components/theme/CustomButtons/Button.jsx"
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
@@ -126,7 +126,8 @@ class Ticket extends Component {
 
   deleteComment = id => { 
     this.props.commentDelete(id)
-    .then(() => {
+    .then(res => {
+      debugger;
       if (this.props.successMessage) {
         this.getSuccess(this.props.successMessage)
       }

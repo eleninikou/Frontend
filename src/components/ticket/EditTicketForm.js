@@ -135,15 +135,12 @@ class EditTicketForm extends Component {
     if(this.state.ids_to_delete.length) {
       this.state.ids_to_delete.map(id => {
         this.props.deleteAttachment(id)
-        .then(res => { console.log(res) })
       })
     }
 
     if(this.state.urls_to_delete) {
       this.state.urls_to_delete.map(url => {
         this.props.removeFromStorage(url)
-        .then(res => { console.log(res) })
-
       })
     }
 
@@ -159,18 +156,21 @@ class EditTicketForm extends Component {
       project_id: this.state.project_id,
       image_urls: this.state.urls
     };
-    debugger;
 
     this.props.updateTicket(ticket, this.props.match.params.id)
-    .then(res => {
-      debugger;
-       this.setSuccess(res.message)
-       })
+    .then(res => { this.setSuccess(res.message) })
   }
 
   ticketDelete() { 
     this.props.deleteTicket(this.props.match.params.id)
-    .then(this.showNotification('tr'))
+    .then((res) => {
+      if(this.props.successMessage) {
+        this.props.history.push({
+          pathname: '/home/projects', 
+          state: { successMessage: this.props.successMessage}
+        })
+      }
+    })
   }
 
   setSuccess = successMessage => { this.props.getSuccess(successMessage) }
@@ -371,6 +371,9 @@ class EditTicketForm extends Component {
                           )
                         })
                           : null}
+                        {user == creator ?
+                          <Button color="danger" onClick={this.ticketDelete.bind(this)} style={{ float: 'right'}}> Delete </Button>
+                        : null}
                         <Button color="primary" type="submit" style={{ float: 'right'}}> Save </Button>
                       </GridItem>
                   </GridContainer>
@@ -388,14 +391,13 @@ class EditTicketForm extends Component {
     getTicketStatus: () => dispatch(getTicketStatus()),
     deleteAttachment: id => dispatch(deleteAttachment(id)),
     removeFromStorage: url => dispatch(removeFromStorage(url))
-
-   } }
+  }}
 
   const mapStateToProps = state => ({
     successMessage: state.ticket.successMessage,
     ticketTypes: state.ticket.ticketTypes,
     ticketStatus: state.ticket.ticketStatus
-  });
+  })
   
   export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditTicketForm))
   

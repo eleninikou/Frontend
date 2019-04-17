@@ -42,12 +42,9 @@ class AddComment extends Component {
       ticket_id: this.state.ticket_id,
       images: this.state.urls
     };
-    debugger;
     
     this.props.commentCreate(comment)
     .then(res => { 
-      console.log(res)
-      debugger;
       if(this.props.successMessage) {
         this.props.getSuccess(this.props.successMessage) 
         this.props.hideForm(false)
