@@ -12,6 +12,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 // Theme
+import Card from "../theme/Card/Card"
 import GridItem from "../theme/Grid/GridItem.jsx"
 import GridContainer from "../theme/Grid/GridContainer.jsx"
 
@@ -33,7 +34,7 @@ const TicketComments = ({ comments, user, classes, deleteComment }) => {
         {comments ? comments.map(comment => {
           return(
             <ListItem style={{ borderBottom: '1px solid grey', padding: '20px 0px'}}>
-              <GridContainer>          
+              <GridContainer style={{ width: '100%'}}>          
               <GridItem xs={12} sm={12} md={12} style={{ display: 'flex', alignItems: 'flex-start'}}>
                 <ListItemAvatar>                         
                   <Avatar>
@@ -63,16 +64,13 @@ const TicketComments = ({ comments, user, classes, deleteComment }) => {
                  </Tooltip>
                : null}
                </GridItem> 
-               <GridItem xs={12} sm={12} md={12}>
-
-
-              <ImageGallery items={
-                comment.images ? comment.images.map(image => {
-                  return ({ original: image.attachment ,
-                            thumbnail: image.attachment })                   
-                }) : null 
-              } />
-
+               <GridItem xs={12} sm={12} md={6} >
+                <ImageGallery items={
+                  comment.images ? comment.images.map(image => {
+                    return ({ original: image.attachment ,
+                      thumbnail: image.attachment })                   
+                    }) : null 
+                  } />
                 </GridItem> 
               </GridContainer>
             </ListItem>

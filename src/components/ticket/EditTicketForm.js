@@ -33,13 +33,6 @@ class EditTicketForm extends Component {
     constructor(props) {
       super(props);
 
-        let html = draftToHtml(this.props.description)
-        const blocksFromHTML = convertFromHTML(html);
-        const state = ContentState.createFromBlockArray(
-          blocksFromHTML.contentBlocks,
-          blocksFromHTML.entityMap
-        );
-
       this.state = {
         ids_to_delete: [],
         urls_to_delete: [],
@@ -55,7 +48,7 @@ class EditTicketForm extends Component {
         project_name: this.props.project_name,
         urls: this.props.images,
         selectedDate: moment(this.props.due_date).format('YYYY-MM-DD'),
-        editorState: this.props.description ? EditorState.createWithContent(state) : EditorState.createEmpty()
+        editorState: ''
       }
       this.handleChange = this.handleChange.bind(this)
       this.submit = this.submit.bind(this)
@@ -65,6 +58,20 @@ class EditTicketForm extends Component {
   componentWillMount = () => {
     this.props.getTicketTypes()
     this.props.getTicketStatus()
+
+    // Bug in wysiwyg if content is empty
+    if (this.props.description.blocks.text) {
+      let html = draftToHtml(this.props.description)
+      const blocksFromHTML = convertFromHTML(html);
+      const state = ContentState.createFromBlockArray(
+        blocksFromHTML.contentBlocks,
+        blocksFromHTML.entityMap
+      );
+  
+      this.setState({ editorState : EditorState.createWithContent(state)})
+    } else {
+      this.setState({ editorState: EditorState.createEmpty() })
+    }
   }
 
   handleChange = event => {
