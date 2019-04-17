@@ -1,29 +1,28 @@
-import React from 'react';
-import moment from 'moment';
+import React from 'react'
+import moment from 'moment'
 
 // Theme components
-import Button from "../theme/CustomButtons/Button.jsx";
-import GridItem from "../theme/Grid/GridItem.jsx";
-import CardBody from "../theme/Card/CardBody.jsx";
-import CardFooter from "../theme/Card/CardFooter.jsx";
-import GridContainer from "../theme/Grid/GridContainer.jsx";
+import Button from "../theme/CustomButtons/Button.jsx"
+import GridItem from "../theme/Grid/GridItem.jsx"
+import CardBody from "../theme/Card/CardBody.jsx"
+import CardFooter from "../theme/Card/CardFooter.jsx"
+import GridContainer from "../theme/Grid/GridContainer.jsx"
 
 // Material UI
-import List from '@material-ui/core/List';
-import Avatar from '@material-ui/core/Avatar';
-import Tooltip from "@material-ui/core/Tooltip";
-import ListItem from '@material-ui/core/ListItem';
-import DateRange from "@material-ui/icons/DateRange";
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import List from '@material-ui/core/List'
+import Avatar from '@material-ui/core/Avatar'
+import Tooltip from "@material-ui/core/Tooltip"
+import ListItem from '@material-ui/core/ListItem'
+import DateRange from "@material-ui/icons/DateRange"
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 
 // Icons
-import Note from "@material-ui/icons/Note";
-import Timeline from "@material-ui/icons/Timeline";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import CenterFocusStrong from "@material-ui/icons/CenterFocusStrong";
+import Note from "@material-ui/icons/Note"
+import Timeline from "@material-ui/icons/Timeline"
+import LibraryBooks from "@material-ui/icons/LibraryBooks"
+import CenterFocusStrong from "@material-ui/icons/CenterFocusStrong"
 
-// Material UI components
 
 const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
 
@@ -48,7 +47,7 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
                               </Avatar>
                             </Tooltip>
                           </ListItemAvatar>
-                          <ListItemText primary={milestone.title} />
+                          <ListItemText primary={'Title: ' + milestone.title} />
                         </ListItem>
                         <ListItem>
                           <ListItemAvatar>
@@ -62,7 +61,7 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
                               </Avatar>
                             </Tooltip>
                           </ListItemAvatar>
-                          <ListItemText primary={ milestone.focus } />
+                          <ListItemText primary={'Focus: ' + milestone.focus } />
                         </ListItem>
                         <ListItem>
                           <ListItemAvatar>
@@ -76,7 +75,7 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
                               </Avatar>
                             </Tooltip>
                           </ListItemAvatar>
-                          <ListItemText primary={ milestone.project.name } />
+                          <ListItemText primary={'Project: ' + milestone.project.name } />
                         </ListItem>
                         <ListItem>
                           <ListItemAvatar>
@@ -90,7 +89,7 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
                             </Avatar>
                             </Tooltip>
                           </ListItemAvatar>
-                          <ListItemText primary={ moment(milestone.due_date).format('YYYY-MM-DD') } />
+                          <ListItemText primary={'Due date: ' + moment(milestone.due_date).format('YYYY-MM-DD') } />
                         </ListItem>
                         <ListItem>
                           <ListItemAvatar>
@@ -104,7 +103,7 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
                             </Avatar>
                             </Tooltip>
                           </ListItemAvatar>
-                          <ListItemText primary={ milestone.tickets ? milestone.tickets.length : 0 } />
+                          <ListItemText primary={ milestone.tickets ? 'Tickets: ' + milestone.tickets.length : 0 } />
                         </ListItem>
                     </List> 
                   </GridItem>    

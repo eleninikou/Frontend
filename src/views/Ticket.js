@@ -192,6 +192,7 @@ class Ticket extends Component {
       showComments,
     } = this.state;
 
+
     return (
       <div> 
         {/* Display Success message */}
@@ -221,7 +222,8 @@ class Ticket extends Component {
                     <TicketIconList ticket={ticket} classes={classes}/>
                   </GridItem> 
                   <GridItem xs={12} sm={12} md={7}>
-                  {description || images ? <TicketContent description={description} images={images}/>
+                  {description || images ? 
+                  <TicketContent description={description} images={images}/>
                   : <CircularProgress className="my-spinner" color="primary" />}
                   </GridItem>    
                 </GridContainer>
