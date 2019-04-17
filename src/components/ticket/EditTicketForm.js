@@ -81,11 +81,11 @@ class EditTicketForm extends Component {
     var token = cookies.get('token')
   
     // Remove old urls from storage, images will upload again
-    if(this.state.urls.length) {
-      this.state.urls.map(url => {
-        return this.props.removeFromStorage(url)
-      })
-    }
+    // if(this.state.urls.length) {
+    //   this.state.urls.map(url => {
+    //     return this.props.removeFromStorage(url)
+    //   })
+    // }
   
     // Loop trough files and get url from storage
     for (var i = 0; i < files.length; i++) {
@@ -331,16 +331,17 @@ class EditTicketForm extends Component {
                             editorClassName="editorClassName"
                             onEditorStateChange={this.onEditorStateChange}
                             toolbar = {{
-                              image: {
-                                uploadEnabled: true,
-                                uploadCallback: this.uploadCallback,
-                                urlEnabled: true,
-                                previewImage: true,
-                                alt: { present: false, mandatory: false},
-                                defaultSize: {
-                                  height: 'auto',
-                                  width: 'auto',
-                                },
+                              image:
+                              {
+                                uploadEnabled: false,
+                                // uploadCallback: this.uploadCallback,
+                                urlEnabled: false,
+                                // previewImage: false,
+                                // alt: { present: false, mandatory: false},
+                                // defaultSize: {
+                                //   height: 'auto',
+                                //   width: 'auto',
+                                // },
                               }
                             }}
                           />
@@ -352,7 +353,6 @@ class EditTicketForm extends Component {
                             maxFileSize={5242880}
                         />
 
-                        {// If creator -> delete images}
                         {(user == creator) && urls.length ? urls.map(url => {
                           return(
                             <div style={{ display: 'flex', width: '100%'}}>
@@ -375,7 +375,6 @@ class EditTicketForm extends Component {
                       </GridItem>
                   </GridContainer>
                 </CardBody>
-
               </form> 
       )
   }

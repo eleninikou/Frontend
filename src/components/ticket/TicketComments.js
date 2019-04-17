@@ -26,6 +26,7 @@ const TicketComments = ({ comments, user, classes, deleteComment }) => {
   return (
     <List>
         {comments ? comments.map(comment => {
+          console.log(comment.comment.blocks[0])
           return(
             <ListItem style={{ borderBottom: '1px solid grey', padding: '20px 0px'}}>
               <ListItemAvatar>                         
@@ -37,9 +38,13 @@ const TicketComments = ({ comments, user, classes, deleteComment }) => {
                 primary={comment.user ? comment.user.name + ' | ' + moment(comment.created_at).format('YYYY-MM-DD') : null }
                 secondary={
                   comment.comment ?  
-                    <div dangerouslySetInnerHTML={{ __html: convertFromJSONToHTML(comment.comment) }} />
+                    comment.comment.blocks[0].text ? 
+                    <div dangerouslySetInnerHTML={{ __html: convertFromJSONToHTML(comment.comment) }} /> : null
                   : <CircularProgress className="my-spinner" color="primary" />
                 } />
+                {comment.images ? comment.images.map(image => {
+                  return <img src={image.attachment} style={{ width: 'auto', height: 'auto', display: 'block'}} alt="preview" />
+                }) : null }
                 {comment.user_id === parseInt(user.id) ?
                   <Tooltip
                     id="tooltip-top-start"

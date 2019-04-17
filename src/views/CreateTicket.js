@@ -487,7 +487,6 @@ render() {
                           )
                         })
                           : null}
-                        {/* <TicketPreviews images={this.state.url ? this.state.url: null} classes={this.props.classes} /> */}
                     </FormControl>
                   </GridItem>
               </GridContainer>

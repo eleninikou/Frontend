@@ -137,12 +137,11 @@ handleChange = event => {
 render() {
   const { classes, allProjects, successMessage, project  } = this.props
   const { project_id, project_name, backToProject, hasError, errorMessage, user } = this.state
-
   const projects = allProjects.length ? allProjects.filter(project => project.role_id == 1) : null
-
 
   return (
       <GridContainer>
+        {errorMessage || successMessage ?
         <Snackbar
           place="tr"
           color="success"
@@ -151,7 +150,7 @@ render() {
           open={this.state.tr}
           closeNotification={() => this.setState({ tr: false })}
           close
-          /> 
+          /> : null}
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">

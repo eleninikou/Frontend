@@ -304,6 +304,7 @@ class Ticket extends Component {
             <CardBody>
               {addComment ? 
                 <AddComment 
+                  classes={this.props.classes}
                   ticket_id={ticket.id} 
                   getSuccess={this.getSuccess.bind(this)}
                   hideForm={this.hideForm.bind(this)}

@@ -176,11 +176,7 @@ class Invite extends Component {
 
                     {projects.projects ? projects.projects.map(project => {
                       return <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
-                    }) : 
-                      <MenuItem defaultValue key={''} value={'create'}> 
-                        You need to create a project 
-                      </MenuItem>  
-                    }
+                    }) :  null }
                     </TextField>
                   </FormControl>
                 </GridItem>
