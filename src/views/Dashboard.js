@@ -77,6 +77,8 @@ class Dashboard extends Component {
       const { classes, allTickets, activity, isFetching } = this.props
       const { rowsPerPage, page } = this.state
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage)
+
+      console.log(activity)
         return (
           <div>
             <GridContainer> 
@@ -116,12 +118,14 @@ class Dashboard extends Component {
                                     }
                                   
                                     return [
+                                      <img src={A.user.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>,
+                                      `${A.user.name}`,
+                                      `${A.text}`,
+                                      `${A.project.name}`,
+                                      `${A.created_at}`,
                                       <IconButton aria-label="Go to" className={classes.tableActionButton}>
                                         {this.icon}
                                       </IconButton>,
-                                      `${A.user.name} ${A.text}`,
-                                      `${A.project.name}`,
-                                      `${A.created_at}`,
                                     ]
                                   }) : null
                               ]}
