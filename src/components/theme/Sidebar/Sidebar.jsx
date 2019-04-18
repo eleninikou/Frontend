@@ -23,7 +23,7 @@ const Sidebar = ({ ...props }) => {
     return props.location.pathname.indexOf(routeName) > -1 ? true : false;
   }
 
-  const { classes, color, logo, image, logoText, routes } = props;
+  const { classes, color, image, logo, logoText, routes } = props;
 
 
   var links = (
@@ -32,11 +32,16 @@ const Sidebar = ({ ...props }) => {
 
         var activePro = " ";
         var listItemClasses;
-        
+        if (prop.path === "/logout") {
+          activePro = classes.activePro + " ";
+          listItemClasses = classNames({
+            [" " + classes[color]]: true
+          });
+        } else {
           listItemClasses = classNames({
             [" " + classes[color]]: activeRoute(prop.layout + prop.path)
           });
-        
+        }
         const whiteFontClasses = classNames({
           [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path)
         });
@@ -84,13 +89,14 @@ const Sidebar = ({ ...props }) => {
   var brand = (
     <div className={classes.logo}>
       <a href="/home/user"
+        style={{ display: 'flex'}}
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive
-        })}
-      >
+        })}>
         <div className={classes.logoImage}>
+          <img src={logo} alt="logo" className={classes.img} style={{ borderRadius: '50%', height: '50px', width: '50px'}} />
         </div>
-        {logoText}
+        <h4 style={{ color: 'white', marginLeft: '20px', textTransform: 'uppercase', fontFamily: "Roboto", fontSize: '20px'}}>{logoText}</h4>
       </a>
     </div>
   );
@@ -149,8 +155,6 @@ const Sidebar = ({ ...props }) => {
   );
 };
 
-Sidebar.propTypes = {
-  classes: PropTypes.object.isRequired
-};
+Sidebar.propTypes = { classes: PropTypes.object.isRequired }
 
 export default withStyles(sidebarStyle)(Sidebar);

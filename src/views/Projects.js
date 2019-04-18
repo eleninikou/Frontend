@@ -15,6 +15,7 @@ import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 import withStyles from "@material-ui/core/styles/withStyles"
 // Icons
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
+
 // Components
 import ProjectsTable from '../components/project/ProjectsTable'
 // Styles

@@ -15,7 +15,9 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 // Icons
 import Note from "@material-ui/icons/Note"
 import People from "@material-ui/icons/People"
+import Face from "@material-ui/icons/Face"
 import Timeline from "@material-ui/icons/Timeline"
+import AccountCircle from "@material-ui/icons/AccountCircle"
 
 // Material UI components
 import Typography from '@material-ui/core/Typography'
@@ -28,11 +30,38 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
               <Typography>
                 <h1>{project.name} </h1> 
                 <h4> {project.description}</h4>
-                <h4>Admin: {project.creator ? project.creator.name : null}</h4>
-                {project.client ? 
-                <h4>Client: {project.client.name} </h4> : null}
               </Typography>
               <List className="my-ticket-list">
+              <ListItem>
+                  <ListItemAvatar>
+                    <Tooltip
+                        id="tooltip-top-start"
+                        title="Milestones"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}>  
+                          <Avatar> 
+                            <AccountCircle /> 
+                          </Avatar>
+                        </Tooltip>
+                  </ListItemAvatar>
+                  <ListItemText primary={project.creator ? 'Admin: ' + project.creator.name : null} />
+                </ListItem>
+                {project.client ?
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Tooltip
+                          id="tooltip-top-start"
+                          title="Milestones"
+                          placement="top"
+                          classes={{ tooltip: classes.tooltip }}>  
+                            <Avatar style={{backgroundColor: '#ec407a'}}> 
+                              <Face /> 
+                            </Avatar>
+                          </Tooltip>
+                    </ListItemAvatar>
+                    <ListItemText primary={'Client: ' + project.client.name} />
+                  </ListItem>
+                : null} 
                 <ListItem>
                   <ListItemAvatar>
                     <Tooltip

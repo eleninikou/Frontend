@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+import Cookies from 'universal-cookie'
 
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -19,9 +20,11 @@ import DeleteForever from '@material-ui/icons/DeleteForever'
 import Cancel from '@material-ui/icons/Cancel'
 
 import { connect } from 'react-redux'
+import { removeFromTeam } from '../../redux/actions/projects/Actions'
 import { deleteTicket } from '../../redux/actions/tickets/Actions'
 import { deleteProject } from '../../redux/actions/projects/Actions'
 import { deleteMilestone } from '../../redux/actions/milestones/Actions'
+import { deleteUser } from '../../redux/actions/auth/Actions'
 
 
 const styles = {
@@ -83,6 +86,26 @@ class DangerDialog extends Component {
             })
     }  
 
+    setSuccess = successMessage => { this.props.getSuccess(successMessage) }
+
+    removeUserFromTeam = () => {
+      this.props.removeFromTeam(this.props.id)
+      .then((res) => {
+        this.setSuccess(this.props.successMessageTeam)
+      })
+    }
+
+    deleteUser = () => {
+      this.props.deleteUser(this.props.id)
+      .then(res => {
+        debugger;
+        const cookies = new Cookies()
+        cookies.remove('token', { path: '/' })
+        cookies.remove('user', { path: '/' })
+        this.props.history.push('/')
+      })
+    }
+
   render() {
     const { classes, onClose, selectedValue, id, title, type, ...other } = this.props;
 
@@ -93,10 +116,13 @@ class DangerDialog extends Component {
               <DialogTitle id="simple-dialog-title">{title}</DialogTitle>
             </CardHeader>
             <List style={{ display: 'flex', padding: '50px'}}>
-                <ListItem onClick={type === 'ticket' ? 
-                  this.ticketDelete.bind(this) : 
+                <ListItem onClick={
+                  type === 'ticket' ? this.ticketDelete.bind(this) : 
                   type === 'project' ? this.deleteProject.bind(this) :
-                  this.deleteMilestone.bind(this)} >
+                  type === 'team' ? this.removeUserFromTeam.bind(this) :
+                  type === 'milestone' ? this.deleteMilestone.bind(this) :
+                  this.deleteUser.bind(this)
+                  } >
                   <ListItemAvatar >
                     <Avatar style={{ backgroundColor: '#f44336' }}>
                       <DeleteForever />
@@ -129,13 +155,17 @@ DangerDialog.propTypes = {
 const mapDispatchToProps = dispatch => { return { 
     deleteTicket: id => dispatch(deleteTicket(id)),
     deleteProject: id => dispatch(deleteProject(id)),
-    deleteMilestone: id => dispatch(deleteMilestone(id))
+    deleteMilestone: id => dispatch(deleteMilestone(id)),
+    removeFromTeam: id => dispatch(removeFromTeam(id)),
+    deleteUser: id => dispatch(deleteUser(id))
+
   }}
 
   const mapStateToProps = state => ({
     successMessage: state.ticket.successMessage,
     successMessageProject: state.project.successMessage,
-    successMessageMilestone: state.milestone.successMessage
+    successMessageMilestone: state.milestone.successMessage,
+    successMessageTeam: state.project.successMessage
   })
 
 const DangerDialogWrapped = withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DangerDialog)))

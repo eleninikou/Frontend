@@ -218,9 +218,6 @@ class Ticket extends Component {
                 <h4 className={classes.cardTitleWhite} style={{ fontSize: '2em' }}>{ticket.title} </h4> 
                 <h4 className={classes.cardTitleWhite}>Assigned to {ticket.assigned_user ? ticket.assigned_user.name : null}
                 </h4>
-                {/* <p className={classes.cardTitleWhite}>created by {
-                    ticket.creator ? ticket.creator.name : null} |  {moment(ticket.created_at).format('YYYY-MM-DD')}
-                </p> */}
               </CardHeader>
                 <CardBody>
                 <GridContainer>          

@@ -145,7 +145,7 @@ class Invite extends Component {
           <Card>
             <form className={classes.form} onSubmit={this.submit}>
             <CardHeader color="info">
-              <h4 className={classes.cardTitleWhite}>Invite people to join this project</h4>
+              <h4 className={classes.cardTitleWhite}>Invite people to join project</h4>
             </CardHeader>
             <CardBody>
               <GridContainer>

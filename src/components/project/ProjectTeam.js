@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom"
 
 // Redux
 import { connect } from 'react-redux'
-import { removeFromTeam, getTeam } from '../../redux/actions/projects/Actions'
+import { getTeam } from '../../redux/actions/projects/Actions'
 
 // Theme components
 import Table from "../theme/Table/Table.jsx"
@@ -18,11 +18,12 @@ import IconButton from "@material-ui/core/IconButton"
 // Icons
 import Close from "@material-ui/icons/Close"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
+import {  DangerDialogWrapped }  from '../../components'
 
 
 class ProjectTeam extends Component {
     constructor(props) {
-      super(props);
+      super(props)
   
       this.state = { 
           id: this.props.project.id,
@@ -30,10 +31,15 @@ class ProjectTeam extends Component {
           page: 0,
           rowsPerPage: 5,
           ticketRowsPerPage: 5,
+          open: false,
       }
-      this.invitePeople = this.invitePeople.bind(this);
-
+      this.invitePeople = this.invitePeople.bind(this)
   }
+    componentWillMount = () => {
+      if(this.props.team) {
+        this.setState({ team: this.props.team })
+      }
+    }
 
     handleChangePage = (event, page) => { this.setState({ page }) } 
 
@@ -46,13 +52,15 @@ class ProjectTeam extends Component {
       })
      }
 
-     removeUserFromTeam(id) {
-      this.props.removeFromTeam(id)
-      .then((res) => {
-        this.showNotification('tr')
-        this.props.getTeam(this.state.id)
+    getSuccess = successMessage => {
+      this.setState({ successMessage })
+      this.showNotification('tr')
+      this.props.getTeam(this.props.match.params.id)
+      .then(res => {
+        debugger;
+        this.setState({ team: res.team })
       })
-    }
+    } 
 
     showNotification = place => {
       var x = [];
@@ -66,9 +74,9 @@ class ProjectTeam extends Component {
       }
 
     render() {
-        const { classes, team, creator, successMessage } = this.props;
-        const { rowsPerPage, page } = this.state;
-        const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length  - page * rowsPerPage);
+        const { classes, creator, successMessage } = this.props
+        const { rowsPerPage, page, team } = this.state
+        const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length  - page * rowsPerPage)
       
       return (
         <div>
@@ -93,11 +101,12 @@ class ProjectTeam extends Component {
                       `${person.user.name}`, 
                       `${person.role ? person.role.role : null }`,
                           person.role ? ( person.role.id !== 1 && creator ) ?
+                          <div>
                             <Tooltip
                               id="tooltip-top-start"
                               title="Remove"
                               placement="top"
-                              onClick={this.removeUserFromTeam.bind(this, person.id)} 
+                              onClick={this.handleClickOpen}
                               classes={{ tooltip: classes.tooltip }}>
                               <IconButton
                                 aria-label="Close"
@@ -105,6 +114,15 @@ class ProjectTeam extends Component {
                                 <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
                               </IconButton>
                             </Tooltip>
+                            <DangerDialogWrapped 
+                              type={'team'}
+                              title={'Are you sure you want to remove this user from the team?'}
+                              id={person.id}
+                              open={this.state.open}
+                              onClose={this.handleClose}
+                              getSuccess={this.getSuccess.bind(this)}
+                            />
+                            </div>
                             : null : null 
                       ]) 
                     }) : null
@@ -124,12 +142,8 @@ class ProjectTeam extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => { return {  
-  removeFromTeam: id => dispatch(removeFromTeam(id)),
-  getTeam: id => dispatch(getTeam(id)),
-  } 
-}
-const mapStateToProps = state => ({ successMessage: state.project.successMessage });
+const mapDispatchToProps = dispatch => { return {  getTeam: id => dispatch(getTeam(id)) }}
+const mapStateToProps = state => ({ successMessage: state.project.successMessage })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectTeam))
  

@@ -1,28 +1,29 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
+import ImageUploader from 'react-images-upload'
+import axios from "axios"
 
 // Redux
 import { connect } from 'react-redux'
 import { getUser, updateUser } from '../redux/actions/auth/Actions'
 
-
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx";
-import GridContainer from "../components/theme/Grid/GridContainer.jsx";
-import Button from "../components/theme/CustomButtons/Button.jsx";
-import Card from "../components/theme/Card/Card.jsx";
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
-import CardBody from "../components/theme/Card/CardBody.jsx";
-import CardFooter from "../components/theme/Card/CardFooter.jsx";
-import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
+import Button from "../components/theme/CustomButtons/Button.jsx"
+import Card from "../components/theme/Card/Card.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 
-
 // Material UI components
-import withStyles from "@material-ui/core/styles/withStyles";
+import withStyles from "@material-ui/core/styles/withStyles"
 import TextField from '@material-ui/core/TextField'
 
+import { DangerDialogWrapped }  from '../components'
 
 const styles = {
   cardCategoryWhite: {
@@ -52,8 +53,10 @@ class UserProfile extends Component {
       email: '',
       password: null,
       repeatPassword: '',
-      successMessage: ''
+      successMessage: '',
+      open: false,
     }
+    this.onDrop= this.onDrop.bind(this)
   }
 
   componentWillMount = () => {
@@ -65,12 +68,13 @@ class UserProfile extends Component {
         user,
         name: res.user.name,
         email: res.user.email,
+        avatar: res.user.avatar
       })
     })
 
 
-    var id = window.setTimeout(null, 0);
-    while (id--) { window.clearTimeout(id); }
+    var id = window.setTimeout(null, 0)
+    while (id--) { window.clearTimeout(id) }
 
   }
 
@@ -89,6 +93,7 @@ class UserProfile extends Component {
           name: this.state.name,
           email: this.state.email,
           password: this.state.password,
+          avatar: this.state.avatar
         }
         this.props.updateUser(user, this.state.user).then(res => {
           this.setState({ successMessage: res.message })
@@ -100,6 +105,7 @@ class UserProfile extends Component {
       const user = {
         name: this.state.name,
         email: this.state.email,
+        avatar: this.state.avatar
       }
       this.props.updateUser(user, this.state.user).then(res => {
         this.setState({ successMessage: res.message })
@@ -108,6 +114,32 @@ class UserProfile extends Component {
       })
     }
     
+  }
+
+  onDrop(file) {   
+
+    const cookies = new Cookies()
+    var token = cookies.get('token')
+
+    let reader = new FileReader()
+    const scope = this
+
+      reader.onload = () => {
+        const formData = new FormData()
+        formData.append('file', file[0])
+
+        return axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,  
+          formData, { headers: { 
+            "X-Requested-With": "XMLHttpRequest",
+            'Access-Control-Allow-Origin': '*',
+            "Authorization": `Bearer ${token}`
+          }}).then((res) => {
+            debugger;
+            const url = process.env.REACT_APP_API_BASE_URL+res.data.url
+            scope.setState({ avatar: url })
+          })
+      }
+      reader.readAsDataURL(file[0])
   }
 
   showNotification(place) {
@@ -121,9 +153,15 @@ class UserProfile extends Component {
       }.bind(this), 6000);
     }
 
+    handleClickOpen = () => { this.setState({ open: true }) }
+
+    handleClose = open => { this.setState({ open })}
+  
+
   render() {
-    const { classes } = this.props;
-    const { successMessage } = this.state;
+    const { classes } = this.props
+    const { successMessage, user } = this.state
+
   return (
     <form className={classes.form} onSubmit={this.submit}>
       <Snackbar
@@ -143,7 +181,18 @@ class UserProfile extends Component {
             </CardHeader>
             <CardBody>
               <GridContainer>
-
+              <GridItem xs={12} sm={12} md={12}>
+                <img src={this.state.avatar} alt="profile" style={{ display: 'block', borderRadius: '50%', width: '100px', height: '100px', margin: 'auto' }} />
+                <ImageUploader
+                      withIcon={true}
+                      buttonText='Upload new profile picture'
+                      onChange={this.onDrop}
+                      imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg']}
+                      maxFileSize={5242880}
+                  />
+              </GridItem>
+              <GridContainer>
+              </GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                     <TextField
                       label="name"
@@ -156,7 +205,6 @@ class UserProfile extends Component {
                       fullWidth
                     />
                 </GridItem>
-
                 <GridItem xs={12} sm={12} md={6}>
                     <TextField
                       label="email"
@@ -168,7 +216,6 @@ class UserProfile extends Component {
                       className="my-input"
                       fullWidth
                     />
-
                 </GridItem>
               </GridContainer>
               <GridContainer>
@@ -182,7 +229,6 @@ class UserProfile extends Component {
                       onChange={this.handleChange.bind(this)}
                       fullWidth
                     />
-
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <TextField
@@ -194,12 +240,19 @@ class UserProfile extends Component {
                     className="my-input"
                     fullWidth
                   />
-
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
               <Button type="submit" color="rose">Update Profile</Button>
+              <Button color="rose" onClick={this.handleClickOpen}>Remove Account</Button>
+              <DangerDialogWrapped 
+                type={'account'}
+                title={'Are you sure you want to delete your account?'}
+                id={user.id}
+                open={this.state.open}
+                onClose={this.handleClose}
+              />
             </CardFooter>
           </Card>
         </GridItem>

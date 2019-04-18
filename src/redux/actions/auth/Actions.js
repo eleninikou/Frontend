@@ -14,6 +14,8 @@ import {
     GET_USER_FAILURE,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_FAILURE,
+    DELETE_USER_SUCCESS,
+    DELETE_USER_FAILURE,
     GET_EMAIL_SUCCESS,
     GET_EMAIL_FAILURE,
     ACCEPT_INVITATION_SUCCESS,
@@ -84,6 +86,7 @@ export const login = creds => {
 
 
 export const googleLogin = (googleAuth) => {
+  debugger;
     return async dispatch => {  
       const recieveGoogleAuth = user => { 
         dispatch ({ type: GOOGLE_AUTH_SUCCESS, payload: user}); 
@@ -214,3 +217,25 @@ export const acceptInvitation = sendToken => {
     } catch (error) { dispatch ({ type: ACCEPT_INVITATION_FAILURE, message: 'Could not get email' }); return error; }
   }
 }; 
+
+
+export const deleteUser = id => {
+  return async dispatch => {  
+    const deleteUserSuccess = success => { 
+      dispatch ({ type: DELETE_USER_SUCCESS, payload: success }); return success; 
+  }
+
+    try {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      return deleteUserSuccess(success);
+
+    } catch (error) { dispatch ({ type: DELETE_USER_FAILURE, message: 'Could not delete image' }); return error; }
+  }
+};

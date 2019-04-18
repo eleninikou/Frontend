@@ -111,8 +111,6 @@ class Home extends React.Component {
 
   componentWillUnmount() { window.removeEventListener("resize", this.resizeFunction) }
 
-
-
   render() {
     const { user, classes, ...rest } = this.props;
     return (
@@ -121,6 +119,7 @@ class Home extends React.Component {
           routes={routes}
           logoText={user ? user.name : '' }
           image={this.state.image}
+          logo={this.props.user.avatar}
           handleDrawerToggle={this.handleDrawerToggle}
           open={this.state.mobileOpen}
           color={this.state.color}
