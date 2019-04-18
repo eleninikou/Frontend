@@ -62,12 +62,6 @@
 .MuiFormControl-marginNormal-426 {
   width: 100% !important; }
 
-.my-spinner {
-  margin: auto !important; }
-
-.MuiCircularProgress-colorPrimary-324 {
-  color: light-grey !important; }
-
 .my-input {
   margin-bottom: 25px !important; }
 
@@ -77,6 +71,6 @@
 .my-label {
   margin-left: 15px; }
 
-.selected-menu-item {
-  display: flex;
-  align-items: center; }
+.image-gallery-slide img {
+  width: auto !important;
+  max-width: 100%; }

@@ -10,10 +10,12 @@ import Table from "../theme/Table/Table.jsx"
 import Button from "../theme/CustomButtons/Button.jsx"
 import CardFooter from "../theme/Card/CardFooter.jsx"
 import Snackbar from "../theme/Snackbar/Snackbar.jsx"
+import Avatar from '@material-ui/core/Avatar'
 
 // Material UI components
 import Tooltip from "@material-ui/core/Tooltip"
 import IconButton from "@material-ui/core/IconButton"
+import Person from "@material-ui/icons/Person"
 
 // Icons
 import Close from "@material-ui/icons/Close"
@@ -94,13 +96,21 @@ class ProjectTeam extends Component {
               rowsPerPage={team ? team.length : null}
               emptyRows={emptyRows}
               tableHeaderColor="success"
-              tableHead={ creator ? ["Name", "Role", "Remove"] : ["Name", "Role", '' ] }
+              tableHead={ creator ? ["" , "Name", "Role", "Remove"] : ["Name", "Role", '' ] }
               tableData={[
                 team ? team.map(person => {
-                  return ([
+                  return (
+                    person.user ? [
+
+                      person.user.avatar ? 
+                      <img src={person.user.avatar} alt="user" style={{ display: 'block', width: '40px', height: '40px', borderRadius: '50%' }}/>
+                      : 
+                      <Avatar stye={{ width: '30px', height: '30px'}}>
+                        <Person /> 
+                      </Avatar>,
                       `${person.user.name}`, 
                       `${person.role ? person.role.role : null }`,
-                          person.role ? ( person.role.id !== 1 && creator ) ?
+                         (person.role.id !== 1 && creator) ?
                           <div>
                             <Tooltip
                               id="tooltip-top-start"
@@ -123,8 +133,8 @@ class ProjectTeam extends Component {
                               getSuccess={this.getSuccess.bind(this)}
                             />
                             </div>
-                            : null : null 
-                      ]) 
+                            : null
+                      ]: null ) 
                     }) : null
                   ]} 
              /> 

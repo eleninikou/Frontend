@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import moment from 'moment'
 
 // Material UI
@@ -23,38 +23,51 @@ import Person from "@material-ui/icons/Person"
 // Wysiwyg
 import {stateToHTML} from 'draft-js-export-html'
 import { convertFromRaw } from 'draft-js'
-import ImageGallery from 'react-image-gallery';
+import ImageGallery from 'react-image-gallery'
+
+import DangerDialogWrapped from '../../components/modal/DangerDialog'
 
 
-const TicketComments = ({ comments, user, classes, deleteComment }) => {
+  class TicketComments extends Component {
+    constructor(props) {
+      super(props);
 
-  const convertFromJSONToHTML = (text) => { return stateToHTML(convertFromRaw((text)) )}
+      this.state = {
+        open: false,
+      }
+  }
+
+  handleClickOpen = () => { this.setState({ open: true }) }
+
+  handleClose = open => { this.setState({ open })}
+
+  convertFromJSONToHTML = text => { return stateToHTML(convertFromRaw((text)) )}
+
+  render() {
+
+  const { comments, user, classes } = this.props
   return (
     <List>
         {comments ? comments.map(comment => {
           return(
-            <ListItem style={{ borderBottom: '1px solid grey', padding: '20px 0px'}}>
+            <Card>
+            <ListItem style={{ borderBottom: '1px solid grey', padding: '30px'}}>
               <GridContainer style={{ width: '100%'}}>          
               <GridItem xs={12} sm={12} md={12} style={{ display: 'flex', alignItems: 'flex-start'}}>
                 <ListItemAvatar>                         
                   <Avatar>
-                    <Person /> 
+                      {user.avatar ?
+                      <img src={user.avatar} alt="user" style={{ display: 'block', width: '40px', height: '40px', borderRadius: '50%' }}/>
+                      : <Person /> }
                   </Avatar> 
                 </ListItemAvatar>
-                <ListItemText 
-                  primary={comment.user ? comment.user.name + ' | ' + moment(comment.created_at).format('YYYY-MM-DD') : null }
-                  secondary={
-                    comment.comment ?  
-                      comment.comment.blocks[0].text ? 
-                      <div dangerouslySetInnerHTML={{ __html: convertFromJSONToHTML(comment.comment) }} /> : null
-                    : <CircularProgress className="my-spinner" color="primary" />
-                  } />
-               {comment.user_id === parseInt(user.id) ?
+                <ListItemText primary={comment.user ? comment.user.name + ' | ' + moment(comment.created_at).format('YYYY-MM-DD') : null } />
+                {comment.user_id === parseInt(user.id) ?
                  <Tooltip
                  id="tooltip-top-start"
                  title="Delete comment"
                  placement="top"
-                 onClick={deleteComment.bind(this, comment.id)}
+                 onClick={this.handleClickOpen}
                  classes={{ tooltip: classes.tooltip }}>
                    <IconButton
                      aria-label="Close"
@@ -63,22 +76,42 @@ const TicketComments = ({ comments, user, classes, deleteComment }) => {
                    </IconButton>
                  </Tooltip>
                : null}
+                  <DangerDialogWrapped 
+                    type={'comment'}
+                    title={'Are you sure you want to delete this comment?'}
+                    id={comment.id}
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    getSuccess={this.props.getSuccess.bind(this)}
+                  />
                </GridItem> 
-               <GridItem xs={12} sm={12} md={6} >
-                <ImageGallery items={
-                  comment.images ? comment.images.map(image => {
-                    return ({ original: image.attachment ,
-                      thumbnail: image.attachment })                   
-                    }) : null 
-                  } />
-                </GridItem> 
+               <GridItem xs={12} sm={12} md={12}>
+                  {comment.comment ?  
+                      comment.comment.blocks[0].text ? 
+                      <div dangerouslySetInnerHTML={{ __html: this.convertFromJSONToHTML(comment.comment) }} /> : null
+                    : <CircularProgress className="my-spinner" color="primary" />
+                  } 
+               </GridItem>
+               {comment.images.length ?
+               <Card>
+                  <GridItem xs={12} sm={12} md={12} style={{ marginTop: '100px'}} >
+                   <ImageGallery items={
+                     comment.images.map(image => {
+                       return ({ original: image.attachment ,
+                         thumbnail: image.attachment })                   
+                       }) 
+                     } />
+                  </GridItem> 
+                </Card>
+                : null }
               </GridContainer>
             </ListItem>
+        </Card>
           )
         }) : null}
       </List>
-
     )
+  }
 }
 
 export default TicketComments;

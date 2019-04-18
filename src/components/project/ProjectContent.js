@@ -24,6 +24,7 @@ import Typography from '@material-ui/core/Typography'
 
 const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
 
+  console.log(project)
     const showForm = () => { getEdit(true)  }
     return (
             <CardBody>
@@ -39,13 +40,18 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
                         title="Milestones"
                         placement="top"
                         classes={{ tooltip: classes.tooltip }}>  
+                        {project.creator ? project.creator.avatar ?
+                          <img src={project.creator.avatar} alt="user" style={{ display: 'block', width: '40px', height: '40px', borderRadius: '50%' }}/>
+                          :  
                           <Avatar> 
                             <AccountCircle /> 
                           </Avatar>
+                          : null}
                         </Tooltip>
                   </ListItemAvatar>
                   <ListItemText primary={project.creator ? 'Admin: ' + project.creator.name : null} />
                 </ListItem>
+                {console.log(project.client)}
                 {project.client ?
                   <ListItem>
                     <ListItemAvatar>
@@ -54,9 +60,12 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
                           title="Milestones"
                           placement="top"
                           classes={{ tooltip: classes.tooltip }}>  
+                          {project.client.avatar ?
+                            <img src={project.client.avatar} alt="user" style={{ display: 'block', width: '40px', height: '40px', borderRadius: '50%' }}/>
+                          :
                             <Avatar style={{backgroundColor: '#ec407a'}}> 
                               <Face /> 
-                            </Avatar>
+                            </Avatar>}
                           </Tooltip>
                     </ListItemAvatar>
                     <ListItemText primary={'Client: ' + project.client.name} />

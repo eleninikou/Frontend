@@ -18,10 +18,12 @@ import CardBody from "../components/theme/Card/CardBody.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
+import AccountCircle from "@material-ui/icons/AccountCircle"
 
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
 import TextField from '@material-ui/core/TextField'
+import Avatar from '@material-ui/core/Avatar'
 
 import { DangerDialogWrapped }  from '../components'
 
@@ -134,7 +136,6 @@ class UserProfile extends Component {
             'Access-Control-Allow-Origin': '*',
             "Authorization": `Bearer ${token}`
           }}).then((res) => {
-            debugger;
             const url = process.env.REACT_APP_API_BASE_URL+res.data.url
             scope.setState({ avatar: url })
           })
@@ -182,7 +183,12 @@ class UserProfile extends Component {
             <CardBody>
               <GridContainer>
               <GridItem xs={12} sm={12} md={12}>
+              {this.state.avatar ?
                 <img src={this.state.avatar} alt="profile" style={{ display: 'block', borderRadius: '50%', width: '100px', height: '100px', margin: 'auto' }} />
+                : 
+                <Avatar style={{ margin: 'auto', height: '100px', width: '100px'}}> 
+                  <AccountCircle style={{ fontSize: '70px'}}/> 
+                </Avatar>}
                 <ImageUploader
                       withIcon={true}
                       buttonText='Upload new profile picture'

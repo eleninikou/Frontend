@@ -86,7 +86,6 @@ class Invite extends Component {
         project_role: this.state.project_role,
       }
 
-      debugger;
       this.props.invite(invitation)
       .then(() => { if (this.props.successMessage) { this.showNotification('tr') } })
 

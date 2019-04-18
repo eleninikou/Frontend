@@ -25,6 +25,7 @@ import { deleteTicket } from '../../redux/actions/tickets/Actions'
 import { deleteProject } from '../../redux/actions/projects/Actions'
 import { deleteMilestone } from '../../redux/actions/milestones/Actions'
 import { deleteUser } from '../../redux/actions/auth/Actions'
+import { commentDelete } from '../../redux/actions/comments/Actions'
 
 
 const styles = {
@@ -90,20 +91,27 @@ class DangerDialog extends Component {
 
     removeUserFromTeam = () => {
       this.props.removeFromTeam(this.props.id)
-      .then((res) => {
+      .then(() => {
         this.setSuccess(this.props.successMessageTeam)
       })
     }
 
     deleteUser = () => {
       this.props.deleteUser(this.props.id)
-      .then(res => {
+      .then(() => {
         debugger;
         const cookies = new Cookies()
         cookies.remove('token', { path: '/' })
         cookies.remove('user', { path: '/' })
         this.props.history.push('/')
       })
+    }
+
+    deleteComment = () => { 
+      this.props.commentDelete(this.props.id)
+      .then(() => {
+        this.setSuccess(this.props.successMessageComment)
+        })
     }
 
   render() {
@@ -121,6 +129,7 @@ class DangerDialog extends Component {
                   type === 'project' ? this.deleteProject.bind(this) :
                   type === 'team' ? this.removeUserFromTeam.bind(this) :
                   type === 'milestone' ? this.deleteMilestone.bind(this) :
+                  type === 'comment' ? this.deleteComment.bind(this) : 
                   this.deleteUser.bind(this)
                   } >
                   <ListItemAvatar >
@@ -157,7 +166,9 @@ const mapDispatchToProps = dispatch => { return {
     deleteProject: id => dispatch(deleteProject(id)),
     deleteMilestone: id => dispatch(deleteMilestone(id)),
     removeFromTeam: id => dispatch(removeFromTeam(id)),
-    deleteUser: id => dispatch(deleteUser(id))
+    deleteUser: id => dispatch(deleteUser(id)),
+    commentDelete: id => dispatch(commentDelete(id))
+
 
   }}
 
@@ -165,7 +176,8 @@ const mapDispatchToProps = dispatch => { return {
     successMessage: state.ticket.successMessage,
     successMessageProject: state.project.successMessage,
     successMessageMilestone: state.milestone.successMessage,
-    successMessageTeam: state.project.successMessage
+    successMessageTeam: state.project.successMessage,
+    successMessageComment: state.comment.successMessage,
   })
 
 const DangerDialogWrapped = withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DangerDialog)))

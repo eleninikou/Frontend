@@ -86,7 +86,6 @@ export const login = creds => {
 
 
 export const googleLogin = (googleAuth) => {
-  debugger;
     return async dispatch => {  
       const recieveGoogleAuth = user => { 
         dispatch ({ type: GOOGLE_AUTH_SUCCESS, payload: user}); 
@@ -113,7 +112,6 @@ export const googleLogin = (googleAuth) => {
 
 
 export const logout = (token) => {
-  debugger;
   return async dispatch => {
     const logoutSuccess = success => { dispatch ({ type: LOGOUT_SUCCESS, payload: success}); return success; }
     try {
@@ -226,7 +224,7 @@ export const deleteUser = id => {
   }
 
     try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/account/${id}`, {
         method: "DELETE",
         headers: {
           "Authorization": `Bearer ${token}`,

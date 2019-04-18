@@ -9,6 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 // Icons
 import ExitToApp from "@material-ui/icons/ExitToApp";
+import FiberManualRecord from "@material-ui/icons/FiberManualRecord";
 
 
 class ProjectsTable extends Component {
@@ -39,13 +40,25 @@ class ProjectsTable extends Component {
                 rowsPerPage={rowsPerPage}
                 emptyRows={emptyRows}
                 tableHeaderColor="success"
-                tableHead={["Name", "Created", "Open Tickets", "Total Tickets", "Last updated", "Details" ]}
+                tableHead={["Name", "Created", "Active", "Open Tickets", "Total Tickets", "Last updated", "Details" ]}
                 tableData={[ 
                   projects ? projects.map(project => {
                   let active_tickets = project.tickets.filter(ticket => (ticket.status_id !== (7 && 4)))
-                    return ([ 
+                    return (
+                      project ? [ 
                         `${project.project.name}`, 
                         `${moment(project.project.created_at).format('YYYY-MM-DD')}`, 
+                          <Tooltip
+                            id="tooltip-top"
+                            title="Active"
+                            placement="top"
+                            classes={{ tooltip: classes.tooltip }}
+                          >
+                            {project.project ? project.project.active === 1 ?
+                              <FiberManualRecord style={{color:'#4caf50', fontSize: '15px'}}/>
+                            : <FiberManualRecord style={{color:'#ef5350', fontSize: '15px'}}/> 
+                            : null }
+                        </Tooltip>,
                         (active_tickets).length, 
                         `${(project.tickets).length}`, 
                         `${moment(project.updated_at).format('YYYY-MM-DD')}`,
@@ -60,7 +73,7 @@ class ProjectsTable extends Component {
                             <ExitToApp style={{color:'#4caf50'}} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                           </IconButton>
                       </Tooltip>
-                      ]) 
+                      ]: null) 
                   }): null
                 ]} 
             />

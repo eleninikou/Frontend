@@ -55,7 +55,6 @@ class EditTicketForm extends Component {
       }
       this.handleChange = this.handleChange.bind(this)
       this.submit = this.submit.bind(this)
-    
   }
 
   componentWillMount = () => {
@@ -169,18 +168,6 @@ class EditTicketForm extends Component {
     this.props.updateTicket(ticket, this.props.match.params.id)
     .then(res => { this.setSuccess(res.message) })
   }
-
-  // ticketDelete() { 
-  //   this.props.deleteTicket(this.props.match.params.id)
-  //   .then((res) => {
-  //     if(this.props.successMessage) {
-  //       this.props.history.push({
-  //         pathname: '/home/projects', 
-  //         state: { successMessage: this.props.successMessage}
-  //       })
-  //     }
-  //   })
-  // }
 
   handleClickOpen = () => { this.setState({ open: true }) }
 

@@ -15,6 +15,9 @@ import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 import withStyles from "@material-ui/core/styles/withStyles"
 // Icons
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
+import FormControl from '@material-ui/core/FormControl'
+import TextField from '@material-ui/core/TextField'
+import MenuItem from '@material-ui/core/MenuItem'
 
 // Components
 import ProjectsTable from '../components/project/ProjectsTable'
@@ -101,6 +104,22 @@ class Projects extends Component {
                 <h4 className={this.props.classes.cardTitleWhite}>Projects</h4>
               </CardHeader>
                 <CardBody>
+                  <GridItem xs={12} sm={2} md={6} style={{ float: 'right', width:'100px'}}>
+                    <FormControl className={this.props.classes.formControl}>       
+                      <TextField
+                        value={this.state.status_id}
+                        select
+                        label="Active"
+                        onChange={this.handleChange}
+                        variant="outlined"
+                        margin="normal"
+                        inputProps={{ name: 'status_id', id: 'status_id' }} >
+                          <MenuItem value={null}>All</MenuItem>
+                          <MenuItem value={1}> Active </MenuItem> 
+                          <MenuItem value={0}> Inacctive </MenuItem> 
+                      </TextField> 
+                    </FormControl>
+                  </GridItem>
                   <ProjectsTable 
                     projects={projects}
                     classes={this.props.classes}

@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
-import moment from 'moment'
 import ImageGallery from 'react-image-gallery'
 
 // Redux
 import { connect } from 'react-redux'
 import { getTicket } from '../redux/actions/tickets/Actions'
-import { commentDelete } from '../redux/actions/comments/Actions'
 import { getUser } from '../redux/actions/auth/Actions'
 
 // Theme components
@@ -126,15 +124,6 @@ class Ticket extends Component {
       })
   }
 
-  deleteComment = id => { 
-    this.props.commentDelete(id)
-    .then(res => {
-      if (this.props.successMessage) {
-        this.getSuccess(this.props.successMessage)
-      }
-    })
-  }
-
   hideForm = hide => {
     this.setState({ addComment: hide, ButtonTextComment: 'Add Comment'}) 
     this.setState({ showComments: true, CommentText: 'Hide Comments' })
@@ -229,8 +218,11 @@ class Ticket extends Component {
                     <TicketContent description={description}/>
                   : <CircularProgress className="my-spinner" color="primary" />}
                   </GridItem>    
-                  <GridItem xs={12} sm={12} md={12}>
-                  {images.length ? <ImageGallery items={galleryImages[0]} /> : null}
+                  <GridItem xs={12} sm={12} md={12} >
+                  {images.length ? 
+                    <Card>
+                      <ImageGallery items={galleryImages[0]} />
+                    </Card> : null}
                   </GridItem> 
                 </GridContainer>
               </CardBody> 
@@ -295,6 +287,9 @@ class Ticket extends Component {
         {/* Display Comments */}
         {showComments || addComment ? 
           <Card>
+            <CardHeader color="primary"> 
+              <h4 className={classes.cardTitleWhite}>Comments</h4> 
+            </CardHeader>
             <CardBody>
               {addComment ? 
                 <AddComment 
@@ -308,7 +303,7 @@ class Ticket extends Component {
                 comments={comments} 
                 user={user} 
                 classes={classes}
-                deleteComment={this.deleteComment.bind(this)}
+                getSuccess={this.getSuccess.bind(this)}
                 />    
             </CardBody>
           </Card>
@@ -323,7 +318,6 @@ const mapDispatchToProps = dispatch => {
   return {  
     getTicket: id => dispatch(getTicket(id)),
     getUser: id => dispatch(getUser(id)),
-    commentDelete: id => dispatch(commentDelete(id))
   }
 }
 

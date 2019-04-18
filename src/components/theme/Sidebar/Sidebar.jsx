@@ -1,20 +1,22 @@
-import React from "react";
-import classNames from "classnames";
-import PropTypes from "prop-types";
-import { NavLink } from "react-router-dom";
+import React from "react"
+import classNames from "classnames"
+import PropTypes from "prop-types"
+import { NavLink } from "react-router-dom"
 
-import withStyles from "@material-ui/core/styles/withStyles";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Icon from "@material-ui/core/Icon";
+import withStyles from "@material-ui/core/styles/withStyles"
+import Drawer from "@material-ui/core/Drawer"
+import Hidden from "@material-ui/core/Hidden"
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
+import Icon from "@material-ui/core/Icon"
+import AccountCircle from "@material-ui/icons/AccountCircle"
+import Avatar from '@material-ui/core/Avatar'
 
-import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx";
-import RTLNavbarLinks from "../Navbars/RTLNavbarLinks.jsx";
+import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx"
+import RTLNavbarLinks from "../Navbars/RTLNavbarLinks.jsx"
 
-import sidebarStyle from "../../../assets/jss/material-dashboard-react/components/sidebarStyle.jsx";
+import sidebarStyle from "../../../assets/jss/material-dashboard-react/components/sidebarStyle.jsx"
 
 const Sidebar = ({ ...props }) => {
 
@@ -89,12 +91,17 @@ const Sidebar = ({ ...props }) => {
   var brand = (
     <div className={classes.logo}>
       <a href="/home/user"
-        style={{ display: 'flex'}}
+        style={{ display: 'flex', alignItems: 'baseline'}}
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive
         })}>
         <div className={classes.logoImage}>
-          <img src={logo} alt="logo" className={classes.img} style={{ borderRadius: '50%', height: '50px', width: '50px'}} />
+        {logo ?
+          <img src={logo} alt="logo" className={classes.img} style={{ borderRadius: '50%', height: '50px', width: '50px', marginTop: '10px'}} />
+          :
+          <Avatar> 
+            <AccountCircle /> 
+          </Avatar>}
         </div>
         <h4 style={{ color: 'white', marginLeft: '20px', textTransform: 'uppercase', fontFamily: "Roboto", fontSize: '20px'}}>{logoText}</h4>
       </a>
