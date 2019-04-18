@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
 // Redux
 import { connect } from 'react-redux'
-import { getProject, deleteProject } from '../redux/actions/projects/Actions'
+import { getProject } from '../redux/actions/projects/Actions'
 // Theme components
 import Card from "../components/theme/Card/Card"
 import Button from "../components/theme/CustomButtons/Button.jsx"
@@ -26,7 +26,14 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 // Style
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
-import { EditProjectForm, ProjectContent, ProjectMilestones, ProjectTickets, ProjectTeam }  from '../components'
+import { 
+  EditProjectForm, 
+  ProjectContent, 
+  ProjectMilestones, 
+  ProjectTickets, 
+  ProjectTeam, 
+  DangerDialogWrapped 
+}  from '../components'
 
 
 
@@ -46,6 +53,7 @@ class Project extends Component {
         milestones: [],
         edit: false,
         successMessage: this.props.successMessage,
+        open: false,
       }
   }
 
@@ -100,19 +108,6 @@ class Project extends Component {
     
   componentWillUnmount = () => { this.setState({ successMessage: '' })}
 
-  // Redirect to projects
-  deleteProject = id => { 
-    this.props.deleteProject(id)
-    .then(() => {
-      if(this.props.successMessage) {
-        this.props.history.push({
-          pathname: '/home/projects', 
-          state: { successMessage: this.props.successMessage}
-        })
-      }
-    })
-  }
-
   getSuccess = successMessage => {
     this.setState({ successMessage })
     this.showNotification('tr')
@@ -130,9 +125,10 @@ class Project extends Component {
 
   getEdit = edit => { this.setState({ edit }) }  
 
-  handleOpen = () => { this.setState({ open: true }) }
+  handleClickOpen = () => { this.setState({ open: true }) }
 
-  handleClose = () => { this.setState({ open: false }) }
+  handleClose = open => { this.setState({ open })}
+
     
   render() {
       const { classes, team, project, tickets, isFetching } = this.props;
@@ -218,9 +214,16 @@ class Project extends Component {
                         tabIcon: DeleteForever,
                         tabContent: (
                           <CardBody>
-                            <Button color="success" onClick={this.deleteProject.bind(this, project.id)}>
+                            <Button color="success" onClick={this.handleClickOpen}>
                               Delete project
                             </Button>
+                            <DangerDialogWrapped 
+                              type={'project'}
+                              title={'Are you sure you want to delete this project?'}
+                              id={project.id}
+                              open={this.state.open}
+                              onClose={this.handleClose}
+                            />
                          </CardBody>
                         )
                       }
@@ -239,7 +242,6 @@ class Project extends Component {
 const mapDispatchToProps = dispatch => { 
   return { 
     getProject: id => dispatch(getProject(id)),
-    deleteProject: id => dispatch(deleteProject(id))
    }
 }
 

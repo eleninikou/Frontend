@@ -183,7 +183,6 @@ class Ticket extends Component {
     } = this.props;
 
     const { 
-      creator, 
       edit, 
       ButtonText, 
       addComment, 

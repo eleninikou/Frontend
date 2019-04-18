@@ -16,6 +16,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 
 import { connect } from 'react-redux'
 import { deleteTicket } from '../../redux/actions/tickets/Actions'
+import { deleteProject } from '../../redux/actions/projects/Actions'
 
 const styles = {
   avatar: {
@@ -24,7 +25,7 @@ const styles = {
   },
 };
 
-class TicketDialog extends Component {
+class DangerDialog extends Component {
     handleClose = () => {
     this.props.onClose(false);
   };
@@ -45,17 +46,28 @@ class TicketDialog extends Component {
     })
   }
 
-  render() {
-    const { classes, onClose, selectedValue, id, ...other } = this.props;
+    // Redirect to projects
+    deleteProject = () => { 
+        this.props.deleteProject(this.props.id)
+        .then(() => {
+          if(this.props.successMessageProject) {
+            this.props.history.push({
+              pathname: '/home/projects', 
+              state: { successMessage: this.props.successMessageProject}
+            })
+          }
+        })
+      }
 
-    console.log(id)
+  render() {
+    const { classes, onClose, selectedValue, id, title, type, ...other } = this.props;
 
     return (
       <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
-            <DialogTitle id="simple-dialog-title">Are you sure you want to delete this ticket?</DialogTitle>
+            <DialogTitle id="simple-dialog-title">{title}</DialogTitle>
         <div>
           <List>
-              <ListItem onClick={this.ticketDelete.bind(this)} >
+              <ListItem onClick={type === 'ticket' ? this.ticketDelete.bind(this) : this.deleteProject.bind(this)} >
                 <ListItemAvatar>
                   <Avatar className={classes.avatar}>
                     <PersonIcon />
@@ -79,21 +91,24 @@ class TicketDialog extends Component {
   }
 }
 
-TicketDialog.propTypes = {
+DangerDialog.propTypes = {
   classes: PropTypes.object.isRequired,
   onClose: PropTypes.func,
   selectedValue: PropTypes.string,
 };
 
 const mapDispatchToProps = dispatch => { return { 
-    deleteTicket: id => dispatch(deleteTicket(id))
+    deleteTicket: id => dispatch(deleteTicket(id)),
+    deleteProject: id => dispatch(deleteProject(id))
   }}
 
   const mapStateToProps = state => ({
     successMessage: state.ticket.successMessage,
+    successMessageProject: state.project.successMessage,
+
   })
 
-const TicketDialogWrapped = withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(TicketDialog)))
+const DangerDialogWrapped = withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DangerDialog)))
 
 
-export default TicketDialogWrapped;
+export default DangerDialogWrapped;

@@ -28,7 +28,7 @@ import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-
 
 import draftToHtml from 'draftjs-to-html'
 import ImageUploader from 'react-images-upload'
-import TicketDialogWrapped from './TicketModal'
+import DangerDialogWrapped from '../../components/'
 
 
 class EditTicketForm extends Component {
@@ -376,7 +376,9 @@ class EditTicketForm extends Component {
                         {user == creator ?
                         <div>
                           <Button color="danger" onClick={this.handleClickOpen} style={{ float: 'right'}}> Delete </Button>
-                          <TicketDialogWrapped 
+                          <DangerDialogWrapped 
+                            type={'ticket'}
+                            title={'Are you sure you want to delete this ticket?'}
                             id={this.props.match.params.id}
                             open={this.state.open}
                             onClose={this.handleClose}

@@ -22,4 +22,5 @@ export { default as TicketContent } from './ticket/TicketContent'
 export { default as TicketIconList } from './ticket/TicketIconList'
 export { default as TicketsTable } from './ticket/TicketsTable'
 
+export { default as DangerDialogWrapped } from './modal/DangerDialog'
 
