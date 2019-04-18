@@ -31,6 +31,7 @@ import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
+import StyledSpinner from '../components/spinner/Spinner'
 
 
 class Invite extends Component {
@@ -76,6 +77,7 @@ class Invite extends Component {
   submit = event => {
     event.preventDefault()
 
+    
     if(this.state.email && this.state.project_id && this.state.project_role ) {
       
       const invitation = {
@@ -84,6 +86,7 @@ class Invite extends Component {
         project_role: this.state.project_role,
       }
 
+      debugger;
       this.props.invite(invitation)
       .then(() => { if (this.props.successMessage) { this.showNotification('tr') } })
 
@@ -128,8 +131,8 @@ class Invite extends Component {
   const { classes, projects, project, roles, successMessage, emails, isFetching } = this.props
   const { page, team, backToProject, hasError } = this.state
   return (
-    <form className={classes.form} onSubmit={this.submit}>
-      <Snackbar
+    <GridContainer>
+    <Snackbar
         place="tr"
         color="success"
         icon={CheckCircleOutline}
@@ -138,9 +141,9 @@ class Invite extends Component {
         closeNotification={() => this.setState({ tr: false })}
         close
       /> 
-      <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
+            <form className={classes.form} onSubmit={this.submit}>
             <CardHeader color="info">
               <h4 className={classes.cardTitleWhite}>Invite people to join this project</h4>
             </CardHeader>
@@ -149,7 +152,6 @@ class Invite extends Component {
                 <GridItem xs={12} sm={12} md={6}>
                   <FormControl className={classes.formControl}>       
                   {hasError && !this.state.project_id && <FormHelperText id="project_id">Please select project!</FormHelperText>}
-                  {console.log(project)}
                     <TextField
                       select
                       error={hasError && !this.state.project_id? true : false}
@@ -168,11 +170,11 @@ class Invite extends Component {
                         <MenuItem defaultValue key={project.id} value={project.id}> 
                           {project.name} 
                         </MenuItem>
-                      : 
+                      : this.props.match.params.id && !project ?
                         <MenuItem defaultValue key={''} value={'create'}> 
                           You need to create a project first
                         </MenuItem>   
-                      }
+                      : null}
 
                     {projects.projects ? projects.projects.map(project => {
                       return <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
@@ -184,7 +186,7 @@ class Invite extends Component {
                   <FormControl className={classes.formControl}>
                   {hasError && !this.state.project_role && <FormHelperText id="project_role">Please select role in the project!</FormHelperText>}
                     <TextField
-                        disabled={!project ? true : false}
+                        disabled={this.state.project_id ? false : true}
                         select
                         error={hasError && !this.state.project_role ? true : false}
                         label="Role"
@@ -207,7 +209,7 @@ class Invite extends Component {
                   <FormControl className={classes.formControl}>
                   {hasError && !this.state.email && <FormHelperText id="project_role">Please fill in email!</FormHelperText>}
                   <TextField
-                    disabled={!project ? true : false}
+                    disabled={this.state.project_id ? false : true}
                     type="email"
                     label="email" 
                     error={hasError && !this.state.email ? true : false}
@@ -225,11 +227,12 @@ class Invite extends Component {
               </GridContainer>
             </CardBody>
             <CardFooter>
-              <Button type="submit" color="info" disabled={!project ? true : false}>Invite</Button>
+              <Button type="submit" color="info" disabled={hasError ? true : false}>Invite</Button>
               {backToProject ?
               <Button color="info" onClick={this.goBack.bind(this)}>Back to project</Button>
               : null }
             </CardFooter>
+              </form>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
@@ -256,8 +259,7 @@ class Invite extends Component {
               </div>
               : null}
               <div style={{ margin: '20px', textAlign: 'center'}}>
-              {isFetching ? <CircularProgress className="my-spinner" classes={{ colorPrimary:'#26c6da' }} />  : null }
-
+              {isFetching ? <StyledSpinner />  : null }
               </div>
               {emails.length && !isFetching ? 
               <div>
@@ -280,8 +282,7 @@ class Invite extends Component {
           </Card>
         </GridItem>
       </GridContainer>
-    </form>
-        )
+      )
       }
 }
 
