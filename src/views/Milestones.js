@@ -80,7 +80,17 @@ class Milestones extends Component {
               closeNotification={() => this.setState({ tr: false })}
               close
               />
-            : null }
+            : 
+            <Snackbar
+              place="tr"
+              color="success"
+              icon={CheckCircleOutline}
+              message={this.state.successMessage}
+              open={this.state.tr}
+              closeNotification={() => this.setState({ tr: false })}
+              close
+            />
+             }
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">

@@ -239,11 +239,7 @@ class Project extends Component {
   }
 
 
-const mapDispatchToProps = dispatch => { 
-  return { 
-    getProject: id => dispatch(getProject(id)),
-   }
-}
+const mapDispatchToProps = dispatch => { return { getProject: id => dispatch(getProject(id)) }}
 
 const mapStateToProps = state => ({ 
   project: state.project.project,

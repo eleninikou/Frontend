@@ -28,7 +28,7 @@ import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-
 
 import draftToHtml from 'draftjs-to-html'
 import ImageUploader from 'react-images-upload'
-import DangerDialogWrapped from '../../components/'
+import DangerDialogWrapped from '../../components/modal/DangerDialog'
 
 
 class EditTicketForm extends Component {

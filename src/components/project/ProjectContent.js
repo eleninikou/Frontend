@@ -45,7 +45,7 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
                           </Avatar>
                         </Tooltip>
                   </ListItemAvatar>
-                  <ListItemText primary={project.milestones ? project.milestones.length : 0} />
+                  <ListItemText primary={project.milestones ? 'Milestones: ' + project.milestones.length : 0} />
                 </ListItem>
                 <ListItem>
                   <ListItemAvatar>
@@ -59,7 +59,7 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
                           </Avatar>
                         </Tooltip>
                   </ListItemAvatar>
-                  <ListItemText primary={project.tickets ? project.tickets.length : 0} />
+                  <ListItemText primary={project.tickets ? 'Tickets: ' +project.tickets.length : 0} />
                 </ListItem>
                 <ListItem>
                   <ListItemAvatar>
@@ -73,7 +73,7 @@ const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
                           </Avatar>
                         </Tooltip>
                   </ListItemAvatar>
-                  <ListItemText primary={team ? team.length : 0 } />
+                  <ListItemText primary={team ? 'Team: ' + team.length : 0 } />
                 </ListItem>
               </List> 
 

@@ -1,36 +1,36 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie'
 
 // Redux
 import { connect } from 'react-redux'
-import { getMilestone, milestoneEdit, deleteMilestone } from '../redux/actions/milestones/Actions'
+import { getMilestone, milestoneEdit } from '../redux/actions/milestones/Actions'
 
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx";
-import GridContainer from "../components/theme/Grid/GridContainer.jsx";
-import Card from "../components/theme/Card/Card";
-import CardBody from "../components/theme/Card/CardBody.jsx";
-import Button from "../components/theme/CustomButtons/Button.jsx";
-import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
-import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
+import Card from "../components/theme/Card/Card"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import Button from "../components/theme/CustomButtons/Button.jsx"
+import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 
 // Icons
-import Note from "@material-ui/icons/Note";
-import Info from "@material-ui/icons/Info";
-import DeleteForever from "@material-ui/icons/DeleteForever";
+import Note from "@material-ui/icons/Note"
+import Info from "@material-ui/icons/Info"
+import DeleteForever from "@material-ui/icons/DeleteForever"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 
 // Styles
-import withStyles from "@material-ui/core/styles/withStyles";
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import withStyles from "@material-ui/core/styles/withStyles"
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
 
 // Components
-import MilestoneContent from '../components/milestone/MilestoneContent';
-import EditMilestoneForm from '../components/milestone/EditMilestoneForm';
-import MilestoneTickets from '../components/milestone/MilestoneTickets';
-
+import MilestoneContent from '../components/milestone/MilestoneContent'
+import EditMilestoneForm from '../components/milestone/EditMilestoneForm'
+import MilestoneTickets from '../components/milestone/MilestoneTickets'
+import { DangerDialogWrapped } from '../components'
 
 class Milestone extends Component {
     constructor(props) {
@@ -44,9 +44,9 @@ class Milestone extends Component {
         selectedDate: '',
         due_date: '',
         creator: '',
-        id: ''
+        id: '',
+        open: false,
       }
-      this.milestoneDelete = this.milestoneDelete.bind(this);
   }
   
   componentWillMount() {
@@ -135,6 +135,11 @@ class Milestone extends Component {
       }})
   }
 
+  handleClickOpen = () => { this.setState({ open: true }) }
+
+  handleClose = open => { this.setState({ open })}
+
+
   render() {
     const { classes, tickets, successMessage } = this.props;
     const { edit, creator, auth_user_id, milestone } = this.state;
@@ -194,9 +199,16 @@ class Milestone extends Component {
                       tabIcon: DeleteForever,
                       tabContent: (
                         <CardBody>
-                          <Button color="warning" onClick={this.milestoneDelete}>
+                          <Button color="warning" onClick={this.handleClickOpen}>
                             Delete milestone
                           </Button>
+                          <DangerDialogWrapped 
+                              type={'milestone'}
+                              title={'Are you sure you want to delete this milestone?'}
+                              id={milestone.id}
+                              open={this.state.open}
+                              onClose={this.handleClose}
+                            />
                         </CardBody>
                       )
                     }
@@ -214,7 +226,6 @@ const mapDispatchToProps = dispatch => {
   return { 
     getMilestone: id => dispatch(getMilestone(id)),
     milestoneEdit: (milestone, id) => dispatch(milestoneEdit(milestone, id)),
-    deleteMilestone: id => dispatch(deleteMilestone(id)),
 
   }
 }

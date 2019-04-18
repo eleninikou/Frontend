@@ -9,14 +9,20 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import Dialog from '@material-ui/core/Dialog'
-import PersonIcon from '@material-ui/icons/Person'
-import AddIcon from '@material-ui/icons/Add'
 import blue from '@material-ui/core/colors/blue'
 import DialogTitle from '@material-ui/core/DialogTitle'
+
+import Card from "../theme/Card/Card"
+import CardHeader from "../theme/Card/CardHeader.jsx"
+
+import DeleteForever from '@material-ui/icons/DeleteForever'
+import Cancel from '@material-ui/icons/Cancel'
 
 import { connect } from 'react-redux'
 import { deleteTicket } from '../../redux/actions/tickets/Actions'
 import { deleteProject } from '../../redux/actions/projects/Actions'
+import { deleteMilestone } from '../../redux/actions/milestones/Actions'
+
 
 const styles = {
   avatar: {
@@ -26,25 +32,22 @@ const styles = {
 };
 
 class DangerDialog extends Component {
-    handleClose = () => {
-    this.props.onClose(false);
-  };
 
-  handleListItemClick = value => {
-    this.props.onClose(value);
-  };
+    handleClose = () => { this.props.onClose(false) }
 
-  ticketDelete() { 
-    this.props.deleteTicket(this.props.id)
-    .then((res) => {
-      if(this.props.successMessage) {
-        this.props.history.push({
-          pathname: '/home/projects', 
-          state: { successMessage: this.props.successMessage}
-        })
-      }
-    })
-  }
+    handleListItemClick = value => { this.props.onClose(value) }
+
+    ticketDelete() { 
+      this.props.deleteTicket(this.props.id)
+      .then((res) => {
+        if(this.props.successMessage) {
+          this.props.history.push({
+            pathname: '/home/projects', 
+            state: { successMessage: this.props.successMessage}
+          })
+        }
+      })
+    }
 
     // Redirect to projects
     deleteProject = () => { 
@@ -57,35 +60,61 @@ class DangerDialog extends Component {
             })
           }
         })
-      }
+    }
+
+    deleteMilestone = () => { 
+        // Delete milestone and show notification
+        this.props.deleteMilestone(this.props.id)
+        .then(() => { 
+            if(this.props.location.state === undefined) {
+              this.props.history.push({
+                pathname: '/home/milestones', 
+                state: { successMessage: this.props.successMessageMilestone}
+              })
+            }
+            else {
+            if (this.props.successMessageMilestone) {
+                this.props.history.push({
+                  pathname: '/home/projects', 
+                  state: { successMessage: this.props.successMessageMilestone}
+                })
+              }
+            }
+            })
+    }  
 
   render() {
     const { classes, onClose, selectedValue, id, title, type, ...other } = this.props;
 
     return (
       <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other}>
-            <DialogTitle id="simple-dialog-title">{title}</DialogTitle>
-        <div>
-          <List>
-              <ListItem onClick={type === 'ticket' ? this.ticketDelete.bind(this) : this.deleteProject.bind(this)} >
+          <Card>
+            <CardHeader color="danger"> 
+              <DialogTitle id="simple-dialog-title">{title}</DialogTitle>
+            </CardHeader>
+            <List style={{ display: 'flex', padding: '50px'}}>
+                <ListItem onClick={type === 'ticket' ? 
+                  this.ticketDelete.bind(this) : 
+                  type === 'project' ? this.deleteProject.bind(this) :
+                  this.deleteMilestone.bind(this)} >
+                  <ListItemAvatar >
+                    <Avatar style={{ backgroundColor: '#f44336' }}>
+                      <DeleteForever />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText primary="Delete" />
+                </ListItem>
+
+              <ListItem onClick={this.handleClose.bind(this)}>
                 <ListItemAvatar>
-                  <Avatar className={classes.avatar}>
-                    <PersonIcon />
+                  <Avatar>
+                    <Cancel />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary="Yes" />
+                <ListItemText primary="Cancel" />
               </ListItem>
-
-            <ListItem onClick={this.handleClose.bind(this)}>
-              <ListItemAvatar>
-                <Avatar>
-                  <AddIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="No" />
-            </ListItem>
-          </List>
-        </div>
+            </List>
+          </Card>
       </Dialog>
     );
   }
@@ -99,13 +128,14 @@ DangerDialog.propTypes = {
 
 const mapDispatchToProps = dispatch => { return { 
     deleteTicket: id => dispatch(deleteTicket(id)),
-    deleteProject: id => dispatch(deleteProject(id))
+    deleteProject: id => dispatch(deleteProject(id)),
+    deleteMilestone: id => dispatch(deleteMilestone(id))
   }}
 
   const mapStateToProps = state => ({
     successMessage: state.ticket.successMessage,
     successMessageProject: state.project.successMessage,
-
+    successMessageMilestone: state.milestone.successMessage
   })
 
 const DangerDialogWrapped = withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DangerDialog)))

@@ -119,7 +119,7 @@ componentWillMount = () => {
   } else { this.props.getAllProjects() }
 }
 
-componentWillUnmount = () => { this.setState({ backToProject: false}) }
+componentWillUnmount = () => { this.setState({ backToProject: false, successMessage: '' }) }
 
 goBack = () => { this.props.history.push({ pathname: `/home/project/${this.state.project_id}`}) }
 

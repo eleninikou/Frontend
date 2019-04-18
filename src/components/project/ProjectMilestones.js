@@ -1,31 +1,28 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import moment from 'moment';
-
-// Redux
-import { connect } from 'react-redux'
-import { deleteMilestone } from '../../redux/actions/milestones/Actions'
+import moment from 'moment'
 
 // Theme components
-import Table from "../theme/Table/Table.jsx";
-import Button from "../theme/CustomButtons/Button.jsx";
-import GridItem from "../theme/Grid/GridItem.jsx";
-import GridContainer from "../theme/Grid/GridContainer.jsx";
+import Table from "../theme/Table/Table.jsx"
+import Button from "../theme/CustomButtons/Button.jsx"
+import GridItem from "../theme/Grid/GridItem.jsx"
+import GridContainer from "../theme/Grid/GridContainer.jsx"
 
 // Material UI components
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import TablePagination from '@material-ui/core/TablePagination';
+import Tooltip from "@material-ui/core/Tooltip"
+import IconButton from "@material-ui/core/IconButton"
+import TablePagination from '@material-ui/core/TablePagination'
 
 // Icons
-import Close from "@material-ui/icons/Close";
-import ExitToApp from "@material-ui/icons/ExitToApp";
+import Close from "@material-ui/icons/Close"
+import ExitToApp from "@material-ui/icons/ExitToApp"
 
+import { DangerDialogWrapped }  from '../../components'
 
 
 class ProjectMilestones extends Component {
     constructor(props) {
-      super(props);
+      super(props)
   
       this.state = { 
           id: this.props.project.id,
@@ -33,8 +30,8 @@ class ProjectMilestones extends Component {
           page: 0,
           rowsPerPage: 5,
           ticketRowsPerPage: 5,
+          open: false,
       }
-
   }
 
     handleChangePage = (event, page) => { this.setState({ page }) } 
@@ -42,14 +39,6 @@ class ProjectMilestones extends Component {
     handleChangeRowsPerPage = event => { this.setState({ rowsPerPage: event.target.value }) }  
 
     editMilestone = id => { this.props.history.push(`/home/milestone/${id}`) }
-
-    deleteMilestone = id => { 
-      // Delete milestone and show notification
-      this.props.deleteMilestone(id)
-      .then(res => {
-          this.props.getSuccess(this.props.successMessage)
-      })
-    }
 
     // Redirect to create milestone
     createNewMilestone = () => { 
@@ -61,6 +50,11 @@ class ProjectMilestones extends Component {
           }
         }) 
     }
+
+    handleClickOpen = () => { this.setState({ open: true }) }
+
+    handleClose = open => { this.setState({ open })}
+  
 
     render() {
         const { milestones, classes, creator } = this.props;
@@ -97,18 +91,27 @@ class ProjectMilestones extends Component {
                   ), 
                   creator ? 
                   (
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="Delete milestone"
-                      placement="top"
-                      onClick={this.deleteMilestone.bind(this, milestone.id)}
-                      classes={{ tooltip: classes.tooltip }}>
-                      <IconButton
-                        aria-label="Close"
-                        className={classes.tableActionButton}>
-                        <Close style={{color:'#f44336'}} className={ classes.tableActionButtonIcon + " " + classes.close}/>
-                      </IconButton>
-                    </Tooltip>
+                    <div>
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="Delete milestone"
+                        placement="top"
+                        onClick={this.handleClickOpen}
+                        classes={{ tooltip: classes.tooltip }}>
+                        <IconButton
+                          aria-label="Close"
+                          className={classes.tableActionButton}>
+                          <Close style={{color:'#f44336'}} className={ classes.tableActionButtonIcon + " " + classes.close}/>
+                        </IconButton>
+                      </Tooltip>
+                      <DangerDialogWrapped 
+                        type={'milestone'}
+                        title={'Are you sure you want to delete this milestone?'}
+                        id={milestone.id}
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                      />
+                    </div>
                   ) 
                   : null
                 ])
@@ -128,16 +131,13 @@ class ProjectMilestones extends Component {
             { creator ?
             <GridItem xs={12} sm={2} md={2}>
               <Button color="success"  onClick={this.createNewMilestone.bind(this)}>Create new Milestone</Button>
-            </GridItem>
-            : null }
+            </GridItem> : null }
           </GridContainer>
       </div>  
       )
   }
 }
 
-const mapDispatchToProps = dispatch => { return {  deleteMilestone: id => dispatch(deleteMilestone(id)) } }
-const mapStateToProps = state => ({ successMessage: state.milestone.successMessage });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectMilestones))
+export default withRouter(ProjectMilestones)
  
