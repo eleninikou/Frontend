@@ -21,7 +21,7 @@ import DeleteForever from "@material-ui/icons/DeleteForever"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
-import CircularProgress from '@material-ui/core/CircularProgress'
+import StyledSpinner from '../components/spinner/Spinner'
 
 // Style
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
@@ -131,10 +131,10 @@ class Project extends Component {
 
     
   render() {
-      const { classes, team, project, tickets, isFetching } = this.props;
-      const { edit, successMessage, user, milestones } = this.state;
+      const { classes, team, project, tickets, isFetching } = this.props
+      const { edit, successMessage, user, milestones } = this.state
       return (
-        isFetching && !project ? <CircularProgress className={classes.progress} variant="determinate"/> :
+        isFetching ? <StyledSpinner /> :
           <div>
               <Snackbar
                 place="tr"

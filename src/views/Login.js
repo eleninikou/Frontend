@@ -52,9 +52,9 @@ class Login extends Component {
 
   render() {
     return (
-        <GridContainer className={''} > 
+        <GridContainer > 
           <GridItem xs={12} sm={12} md={6} >
-          <Card >
+          <Card>
             <CardHeader color="success">
               <h4 className={this.props.classes.cardTitleWhite}>Login</h4>
             </CardHeader>

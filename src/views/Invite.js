@@ -22,7 +22,6 @@ import TextField from '@material-ui/core/TextField'
 import withStyles from "@material-ui/core/styles/withStyles"
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import CircularProgress from '@material-ui/core/CircularProgress'
 
 //Icons
 import People from "@material-ui/icons/People"

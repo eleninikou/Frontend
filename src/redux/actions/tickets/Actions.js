@@ -210,7 +210,6 @@ export const deleteAttachment = id => {
           "Content-Type": "application/json"}
       })
       const success = await res.json();
-      debugger;
       return deleteAttachmentSuccess(success);
 
     } catch (error) { dispatch ({ type: DELETE_ATTACHMENT_FAILURE, message: 'Could not delete image' }); return error; }
@@ -233,7 +232,6 @@ export const removeFromStorage = url => {
           "Content-Type": "application/json"}
       })
       const success = await res.json();
-      debugger;
       return removeFromStorageSuccess(success);
 
     } catch (error) { dispatch ({ type: REMOVE_FROM_STORAGE_FAILURE, message: 'Could not remove image' }); return error; }

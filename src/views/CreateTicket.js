@@ -80,7 +80,6 @@ goBack = () => { this.props.history.push({ pathname: `/home/project/${this.state
 
 handleDateChange = event => { this.setState({ selectedDate: event.target.value }) }
 
-
 submit = event => {
   event.preventDefault()
 
@@ -178,8 +177,8 @@ componentWillMount = () => {
 
     // If redirected from specific project preselect project 
     if (this.props.location.state ? 
-        this.props.location.state.project_id || this.props.location.state.backToProject 
-      : null
+        this.props.location.state.project_id || 
+        this.props.location.state.backToProject : null
       ) {
       this.setState({ 
         backToProject: true, 
@@ -292,7 +291,7 @@ render() {
                           value={this.state.project_id}
                           onChange={this.handleChange}
                           inputProps={{  name: 'project_id',  id: 'project_id' }} >
-                            {backToProject ?  
+                            {backToProject && project ?  
                               <MenuItem  key={project.id} value={project.id}> 
                                 {project.name} 
                               </MenuItem>
@@ -457,25 +456,31 @@ render() {
                             onChange={this.onDrop}
                             imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg']}
                             maxFileSize={5242880}
-                        />
+                          />
+
+                      <GridContainer>
                         {urls.length ? urls.map(url => {
                           return(
-                            <div style={{ display: 'flex', width: '100%'}}>
-                              <img src={url} style={{ width: 'auto', maxWidth: '100%', maxHeight: '200px', display: 'block'}} alt="preview" /> 
+                            <GridItem xs={12} sm={12} md={3}>
+                            <div style={{ display: 'flex', width: '100%', position: 'relative'}}>
+                              <img src={url} style={{ width: 'auto', maxWidth: '100%', maxHeight: '200px', display: 'block', position: 'relative'}} alt="preview" /> 
                                 <Tooltip
                                   id="tooltip-top-start"
                                   title="Remove image"
                                   placement="top"
                                   onClick={this.removeImage.bind(this, url)}
                                   classes={{ tooltip: classes.tooltip }}>  
-                                    <Avatar style={{ backgroundColor: '#f44336' }}> 
+                                    <Avatar style={{ backgroundColor: '#f44336', height: '30px', width: '30px',position: 'absolute', right: '-12px', top: '-12px' }}> 
                                       <Remove /> 
                                     </Avatar>
                                 </Tooltip>
                             </div>
+                            </GridItem>
                           )
                         })
                           : null}
+                      </GridContainer>
+
                     </FormControl>
                   </GridItem>
               </GridContainer>

@@ -24,6 +24,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 
 // Components 
 import { TicketIconList, TicketContent, EditTicketForm, TicketComments, AddComment } from '../components'
+import StyledSpinner from '../components/spinner/Spinner'
 
 // Icon
 import Edit from "@material-ui/icons/Edit"
@@ -57,6 +58,7 @@ class Ticket extends Component {
     this.props.getTicket(this.props.match.params.id)
     .then(res => {
       if(!res.ticket)
+      // If no ticket, redirect with notification message
         this.props.history.push({
           pathname: '/home/tickets', 
           state: { errorMessage: 'There is no ticket with that id' }
@@ -87,6 +89,7 @@ class Ticket extends Component {
       }.bind(this), 4000);
   }
 
+  // Toggle editform and button text
   showForm = event => {
     this.state.edit ?  
       this.setState({ edit: false, ButtonText: 'Edit Ticket' }) 
@@ -102,6 +105,7 @@ class Ticket extends Component {
     }
   }
 
+  // Toggle comments and button text
   showComments = event => {
     this.state.showComments ?  
       this.setState({ showComments: false, CommentText: 'Show Comments' }) 
@@ -113,6 +117,7 @@ class Ticket extends Component {
       })
   }
 
+  // Toogle comment form and button text
   showCommentForm = event => {
     this.state.addComment ?  
       this.setState({ addComment: false, ButtonTextComment: 'Add Comment'}) 
@@ -124,12 +129,13 @@ class Ticket extends Component {
       })
   }
 
+
   hideForm = hide => {
     this.setState({ addComment: hide, ButtonTextComment: 'Add Comment'}) 
     this.setState({ showComments: true, CommentText: 'Hide Comments' })
   }
 
-
+  // show notification and update component
   getSuccess = successMessage => {
     this.setState({ successMessage })
     this.showNotification('tr')
@@ -169,7 +175,7 @@ class Ticket extends Component {
       description, 
       user,
       images
-    } = this.props;
+    } = this.props
 
     const { 
       edit, 
@@ -179,8 +185,9 @@ class Ticket extends Component {
       successMessage, 
       CommentText, 
       showComments,
-    } = this.state;
+    } = this.state
 
+    // To display lightgallery images
     var galleryImages = [ images ? images.map(image => { 
       return ({ original: image.attachment ,
                thumbnail: image.attachment }) 
@@ -198,8 +205,7 @@ class Ticket extends Component {
           closeNotification={() => this.setState({ tr: false })} 
           close /> 
 
-        {isFetching && !ticket? <CircularProgress className="my-spinner" color="primary" /> 
-        : 
+        {isFetching && !ticket? <CircularProgress className="my-spinner" color="primary" /> : 
         <GridContainer>          
           <GridItem xs={12} sm={12} md={12}>
             <Card>
@@ -208,45 +214,38 @@ class Ticket extends Component {
                 <h4 className={classes.cardTitleWhite}>Assigned to {ticket.assigned_user ? ticket.assigned_user.name : null}
                 </h4>
               </CardHeader>
-                <CardBody>
+              <CardBody>
                 <GridContainer>          
                   <GridItem xs={12} sm={12} md={5}>
                     <TicketIconList ticket={ticket} classes={classes}/>
                   </GridItem> 
                   <GridItem xs={12} sm={12} md={7}>
-                  {description ? 
-                    <TicketContent description={description}/>
-                  : <CircularProgress className="my-spinner" color="primary" />}
+                    {description ?  <TicketContent description={description}/> : <StyledSpinner />}
                   </GridItem>    
                   <GridItem xs={12} sm={12} md={12} >
-                  {images.length ? 
-                    <Card>
-                      <ImageGallery items={galleryImages[0]} />
-                    </Card> : null}
+                    {images.length ? 
+                      <Card>
+                        <ImageGallery items={galleryImages[0]} />
+                      </Card> 
+                    : null}
                   </GridItem> 
                 </GridContainer>
               </CardBody> 
               <CardFooter>
-
                 {comments.length && !addComment ?
-                <div>
-                  <Button color="primary" onClick={this.showComments}>{CommentText}</Button> 
-                  {showComments ? 
-                  <Button color="primary" onClick={this.showCommentForm}>{ButtonTextComment}</Button>
-                  : null }  
-                </div>  
+                  <div>
+                    <Button color="primary" onClick={this.showComments}>{CommentText}</Button> 
+                    {showComments ? <Button color="primary" onClick={this.showCommentForm}>{ButtonTextComment}</Button> : null }  
+                  </div>  
                 : <Button color="primary" onClick={this.showCommentForm}>{ButtonTextComment}</Button> }  
 
                 {(ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id)) ?
-                <Button color="primary" onClick={this.showForm}>
-                  {ButtonText}
-                </Button> 
+                  <Button color="primary" onClick={this.showForm}> {ButtonText} </Button> 
                 : null }
               </CardFooter>
             </Card>
           </GridItem> 
-        </GridContainer>
-        }
+        </GridContainer> }
 
 
         {/* Edit Ticket if authorized */}
@@ -257,7 +256,6 @@ class Ticket extends Component {
             <h4 className={classes.cardTitleWhite}> Update ticket</h4> 
             </CardHeader>
             <GridContainer>         
-
               <GridItem xs={12} sm={12} md={12}>
                 <EditTicketForm 
                   images={images}
@@ -280,7 +278,6 @@ class Ticket extends Component {
                 />
               </GridItem>
             </GridContainer>
- 
            </Card>
           : null }    
 

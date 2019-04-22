@@ -20,6 +20,7 @@ import image from "../assets/img/sidebar-2.jpg"
 
 import routes from "../routes.js"
 import { CreateProject, Project, CreateTicket, Ticket, Milestone, CreateMilestone, Invite } from '../views'
+import StyledSpinner from '../components/spinner/Spinner'
 
 import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx"
 import "perfect-scrollbar/css/perfect-scrollbar.css"
@@ -83,7 +84,7 @@ class Home extends React.Component {
   };
 
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     if (navigator.platform.indexOf("Win") > -1) {
       const ps = new PerfectScrollbar(this.refs.mainPanel)
     }
@@ -112,35 +113,40 @@ class Home extends React.Component {
   componentWillUnmount() { window.removeEventListener("resize", this.resizeFunction) }
 
   render() {
-    const { user, classes, ...rest } = this.props;
+    const { user, classes, isFetching,  ...rest} = this.props;
+
     return (
-      <div className={classes.wrapper}>
-        <Sidebar
-          routes={routes}
-          logoText={user ? user.name : '' }
-          image={this.state.image}
-          logo={this.props.user.avatar}
-          handleDrawerToggle={this.handleDrawerToggle}
-          open={this.state.mobileOpen}
-          color={this.state.color}
-          {...rest}
-        />
-        <div className={classes.mainPanel} ref="mainPanel">
-
-          {/* <Navbar
+      isFetching ? 
+        <StyledSpinner />
+        : user ?
+        <div className={classes.wrapper}>
+          <Sidebar
             routes={routes}
+            logoText={user ? user.name : '' }
+            image={this.state.image}
+            logo={this.props.user.avatar}
             handleDrawerToggle={this.handleDrawerToggle}
+            open={this.state.mobileOpen}
+            color={this.state.color}
             {...rest}
-          />  */}
+          />
+          <div className={classes.mainPanel} ref="mainPanel">
 
-          {this.getRoute() ? (
-            <div className={classes.content}>
-              <div className={classes.container}>{switchRoutes}</div>
-            </div>
-          ) : ('')} 
-          {this.getRoute() ? <Footer /> : null}
+            {/* <Navbar
+              routes={routes}
+              handleDrawerToggle={this.handleDrawerToggle}
+              {...rest}
+            />  */}
+
+            {this.getRoute() ? (
+              <div className={classes.content}>
+                <div className={classes.container}>{switchRoutes}</div>
+              </div>
+            ) : ('')} 
+            {this.getRoute() ? <Footer /> : null}
+          </div>
         </div>
-      </div>
+        : <StyledSpinner />
     );
   }
 }
@@ -152,6 +158,9 @@ const mapDispatchToProps = dispatch => {
   return { getUser: id=> dispatch(getUser(id))}
 }
 
-const mapStateToProps = state => ({ user: state.auth.user })
+const mapStateToProps = state => ({ 
+  user: state.auth.user,
+  isFetching: state.auth.isFetching 
+})
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Home)))

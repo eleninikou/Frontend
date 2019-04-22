@@ -77,11 +77,11 @@ class LoginForm extends Component {
   const { classes } = this.props
   return (
     <GridContainer >
-        <GridItem xs={12} sm={12} md={12} >
+        <GridItem xs={12} sm={12} md={12}>
           <GridContainer >
             <CardBody >
             <form style={{ width: '100%', textAlign: 'center'}} onSubmit={this.submit}>
-              <GridItem xs={12} sm={12} md={12}>
+              <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
                 <TextField 
                     name="email" 
@@ -94,7 +94,7 @@ class LoginForm extends Component {
                 />
               </FormControl>
               </GridItem>
-              <GridItem xs={12} sm={12} md={12}>
+              <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
                 <FormControl className={classes.formControl}>
                   <TextField 
                       name="password" 
@@ -107,7 +107,7 @@ class LoginForm extends Component {
                   />
                 </FormControl>
               </GridItem> 
-              <GridItem xs={12} sm={12} md={12} style={{ marginTop: '30px'}}>
+              <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', marginTop: '30px'}}>
                 <FormControl className={classes.formControl}>
                   <Button 
                     type="submit" 
@@ -126,13 +126,7 @@ class LoginForm extends Component {
             </form>
             {!this.props.email ?
             <div>
-              <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
-                  <Typography style={{ margin: '20px'}}>
-                    OR
-                  </Typography>
-              </GridItem> 
-
-              <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
+              <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', textAlign: 'center', marginTop: '20px'}}>
               <FormControl className={classes.formControl}>
                 <GoogleLogin
                   clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"

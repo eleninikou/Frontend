@@ -31,7 +31,7 @@ import Comment from "@material-ui/icons/Comment"
 import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
-import Cookies from "universal-cookie"
+import StyledSpinner from '../components/spinner/Spinner'
 
 
 class Dashboard extends Component {
@@ -78,7 +78,6 @@ class Dashboard extends Component {
       const { rowsPerPage, page } = this.state
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage)
 
-      console.log(activity)
         return (
           <div>
             <GridContainer> 
@@ -92,7 +91,7 @@ class Dashboard extends Component {
                         tabIcon: Today,
                         tabContent: (
                           isFetching ?
-                            <CircularProgress className="my-spinner" color="primary" />
+                            <StyledSpinner />
                           :
                           <div>
                             <Table

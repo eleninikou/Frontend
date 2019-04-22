@@ -104,7 +104,7 @@ class Projects extends Component {
                 <h4 className={this.props.classes.cardTitleWhite}>Projects</h4>
               </CardHeader>
                 <CardBody>
-                  <GridItem xs={12} sm={2} md={6} style={{ float: 'right', width:'100px'}}>
+                  {/* <GridItem xs={12} sm={2} md={6} style={{ float: 'right', width:'100px'}}>
                     <FormControl className={this.props.classes.formControl}>       
                       <TextField
                         value={this.state.status_id}
@@ -119,7 +119,7 @@ class Projects extends Component {
                           <MenuItem value={0}> Inacctive </MenuItem> 
                       </TextField> 
                     </FormControl>
-                  </GridItem>
+                  </GridItem> */}
                   <ProjectsTable 
                     projects={projects}
                     classes={this.props.classes}
