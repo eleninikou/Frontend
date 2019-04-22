@@ -60,4 +60,5 @@
     "dotenv": "^7.0.0"
   },
   "homepage": "https://ticket-frontend.herokuapp.com/"
+  
 }
