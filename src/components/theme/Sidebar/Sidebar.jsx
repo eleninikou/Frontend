@@ -88,24 +88,24 @@ const Sidebar = ({ ...props }) => {
   );
 
 
-  var brand = ( ''
-    // <div className={classes.logo}>
-    //   <a href="/home/user"
-    //     style={{ display: 'flex', flexDirection: 'column', textAlign: 'center'}}
-    //     className={classNames(classes.logoLink, {
-    //       [classes.logoLinkRTL]: props.rtlActive
-    //     })}>
-    //     <div className={classes.logoImage}>
-    //     {logo ?
-    //       <img src={logo} alt="logo" className={classes.img} style={{ borderRadius: '50%', height: '50px', width: '50px'}} />
-    //       :
-    //       <Avatar> 
-    //         <AccountCircle /> 
-    //       </Avatar>}
-    //     </div>
-    //     <h4 style={{ color: 'white', fontFamily: "Roboto", fontSize: '12px'}}>{logoText}</h4>
-    //   </a>
-    // </div>
+  var brand = ( 
+    <div className={classes.logo}>
+      <a href="/home/user"
+        style={{ display: 'flex', flexDirection: 'column', textAlign: 'center'}}
+        className={classNames(classes.logoLink, {
+          [classes.logoLinkRTL]: props.rtlActive
+        })}>
+        <div className={classes.logoImage} style={{ margin: 'auto', paddingBottom: '70px', width: 'auto'}}>
+        {logo ?
+          <img src={logo} alt="logo" style={{ borderRadius: '50%', height: '60px', width: '60px'}} />
+          :
+          <Avatar> 
+            <AccountCircle /> 
+          </Avatar>}
+          <h4 style={{ color: 'white', fontFamily: "Roboto", fontSize: '14px', width: 'auto'}}>{logoText}</h4>
+        </div>
+      </a>
+    </div>
   );
   return (
     <div>

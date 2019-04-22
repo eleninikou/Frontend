@@ -79,6 +79,7 @@ class Dashboard extends Component {
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage)
 
         return (
+          activity ? 
           <div>
             <GridContainer> 
               <GridItem xs={12} sm={12} md={12}>
@@ -161,7 +162,7 @@ class Dashboard extends Component {
                 </Card>
               </GridItem>
             </GridContainer>
-          </div>
+          </div> : < StyledSpinner />
         );
       }
 }

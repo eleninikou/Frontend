@@ -74,3 +74,8 @@
 .image-gallery-slide img {
   width: auto !important;
   max-width: 100%; }
+
+.fileUploader {
+  width: 30% !important;
+  margin: auto;
+  margin-bottom: 70px; }

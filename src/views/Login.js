@@ -53,7 +53,7 @@ class Login extends Component {
   render() {
     return (
         <GridContainer > 
-          <GridItem xs={12} sm={12} md={6} >
+          <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', marginTop: '50vh', transform: 'translateY(-50%)'}}>
           <Card>
             <CardHeader color="success">
               <h4 className={this.props.classes.cardTitleWhite}>Login</h4>
