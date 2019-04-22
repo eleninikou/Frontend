@@ -30,11 +30,8 @@ import DangerDialogWrapped from '../../components/modal/DangerDialog'
 
   class TicketComments extends Component {
     constructor(props) {
-      super(props);
-
-      this.state = {
-        open: false,
-      }
+      super(props)
+      this.state = { open: false }
   }
 
   handleClickOpen = () => { this.setState({ open: true }) }
@@ -64,16 +61,16 @@ import DangerDialogWrapped from '../../components/modal/DangerDialog'
                 <ListItemText primary={comment.user ? comment.user.name + ' | ' + moment(comment.created_at).format('YYYY-MM-DD') : null } />
                 {comment.user_id === parseInt(user.id) ?
                  <Tooltip
-                 id="tooltip-top-start"
-                 title="Delete comment"
-                 placement="top"
-                 onClick={this.handleClickOpen}
-                 classes={{ tooltip: classes.tooltip }}>
-                   <IconButton
-                     aria-label="Close"
-                     className={classes.tableActionButton}>
-                     <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
-                   </IconButton>
+                  id="tooltip-top-start"
+                  title="Delete comment"
+                  placement="top"
+                  onClick={this.handleClickOpen}
+                  classes={{ tooltip: classes.tooltip }}>
+                    <IconButton
+                      aria-label="Close"
+                      className={classes.tableActionButton}>
+                      <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
+                    </IconButton>
                  </Tooltip>
                : null}
                   <DangerDialogWrapped 
@@ -93,16 +90,12 @@ import DangerDialogWrapped from '../../components/modal/DangerDialog'
                   } 
                </GridItem>
                {comment.images.length ?
-               <Card>
                   <GridItem xs={12} sm={12} md={12} style={{ marginTop: '100px'}} >
                    <ImageGallery items={
                      comment.images.map(image => {
-                       return ({ original: image.attachment ,
-                         thumbnail: image.attachment })                   
-                       }) 
+                       return ({ original: image.attachment, thumbnail: image.attachment })}) 
                      } />
                   </GridItem> 
-                </Card>
                 : null }
               </GridContainer>
             </ListItem>

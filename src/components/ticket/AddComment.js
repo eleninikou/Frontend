@@ -100,6 +100,15 @@ class AddComment extends Component {
     }
   }
 
+  // If image are uploaded but no comment is created -> delete them
+  componentWillUnmount = () => {
+    if(this.state.urls.length) {
+      this.state.urls.map(url => {
+        return this.props.removeFromStorage(url)
+      })
+    }
+  }
+
 
   render() {
     const { editorState, urls } = this.state
@@ -129,8 +138,8 @@ class AddComment extends Component {
             <GridContainer>
             {urls.length ? urls.map(url => {
               return (
-                <GridItem xs={12} sm={12} md={3}>
-                  <div style={{ display: 'flex', width: '100%', position: 'relative'}}>
+                <GridItem xs={3} sm={3} md={3}>
+                  <div style={{ width: 'auto', position: 'relative'}}>
                     <img src={url} style={{ width: 'auto', maxWidth: '100%', maxHeight: '200px', display: 'block', position: 'relative'}} alt="preview" /> 
                       <Tooltip
                         id="tooltip-top-start"

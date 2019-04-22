@@ -20,8 +20,6 @@ import LowPriority from "@material-ui/icons/LowPriority"
 import LinearScale from '@material-ui/icons/LinearScale'
 import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor"
 
-
-
 const TicketIconList = ({ ticket, classes }) => {
     return (
         <List className="my-ticket-list">
@@ -33,7 +31,7 @@ const TicketIconList = ({ ticket, classes }) => {
                     placement="top"
                     classes={{ tooltip: classes.tooltip }}>
                   <Avatar style={{ backgroundColor: '#041031' }}> 
-                    <DateRange/> 
+                    <DateRange style={{ fontSize: '18px'}}/> 
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
@@ -47,7 +45,9 @@ const TicketIconList = ({ ticket, classes }) => {
                 placement="top"
                 classes={{ tooltip: classes.tooltip }}>  
                   <Avatar style={{backgroundColor: '#f44336'}}> 
-                    <PersonPin /> 
+                    {ticket.assigned_user ?
+                    <img src={ticket.assigned_user.avatar} alt="user" style={{ display: 'block', width: '40px', height: '40px', borderRadius: '50%' }}/>
+                    : <PersonPin style={{ fontSize: '18px'}} /> }
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
@@ -61,7 +61,7 @@ const TicketIconList = ({ ticket, classes }) => {
                   placement="top"
                   classes={{ tooltip: classes.tooltip }}>
                   <Avatar style={{ backgroundColor: '#4caf50' }}> 
-                    <LinearScale /> 
+                    <LinearScale style={{ fontSize: '18px'}}/> 
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
@@ -76,13 +76,13 @@ const TicketIconList = ({ ticket, classes }) => {
                   classes={{ tooltip: classes.tooltip }}>
                   <Avatar style={{ backgroundColor: '#8e24aa'}}> 
                     {ticket.type_id === 1 ?
-                      <BugReport /> 
+                      <BugReport style={{ fontSize: '18px'}}/> 
                       : ticket.type_id === 2 ?
-                      <LowPriority />
+                      <LowPriority style={{ fontSize: '18px'}}/>
                       : ticket.type_id === 3 ?
-                      <LinearScale />
+                      <LinearScale style={{ fontSize: '18px'}}/>
                       : 
-                      <YoutubeSearchedFor /> }  
+                      <YoutubeSearchedFor style={{ fontSize: '18px'}}/> }  
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
@@ -97,15 +97,15 @@ const TicketIconList = ({ ticket, classes }) => {
                   classes={{ tooltip: classes.tooltip }}>                        
                     {ticket.priority == 'low' ?
                       <Avatar style={{backgroundColor: '#FADC08'}}> 
-                        <Warning /> 
+                        <Warning style={{ fontSize: '18px'}}/> 
                       </Avatar>
                     : ticket.priority == 'normal' ?
                       <Avatar style={{backgroundColor: '#4caf50'}}> 
-                        <Warning /> 
+                        <Warning style={{ fontSize: '18px'}}/> 
                       </Avatar>
                     : 
                       <Avatar style={{backgroundColor: '#f44336'}}> 
-                        <Warning /> 
+                        <Warning style={{ fontSize: '18px'}}/> 
                       </Avatar> }
                 </Tooltip>
               </ListItemAvatar>
@@ -119,7 +119,7 @@ const TicketIconList = ({ ticket, classes }) => {
                 placement="top"
                 classes={{ tooltip: classes.tooltip }}>  
                   <Avatar style={{backgroundColor: '#ff9800'}}> 
-                    <Timeline /> 
+                    <Timeline style={{ fontSize: '18px'}}/> 
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
@@ -133,7 +133,7 @@ const TicketIconList = ({ ticket, classes }) => {
                 placement="top"
                 classes={{ tooltip: classes.tooltip }}>  
                   <Avatar style={{backgroundColor: '#00acc1'}}> 
-                    <Comment /> 
+                    <Comment style={{ fontSize: '18px'}}/> 
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
