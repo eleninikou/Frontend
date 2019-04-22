@@ -90,7 +90,7 @@ class ProjectTickets extends Component {
         <div>
         <GridContainer>              
           <GridItem xs={12} sm={12} md={12}>        
-            <GridContainer>
+            <GridContainer style={{ padding: '10px 20px 20px'}}>
               <GridItem xs={12} sm={12} md={4}>
               <FormControl className={classes.formControl}>       
                 <TextField
@@ -99,7 +99,7 @@ class ProjectTickets extends Component {
                   label="Type"
                   onChange={this.handleChange.bind(this)}
                   className="my-select"
-                  variant="outlined"
+                  // variant="outlined"
                   margin="normal"
                   inputProps={{ name: 'type_id', id: 'type_id' }} >
                   <MenuItem value={null}>All</MenuItem>
@@ -114,12 +114,12 @@ class ProjectTickets extends Component {
                               >
                               <Avatar style={{ backgroundColor: '#8e24aa', height: '30px', width: '30px', marginRight: '20px'}}> 
                                 {type.id === 1 ?
-                                <BugReport /> 
+                                <BugReport style={{ fontSize: '18px'}} /> 
                                 : type.id === 2 ?
-                                <LowPriority />
+                                <LowPriority style={{ fontSize: '18px'}} />
                                 : type.id === 3 ?
-                                <LinearScale />
-                                : <YoutubeSearchedFor /> }  
+                                <LinearScale style={{ fontSize: '18px'}}/>
+                                : <YoutubeSearchedFor style={{ fontSize: '18px'}} /> }  
                               </Avatar>
                             </Tooltip>
                             {type.type} 
@@ -137,7 +137,7 @@ class ProjectTickets extends Component {
                     label="Status"
                     onChange={this.handleChange.bind(this)}
                     className="my-select"
-                    variant="outlined"
+                    // variant="outlined"
                     margin="normal"
                     inputProps={{ name: 'status_id', id: 'status_id' }} >
                       <MenuItem value={null}>All</MenuItem>
@@ -155,25 +155,25 @@ class ProjectTickets extends Component {
                   value={this.state.priority}
                   onChange={this.handleChange.bind(this)}
                   className="my-select"
-                  variant="outlined"
+                  // variant="outlined"
                   margin="normal"
                   inputProps={{ name: 'priority', id: 'priority' }} >
                     <MenuItem value={null}>All</MenuItem>
                     <MenuItem value='low'>
                         <Avatar style={{backgroundColor: '#FADC08', height: '30px', width: '30px', marginRight: '20px' }}> 
-                          <Warning /> 
+                          <Warning style={{ fontSize: '18px'}} /> 
                         </Avatar>
                           Low
                       </MenuItem>
                     <MenuItem value='normal'>
                     <Avatar style={{backgroundColor: '#4caf50', height: '30px', width: '30px', marginRight: '20px' }}> 
-                        <Warning /> 
+                        <Warning style={{ fontSize: '18px'}}/> 
                       </Avatar>
                       Normal
                     </MenuItem>
                     <MenuItem value='high'>
                       <Avatar style={{backgroundColor: '#f44336', height: '30px', width: '30px', marginRight: '20px'}}> 
-                        <Warning /> 
+                        <Warning style={{ fontSize: '18px'}}/> 
                       </Avatar> 
                       High
                     </MenuItem>
@@ -198,12 +198,12 @@ class ProjectTickets extends Component {
                       classes={{ tooltip: classes.tooltip }}>
                       <Avatar style={{ backgroundColor: '#8e24aa', height: '30px', width: '30px' }}> 
                         {ticket.type_id === 1 ?
-                          <BugReport /> 
+                          <BugReport style={{ fontSize: '18px'}}/> 
                           : ticket.type_id === 2 ?
-                          <LowPriority />
+                          <LowPriority style={{ fontSize: '18px'}}/>
                           : ticket.type_id === 3 ?
-                          <LinearScale />
-                          : <YoutubeSearchedFor /> }  
+                          <LinearScale style={{ fontSize: '18px'}}/>
+                          : <YoutubeSearchedFor style={{ fontSize: '18px'}}/> }  
                       </Avatar>
                     </Tooltip>
                     , 

@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-
 // Redux
 import { getProjectsByUser, getProject, getRoles, getTeam, invite, getEmails } from '../redux/actions/projects/Actions'
 import { connect } from 'react-redux'
-
 // Theme componets
 import Card from "../components/theme/Card/Card"
 import Table from "../components/theme/Table/Table.jsx"
@@ -15,22 +13,19 @@ import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
-
 // Material UI components
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
 import withStyles from "@material-ui/core/styles/withStyles"
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
-
+// Components
+import StyledSpinner from '../components/spinner/Spinner'
 //Icons
 import People from "@material-ui/icons/People"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
-
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import '../assets/css/main.css'
-import StyledSpinner from '../components/spinner/Spinner'
 
 
 class Invite extends Component {
@@ -63,9 +58,7 @@ class Invite extends Component {
         })
       }) 
       this.props.getEmails(this.props.match.params.id)
-      .then(() => {
-        this.setState({ emails: this.props.emails }) 
-      })
+      .then(() => { this.setState({ emails: this.props.emails }) })
     } else {
       // From dashboard. Get all projects
       this.props.getProjectsByUser()
@@ -76,9 +69,7 @@ class Invite extends Component {
   submit = event => {
     event.preventDefault()
 
-    
     if(this.state.email && this.state.project_id && this.state.project_role ) {
-      
       const invitation = {
         email: this.state.email,
         project_id: this.state.project_id,
@@ -125,9 +116,21 @@ class Invite extends Component {
     }
   }
 
+  getUnique(arr, comp) {
+    const unique = arr.map(e => e[comp])
+        .map((e, i, final) => final.indexOf(e) === i && i)
+        .filter(e => arr[e]).map(e => arr[e]);
+     return unique;
+  }
+
+
   render() {
   const { classes, projects, project, roles, successMessage, emails, isFetching } = this.props
   const { page, team, backToProject, hasError } = this.state
+
+  console.log(projects)
+  // let yourProjects = projects ? this.getUnique(projects,'project_id') : null
+
   return (
     <GridContainer>
     <Snackbar
@@ -155,7 +158,7 @@ class Invite extends Component {
                       error={hasError && !this.state.project_id? true : false}
                       disabled={backToProject ? true : false}
                       label="Project"
-                      variant="outlined"
+                      // variant="outlined"
                       margin="normal"
                       className="my-input"
                       value={this.state.project_id}
@@ -188,7 +191,7 @@ class Invite extends Component {
                         select
                         error={hasError && !this.state.project_role ? true : false}
                         label="Role"
-                        variant="outlined"
+                        // variant="outlined"
                         margin="normal"
                         className="my-input"
                         value={this.state.project_role}

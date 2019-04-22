@@ -176,7 +176,7 @@ class EditTicketForm extends Component {
   setSuccess = successMessage => { this.props.getSuccess(successMessage) }
 
   render() {
-    const { classes, ticketStatus, ticketTypes, team, milestones, creator, user } = this.props
+    const { classes, ticketStatus, ticketTypes, team, milestones, creator, user, admin } = this.props
     const { editorState, assigned_user_id, urls } = this.state
     
       return (
@@ -186,7 +186,7 @@ class EditTicketForm extends Component {
                       <GridItem xs={12} sm={12} md={12}>
                       <div>
                         <TextField 
-                          disabled={ user !== creator ? true : false}
+                          disabled={ user == creator || admin ? false : true}
                           name="title" 
                           type="text"
                           label="Title" 
@@ -209,10 +209,10 @@ class EditTicketForm extends Component {
                         <GridItem xs={12} sm={12} md={4}>
                         <FormControl className={classes.formControl}>
                           <TextField
-                            disabled={ user !== creator ? true : false}
-                            select
+                          disabled={ user == creator || admin ? false : true}
+                          select
                             label="Type"
-                            variant="outlined"
+                            // variant="outlined"
                             margin="normal"
                             className="my-input"
                             value={this.state.type_id}
@@ -230,7 +230,7 @@ class EditTicketForm extends Component {
                             <TextField
                               select
                               label="Status"
-                              variant="outlined"
+                              // variant="outlined"
                               margin="normal"
                               className="my-input"
                               value={this.state.status_id}
@@ -240,7 +240,7 @@ class EditTicketForm extends Component {
                             {ticketStatus ? ticketStatus.map(status => {
                             return  (
                               <MenuItem 
-                                disabled={(user === assigned_user_id) && (status.id !== 3) }
+                                disabled={(user === assigned_user_id && !admin) && (status.id !== 3) }
                                 key={status.id} 
                                 value={status.id}> 
                                 {status.status} 
@@ -254,9 +254,9 @@ class EditTicketForm extends Component {
                         <FormControl className={classes.formControl}>
                             <TextField
                               select
-                              disabled={ user !== creator ? true : false}
+                              disabled={ user == creator || admin ? false : true}
                               label="Milestone"
-                              variant="outlined"
+                              // variant="outlined"
                               margin="normal"
                               className="my-input"
                               value={this.state.milestone_id}
@@ -273,9 +273,9 @@ class EditTicketForm extends Component {
                       <FormControl className={classes.formControl}>
                             <TextField
                               select
-                              disabled={ user !== creator ? true : false}
+                              disabled={ user == creator || admin ? false : true}
                               label="Priority"
-                              variant="outlined"
+                              // variant="outlined"
                               margin="normal"
                               className="my-input"
                               value={this.state.priority}
@@ -292,9 +292,9 @@ class EditTicketForm extends Component {
                           <FormControl className={classes.formControl}>
                             <TextField
                               select
-                              disabled={ user !== creator ? true : false}
+                              disabled={ user == creator || admin ? false : true}
                               label="Assinged user"
-                              variant="outlined"
+                              // variant="outlined"
                               margin="normal"
                               className="my-input"
                               fullWidth
@@ -313,10 +313,10 @@ class EditTicketForm extends Component {
                               id="date"
                               label="Due date"
                               type="date"
-                              disabled={ user !== creator ? true : false}
+                              disabled={ user == creator || admin ? false : true}
                               className="my-input"
                               fullWidth
-                              variant="outlined"
+                              // variant="outlined"
                               value={this.state.selectedDate}
                               onChange={this.handleDateChange}
                               InputLabelProps={{ shrink: true }}

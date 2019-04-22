@@ -126,24 +126,27 @@ class AddComment extends Component {
                 imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg']}
                 maxFileSize={5242880}
             />
+            <GridContainer>
             {urls.length ? urls.map(url => {
-              return(
-                <div style={{ display: 'flex', width: '100%'}}>
-                  <img src={url} style={{ width: 'auto', maxWidth: '100%', maxHeight: '200px', display: 'block'}} alt="preview" /> 
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="Remove image"
-                      placement="top"
-                      onClick={this.removeImage.bind(this, url)}
-                      classes={{ tooltip: classes.tooltip }}>  
-                        <Avatar style={{ backgroundColor: '#f44336' }}> 
-                          <Remove /> 
-                        </Avatar>
-                    </Tooltip>
-                </div>
+              return (
+                <GridItem xs={12} sm={12} md={3}>
+                  <div style={{ display: 'flex', width: '100%', position: 'relative'}}>
+                    <img src={url} style={{ width: 'auto', maxWidth: '100%', maxHeight: '200px', display: 'block', position: 'relative'}} alt="preview" /> 
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="Remove image"
+                        placement="top"
+                        onClick={this.removeImage.bind(this, url)}
+                        classes={{ tooltip: classes.tooltip }}>  
+                          <Avatar style={{ backgroundColor: '#f44336', height: '30px', width: '30px',position: 'absolute', right: '-12px', top: '-12px' }}> 
+                            <Remove /> 
+                          </Avatar>
+                      </Tooltip>
+                  </div>
+                </GridItem>
               )
-            })
-            : null}
+            }) : null}
+            </GridContainer>
           </GridItem>
         </GridContainer> 
         <Button 

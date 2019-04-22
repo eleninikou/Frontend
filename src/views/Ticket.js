@@ -216,12 +216,12 @@ class Ticket extends Component {
               </CardHeader>
               <CardBody>
                 <GridContainer>          
-                  <GridItem xs={12} sm={12} md={5}>
-                    <TicketIconList ticket={ticket} classes={classes}/>
-                  </GridItem> 
                   <GridItem xs={12} sm={12} md={7}>
                     {description ?  <TicketContent description={description}/> : <StyledSpinner />}
                   </GridItem>    
+                  <GridItem xs={12} sm={12} md={5}>
+                    <TicketIconList ticket={ticket} classes={classes}/>
+                  </GridItem> 
                   <GridItem xs={12} sm={12} md={12} >
                     {images.length ? 
                       <Card>
@@ -263,6 +263,7 @@ class Ticket extends Component {
                   user={user.id}
                   classes={classes}
                   team={team}
+                  admin={ticket.project ? ticket.project.creator_id : null}
                   milestones={milestones}
                   description={description}
                   assigned_user_id={ticket.assigned_user_id}

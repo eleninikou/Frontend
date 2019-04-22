@@ -61,6 +61,7 @@ class ProjectMilestones extends Component {
         const { rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, milestones.length  - page * rowsPerPage);
       
+        console.log(milestones)
       return (
         <div>
         <Table
@@ -68,12 +69,13 @@ class ProjectMilestones extends Component {
           rowsPerPage={rowsPerPage}
           emptyRows={emptyRows}
           tableHeaderColor="success"
-          tableHead={ creator ? ["Title", "Focus", "Last updated", "Details", "Remove"] : ["Title", "Focus", "Last updated", "Details", ""] }
+          tableHead={ creator ? ["Title", "Focus", "Due date", "Last updated", "Details", "Remove"] : ["Title", "Focus", "Due date", "Last updated", "Details", ""] }
           tableData={[
             milestones ? milestones.map(milestone => {
               return ([
                 `${milestone.title}`, 
                 `${milestone.focus}`,
+                `${moment(milestone.due_date).format('YYYY-MM-DD')}`,
                 `${moment(milestone.updated_at).format('YYYY-MM-DD')}`,
                   (
                     <Tooltip

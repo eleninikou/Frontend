@@ -96,7 +96,7 @@ class ProjectTeam extends Component {
               rowsPerPage={team ? team.length : null}
               emptyRows={emptyRows}
               tableHeaderColor="success"
-              tableHead={ creator ? ["" , "Name", "Role", "Remove"] : ["Name", "Role", '' ] }
+              tableHead={ creator ? ["" , "Name", "Role", "Remove"] : ["" , "Name", "Role", '' ] }
               tableData={[
                 team ? team.map(person => {
                   return (

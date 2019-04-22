@@ -114,7 +114,7 @@ class Tickets extends Component {
                 <h4 className={classes.cardTitleWhite}>Your tickets</h4>
               </CardHeader>
               <CardBody>
-              <GridContainer>
+              <GridContainer style={{ padding: '10px 20px 20px'}}>
                 <GridItem xs={12} sm={12} md={3}>
                 <FormControl className={classes.formControl}>       
                   <TextField
@@ -122,29 +122,12 @@ class Tickets extends Component {
                     select
                     label="Type"
                     onChange={this.handleChange}
-                    variant="outlined"
                     margin="normal"
                     inputProps={{ name: 'type_id', id: 'type_id' }} >
                     <MenuItem value={null}>All</MenuItem>
                         {ticketTypes ? ticketTypes.map(type => {
                           return (
                             <MenuItem key={type.id} value={type.id} style={{ display: 'flex', alignItems: 'center'}}> 
-                            <Tooltip
-                              id="tooltip-top-start"
-                              title={type.type}
-                              placement="top"
-                              classes={{ tooltip: classes.tooltip }}
-                              >
-                              <Avatar style={{ backgroundColor: '#8e24aa', height: '30px', width: '30px', marginRight: '20px'}}> 
-                                {type.id === 1 ?
-                                <BugReport /> 
-                                : type.id === 2 ?
-                                <LowPriority />
-                                : type.id === 3 ?
-                                <LinearScale />
-                                : <YoutubeSearchedFor /> }  
-                              </Avatar>
-                            </Tooltip>
                           {type.type} 
                         </MenuItem>   
                           )
@@ -159,7 +142,6 @@ class Tickets extends Component {
                     select
                     label="Status"
                     onChange={this.handleChange}
-                    variant="outlined"
                     margin="normal"
                     inputProps={{ name: 'status_id', id: 'status_id' }} >
                       <MenuItem value={null}>All</MenuItem>
@@ -180,26 +162,17 @@ class Tickets extends Component {
                       label="Priority"
                       value={this.state.priority}
                       onChange={this.handleChange}
-                      variant="outlined"
+                      // variant="outlined"
                       margin="normal"
                       inputProps={{ name: 'priority', id: 'priority' }} >
                         <MenuItem value={null}>All</MenuItem>
                         <MenuItem value='low'>
-                          <Avatar style={{backgroundColor: '#FADC08', height: '30px', width: '30px', marginRight: '20px' }}> 
-                            <Warning /> 
-                          </Avatar>
                           Low
                         </MenuItem>
                         <MenuItem value='normal'>
-                          <Avatar style={{backgroundColor: '#4caf50', height: '30px', width: '30px', marginRight: '20px' }}> 
-                            <Warning /> 
-                          </Avatar>
                           Normal
                         </MenuItem>
                         <MenuItem value='high'>
-                          <Avatar style={{backgroundColor: '#f44336', height: '30px', width: '30px', marginRight: '20px'}}> 
-                            <Warning /> 
-                          </Avatar> 
                           High
                         </MenuItem>
                     </TextField> 
@@ -212,7 +185,7 @@ class Tickets extends Component {
                       label="Project"
                       value={this.state.project_id}
                       onChange={this.handleChange}
-                      variant="outlined"
+                      // variant="outlined"
                       margin="normal"
                       inputProps={{ name: 'project_id', id: 'project_id' }} >
                         <MenuItem value={null}>All</MenuItem>

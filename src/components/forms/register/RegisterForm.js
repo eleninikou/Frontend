@@ -109,56 +109,60 @@ class RegisterForm extends Component {
           <GridContainer>
             <CardBody>
             <form style={{ width: '100%', textAlign: 'center'}} onSubmit={this.submit}>
-            <GridItem xs={12} sm={12} md={12}>
+            <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
                 <TextField 
                     name="name" 
                     type="text"
                     label="Full name" 
+                    className="my-input"
                     fullWidth
                     value={this.state.name}
                     onChange={this.handleChange}
                 />
               </FormControl>
               </GridItem>
-              <GridItem xs={12} sm={12} md={12}>
+              <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
                 <TextField 
                     disabled={email ? true : false}
                     name="email" 
                     type="email"
                     label="Email" 
+                    className="my-input"
                     fullWidth
                     value={email}
                     onChange={this.handleChange}
                 />
               </FormControl>
               </GridItem>
-              <GridItem xs={12} sm={12} md={12}>
+              <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
                 <TextField 
                       name="password" 
                       type="password"
                       label="Password"
+                      className="my-input"
                       fullWidth
                       value={this.state.password}
                       onChange={this.handleChange}
                   />
                 </FormControl>
                 </GridItem> 
-                <GridItem xs={12} sm={12} md={12}>
+                <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
                 <TextField 
                       name="repeatPassword" 
                       type="repeatPassword"
                       label="Repeat Password"
+                      className="my-input"
                       fullWidth
                       value={this.state.repeatPassword}
                       onChange={this.handleChange}
                   />
                 </FormControl>
                 </GridItem> 
-                <GridItem xs={12} sm={12} md={12} >
+                <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}} >
                 <FormControl className={classes.formControl}>
                   <Button type="submit" variant="contained" color="primary" 
                     style={{ 
@@ -174,13 +178,13 @@ class RegisterForm extends Component {
             </form>
             {!this.state.invitation ?
               <div>
-                <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
+                <GridItem xs={12} sm={12} md={6} style={{ textAlign: 'center', marginTop: '20px'}}>
                   <Typography style={{ margin: '20px'}}>
                     OR
                   </Typography>
                 </GridItem>    
 
-                <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
+                <GridItem xs={12} sm={12} md={6} style={{ textAlign: 'center', marginTop: '20px'}}>
                   <FormControl className={classes.formControl}>
                     <GoogleLogin
                       clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
@@ -188,14 +192,6 @@ class RegisterForm extends Component {
                       onSuccess={this.responseGoogle}
                       onFailure={this.responseGoogle}
                       width="100%"
-                      style={{ 
-                        // padding: '0px', 
-                        // display: 'flex !important', 
-                        // justifyContent: 'center', 
-                        // fontSize: '0.875rem',
-                        // fontWeight: '500',
-                        // textTransform: 'uppercase'
-                      }}
                       />
                     </FormControl>
                 </GridItem> 

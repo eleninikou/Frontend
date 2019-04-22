@@ -95,7 +95,6 @@ submit = event => {
     this.state.assigned_user_id &&
     this.state.milestone_id
     ) {
-
   
     const ticket = {
       title: this.state.title,
@@ -170,7 +169,6 @@ removeImage(url) {
 }
 
 componentWillMount = () => {
-
     const cookies = new Cookies()
     var user = cookies.get('user')
     this.setState({ user })
@@ -217,7 +215,14 @@ handleChange = event => {
   this.setState({ [name]: value });
 
   // Fetch project to get team, milestones
-  if (event.target.name === "project_id" ) { this.props.getProject(value) }
+  if (event.target.name === "project_id" ) { 
+    this.props.getProject(value).then(() => {
+      if(this.state.user == this.props.project.client_id) {
+        this.setState({ 
+          status_id : 3,
+          assigned_user_id: this.props.project.creator_id })
+      }
+    })}
 }
 
 
@@ -226,17 +231,17 @@ render() {
   const { editorState, backToProject, hasError, user, urls } = this.state
 
   // https://reactgo.com/removeduplicateobjects/
-  // function getUnique(arr, comp) {
-  //   const unique = arr.map(e => e[comp])
-  //       .map((e, i, final) => final.indexOf(e) === i && i)
-  //       .filter(e => arr[e]).map(e => arr[e]);
-  //    return unique;
-  // }
+  function getUnique(arr, comp) {
+    const unique = arr.map(e => e[comp])
+        .map((e, i, final) => final.indexOf(e) === i && i)
+        .filter(e => arr[e]).map(e => arr[e]);
+     return unique;
+  }
   
-  // let projects = getUnique(allProjects,'project_id') 
-  // let team_members = getUnique(team,'user_id')
+  let projects = getUnique(allProjects,'project_id') 
+  let team_members = getUnique(team,'user_id')
 
-  let me_and_admin = team.filter(member => { return member.role_id === 1|| member.user_id === parseInt(user) })
+  let me_and_admin = team_members.filter(member => { return member.role_id === 1|| member.user_id === parseInt(user) })
 
 
   // Styles to input
@@ -246,6 +251,7 @@ render() {
       minWidth: '100%'
     }
   }
+
 
   return (
       <GridContainer>
@@ -332,6 +338,7 @@ render() {
                       <TextField
                         error={hasError && !this.state.status_id ? true : false}
                         select
+                        disabled={ project ? (user == project.client_id) ? true : false : null}
                         label="Status"
                         variant="outlined"
                         margin="normal"
@@ -370,6 +377,7 @@ render() {
                         <TextField
                           error={hasError && !this.state.assigned_user_id ? true : false}
                           select
+                          disabled={ project ? (user == project.client_id) ? true : false : null}
                           label="Assign user"
                           variant="outlined"
                           margin="normal"
@@ -461,7 +469,7 @@ render() {
                       <GridContainer>
                         {urls.length ? urls.map(url => {
                           return(
-                            <GridItem xs={12} sm={12} md={3}>
+                            <GridItem xs={12} sm={12} md={3} style={{ flexBasis: 'unset'}}>
                             <div style={{ display: 'flex', width: '100%', position: 'relative'}}>
                               <img src={url} style={{ width: 'auto', maxWidth: '100%', maxHeight: '200px', display: 'block', position: 'relative'}} alt="preview" /> 
                                 <Tooltip

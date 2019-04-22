@@ -5,10 +5,16 @@ import moment from 'moment'
 import Table from "../theme/Table/Table.jsx"
 import TablePagination from '@material-ui/core/TablePagination'
 // Material UI components
+import Avatar from '@material-ui/core/Avatar'
 import Tooltip from "@material-ui/core/Tooltip"
 import IconButton from "@material-ui/core/IconButton"
 // Icons
+import Warning from "@material-ui/icons/Warning"
 import ExitToApp from "@material-ui/icons/ExitToApp"
+import BugReport from "@material-ui/icons/BugReport"
+import LowPriority from "@material-ui/icons/LowPriority"
+import LinearScale from '@material-ui/icons/LinearScale'
+import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor"
 
 
 class TicketsTable extends Component {
@@ -44,9 +50,42 @@ class TicketsTable extends Component {
                 return [
                   `${ticket.title}`,
                   `${ticket.project.name}`, 
-                  `${ticket.type.type}`, 
+                    <Tooltip
+                      id="tooltip-top-start"
+                      title={ticket.type.type}
+                      placement="top"
+                      classes={{ tooltip: classes.tooltip }}
+                      >
+                      <Avatar style={{ backgroundColor: '#8e24aa', height: '30px', width: '30px', marginRight: '20px'}}> 
+                        {ticket.type.id === 1 ?
+                        <BugReport style={{ fontSize: '18px'}}/> 
+                        : ticket.type.id === 2 ?
+                        <LowPriority style={{ fontSize: '18px'}} />
+                        : ticket.type.id === 3 ?
+                        <LinearScale style={{ fontSize: '18px'}}/>
+                        : <YoutubeSearchedFor style={{ fontSize: '18px'}}/> }  
+                      </Avatar>
+                    </Tooltip> , 
                   `${ticket.status.status}`,
-                  `${ticket.priority}`, 
+                  <Tooltip
+                  id="tooltip-top-start"
+                  title={ticket.priority}
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                  >
+                  {ticket.priority === 'low' ?
+                  <Avatar style={{backgroundColor: '#FADC08', height: '30px', width: '30px', marginRight: '20px' }}> 
+                    <Warning style={{ fontSize: '18px'}}/> 
+                  </Avatar>
+                  : ticket.priority === 'normal' ?
+                  <Avatar style={{backgroundColor: '#4caf50', height: '30px', width: '30px', marginRight: '20px' }}> 
+                    <Warning style={{ fontSize: '18px'}}/> 
+                  </Avatar>
+                  :
+                  <Avatar style={{backgroundColor: '#f44336', height: '30px', width: '30px', marginRight: '20px'}}> 
+                    <Warning style={{ fontSize: '18px'}}/> 
+                  </Avatar> }
+                  </Tooltip>,
                   `${ticket.milestone.title}`,
                   `${moment(ticket.due_date).format('YYYY-MM-DD')}`,
                   <Tooltip

@@ -111,8 +111,8 @@ class AcceptInvitation extends Component {
   render() {
     const { invitedUserEmail, existingUser } = this.state;
     return (
-      <GridContainer style={{}}> 
-        <GridItem xs={12} sm={12} md={6}>
+      <GridContainer > 
+        <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', marginTop: '50vh', transform: 'translateY(-50%)'}}>
         <Card>
           <CardHeader color="success">
             <h4 className={this.props.classes.cardTitleWhite}>Accept Invitation</h4>
