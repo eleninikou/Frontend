@@ -1,17 +1,14 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-
 // Redux
 import { connect } from 'react-redux'
 import { editProject } from '../../redux/actions/projects/Actions'
-
 // Theme components
 import Button from "../theme/CustomButtons/Button.jsx"
 import GridItem from "../theme/Grid/GridItem.jsx"
 import CardBody from "../theme/Card/CardBody.jsx"
 import CardFooter from "../theme/Card/CardFooter.jsx"
 import GridContainer from "../theme/Grid/GridContainer.jsx"
-
 // Material UI components
 import TextField from '@material-ui/core/TextField'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -22,8 +19,7 @@ import Switch from '@material-ui/core/Switch'
 
 class EditProjectForm extends Component {
     constructor(props) {
-      super(props);
-  
+      super(props)
       this.state = {
           name: this.props.project.name,
           description: this.props.project.description,
@@ -52,23 +48,23 @@ class EditProjectForm extends Component {
   }
 
   handleChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+    const { name, value } = event.target
+    this.setState({ [name]: value })
   }
 
   handleToggleChange = name => event => {
-    const { name } = event.target;
+    const { name } = event.target
 
     if(event.target.checked === true ) {
       this.setState({ 
         [name]: event.target.checked,
         label: 'Active'
-      });
+      })
     } else {
       this.setState({ 
         [name]: event.target.checked,
         label: 'Inactive'
-      });
+      })
     }
   }
 
@@ -76,10 +72,8 @@ class EditProjectForm extends Component {
 
   setSuccess = successMessage => { this.props.getSuccess(successMessage) }
 
-  
   render() {
-
-      const { classes, } = this.props
+      const { classes } = this.props
       return ( 
         <form className={classes.form} onSubmit={this.submit}>
             <CardBody>
@@ -93,34 +87,38 @@ class EditProjectForm extends Component {
                           disableRipple
                           checked={this.state.active}
                           onChange={this.handleToggleChange('active')}
-                          value="active"
-                        />
-                      }
+                          value="active"/>
+                        }
                       label={this.state.label}
                     />
                   </FormGroup>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={12}>
-                  <InputLabel>Name</InputLabel>
-                  <TextField 
-                    name="name" 
-                    type="text"
-                    value={this.state.name}
-                    onChange={this.handleChange}
-                    fullWidth
-                    className="my-input"
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={12}>
-                  <InputLabel>Description</InputLabel>
-                  <TextField 
-                    name="description" 
-                    type="text"
-                    value={this.state.description}
-                    onChange={this.handleChange}
-                    fullWidth
-                    className="my-input"
+                <GridItem xs={12} sm={12} md={8}>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <InputLabel>Name</InputLabel>
+                    <TextField 
+                      name="name" 
+                      type="text"
+                      value={this.state.name}
+                      onChange={this.handleChange}
+                      fullWidth
+                      className="my-input"
                     />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <InputLabel>Description</InputLabel>
+                    <TextField 
+                      name="description" 
+                      type="text"
+                      value={this.state.description}
+                      onChange={this.handleChange}
+                      fullWidth
+                      multiline
+                      className="my-input"
+                      />
+                  </GridItem>
+                  </GridContainer>
                 </GridItem>
               </GridContainer>
              </CardBody >

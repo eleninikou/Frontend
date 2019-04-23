@@ -4,13 +4,14 @@ import { withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 import { getAllProjects } from '../redux/actions/projects/Actions'
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx"
-import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import Card from "../components/theme/Card/Card"
-import CardHeader from "../components/theme/Card/CardHeader.jsx"
-import CardBody from "../components/theme/Card/CardBody.jsx"
 import Button from "../components/theme/CustomButtons/Button.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI
 import withStyles from "@material-ui/core/styles/withStyles"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
@@ -96,13 +97,11 @@ class Milestones extends Component {
               <MilestonesTable 
                 milestones={milestones ? milestones : null}
                 classes={this.props.classes} />
-                <GridContainer>
-                  <GridItem xs={12} sm={2} md={2}>
+                <CardFooter style={{ justifyContent: 'flex-end'}}>
                     <Button color="warning"  onClick={this.createNewMilestone.bind(this)}>
                       Create new Milestone
                     </Button>
-                  </GridItem>
-                </GridContainer>
+                </CardFooter>
               </CardBody>
             </Card>
           </GridItem>

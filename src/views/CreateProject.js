@@ -16,14 +16,13 @@ import TextField from '@material-ui/core/TextField'
 import withStyles from "@material-ui/core/styles/withStyles"
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
-
-
+// Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
 
 class CreateProject extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       name: null,
       description: null,
@@ -34,7 +33,7 @@ class CreateProject extends Component {
 }
 
 submit = event => {
-  event.preventDefault();
+  event.preventDefault()
 
   // Error if not filled in
   if(this.state.name && this.state.description) {

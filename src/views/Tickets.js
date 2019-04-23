@@ -4,33 +4,22 @@ import { withRouter } from "react-router-dom"
 import { getAllTickets, getTicketStatus, getTicketTypes } from '../redux/actions/tickets/Actions'
 import { getAllProjects } from '../redux/actions/projects/Actions'
 import { connect } from 'react-redux'
-
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx"
-import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import Card from "../components/theme/Card/Card"
-import CardHeader from "../components/theme/Card/CardHeader.jsx"
-import CardBody from "../components/theme/Card/CardBody.jsx"
 import Button from "../components/theme/CustomButtons/Button.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
-
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI components
-import Avatar from '@material-ui/core/Avatar'
-import Tooltip from "@material-ui/core/Tooltip"
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
 import withStyles from "@material-ui/core/styles/withStyles"
 import FormControl from '@material-ui/core/FormControl'
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
-
-//Icons
-import Warning from "@material-ui/icons/Warning"
-import BugReport from "@material-ui/icons/BugReport"
-import LowPriority from "@material-ui/icons/LowPriority"
-import LinearScale from '@material-ui/icons/LinearScale'
-import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor"
-
-// Components
+//Components
 import TicketsTable from '../components/ticket/TicketsTable'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
@@ -200,16 +189,14 @@ class Tickets extends Component {
                     </FormControl>
                 </GridItem>
                 </GridContainer> 
-                  <TicketsTable tickets={filteredTickets} classes={classes}/>   
-                  <GridContainer>
-                    <GridItem xs={12} sm={2} md={2}>
-                      <Button color="primary" onClick={this.createNewTicket}>Create new Ticket</Button>
-                    </GridItem>
-                  </GridContainer>
-                        </CardBody>
-                      </Card>
-                    </GridItem>
-                </GridContainer>
+                <TicketsTable tickets={filteredTickets} classes={classes}/>   
+                </CardBody>
+                <CardFooter style={{ justifyContent: 'flex-end'}}>
+                  <Button color="primary" onClick={this.createNewTicket}>Create new Ticket</Button>
+                </CardFooter>
+              </Card>
+            </GridItem>
+        </GridContainer>
         )
       }
 }

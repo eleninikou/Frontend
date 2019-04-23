@@ -10,9 +10,13 @@ import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardBody from "../components/theme/Card/CardBody.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI components
+import MenuItem from '@material-ui/core/MenuItem'
+import TextField from '@material-ui/core/TextField'
 import withStyles from "@material-ui/core/styles/withStyles"
+import FormControl from '@material-ui/core/FormControl'
 // Icons
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Components
@@ -27,13 +31,15 @@ class Projects extends Component {
     super(props);
     this.state = { 
       successMessage: this.props.successMessage,
-      errorMessage: ''
+      errorMessage: '',
+      active: ''
      }
   }
 
   componentWillMount = () => {
     this.props.getAllProjects();
 
+    // To prevent errormessage from notification bar
     var id = window.setTimeout(null, 0)
     while (id--) { window.clearTimeout(id) }
 
@@ -47,6 +53,7 @@ class Projects extends Component {
     }
   }
   
+  // Show notification
   showNotification(place) {
     var x = [];
     x[place] = true;
@@ -58,7 +65,12 @@ class Projects extends Component {
       }.bind(this), 6000);
     }
 
-    createNewProject() { this.props.history.push('/home/create-project/') }
+   createNewProject() { this.props.history.push('/home/create-project/') }
+
+    handleChange = event => {
+      const { name, value } = event.target
+      this.setState({ [name]: value })
+    }
 
     render() {
 
@@ -70,6 +82,17 @@ class Projects extends Component {
            return unique;
         }
         let projects = getUnique(this.props.allProjects,'project_id')
+
+        // Filter projects
+        const filtredProjects = 
+          this.state.active === 0 ? projects.filter(project => {
+            return project.project.active === 0
+          })
+          : this.state.active === 1 ? projects.filter(project => {
+            return project.project.active === 1
+          })
+          : projects
+        
 
       return (
         <GridContainer> 
@@ -95,40 +118,40 @@ class Projects extends Component {
             /> 
           }
           <GridItem xs={12} sm={12} md={12}>
+          <GridContainer>
             <Card>
               <CardHeader color="success">
                 <h4 className={this.props.classes.cardTitleWhite}>Projects</h4>
               </CardHeader>
                 <CardBody>
-                  {/* <GridItem xs={12} sm={2} md={6} style={{ float: 'right', width:'100px'}}>
+                  <GridItem xs={12} sm={6} md={3}>
                     <FormControl className={this.props.classes.formControl}>       
                       <TextField
                         value={this.state.status_id}
                         select
-                        label="Active"
+                        label="Select projects"
+                        fullWidth
                         onChange={this.handleChange}
-                        variant="outlined"
                         margin="normal"
-                        inputProps={{ name: 'status_id', id: 'status_id' }} >
+                        inputProps={{ name: 'active', id: 'active' }} >
                           <MenuItem value={null}>All</MenuItem>
                           <MenuItem value={1}> Active </MenuItem> 
-                          <MenuItem value={0}> Inacctive </MenuItem> 
+                          <MenuItem value={0}> Inactive </MenuItem> 
                       </TextField> 
                     </FormControl>
-                  </GridItem> */}
+                  </GridItem>
                   <ProjectsTable 
-                    projects={projects}
+                    projects={filtredProjects}
                     classes={this.props.classes}
                     />
-                  <GridContainer>
-                    <GridItem xs={12} sm={2} md={2}>
+                    <CardFooter style={{ justifyContent: 'flex-end'}}>
                       <Button color="success"  onClick={this.createNewProject.bind(this)}>
                         Create new Project
                       </Button>
-                    </GridItem>
-                  </GridContainer>
+                    </CardFooter>
                 </CardBody>
             </Card>
+            </GridContainer>
           </GridItem>
         </GridContainer>
       )

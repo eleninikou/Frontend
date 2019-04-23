@@ -95,13 +95,13 @@ const Sidebar = ({ ...props }) => {
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive
         })}>
-        <div className={classes.logoImage} style={{ margin: 'auto', paddingBottom: '70px', width: 'auto'}}>
-        {logo ?
+        <div className={classes.logoImage} style={{ margin: 'auto', width: 'auto'}}>
+        {/* {logo ?
           <img src={logo} alt="logo" style={{ borderRadius: '50%', height: '60px', width: '60px'}} />
           :
           <Avatar> 
             <AccountCircle /> 
-          </Avatar>}
+          </Avatar>} */}
           <h4 style={{ color: 'white', fontFamily: "Roboto", fontSize: '14px', width: 'auto'}}>{logoText}</h4>
         </div>
       </a>

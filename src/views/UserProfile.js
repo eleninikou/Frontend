@@ -178,7 +178,7 @@ class UserProfile extends Component {
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="rose">
-              <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
+              <h4 className={classes.cardTitleWhite} style={{ textAlign: 'center'}}>Edit Profile</h4>
             </CardHeader>
             <CardBody>
               <GridContainer>
