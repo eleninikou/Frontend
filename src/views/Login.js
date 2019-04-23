@@ -4,16 +4,22 @@ import Cookies from 'universal-cookie'
 import PropTypes from 'prop-types'
 
 // Components
-import Card from "../components/theme/Card/Card"
 import LoginForm from '../components/forms/login/LoginForm'
-import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import RegisterForm from '../components/forms/register/RegisterForm'
+
+// Theme components
+import Card from "../components/theme/Card/Card"
 import CardBody from '../components/theme/Card/CardBody'
 import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 
+// Material UI components
+import Button from '@material-ui/core/Button'
 import withStyles from "@material-ui/core/styles/withStyles"
 
-import { whiteColor, grayColor } from "../assets/jss/material-dashboard-react.jsx";
+import { whiteColor, grayColor } from "../assets/jss/material-dashboard-react.jsx"
 
 const styles = {
   center: {
@@ -39,7 +45,19 @@ const styles = {
 };
 
 class Login extends Component {
-    
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      register: false,
+      errorMessage: '',
+      title: 'Log in',
+      btnText: 'Sign up',
+      infoText: 'Don\'t have an account yet?'
+    }
+
+}
+
     componentWillMount = () => {
       const cookies = new Cookies()
         if(this.props.match.url === '/home/logout') {
@@ -50,17 +68,44 @@ class Login extends Component {
         }
     }
 
+    register = () => {
+      if (this.state.register) {
+        this.setState({ 
+          register: false,
+          title: 'Log in',
+          btnText: 'Sign up',
+          infoText: 'Don\'t have an account yet?'
+        })
+      } else {
+        this.setState({ 
+          register: true,
+          title: 'Register',
+          btnText: 'Sign in',
+          infoText: 'Already hacve an account?'
+        })
+      }
+    }
+
   render() {
+
     return (
         <GridContainer > 
           <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', marginTop: '50vh', transform: 'translateY(-50%)'}}>
           <Card>
             <CardHeader color="success">
-              <h4 className={this.props.classes.cardTitleWhite}>Login</h4>
+              <h4 className={this.props.classes.cardTitleWhite}>{this.state.title}</h4>
             </CardHeader>
             <CardBody>
-              <LoginForm/>
+              {this.state.register ?
+              <RegisterForm />
+              : <LoginForm/> }
             </CardBody>
+            <CardFooter>
+              <div style={{ margin: 'auto'}}>
+                {this.state.infoText} 
+                <Button onClick={this.register}>{this.state.btnText}</Button>
+              </div>
+            </CardFooter>  
           </Card>
           </GridItem>
         </GridContainer>

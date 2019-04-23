@@ -109,7 +109,7 @@ class RegisterForm extends Component {
           <GridContainer>
             <CardBody>
             <form style={{ width: '100%', textAlign: 'center'}} onSubmit={this.submit}>
-            <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
+            <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
                 <TextField 
                     name="name" 
@@ -122,7 +122,7 @@ class RegisterForm extends Component {
                 />
               </FormControl>
               </GridItem>
-              <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
+              <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
                 <TextField 
                     disabled={email ? true : false}
@@ -136,7 +136,7 @@ class RegisterForm extends Component {
                 />
               </FormControl>
               </GridItem>
-              <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
+              <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
                 <TextField 
                       name="password" 
@@ -149,7 +149,7 @@ class RegisterForm extends Component {
                   />
                 </FormControl>
                 </GridItem> 
-                <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
+                <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
                 <TextField 
                       name="repeatPassword" 
@@ -162,11 +162,12 @@ class RegisterForm extends Component {
                   />
                 </FormControl>
                 </GridItem> 
-                <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}} >
+                <GridItem xs={12} sm={12} md={4} style={{ margin: 'auto'}} >
                 <FormControl className={classes.formControl}>
                   <Button type="submit" variant="contained" color="primary" 
                     style={{ 
                       marginTop: '30px', 
+                      marginBottom: '20px',
                       backgroundColor: '#66bb6a', 
                       padding: '10px' 
                     }} 
@@ -177,18 +178,12 @@ class RegisterForm extends Component {
                 </GridItem> 
             </form>
             {!this.state.invitation ?
-              <div>
-                <GridItem xs={12} sm={12} md={6} style={{ textAlign: 'center', marginTop: '20px'}}>
-                  <Typography style={{ margin: '20px'}}>
-                    OR
-                  </Typography>
-                </GridItem>    
-
-                <GridItem xs={12} sm={12} md={6} style={{ textAlign: 'center', marginTop: '20px'}}>
+            <div>
+                <GridItem xs={12} sm={12} md={4} style={{ textAlign: 'center', margin: 'auto'}}>
                   <FormControl className={classes.formControl}>
                     <GoogleLogin
                       clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
-                      buttonText="User your google account"
+                      buttonText="Use your google account"
                       onSuccess={this.responseGoogle}
                       onFailure={this.responseGoogle}
                       width="100%"

@@ -13,7 +13,6 @@ import GridItem from "../../theme/Grid/GridItem.jsx"
 import CardBody from '../../theme/Card/CardBody'
 import { FormControl } from '@material-ui/core'
 import Cookies from 'universal-cookie'
-import Typography from '@material-ui/core/Typography'
 
 
 class LoginForm extends Component {
@@ -52,6 +51,7 @@ class LoginForm extends Component {
 
     this.props.login(creds)
     .then(res => {
+      console.log(res)
       if(res.email) {
         if (invitation) { 
           this.props.acceptInvitation(invitation)
@@ -81,7 +81,7 @@ class LoginForm extends Component {
           <GridContainer >
             <CardBody >
             <form style={{ width: '100%', textAlign: 'center'}} onSubmit={this.submit}>
-              <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
+              <GridItem xs={12} sm={8} md={6} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
                 <TextField 
                     name="email" 
@@ -94,7 +94,7 @@ class LoginForm extends Component {
                 />
               </FormControl>
               </GridItem>
-              <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
+              <GridItem xs={12} sm={8} md={6} style={{ margin: 'auto'}}>
                 <FormControl className={classes.formControl}>
                   <TextField 
                       name="password" 
@@ -107,30 +107,29 @@ class LoginForm extends Component {
                   />
                 </FormControl>
               </GridItem> 
-              <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', marginTop: '30px'}}>
+              <GridItem xs={12} sm={6} md={4} style={{ margin: 'auto', marginTop: '30px'}}>
                 <FormControl className={classes.formControl}>
                   <Button 
                     type="submit" 
                     variant="contained" 
                     color="primary" 
                     style={{ 
-                      marginTop: '30px', 
                       backgroundColor: '#66bb6a', 
                       padding: '10px' 
                     }} 
                     >
-                    Login
+                    Log in
                   </Button> 
                   </FormControl>
                 </GridItem> 
             </form>
             {!this.props.email ?
             <div>
-              <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', textAlign: 'center', marginTop: '20px'}}>
+              <GridItem xs={12} sm={6} md={4} style={{ margin: 'auto', textAlign: 'center', marginTop: '20px'}}>
               <FormControl className={classes.formControl}>
                 <GoogleLogin
                   clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
-                  buttonText="SIGN IN WITH GOOGLE"
+                  buttonText="Use your Google account"
                   onSuccess={this.responseGoogle}
                   onFailure={this.responseGoogle}
                   width="100%"
