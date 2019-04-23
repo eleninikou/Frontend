@@ -4,21 +4,17 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getAllProjects } from '../redux/actions/projects/Actions'
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx"
-import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import Card from "../components/theme/Card/Card"
-import CardHeader from "../components/theme/Card/CardHeader.jsx"
-import CardBody from "../components/theme/Card/CardBody.jsx"
 import Button from "../components/theme/CustomButtons/Button.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
 // Icons
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
-import FormControl from '@material-ui/core/FormControl'
-import TextField from '@material-ui/core/TextField'
-import MenuItem from '@material-ui/core/MenuItem'
-
 // Components
 import ProjectsTable from '../components/project/ProjectsTable'
 // Styles

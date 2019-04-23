@@ -1,36 +1,32 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
-
 // Redux
 import { connect } from 'react-redux'
 import { getMilestone, milestoneEdit } from '../redux/actions/milestones/Actions'
-
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx"
-import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import Card from "../components/theme/Card/Card"
-import CardBody from "../components/theme/Card/CardBody.jsx"
 import Button from "../components/theme/CustomButtons/Button.jsx"
-import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
-
-// Icons
-import Note from "@material-ui/icons/Note"
-import Info from "@material-ui/icons/Info"
-import DeleteForever from "@material-ui/icons/DeleteForever"
-import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
-
-// Styles
-import withStyles from "@material-ui/core/styles/withStyles"
-import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import '../assets/css/main.css'
-
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardBody from "../components/theme/Card/CardBody.jsx"
+import CardFooter from '../components/theme/Card/CardFooter'
+import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Components
 import MilestoneContent from '../components/milestone/MilestoneContent'
 import EditMilestoneForm from '../components/milestone/EditMilestoneForm'
 import MilestoneTickets from '../components/milestone/MilestoneTickets'
 import { DangerDialogWrapped } from '../components'
+// Icons
+import Note from "@material-ui/icons/Note"
+import Info from "@material-ui/icons/Info"
+import Close from "@material-ui/icons/Close"
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
+// Styles
+import withStyles from "@material-ui/core/styles/withStyles"
+import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import '../assets/css/main.css'
 
 class Milestone extends Component {
     constructor(props) {
@@ -74,13 +70,14 @@ class Milestone extends Component {
         })      }
     });
 
+    // To prevent error message from notification bar
     var id = window.setTimeout(null, 0);
     while (id--) {
       window.clearTimeout(id);
     }
   }
 
-
+  // Show notification bar
   showNotification(place) {
     var x = [];
     x[place] = true;
@@ -196,12 +193,14 @@ class Milestone extends Component {
                     parseInt(auth_user_id)  === creator ?
                     {
                       tabName: "Delete",
-                      tabIcon: DeleteForever,
+                      tabIcon: Close,
                       tabContent: (
                         <CardBody>
-                          <Button color="warning" onClick={this.handleClickOpen}>
-                            Delete milestone
-                          </Button>
+                          <CardFooter style={{ justifyContent: 'center'}}>
+                            <Button color="warning" onClick={this.handleClickOpen}>
+                              Delete milestone
+                            </Button>
+                          </CardFooter>
                           <DangerDialogWrapped 
                               type={'milestone'}
                               title={'Are you sure you want to delete this milestone?'}

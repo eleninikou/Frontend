@@ -10,14 +10,15 @@ import Button from "../components/theme/CustomButtons/Button.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 import CardBody from "../components/theme/Card/CardBody.jsx"
 import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardFooter from '../components/theme/Card/CardFooter'
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Icons
 import Note from "@material-ui/icons/Note"
 import Info from "@material-ui/icons/Info"
+import Close from "@material-ui/icons/Close"
 import People from "@material-ui/icons/People"
 import Timeline from "@material-ui/icons/Timeline"
-import DeleteForever from "@material-ui/icons/DeleteForever"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
@@ -34,6 +35,7 @@ import {
   ProjectTeam, 
   DangerDialogWrapped 
 }  from '../components'
+import { Typography } from '@material-ui/core';
 
 
 
@@ -211,12 +213,18 @@ class Project extends Component {
                       project.creator_id === parseInt(user) ?
                       {
                         tabName: "Delete",
-                        tabIcon: DeleteForever,
+                        tabIcon: Close,
                         tabContent: (
                           <CardBody>
-                            <Button color="success" onClick={this.handleClickOpen}>
-                              Delete project
-                            </Button>
+                            <CardFooter style={{ justifyContent: 'center', flexDirection: 'column'}}>
+                              <Typography style={{ marginBottom: '20px'}}>
+                                You can choose to inactivate this project if you're not working on it any more. <br />
+                                Deleting it will delete all project history.
+                              </Typography>
+                              <Button color="success" onClick={this.handleClickOpen}>
+                                Delete project
+                              </Button>
+                            </CardFooter>  
                             <DangerDialogWrapped 
                               type={'project'}
                               title={'Are you sure you want to delete this project?'}

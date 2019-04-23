@@ -150,7 +150,7 @@ render() {
           closeNotification={() => this.setState({ tr: false })}
           close
           /> : null}
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>Create new milestone</h4>
@@ -242,7 +242,7 @@ render() {
                   </GridItem>
               </GridContainer>
             </CardBody>
-            <CardFooter>
+            <CardFooter style={{ justifyContent: 'flex-end'}}>
               <Button color="warning" type="submit">Create milestone</Button>
                 {backToProject ? 
               <Button color="warning" onClick={this.goBack.bind(this)}>Back to {project_name}</Button>

@@ -10,6 +10,7 @@ import { getTicketStatus, getTicketTypes } from '../../redux/actions/tickets/Act
 import Table from "../theme/Table/Table.jsx"
 import Button from "../theme/CustomButtons/Button.jsx"
 import GridItem from "../theme/Grid/GridItem.jsx"
+import CardFooter from "../theme/Card/CardFooter.jsx"
 import GridContainer from "../theme/Grid/GridContainer.jsx"
 
 // Material UI components
@@ -237,11 +238,9 @@ class ProjectTickets extends Component {
               onChangePage={this.handleChangePage}
               onChangeRowsPerPage={this.handleChangeRowsPerPage} 
             />   
-            <GridContainer>
-              <GridItem xs={12} sm={2} md={2}>
+              <CardFooter style={{ justifyContent: 'flex-end' }}>
                 <Button color="success"  onClick={this.createNewTicket.bind(this)}>Create new Ticket</Button>
-              </GridItem>
-            </GridContainer>
+              </CardFooter>
           </GridItem>
         </GridContainer>
        </div>

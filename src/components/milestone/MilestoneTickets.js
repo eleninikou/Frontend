@@ -81,45 +81,28 @@ class MilestoneTickets extends Component {
         <div>
         <GridContainer>              
           <GridItem xs={12} sm={12} md={12}>        
-            <GridContainer>
-              <GridItem xs={12} sm={12} md={4}>
-              <FormControl className={classes.formControl}>       
-                <TextField
-                  value={this.state.type_id}
-                  select
-                  label="Type"
-                  onChange={this.handleChange.bind(this)}
-                  className="my-select"
-                  // variant="outlined"
-                  margin="normal"
-                  inputProps={{ name: 'type_id', id: 'type_id' }} >
-                  <MenuItem value={null}>All</MenuItem>
-                      {ticketTypes ? ticketTypes.map(type => {
-                        return (
-                          <MenuItem key={type.id} value={type.id}> 
-                              <Tooltip
-                                id="tooltip-top-start"
-                                title={type.type}
-                                placement="top"
-                                classes={{ tooltip: classes.tooltip }}
-                                >
-                                <Avatar style={{ backgroundColor: '#8e24aa', height: '30px', width: '30px', marginRight: '20px'}}> 
-                                  {type.id === 1 ?
-                                  <BugReport style={{ fontSize: '18px'}}/> 
-                                  : type.id === 2 ?
-                                  <LowPriority style={{ fontSize: '18px'}}/>
-                                  : type.id === 3 ?
-                                  <LinearScale style={{ fontSize: '18px'}}/>
-                                  : <YoutubeSearchedFor style={{ fontSize: '18px'}}/> }  
-                                </Avatar>
-                              </Tooltip>
-                            {type.type} 
-                          </MenuItem>   
-                        )   
-                    }): null}
-                </TextField>   
-              </FormControl>  
-              </GridItem>   
+            <GridContainer >
+              <GridItem  xs={12} sm={12} md={6} style={{ margin: 'auto'}}>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={4}>
+                  <FormControl className={classes.formControl}>       
+                    <TextField
+                      value={this.state.type_id}
+                      select
+                      label="Type"
+                      onChange={this.handleChange.bind(this)}
+                      className="my-select"
+                      margin="normal"
+                      inputProps={{ name: 'type_id', id: 'type_id' }} >
+                      <MenuItem value={null}>All</MenuItem>
+                        {ticketTypes ? ticketTypes.map(type => {
+                          return (
+                            <MenuItem key={type.id} value={type.id}> {type.type}  </MenuItem>   
+                          )   
+                        }): null}
+                    </TextField>   
+                  </FormControl>  
+               </GridItem>   
               <GridItem xs={12} sm={12} md={4}>
                 <FormControl className={classes.formControl}>       
                   <TextField
@@ -128,7 +111,6 @@ class MilestoneTickets extends Component {
                     label="Status"
                     onChange={this.handleChange.bind(this)}
                     className="my-select"
-                    // variant="outlined"
                     margin="normal"
                     inputProps={{ name: 'status_id', id: 'status_id' }} >
                       <MenuItem value={null}>All</MenuItem>
@@ -140,44 +122,31 @@ class MilestoneTickets extends Component {
               </GridItem> 
               <GridItem xs={12} sm={12} md={4}>
                 <FormControl className={classes.formControl}>       
-                <TextField
-                  select
-                  label="Priority"
-                  value={this.state.priority}
-                  onChange={this.handleChange.bind(this)}
-                  className="my-select"
-                  // variant="outlined"
-                  margin="normal"
-                  inputProps={{ name: 'priority', id: 'priority' }} >
-                    <MenuItem value={null}>All</MenuItem>
-                    <MenuItem value='low'>
-                        <Avatar style={{backgroundColor: '#FADC08', height: '30px', width: '30px', marginRight: '20px' }}> 
-                          <Warning style={{ fontSize: '18px'}}/> 
-                        </Avatar>
-                          Low
-                      </MenuItem>
-                    <MenuItem value='normal'>
-                    <Avatar style={{backgroundColor: '#4caf50', height: '30px', width: '30px', marginRight: '20px' }}> 
-                        <Warning style={{ fontSize: '18px'}}/> 
-                      </Avatar>
-                      Normal
-                    </MenuItem>
-                    <MenuItem value='high'>
-                      <Avatar style={{backgroundColor: '#f44336', height: '30px', width: '30px', marginRight: '20px'}}> 
-                        <Warning style={{ fontSize: '18px'}}/> 
-                      </Avatar> 
-                      High
-                    </MenuItem>
-                </TextField> 
+                  <TextField
+                    select
+                    label="Priority"
+                    value={this.state.priority}
+                    onChange={this.handleChange.bind(this)}
+                    className="my-select"
+                    margin="normal"
+                    inputProps={{ name: 'priority', id: 'priority' }} >
+                      <MenuItem value={null}>All</MenuItem>
+                      <MenuItem value='low'>Low </MenuItem>
+                      <MenuItem value='normal'> Normal </MenuItem>
+                      <MenuItem value='high'> High </MenuItem>
+                  </TextField> 
                 </FormControl>  
-              </GridItem>  
+              </GridItem> 
+              </GridContainer>
+
+              </GridItem> 
             </GridContainer> 
             <Table
               page={page}
               rowsPerPage={rowsPerPage}
               emptyRows={emptyRows}
               tableHeaderColor="warning"
-              tableHead={["Title", "Type", "Priority", "Assigned to", "Status", "Due date", "Details"]}
+              tableHead={["Title", "Type", "Assigned to", "Status", "Priority", "Due date", "Details"]}
               tableData={[
                 filteredTickets.map(ticket => {
                   return [  
@@ -197,9 +166,26 @@ class MilestoneTickets extends Component {
                           : <YoutubeSearchedFor style={{ fontSize: '18px'}}/> }  
                       </Avatar>
                     </Tooltip>, 
-                    `${ticket.priority}`,
                     `${ticket.assigned_user.name}`,
                     `${ticket.status.status}`,
+                    <Tooltip
+                      id="tooltip-top-start"
+                      title={ticket.priority}
+                      placement="top"
+                      classes={{ tooltip: classes.tooltip }}>
+                          {ticket.priority === 'low' ?
+                              <Avatar style={{backgroundColor: '#FADC08', height: '30px', width: '30px', marginRight: '20px' }}> 
+                                <Warning style={{ fontSize: '18px'}}/> 
+                              </Avatar>
+                            : ticket.priority === 'normal' ?
+                              <Avatar style={{backgroundColor: '#4caf50', height: '30px', width: '30px', marginRight: '20px' }}> 
+                                <Warning style={{ fontSize: '18px'}}/> 
+                              </Avatar>
+                            : 
+                            <Avatar style={{backgroundColor: '#f44336', height: '30px', width: '30px', marginRight: '20px'}}> 
+                              <Warning style={{ fontSize: '18px'}}/> 
+                            </Avatar> }
+                    </Tooltip>,
                     `${moment(ticket.due_date).format('YYYY-MM-DD')}`,
                       <Tooltip
                         id="tooltip-top"

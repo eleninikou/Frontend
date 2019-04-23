@@ -3,7 +3,6 @@ import { withRouter } from "react-router-dom"
 // Redux
 import { connect } from 'react-redux'
 import { getAllProjects } from '../redux/actions/projects/Actions'
-
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
@@ -11,23 +10,19 @@ import Card from "../components/theme/Card/Card"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CardBody from "../components/theme/Card/CardBody.jsx"
 import Button from "../components/theme/CustomButtons/Button.jsx"
-import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
-
+import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 // Material UI
 import withStyles from "@material-ui/core/styles/withStyles"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
-
 // Components
 import MilestonesTable from '../components/milestone/MilestonesTable'
-
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
 
 class Milestones extends Component {
-
   constructor(props) {
-    super(props);
+    super(props)
     this.state = { 
       errorMessage: '',
       successMessage: ''
@@ -37,20 +32,23 @@ class Milestones extends Component {
   componentWillMount = () => { 
     this.props.getAllProjects() 
 
+    // To prevent error message frmo notification bar
     var id = window.setTimeout(null, 0)
     while (id--) { window.clearTimeout(id) }
 
     // If redirected from create project display Success message
-    if (this.props.location.state ? this.props.location.state.successMessage || this.props.location.state.errorMessage : null) {
-      this.setState({ 
-        successMessage : this.props.location.state.successMessage, 
-        errorMessage: this.props.location.state.errorMessage
-      })
-
+    if (this.props.location.state ? 
+      this.props.location.state.successMessage || 
+      this.props.location.state.errorMessage : null) {
+        this.setState({ 
+          successMessage : this.props.location.state.successMessage, 
+          errorMessage: this.props.location.state.errorMessage
+        })
       this.showNotification('tr')
     }
   }
 
+  // Display notification
   showNotification(place) {
     var x = [];
     x[place] = true;
@@ -63,10 +61,8 @@ class Milestones extends Component {
     }
 
   createNewMilestone = () => { this.props.history.push('/home/create-milestone') }
-
   
   render() {
-
     const milestones = this.props.milestones.flatMap(milestone => milestone)
     return (
       <GridContainer> 

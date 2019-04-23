@@ -138,15 +138,11 @@ class ProjectTeam extends Component {
                     }) : null
                   ]} 
              /> 
-            <CardFooter>
               {creator ?
-                <Button 
-                  color="success" 
-                  onClick={this.invitePeople}>
-                    Invite people
-                </Button>
+                <CardFooter style={{ justifyContent: 'flex-end' }}>
+                  <Button color="success" onClick={this.invitePeople}> Invite people</Button>
+                </CardFooter>
               : null}
-            </CardFooter> 
         </div>
       )
   }

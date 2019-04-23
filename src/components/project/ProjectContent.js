@@ -30,13 +30,13 @@ const showForm = () => {getEdit(true)}
     return (
           <CardBody>
             <GridContainer>
-              <GridItem xs={12} sm={12} md={7}>
+              <GridItem xs={12} sm={12} md={8}>
                 <Typography>
                   <h1>{project.name} </h1> 
                   <h4> {project.description}</h4>
                 </Typography>
               </GridItem>
-              <GridItem xs={12} sm={12} md={5}>
+              <GridItem xs={12} sm={12} md={4}>
               <List className="my-ticket-list">
                 <ListItem>
                   <ListItemAvatar>
@@ -87,7 +87,7 @@ const showForm = () => {getEdit(true)}
                         </Avatar>
                       </Tooltip>
                   </ListItemAvatar>
-                  <ListItemText primary={project.milestones ? 'Milestones: ' + project.milestones.length : 0} />
+                  <ListItemText primary={project.milestones ? project.milestones.length : 0} />
                 </ListItem>
                 <ListItem>
                   <ListItemAvatar>
@@ -101,7 +101,7 @@ const showForm = () => {getEdit(true)}
                         </Avatar>
                       </Tooltip>
                   </ListItemAvatar>
-                  <ListItemText primary={project.tickets ? 'Tickets: ' +project.tickets.length : 0} />
+                  <ListItemText primary={project.tickets ? project.tickets.length : 0} />
                 </ListItem>
                 <ListItem>
                   <ListItemAvatar>
@@ -115,7 +115,7 @@ const showForm = () => {getEdit(true)}
                         </Avatar>
                       </Tooltip>
                   </ListItemAvatar>
-                  <ListItemText primary={team ? 'Team: ' + team.length : 0 } />
+                  <ListItemText primary={team ? team.length : 0 } />
                 </ListItem>
               </List> 
               </GridItem>

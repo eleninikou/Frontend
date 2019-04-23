@@ -6,10 +6,11 @@ import { connect } from 'react-redux'
 import { editProject } from '../../redux/actions/projects/Actions'
 
 // Theme components
-import CardBody from "../theme/Card/CardBody.jsx"
-import GridContainer from "../theme/Grid/GridContainer.jsx"
-import GridItem from "../theme/Grid/GridItem.jsx"
 import Button from "../theme/CustomButtons/Button.jsx"
+import GridItem from "../theme/Grid/GridItem.jsx"
+import CardBody from "../theme/Card/CardBody.jsx"
+import CardFooter from "../theme/Card/CardFooter.jsx"
+import GridContainer from "../theme/Grid/GridContainer.jsx"
 
 // Material UI components
 import TextField from '@material-ui/core/TextField'
@@ -111,8 +112,10 @@ class EditProjectForm extends Component {
                 </GridItem>
               </GridContainer>
              </CardBody >
-          <Button color="success" type="submit">Save</Button>
-          <Button color="success" onClick={this.closeEdit}> Go Back</Button>
+             <CardFooter>
+                <Button color="success" onClick={this.closeEdit}> Go Back</Button>
+                <Button color="success" type="submit">Save</Button>
+             </CardFooter>
       </form>  
       )
   }

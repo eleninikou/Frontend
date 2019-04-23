@@ -15,6 +15,7 @@ import Button from "../theme/CustomButtons/Button.jsx";
 // Material UI components
 import TextField from '@material-ui/core/TextField'
 import InputLabel from '@material-ui/core/InputLabel';
+import CardFooter from '../theme/Card/CardFooter';
 
 
 class EditMilestoneForm extends Component {
@@ -76,6 +77,7 @@ class EditMilestoneForm extends Component {
         <form className={classes.form} onSubmit={this.submit}>
           <CardBody>
             <GridContainer>
+            <GridItem xs={12} sm={12} md={6}>
               <GridItem xs={12} sm={12} md={12}>
                 <InputLabel>Title</InputLabel>
                 <TextField 
@@ -123,10 +125,13 @@ class EditMilestoneForm extends Component {
                     }}
                   />
               </GridItem>
+              </GridItem>
             </GridContainer>
           </CardBody>
-            <Button color="warning" type="submit">Save</Button>
+          <CardFooter>
             <Button color="warning" onClick={this.closeEdit}> Go Back</Button>
+            <Button color="warning" type="submit">Save</Button>
+          </CardFooter>
         </form> 
       )
   }

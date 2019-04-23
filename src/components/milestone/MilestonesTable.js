@@ -28,6 +28,7 @@ class MilestonesTable extends Component {
     render() {
         const emptyRows = this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.props.milestones.length  - this.state.page * this.state.rowsPerPage);
         const { milestones } = this.props;
+
         return (
           <div>
             <Table
@@ -35,13 +36,14 @@ class MilestonesTable extends Component {
                 rowsPerPage={this.state.rowsPerPage}
                 emptyRows={emptyRows}
                 tableHeaderColor="warning"
-                tableHead={["Name", "Focus", "Project", "Last updated", "Details" ]}
+                tableHead={["Name", "Focus", "Project", "Tickets", "Last updated", "Details" ]}
                 tableData={[
                     milestones ? milestones.map(milestone => {
                       return [
                         `${milestone.title}`, 
                         `${milestone.focus}`,
                         `${milestone.project ? milestone.project.name : null}`, 
+                        `${milestone.tickets ? milestone.tickets.length : null}`,
                         `${moment(milestone.updated_at).format('YYYY-MM-DD')}`,
                           <Tooltip
                             id="tooltip-top"

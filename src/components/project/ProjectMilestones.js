@@ -5,8 +5,7 @@ import moment from 'moment'
 // Theme components
 import Table from "../theme/Table/Table.jsx"
 import Button from "../theme/CustomButtons/Button.jsx"
-import GridItem from "../theme/Grid/GridItem.jsx"
-import GridContainer from "../theme/Grid/GridContainer.jsx"
+import CardFooter from "../theme/Card/CardFooter.jsx"
 
 // Material UI components
 import Tooltip from "@material-ui/core/Tooltip"
@@ -61,7 +60,6 @@ class ProjectMilestones extends Component {
         const { rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, milestones.length  - page * rowsPerPage);
       
-        console.log(milestones)
       return (
         <div>
         <Table
@@ -129,12 +127,11 @@ class ProjectMilestones extends Component {
             nextIconButtonProps={{ 'aria-label': 'Next Page' }}
             onChangePage={this.handleChangePage}
             onChangeRowsPerPage={this.handleChangeRowsPerPage} /> 
-          <GridContainer>
+            <CardFooter style={{ justifyContent: 'flex-end' }}>
             { creator ?
-            <GridItem xs={12} sm={2} md={2}>
-              <Button color="success"  onClick={this.createNewMilestone.bind(this)}>Create new Milestone</Button>
-            </GridItem> : null }
-          </GridContainer>
+                <Button color="success" onClick={this.createNewMilestone.bind(this)} >Create new Milestone</Button>
+             : null }
+            </CardFooter>
       </div>  
       )
   }

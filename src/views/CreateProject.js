@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-
 // Redux
 import { connect } from 'react-redux'
 import { projectCreate } from '../redux/actions/projects/Actions'
-
 // Theme components
 import Card from "../components/theme/Card/Card"
 import Button from "../components/theme/CustomButtons/Button.jsx"
@@ -13,7 +11,6 @@ import CardBody from "../components/theme/Card/CardBody.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
-
 // Material UI components
 import TextField from '@material-ui/core/TextField'
 import withStyles from "@material-ui/core/styles/withStyles"
@@ -33,12 +30,13 @@ class CreateProject extends Component {
       tr: false,
       hasError: false
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this)
 }
 
 submit = event => {
   event.preventDefault();
 
+  // Error if not filled in
   if(this.state.name && this.state.description) {
     const project = {
       name: this.state.name,
@@ -61,7 +59,6 @@ submit = event => {
   }
 }
 
-
 handleChange = event => {
   const { name, value } = event.target
   this.setState({ [name]: value })
@@ -69,7 +66,7 @@ handleChange = event => {
 
 render() {
   const { classes } = this.props
-  const { hasError } = this.state
+  const { hasError, name, description } = this.state
 
   return (
       <GridContainer>
@@ -83,14 +80,14 @@ render() {
               <GridContainer style={{ padding: '30px'}}>
                 <GridItem xs={12} sm={12} md={12}>
                   <FormControl className={classes.formControl} >                    
-                  {hasError && !this.state.name && <FormHelperText id="name">Please select name!</FormHelperText>}
+                  {hasError && !name && <FormHelperText id="name">Please select name!</FormHelperText>}
                     <TextField 
                       error={hasError && !this.state.name ? true : false}
                       name="name" 
                       type="text"
                       label="Name" 
                       className="my-input"
-                      value={this.state.name}
+                      value={name}
                       onChange={this.handleChange}
                       fullWidth
                     />
@@ -98,14 +95,14 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl} >                    
-                    {hasError && !this.state.description && <FormHelperText id="description">Please write a description!</FormHelperText>}
+                    {hasError && !description && <FormHelperText id="description">Please write a description!</FormHelperText>}
                     <TextField 
-                      error={hasError && !this.state.description ? true : false}
+                      error={hasError && !description ? true : false}
                       name="description" 
                       type="text"
                       label="Description" 
                       className="my-input"
-                      value={this.state.description}
+                      value={description}
                       onChange={this.handleChange}
                       multiline
                       fullWidth
