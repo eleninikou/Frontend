@@ -29,7 +29,8 @@ class EditProjectForm extends Component {
           description: this.props.project.description,
           id: this.props.project.id,
           client_id: this.props.project.client_id,
-          active: this.props.project.active
+          active: this.props.project.active,
+          label: this.props.project.active ? 'Active' : 'Inactive'
       }
   }
 
@@ -57,7 +58,18 @@ class EditProjectForm extends Component {
 
   handleToggleChange = name => event => {
     const { name } = event.target;
-    this.setState({ [name]: event.target.checked });
+
+    if(event.target.checked === true ) {
+      this.setState({ 
+        [name]: event.target.checked,
+        label: 'Active'
+      });
+    } else {
+      this.setState({ 
+        [name]: event.target.checked,
+        label: 'Inactive'
+      });
+    }
   }
 
   closeEdit = () => { this.props.getEdit(false) }
@@ -84,7 +96,7 @@ class EditProjectForm extends Component {
                           value="active"
                         />
                       }
-                      label="Active"
+                      label={this.state.label}
                     />
                   </FormGroup>
                 </GridItem>
