@@ -249,7 +249,7 @@ class UserProfile extends Component {
                 </GridItem>
               </GridContainer>
             </CardBody>
-            <CardFooter>
+            <CardFooter >
               <Button type="submit" color="rose">Update Profile</Button>
               <Button color="rose" onClick={this.handleClickOpen}>Remove Account</Button>
               <DangerDialogWrapped 

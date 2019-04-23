@@ -11,7 +11,6 @@ import Hidden from "@material-ui/core/Hidden";
 import Menu from "@material-ui/icons/Menu";
 // core components
 import AdminNavbarLinks from "./AdminNavbarLinks.jsx";
-import RTLNavbarLinks from "./RTLNavbarLinks.jsx";
 import Button from "../CustomButtons/Button.jsx";
 
 import headerStyle from "../../../assets/jss/material-dashboard-react/components/headerStyle.jsx";
@@ -31,17 +30,18 @@ function Header({ ...props }) {
   const appBarClasses = classNames({
     [" " + classes[color]]: color
   });
+
   return (
     <AppBar className={classes.appBar + appBarClasses}>
       <Toolbar className={classes.container}>
         <div className={classes.flex}>
           {/* Here we create navbar brand, based on route name */}
-          <Button color="transparent" href="#" className={classes.title}>
+          {/* <Button color="transparent" href="#" className={classes.title}>
             {makeBrand()}
-          </Button>
+          </Button> */}
         </div>
         <Hidden smDown implementation="css">
-          {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
+           <AdminNavbarLinks />
         </Hidden>
         <Hidden mdUp implementation="css">
           <IconButton
@@ -49,7 +49,7 @@ function Header({ ...props }) {
             aria-label="open drawer"
             onClick={props.handleDrawerToggle}
           >
-            <Menu />
+            <Menu style={{fontSize: '35px'}} />
           </IconButton>
         </Hidden>
       </Toolbar>

@@ -2,27 +2,32 @@ import React from "react"
 import { Switch, Route, withRouter } from "react-router-dom"
 import PropTypes from "prop-types"
 import Cookies from 'universal-cookie'
-
 // Redux
 import { connect } from 'react-redux'
 import { getUser} from '../redux/actions/auth/Actions'
-
-import PerfectScrollbar from "perfect-scrollbar"
-
 // Theme componets
 import Footer from "../components/theme/Footer/Footer.jsx"
 import Sidebar from "../components/theme/Sidebar/Sidebar.jsx"
-// import Navbar from "../components/theme/Navbar/Navbar.jsx"
+import Navbar from "../components/theme/Navbars/Navbar.jsx"
+import PerfectScrollbar from "perfect-scrollbar"
+
+import StyledSpinner from '../components/spinner/Spinner'
+import routes from "../routes.js"
+import { 
+  CreateProject, 
+  Project, 
+  CreateTicket, 
+  Ticket, 
+  Milestone, 
+  CreateMilestone, 
+  Invite 
+} from '../views'
 
 
+// Styles
+import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx"
 import withStyles from "@material-ui/core/styles/withStyles"
 import image from "../assets/img/sidebar-2.jpg"
-
-import routes from "../routes.js"
-import { CreateProject, Project, CreateTicket, Ticket, Milestone, CreateMilestone, Invite } from '../views'
-import StyledSpinner from '../components/spinner/Spinner'
-
-import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx"
 import "perfect-scrollbar/css/perfect-scrollbar.css"
 import '../assets/css/main.css'
 
@@ -105,7 +110,7 @@ class Home extends React.Component {
     if (e.history.location.pathname !== e.location.pathname) {
       this.refs.mainPanel.scrollTop = 0;
       if (this.state.mobileOpen) {
-        this.setState({ mobileOpen: false });
+        this.setState({ mobileOpen: false })
       }
     }
   }
@@ -113,7 +118,7 @@ class Home extends React.Component {
   componentWillUnmount() { window.removeEventListener("resize", this.resizeFunction) }
 
   render() {
-    const { user, classes, isFetching,  ...rest} = this.props;
+    const { user, classes, isFetching,  ...rest} = this.props
 
     return (
       isFetching ? 
@@ -132,14 +137,14 @@ class Home extends React.Component {
           />
           <div className={classes.mainPanel} ref="mainPanel">
 
-            {/* <Navbar
+            <Navbar
               routes={routes}
               handleDrawerToggle={this.handleDrawerToggle}
               {...rest}
-            />  */}
+            /> 
 
             {this.getRoute() ? (
-              <div className={classes.content}>
+              <div className={classes.content} style={{ marginTop: '70px'}}>
                 <div className={classes.container}>{switchRoutes}</div>
               </div>
             ) : ('')} 
