@@ -73,14 +73,14 @@ render() {
 
   return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={6}>
           <Card>
             <CardHeader color="success">
               <h4 className={classes.cardTitleWhite}>Create new project</h4>
             </CardHeader>
             <form className={classes.form} onSubmit={this.submit}>
-            <CardBody>
-              <GridContainer>
+            <CardBody >
+              <GridContainer style={{ padding: '30px'}}>
                 <GridItem xs={12} sm={12} md={12}>
                   <FormControl className={classes.formControl} >                    
                   {hasError && !this.state.name && <FormHelperText id="name">Please select name!</FormHelperText>}
@@ -114,7 +114,7 @@ render() {
                   </GridItem>
               </GridContainer>
             </CardBody>
-            <CardFooter>
+            <CardFooter style={{ justifyContent: 'flex-end'}}>
               <Button color="success" type="submit">Create Project</Button>
             </CardFooter>
             </form> 
