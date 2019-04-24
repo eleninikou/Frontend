@@ -121,9 +121,7 @@ class Home extends React.Component {
     const { user, classes, isFetching,  ...rest} = this.props
 
     return (
-      isFetching ? 
-        <StyledSpinner />
-        : user ?
+        user ?
         <div className={classes.wrapper}>
           <Sidebar
             routes={routes}

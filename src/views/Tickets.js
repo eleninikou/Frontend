@@ -21,6 +21,7 @@ import FormControl from '@material-ui/core/FormControl'
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 //Components
 import TicketsTable from '../components/ticket/TicketsTable'
+import DashboardSpinner from '../components/spinner/DashboardSpinner'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
@@ -103,6 +104,12 @@ class Tickets extends Component {
                 <h4 className={classes.cardTitleWhite}>Your tickets</h4>
               </CardHeader>
               <CardBody>
+              {this.props.isFetching ? 
+                  <div style={{ width: '100%', textAlign: 'center'}}>
+                    <DashboardSpinner /> 
+                  </div>
+                :
+              <div> 
               <GridContainer style={{ padding: '10px 20px 20px'}}>
                 <GridItem xs={12} sm={12} md={3}>
                 <FormControl className={classes.formControl}>       
@@ -190,6 +197,7 @@ class Tickets extends Component {
                 </GridItem>
                 </GridContainer> 
                 <TicketsTable tickets={filteredTickets} classes={classes}/>   
+                 </div> }
                 </CardBody>
                 <CardFooter style={{ justifyContent: 'flex-end'}}>
                   <Button color="primary" onClick={this.createNewTicket}>Create new Ticket</Button>
@@ -215,6 +223,7 @@ const mapStateToProps = state => ({
   ticketStatus: state.ticket.ticketStatus,
   ticketTypes: state.ticket.ticketTypes,
   allProjects: state.project.allProjects,
+  isFetching: state.ticket.isFetching
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Tickets)))

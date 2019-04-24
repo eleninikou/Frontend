@@ -17,6 +17,7 @@ import withStyles from "@material-ui/core/styles/withStyles"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Components
 import MilestonesTable from '../components/milestone/MilestonesTable'
+import DashboardSpinner from '../components/spinner/DashboardSpinner'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
@@ -94,9 +95,14 @@ class Milestones extends Component {
               <h4 className={this.props.classes.cardTitleWhite}>Milestones</h4>
             </CardHeader>
             <CardBody>
+            {this.props.isFetching ? 
+                  <div style={{ width: '100%', textAlign: 'center'}}>
+                    <DashboardSpinner /> 
+                  </div>
+                : 
               <MilestonesTable 
                 milestones={milestones ? milestones : null}
-                classes={this.props.classes} />
+            classes={this.props.classes} /> }
                 <CardFooter style={{ justifyContent: 'flex-end'}}>
                     <Button color="warning"  onClick={this.createNewMilestone.bind(this)}>
                       Create new Milestone
@@ -111,7 +117,10 @@ class Milestones extends Component {
 }
 
 const mapDispatchToProps = dispatch => { return { getAllProjects: (token, id) => dispatch(getAllProjects(token, id)) }}
-const mapStateToProps = state => ({ milestones: state.project.milestones })
+const mapStateToProps = state => ({ 
+  milestones: state.project.milestones,
+  isFetching: state.project.isFetching  
+})
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Milestones)))
   

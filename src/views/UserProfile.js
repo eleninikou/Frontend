@@ -3,11 +3,9 @@ import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
 import ImageUploader from 'react-images-upload'
 import axios from "axios"
-
 // Redux
 import { connect } from 'react-redux'
 import { getUser, updateUser } from '../redux/actions/auth/Actions'
-
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
@@ -19,12 +17,12 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 import AccountCircle from "@material-ui/icons/AccountCircle"
-
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
 import TextField from '@material-ui/core/TextField'
 import Avatar from '@material-ui/core/Avatar'
-
+// Components
+import DashboardSpinner from '../components/spinner/DashboardSpinner'
 import { DangerDialogWrapped }  from '../components'
 
 const styles = {
@@ -160,7 +158,7 @@ class UserProfile extends Component {
   
 
   render() {
-    const { classes } = this.props
+    const { classes, isFetching } = this.props
     const { successMessage, user } = this.state
 
   return (
@@ -181,24 +179,27 @@ class UserProfile extends Component {
               <h4 className={classes.cardTitleWhite} style={{ textAlign: 'center'}}>Edit Profile</h4>
             </CardHeader>
             <CardBody>
+              {isFetching ? 
+                <div style={{ width: '100%', textAlign: 'center'}}>
+                  <DashboardSpinner /> 
+                </div>
+              : 
               <GridContainer>
-              <GridItem xs={12} sm={12} md={12}>
-              {this.state.avatar ?
-                <img src={this.state.avatar} alt="profile" style={{ display: 'block', borderRadius: '50%', width: '100px', height: '100px', margin: 'auto' }} />
-                : 
-                <Avatar style={{ margin: 'auto', height: '100px', width: '100px'}}> 
-                  <AccountCircle style={{ fontSize: '70px'}}/> 
-                </Avatar>}
-                <ImageUploader
-                      withIcon={true}
-                      buttonText='Upload new profile picture'
-                      onChange={this.onDrop}
-                      imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg']}
-                      maxFileSize={5242880}
+                <GridItem xs={12} sm={12} md={12}>
+                  {this.state.avatar ?
+                  <img src={this.state.avatar} alt="profile" style={{ display: 'block', borderRadius: '50%', width: '100px', height: '100px', margin: 'auto' }} />
+                  : 
+                  <Avatar style={{ margin: 'auto', height: '100px', width: '100px'}}> 
+                    <AccountCircle style={{ fontSize: '70px'}}/> 
+                  </Avatar>}
+                  <ImageUploader
+                    withIcon={true}
+                    buttonText='Upload new profile picture'
+                    onChange={this.onDrop}
+                    imgExtension={['.jpg', '.gif', '.png', '.gif', '.jpeg']}
+                    maxFileSize={5242880}
                   />
-              </GridItem>
-              <GridContainer>
-              </GridContainer>
+                </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                     <TextField
                       label="name"
@@ -223,8 +224,6 @@ class UserProfile extends Component {
                       fullWidth
                     />
                 </GridItem>
-              </GridContainer>
-              <GridContainer>
                 <GridItem xs={12} sm={12} md={6}>
                     <TextField
                       label="password"
@@ -247,7 +246,7 @@ class UserProfile extends Component {
                     fullWidth
                   />
                 </GridItem>
-              </GridContainer>
+                </GridContainer> }
             </CardBody>
             <CardFooter >
               <Button type="submit" color="rose">Update Profile</Button>
@@ -264,7 +263,7 @@ class UserProfile extends Component {
         </GridItem>
       </GridContainer>
     </form>
-  );
+  )
   }
 }
 
@@ -277,6 +276,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => ({ 
   user: state.auth.user,
+  isFetching: state.auth.isFetching,
   successMessage: state.auth.successMessage
 })
 

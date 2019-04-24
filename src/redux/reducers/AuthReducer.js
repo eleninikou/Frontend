@@ -9,6 +9,7 @@ import {
     GOOGLE_AUTH_REQUEST,
     GOOGLE_AUTH_SUCCESS,
     GOOGLE_AUTH_FAILURE,
+    GET_USER_REQUEST,
     GET_USER_SUCCESS,
     GET_USER_FAILURE,
     UPDATE_USER_SUCCESS,
@@ -90,6 +91,11 @@ const authReducer = (state = initialState, action) => {
                 isFetching: false,
                 errorMessage: action.message
             }     
+        case GET_USER_REQUEST:
+            return {
+                ...state,
+                isFetching: true,
+            } 
         case GET_USER_SUCCESS:
             return {
                 ...state,

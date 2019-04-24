@@ -10,6 +10,7 @@ import {
     GOOGLE_AUTH_REQUEST,
     GOOGLE_AUTH_SUCCESS,
     GOOGLE_AUTH_FAILURE,
+    GET_USER_REQUEST,
     GET_USER_SUCCESS,
     GET_USER_FAILURE,
     UPDATE_USER_SUCCESS,
@@ -139,6 +140,7 @@ export const getUser = (id) => {
   return async dispatch => {
     const getUserSuccess = user=> { dispatch ({ type: GET_USER_SUCCESS, payload: user}); return user; }
     try {
+      dispatch({ type: GET_USER_REQUEST });
       const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/${id}`, {
           method: "GET",
           headers: { 
