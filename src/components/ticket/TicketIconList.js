@@ -30,7 +30,7 @@ const TicketIconList = ({ ticket, classes }) => {
                     title="Due date"
                     placement="top"
                     classes={{ tooltip: classes.tooltip }}>
-                  <Avatar style={{ backgroundColor: '#041031' }}> 
+                  <Avatar style={{ backgroundColor: '#041031', width: '30px', height: '30px' }}> 
                     <DateRange style={{ fontSize: '18px'}}/> 
                   </Avatar>
                 </Tooltip>
@@ -44,14 +44,14 @@ const TicketIconList = ({ ticket, classes }) => {
                 title="Assigned user"
                 placement="top"
                 classes={{ tooltip: classes.tooltip }}>  
-                  <Avatar style={{backgroundColor: '#f44336'}}> 
+                  <Avatar style={{backgroundColor: '#f44336', width: '30px', height: '30px'}}> 
                     {ticket.assigned_user ?
-                    <img src={ticket.assigned_user.avatar} alt="user" style={{ display: 'block', width: '40px', height: '40px', borderRadius: '50%' }}/>
+                    <img src={ticket.assigned_user.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
                     : <PersonPin style={{ fontSize: '18px'}} /> }
                   </Avatar>
                 </Tooltip>
               </ListItemAvatar>
-              <ListItemText primary={ticket.assigned_user ? 'Assigned: ' + ticket.assigned_user.name : null} />
+              <ListItemText primary={ticket.assigned_user ? 'Assigned to: ' + ticket.assigned_user.name : null} />
             </ListItem>
             <ListItem>
               <ListItemAvatar>
@@ -60,7 +60,7 @@ const TicketIconList = ({ ticket, classes }) => {
                   title="Status"
                   placement="top"
                   classes={{ tooltip: classes.tooltip }}>
-                  <Avatar style={{ backgroundColor: '#4caf50' }}> 
+                  <Avatar style={{ backgroundColor: '#4caf50', width: '30px', height: '30px'}}> 
                     <LinearScale style={{ fontSize: '18px'}}/> 
                   </Avatar>
                 </Tooltip>
@@ -74,7 +74,7 @@ const TicketIconList = ({ ticket, classes }) => {
                   title="Ticket type"
                   placement="top"
                   classes={{ tooltip: classes.tooltip }}>
-                  <Avatar style={{ backgroundColor: '#8e24aa'}}> 
+                  <Avatar style={{ backgroundColor: '#8e24aa', width: '30px', height: '30px'}}> 
                     {ticket.type_id === 1 ?
                       <BugReport style={{ fontSize: '18px'}}/> 
                       : ticket.type_id === 2 ?
@@ -96,15 +96,15 @@ const TicketIconList = ({ ticket, classes }) => {
                   placement="top"
                   classes={{ tooltip: classes.tooltip }}>                        
                     {ticket.priority == 'low' ?
-                      <Avatar style={{backgroundColor: '#FADC08'}}> 
+                      <Avatar style={{backgroundColor: '#FADC08', width: '30px', height: '30px'}}> 
                         <Warning style={{ fontSize: '18px'}}/> 
                       </Avatar>
                     : ticket.priority == 'normal' ?
-                      <Avatar style={{backgroundColor: '#4caf50'}}> 
+                      <Avatar style={{backgroundColor: '#4caf50', width: '30px', height: '30px'}}> 
                         <Warning style={{ fontSize: '18px'}}/> 
                       </Avatar>
                     : 
-                      <Avatar style={{backgroundColor: '#f44336'}}> 
+                      <Avatar style={{backgroundColor: '#f44336', width: '30px', height: '30px'}}> 
                         <Warning style={{ fontSize: '18px'}}/> 
                       </Avatar> }
                 </Tooltip>
@@ -118,7 +118,7 @@ const TicketIconList = ({ ticket, classes }) => {
                 title="Milestone"
                 placement="top"
                 classes={{ tooltip: classes.tooltip }}>  
-                  <Avatar style={{backgroundColor: '#ff9800'}}> 
+                  <Avatar style={{backgroundColor: '#ff9800', width: '30px', height: '30px'}}> 
                     <Timeline style={{ fontSize: '18px'}}/> 
                   </Avatar>
                 </Tooltip>
@@ -132,7 +132,7 @@ const TicketIconList = ({ ticket, classes }) => {
                 title="Comments"
                 placement="top"
                 classes={{ tooltip: classes.tooltip }}>  
-                  <Avatar style={{backgroundColor: '#00acc1'}}> 
+                  <Avatar style={{backgroundColor: '#00acc1', width: '30px', height: '30px'}}> 
                     <Comment style={{ fontSize: '18px'}}/> 
                   </Avatar>
                 </Tooltip>

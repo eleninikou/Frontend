@@ -46,10 +46,10 @@ const showForm = () => {getEdit(true)}
                       placement="top"
                       classes={{ tooltip: classes.tooltip }}>  
                       {project.creator ? project.creator.avatar ?
-                        <img src={project.creator.avatar} alt="user" style={{ display: 'block', width: '40px', height: '40px', borderRadius: '50%' }}/>
+                        <img src={project.creator.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
                         :  
-                        <Avatar> 
-                          <AccountCircle /> 
+                        <Avatar style={{ width: '30px', height: '30px' }}> 
+                          <AccountCircle style={{ fontSize: '18px'}}/> 
                         </Avatar>
                         : null}
                       </Tooltip>
@@ -65,10 +65,10 @@ const showForm = () => {getEdit(true)}
                           placement="top"
                           classes={{ tooltip: classes.tooltip }}>  
                           {project.client.avatar ?
-                            <img src={project.client.avatar} alt="user" style={{ display: 'block', width: '40px', height: '40px', borderRadius: '50%' }}/>
+                            <img src={project.client.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
                           :
-                            <Avatar style={{backgroundColor: '#ec407a'}}> 
-                              <Face /> 
+                            <Avatar style={{backgroundColor: '#ec407a', width: '30px', height: '30px'}}> 
+                              <Face style={{ fontSize: '18px'}}/> 
                             </Avatar>}
                           </Tooltip>
                     </ListItemAvatar>
@@ -82,8 +82,8 @@ const showForm = () => {getEdit(true)}
                       title="Milestones"
                       placement="top"
                       classes={{ tooltip: classes.tooltip }}>  
-                        <Avatar style={{backgroundColor: '#ff9800'}}> 
-                          <Timeline /> 
+                        <Avatar style={{backgroundColor: '#ff9800', width: '30px', height: '30px'}}> 
+                          <Timeline style={{ fontSize: '18px'}}/> 
                         </Avatar>
                       </Tooltip>
                   </ListItemAvatar>
@@ -96,8 +96,8 @@ const showForm = () => {getEdit(true)}
                       title="Tickets"
                       placement="top"
                       classes={{ tooltip: classes.tooltip }}>  
-                        <Avatar style={{backgroundColor: '#9c27b0'}}> 
-                          <Note /> 
+                        <Avatar style={{backgroundColor: '#9c27b0', width: '30px', height: '30px'}}> 
+                          <Note style={{ fontSize: '18px'}}/> 
                         </Avatar>
                       </Tooltip>
                   </ListItemAvatar>
@@ -110,8 +110,8 @@ const showForm = () => {getEdit(true)}
                       title="Team"
                       placement="top"
                       classes={{ tooltip: classes.tooltip }}>  
-                        <Avatar style={{backgroundColor: '#26c6da'}}> 
-                          <People /> 
+                        <Avatar style={{backgroundColor: '#26c6da', width: '30px', height: '30px'}}> 
+                          <People style={{ fontSize: '18px'}}/> 
                         </Avatar>
                       </Tooltip>
                   </ListItemAvatar>

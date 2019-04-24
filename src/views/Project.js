@@ -22,7 +22,7 @@ import Timeline from "@material-ui/icons/Timeline"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
-import StyledSpinner from '../components/spinner/Spinner'
+import DashboardSpinner from '../components/spinner/DashboardSpinner'
 
 // Style
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
@@ -136,7 +136,11 @@ class Project extends Component {
       const { classes, team, project, tickets, isFetching } = this.props
       const { edit, successMessage, user, milestones } = this.state
       return (
-        isFetching ? <StyledSpinner /> :
+        isFetching ? 
+        <div style={{ width: '100%', textAlign: 'center'}}>
+          <DashboardSpinner /> 
+        </div>
+        :
           <div>
               <Snackbar
                 place="tr"

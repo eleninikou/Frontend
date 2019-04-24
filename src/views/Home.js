@@ -11,7 +11,7 @@ import Sidebar from "../components/theme/Sidebar/Sidebar.jsx"
 import Navbar from "../components/theme/Navbars/Navbar.jsx"
 import PerfectScrollbar from "perfect-scrollbar"
 
-import StyledSpinner from '../components/spinner/Spinner'
+import DashboardSpinner from '../components/spinner/DashboardSpinner'
 import routes from "../routes.js"
 import { 
   CreateProject, 
@@ -149,7 +149,10 @@ class Home extends React.Component {
             {this.getRoute() ? <Footer /> : null}
           </div>
         </div>
-        : <StyledSpinner />
+        :
+        <div style={{ width: '100%', textAlign: 'center'}}>
+          <DashboardSpinner /> 
+        </div>
     );
   }
 }

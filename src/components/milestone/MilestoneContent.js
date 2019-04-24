@@ -44,8 +44,8 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
                             title="Due date"
                             placement="top"
                             classes={{ tooltip: classes.tooltip }}>  
-                            <Avatar style={{ backgroundColor: '#041031' }}> 
-                              <DateRange /> 
+                            <Avatar style={{ backgroundColor: '#041031', width: '30px', height: '30px'}}> 
+                              <DateRange style={{ fontSize: '18px'}}/> 
                             </Avatar>
                             </Tooltip>
                           </ListItemAvatar>
@@ -58,8 +58,8 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
                             title="project"
                             placement="top"
                             classes={{ tooltip: classes.tooltip }}>  
-                              <Avatar style={{backgroundColor: '#4caf50'}}> 
-                                <LibraryBooks /> 
+                              <Avatar style={{backgroundColor: '#4caf50', width: '30px', height: '30px'}}> 
+                                <LibraryBooks style={{ fontSize: '18px'}}/> 
                               </Avatar>
                             </Tooltip>
                           </ListItemAvatar>
@@ -72,8 +72,8 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
                             title="Tickets"
                             placement="top"
                             classes={{ tooltip: classes.tooltip }}>  
-                            <Avatar style={{ backgroundColor: '#9c27b0' }}> 
-                              <Note /> 
+                            <Avatar style={{ backgroundColor: '#9c27b0', width: '30px', height: '30px' }}> 
+                              <Note style={{ fontSize: '18px'}}/> 
                             </Avatar>
                             </Tooltip>
                           </ListItemAvatar>

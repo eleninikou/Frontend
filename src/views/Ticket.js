@@ -2,12 +2,10 @@ import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 import Cookies from 'universal-cookie'
 import ImageGallery from 'react-image-gallery'
-
 // Redux
 import { connect } from 'react-redux'
 import { getTicket } from '../redux/actions/tickets/Actions'
 import { getUser } from '../redux/actions/auth/Actions'
-
 // Theme components
 import Card from "../components/theme/Card/Card"
 import Button from "../components/theme/CustomButtons/Button.jsx"
@@ -17,19 +15,14 @@ import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
-
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
-import CircularProgress from '@material-ui/core/CircularProgress'
-
 // Components 
 import { TicketIconList, TicketContent, EditTicketForm, TicketComments, AddComment } from '../components'
-import StyledSpinner from '../components/spinner/Spinner'
-
+import DashboardSpinner from '../components/spinner/DashboardSpinner'
 // Icon
 import Edit from "@material-ui/icons/Edit"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
-
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import "react-image-gallery/styles/css/image-gallery.css"
@@ -129,7 +122,6 @@ class Ticket extends Component {
       })
   }
 
-
   hideForm = hide => {
     this.setState({ addComment: hide, ButtonTextComment: 'Add Comment'}) 
     this.setState({ showComments: true, CommentText: 'Hide Comments' })
@@ -205,7 +197,10 @@ class Ticket extends Component {
           closeNotification={() => this.setState({ tr: false })} 
           close /> 
 
-        {isFetching && !ticket? <CircularProgress className="my-spinner" color="primary" /> : 
+        {isFetching && !ticket? 
+          <div style={{ width: '100%', textAlign: 'center'}}>
+            <DashboardSpinner /> 
+          </div> : 
         <GridContainer>          
           <GridItem xs={12} sm={12} md={12}>
             <Card>
@@ -217,7 +212,7 @@ class Ticket extends Component {
               <CardBody>
                 <GridContainer>          
                   <GridItem xs={12} sm={12} md={7}>
-                    {description ?  <TicketContent description={description}/> : <StyledSpinner />}
+                    {description ?  <TicketContent description={description}/> : <DashboardSpinner />}
                   </GridItem>    
                   <GridItem xs={12} sm={12} md={5}>
                     <TicketIconList ticket={ticket} classes={classes}/>

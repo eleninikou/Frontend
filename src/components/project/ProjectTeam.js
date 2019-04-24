@@ -101,7 +101,6 @@ class ProjectTeam extends Component {
                 team ? team.map(person => {
                   return (
                     person.user ? [
-
                       person.user.avatar ? 
                       <img src={person.user.avatar} alt="user" style={{ display: 'block', width: '40px', height: '40px', borderRadius: '50%' }}/>
                       : 
@@ -109,8 +108,8 @@ class ProjectTeam extends Component {
                         <Person /> 
                       </Avatar>,
                       `${person.user.name}`, 
-                      `${person.role ? person.role.role : null }`,
-                         (person.role.id !== 1 && creator) ?
+                      `${person.role ? person.role.role : person.role_id ? 'admin' : null }`,
+                         (person.role_id !== 1 && creator) ?
                           <div>
                             <Tooltip
                               id="tooltip-top-start"

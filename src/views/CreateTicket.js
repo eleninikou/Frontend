@@ -261,9 +261,9 @@ render() {
               <h4 className={classes.cardTitleWhite}>Create new ticket</h4>
             </CardHeader>
             <form className={classes.form} onSubmit={this.submit}>
-            <CardBody>
-              <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
+              <CardBody>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={8}>
                     <FormControl className={classes.formControl} >                    
                       {hasError && !this.state.title && <FormHelperText id="title">Please select title!</FormHelperText>}
                       <TextField 
@@ -276,7 +276,6 @@ render() {
                         value={this.state.title}
                         onChange={this.handleChange}
                         fullWidth
-                        variant="outlined"
                         margin="normal"
                         aria-describedby="component-error-text"
                       />
@@ -292,7 +291,6 @@ render() {
                           select
                           disabled={ backToProject ? true : false}
                           label="Project"
-                          variant="outlined"
                           margin="normal"
                           value={this.state.project_id}
                           onChange={this.handleChange}
@@ -320,7 +318,6 @@ render() {
                           classes={classes}
                           select
                           label="Type"
-                          variant="outlined"
                           margin="normal"
                           value={this.state.type_id}
                           onChange={this.handleChange}
@@ -340,7 +337,6 @@ render() {
                         select
                         disabled={ project ? (user == project.client_id) ? true : false : null}
                         label="Status"
-                        variant="outlined"
                         margin="normal"
                         value={this.state.status_id}
                         onChange={this.handleChange}
@@ -359,7 +355,6 @@ render() {
                           error={hasError && !this.state.priority ? true : false}
                           select
                           label="Priority"
-                          variant="outlined"
                           margin="normal"
                           style={styles.input}
                           value={this.state.priority}
@@ -379,7 +374,6 @@ render() {
                           select
                           disabled={ project ? (user == project.client_id) ? true : false : null}
                           label="Assign user"
-                          variant="outlined"
                           margin="normal"
                           style={styles.input}
                           value={this.state.assigned_user_id}
@@ -415,7 +409,6 @@ render() {
                           error={hasError && !this.state.milestone_id ? true : false}
                           select
                           label="milestone"
-                          variant="outlined"
                           margin="normal"
                           style={styles.input}
                           value={this.state.milestone_id}
@@ -435,7 +428,6 @@ render() {
                         id="date"
                         label="Due date"
                         type="date"
-                        variant="outlined"
                         margin="normal"
                         style={styles.input}
                         value={this.state.selectedDate}
