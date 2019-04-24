@@ -105,27 +105,7 @@ class ProjectTickets extends Component {
                   inputProps={{ name: 'type_id', id: 'type_id' }} >
                   <MenuItem value={null}>All</MenuItem>
                       {ticketTypes ? ticketTypes.map(type => {
-                        return (
-                          <MenuItem key={type.id} value={type.id}> 
-                            <Tooltip
-                              id="tooltip-top-start"
-                              title={type.type}
-                              placement="top"
-                              classes={{ tooltip: classes.tooltip }}
-                              >
-                              <Avatar style={{ backgroundColor: '#8e24aa', height: '30px', width: '30px', marginRight: '20px'}}> 
-                                {type.id === 1 ?
-                                <BugReport style={{ fontSize: '18px'}} /> 
-                                : type.id === 2 ?
-                                <LowPriority style={{ fontSize: '18px'}} />
-                                : type.id === 3 ?
-                                <LinearScale style={{ fontSize: '18px'}}/>
-                                : <YoutubeSearchedFor style={{ fontSize: '18px'}} /> }  
-                              </Avatar>
-                            </Tooltip>
-                            {type.type} 
-                          </MenuItem>   
-                        ) 
+                        return <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem>   
                     }): null}
                 </TextField>   
                 </FormControl>
@@ -138,7 +118,6 @@ class ProjectTickets extends Component {
                     label="Status"
                     onChange={this.handleChange.bind(this)}
                     className="my-select"
-                    // variant="outlined"
                     margin="normal"
                     inputProps={{ name: 'status_id', id: 'status_id' }} >
                       <MenuItem value={null}>All</MenuItem>
@@ -159,25 +138,10 @@ class ProjectTickets extends Component {
                   // variant="outlined"
                   margin="normal"
                   inputProps={{ name: 'priority', id: 'priority' }} >
-                    <MenuItem value={null}>All</MenuItem>
-                    <MenuItem value='low'>
-                        <Avatar style={{backgroundColor: '#FADC08', height: '30px', width: '30px', marginRight: '20px' }}> 
-                          <Warning style={{ fontSize: '18px'}} /> 
-                        </Avatar>
-                          Low
-                      </MenuItem>
-                    <MenuItem value='normal'>
-                    <Avatar style={{backgroundColor: '#4caf50', height: '30px', width: '30px', marginRight: '20px' }}> 
-                        <Warning style={{ fontSize: '18px'}}/> 
-                      </Avatar>
-                      Normal
-                    </MenuItem>
-                    <MenuItem value='high'>
-                      <Avatar style={{backgroundColor: '#f44336', height: '30px', width: '30px', marginRight: '20px'}}> 
-                        <Warning style={{ fontSize: '18px'}}/> 
-                      </Avatar> 
-                      High
-                    </MenuItem>
+                    <MenuItem value={null}>All </MenuItem>
+                    <MenuItem value='low'> Low </MenuItem>
+                    <MenuItem value='normal'> Normal </MenuItem>
+                    <MenuItem value='high'> High</MenuItem>
                 </TextField> 
                 </FormControl>
               </GridItem>  

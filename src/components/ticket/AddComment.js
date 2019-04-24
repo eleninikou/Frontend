@@ -1,30 +1,25 @@
 import React, { Component } from 'react'
-
 // Redux
 import { commentCreate } from '../../redux/actions/comments/Actions'
 import { removeFromStorage } from '../../redux/actions/tickets/Actions'
-
 import { connect } from 'react-redux'
-
-import Cookies from "universal-cookie"
-import axios from "axios"
-import ImageUploader from 'react-images-upload'
-
 // Theme components
 import Button from "../theme/CustomButtons/Button.jsx"
 import GridItem from "../theme/Grid/GridItem.jsx"
 import GridContainer from "../theme/Grid/GridContainer.jsx"
-
 // Material UI components
 import Avatar from '@material-ui/core/Avatar'
 import Tooltip from "@material-ui/core/Tooltip"
-
+// Components
+import DashboardSpinner from '../spinner/DashboardSpinner'
 // Icons
 import Remove from "@material-ui/icons/Remove"
-
-// wysiwyg
+// External
 import { Editor } from 'react-draft-wysiwyg'
 import { EditorState, convertToRaw } from 'draft-js'
+import Cookies from "universal-cookie"
+import axios from "axios"
+import ImageUploader from 'react-images-upload'
 
 class AddComment extends Component {
     constructor(props) {
@@ -32,7 +27,8 @@ class AddComment extends Component {
       this.state = {
         editorState: '',
         ticket_id: this.props.ticket_id,
-        urls: []
+        urls: [],
+        uploading: false
       }
   }
 
@@ -64,9 +60,9 @@ class AddComment extends Component {
   }
 
   onDrop = files => {      
+    this.setState({ uploading: true })
     const cookies = new Cookies()
     var token = cookies.get('token')
-  
     // Remove old urls from storage, images will upload again
     if(this.state.urls.length) {
       this.state.urls.map(url => {
@@ -93,11 +89,11 @@ class AddComment extends Component {
               "Authorization": `Bearer ${token}`
             }}).then((res) => {
               const url = process.env.REACT_APP_API_BASE_URL+res.data.url
-              scope.setState({ urls: [...scope.state.urls, url] })
+              scope.setState({ urls: [...scope.state.urls, url], uploading: false })
             })
         })(file)
         reader.readAsDataURL(file)
-    }
+      }
   }
 
   // If image are uploaded but no comment is created -> delete them
@@ -111,7 +107,7 @@ class AddComment extends Component {
 
 
   render() {
-    const { editorState, urls } = this.state
+    const { editorState, urls, uploading } = this.state
     const { classes } = this.props
 
     return(
@@ -136,6 +132,7 @@ class AddComment extends Component {
                 maxFileSize={5242880}
             />
             <GridContainer>
+            {uploading ? <div style={{ width: '100%', textAlign: 'center'}}><DashboardSpinner /></div> : null }  
             {urls.length ? urls.map(url => {
               return (
                 <GridItem xs={3} sm={3} md={3}>

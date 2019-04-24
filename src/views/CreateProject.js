@@ -40,7 +40,7 @@ submit = event => {
     const project = {
       name: this.state.name,
       description: this.state.description
-    };
+    }
   
     this.props.projectCreate(project)
     .then(res => {
@@ -126,10 +126,8 @@ const mapDispatchToProps = dispatch => {
   return { projectCreate: project => dispatch(projectCreate(project)) }
 }
 
-const mapStateToProps = state => ({ 
-  successMessage: state.project.successMessage,
-})
+const mapStateToProps = state => ({ successMessage: state.project.successMessage })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateProject)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(CreateProject)))
   
 

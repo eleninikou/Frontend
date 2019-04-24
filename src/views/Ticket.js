@@ -212,10 +212,11 @@ class Ticket extends Component {
               <CardBody>
                 <GridContainer>          
                   <GridItem xs={12} sm={12} md={7}>
-                    {description ?  <TicketContent description={description}/> : <DashboardSpinner />}
+                    {description ?  <TicketContent description={description}/> : 
+                      <div style={{ width: '100%', textAlign: 'center'}}><DashboardSpinner /></div>}
                   </GridItem>    
                   <GridItem xs={12} sm={12} md={5}>
-                    <TicketIconList ticket={ticket} classes={classes}/>
+                    {ticket ? <TicketIconList ticket={ticket} classes={classes} /> : <div style={{ width: '100%', textAlign: 'center'}}><DashboardSpinner /></div>}
                   </GridItem> 
                   <GridItem xs={12} sm={12} md={12} >
                     {images.length ? 
@@ -227,16 +228,31 @@ class Ticket extends Component {
                 </GridContainer>
               </CardBody> 
               <CardFooter>
-                {comments.length && !addComment ?
-                  <div>
-                    <Button color="primary" onClick={this.showComments}>{CommentText}</Button> 
-                    {showComments ? <Button color="primary" onClick={this.showCommentForm}>{ButtonTextComment}</Button> : null }  
-                  </div>  
-                : <Button color="primary" onClick={this.showCommentForm}>{ButtonTextComment}</Button> }  
+                <GridContainer style={{ width: '100%', justifyContent: 'space-evenly'}}>
+                  {comments.length && !addComment ?
+                    <div>
+                      <GridItem xs={12} sm={3} md={3}>
+                        <Button color="primary" onClick={this.showComments}  style={{minWidth: '163px'}}>{CommentText}</Button> 
+                      </GridItem>
+                      {showComments ? 
+                      <GridItem xs={12} sm={3} md={3}>
+                        <Button color="primary" onClick={this.showCommentForm}  style={{minWidth: '163px'}}>{ButtonTextComment}</Button>   
+                      </GridItem>
+                      : null }
+                    </div>  
+                  : 
+                  <GridItem xs={12} sm={3} md={3}>
+                    <Button color="primary" onClick={this.showCommentForm} style={{minWidth: '163px'}}>{ButtonTextComment}</Button> 
+                  </GridItem> }
 
-                {(ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id)) ?
-                  <Button color="primary" onClick={this.showForm}> {ButtonText} </Button> 
-                : null }
+                  {(ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id)) ?
+                  <div>
+                    <GridItem xs={12} sm={3} md={3}>
+                      <Button color="primary" onClick={this.showForm} style={{minWidth: '163px'}}> {ButtonText} </Button> 
+                    </GridItem>
+                  </div>  
+                  : null }
+                </GridContainer>
               </CardFooter>
             </Card>
           </GridItem> 
