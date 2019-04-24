@@ -79,13 +79,13 @@ class UserProfile extends Component {
   }
 
   handleChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+    const { name, value } = event.target
+    this.setState({ [name]: value })
   }
 
 
   submit = event => {
-    event.preventDefault();
+    event.preventDefault()
 
     if(this.state.password !== null) {
       if(this.state.repeatPassword === this.state.password) {
@@ -97,9 +97,7 @@ class UserProfile extends Component {
         }
         this.props.updateUser(user, this.state.user).then(res => {
           this.setState({ successMessage: res.message })
-        }).then(() => {
-          this.showNotification('tr')
-        })
+        }).then(() => { this.showNotification('tr') })
       }
     } else {
       const user = {
@@ -109,9 +107,7 @@ class UserProfile extends Component {
       }
       this.props.updateUser(user, this.state.user).then(res => {
         this.setState({ successMessage: res.message })
-      }).then(() => {
-        this.showNotification('tr')
-      })
+      }).then(() => { this.showNotification('tr') })
     }
     
   }
@@ -127,7 +123,6 @@ class UserProfile extends Component {
       reader.onload = () => {
         const formData = new FormData()
         formData.append('file', file[0])
-
         return axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,  
           formData, { headers: { 
             "X-Requested-With": "XMLHttpRequest",
@@ -200,51 +195,55 @@ class UserProfile extends Component {
                     maxFileSize={5242880}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                    <TextField
-                      label="name"
-                      id="name"
-                      type="text"
-                      name="name"
-                      className="my-input"
-                      value={this.state.name}
-                      onChange={this.handleChange.bind(this)}
-                      fullWidth
-                    />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                    <TextField
-                      label="email"
-                      type="email"
-                      name="email"
-                      id="email-address"
-                      value={this.state.email}
-                      onChange={this.handleChange.bind(this)}
-                      className="my-input"
-                      fullWidth
-                    />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                    <TextField
-                      label="password"
-                      id="password"
-                      type="password"
-                      name="password"
-                      className="my-input"
-                      onChange={this.handleChange.bind(this)}
-                      fullWidth
-                    />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <TextField
-                    label="repeat password"
-                    id="password"
-                    type="password"
-                    name="repeatPassword"
-                    onChange={this.handleChange.bind(this)}
-                    className="my-input"
-                    fullWidth
-                  />
+                <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}}>
+                  <GridContainer>
+                    <GridItem xs={12} sm={12} md={12}>
+                        <TextField
+                          label="name"
+                          id="name"
+                          type="text"
+                          name="name"
+                          className="my-input"
+                          value={this.state.name}
+                          onChange={this.handleChange.bind(this)}
+                          fullWidth
+                        />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={12}>
+                        <TextField
+                          label="email"
+                          type="email"
+                          name="email"
+                          id="email-address"
+                          value={this.state.email}
+                          onChange={this.handleChange.bind(this)}
+                          className="my-input"
+                          fullWidth
+                        />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={12}>
+                        <TextField
+                          label="password"
+                          id="password"
+                          type="password"
+                          name="password"
+                          className="my-input"
+                          onChange={this.handleChange.bind(this)}
+                          fullWidth
+                        />
+                    </GridItem>
+                    <GridItem xs={12} sm={12} md={12}>
+                      <TextField
+                        label="repeat password"
+                        id="password"
+                        type="password"
+                        name="repeatPassword"
+                        onChange={this.handleChange.bind(this)}
+                        className="my-input"
+                        fullWidth
+                      />
+                    </GridItem>
+                  </GridContainer>
                 </GridItem>
                 </GridContainer> }
             </CardBody>
