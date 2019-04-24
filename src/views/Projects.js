@@ -13,10 +13,13 @@ import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI components
+import Radio from '@material-ui/core/Radio'
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
+import RadioGroup from '@material-ui/core/RadioGroup'
 import withStyles from "@material-ui/core/styles/withStyles"
 import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 // Icons
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Components
@@ -68,10 +71,11 @@ class Projects extends Component {
 
    createNewProject() { this.props.history.push('/home/create-project/') }
 
-    handleChange = event => {
-      const { name, value } = event.target
-      this.setState({ [name]: value })
-    }
+
+  handleChange = event => { 
+    this.setState({ active: event.target.value }) 
+    console.log(event.target.value)
+  }
 
     render() {
 
@@ -86,8 +90,8 @@ class Projects extends Component {
 
         // Filter projects
         const filtredProjects = 
-          this.state.active === 0 ? projects.filter(project => { return project.project.active === 0 })
-          : this.state.active === 1 ? projects.filter(project => { return project.project.active === 1 })
+          this.state.active === "0" ? projects.filter(project => { return project.project.active === 0 })
+          : this.state.active === "1" ? projects.filter(project => { return project.project.active === 1 })
           : projects
         
 
@@ -127,22 +131,21 @@ class Projects extends Component {
                   </div>
                 : 
                 <div>
-                  <GridItem xs={12} sm={6} md={3}>
-                    <FormControl className={this.props.classes.formControl}>       
-                      <TextField
-                        value={this.state.status_id}
-                        select
-                        label="Select projects"
-                        fullWidth
-                        onChange={this.handleChange}
-                        margin="normal"
-                        inputProps={{ name: 'active', id: 'active' }} >
-                          <MenuItem value={null}>All</MenuItem>
-                          <MenuItem value={1}> Active </MenuItem> 
-                          <MenuItem value={0}> Inactive </MenuItem> 
-                      </TextField> 
-                    </FormControl>
-                  </GridItem>
+                  <FormControl component="fieldset" className={this.props.classes.formControl}>
+                    <RadioGroup
+                      aria-label="active"
+                      name="active"
+                      className={this.props.classes.group}
+                      value={this.state.active}
+                      onChange={this.handleChange}
+                      style={{ flexDirection: 'row'}}
+                      >
+                      <FormControlLabel value="" control={<Radio />} label="All" />
+                      <FormControlLabel value="1" control={<Radio />} label="Active" />
+                      <FormControlLabel value="0" control={<Radio />} label="Inactive" />
+                    
+                    </RadioGroup>
+                  </FormControl>
                   <ProjectsTable 
                     projects={filtredProjects}
                     isFetching={this.props.isFetching}
