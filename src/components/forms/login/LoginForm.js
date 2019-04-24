@@ -18,6 +18,7 @@ import Cookies from 'universal-cookie'
 import GoogleLogin from 'react-google-login'
 // Styles
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import LoginSpinner from '../../spinner/LoginSpinner'
 
 class LoginForm extends Component {
   constructor(props) {
@@ -50,49 +51,43 @@ class LoginForm extends Component {
     const cookies = new Cookies()
     var invitation = cookies.get('invitation')
 
+    // If everything is filled in
     if(this.state.email && this.state.password) {
+
       const creds = {
         email: this.state.email,
         password: this.state.password
       }
 
-    this.props.login(creds)
-    .then(res => {
-      if(res.email) {
-        if (invitation) { 
-          this.props.acceptInvitation(invitation)
-          .then(res => {
-            this.props.history.push({
-              pathname: `/home/projects`,
-              state: { successMessage: res.message}
+      this.props.login(creds)
+      .then(res => {
+        if(res && res.id) {
+          // If cookie invitation -> accept invitation
+          if (invitation) { 
+            this.props.acceptInvitation(invitation)
+            .then(res => {
+              this.props.history.push({
+                pathname: `/home/projects`,
+                state: { successMessage: res.message} // Display message that invitation is accepted
+              })
+              cookies.remove('invitation', { path: '/' })
             })
-            cookies.remove('invitation', { path: '/' })
-          })
+          } else { this.props.history.push('/home/dashboard') } // Just log in
         } 
-        else { this.props.history.push('/home/dashboard') }
-      } else { 
-        if(res.message === 'Cannot read property \'user\' of undefined') {
-          this.setState({ errorMessage: 'Could not find user with that email, please sign up'}) 
-        }
-        console.log(res)
-        debugger;
-      }
-    })
-    } else {
-      this.setState({ hasError: true })
-    }
+    }) 
+   } else { this.setState({ hasError: true }) }
   }
-  
+
   handleChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+    const { name, value } = event.target
+    this.setState({ [name]: value })
   }
 
   render () {
-  const { classes, isFetching } = this.props
+  const { classes, isFetching, errorMessage } = this.props
   const { hasError, email, password } = this.state
 
-  console.log(isFetching)
+  console.log(errorMessage)
   return (
     <GridContainer >
       <GridItem xs={12} sm={12} md={12}>
@@ -161,7 +156,7 @@ class LoginForm extends Component {
                     </FormControl>
                     </GridItem> 
                     <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
-                      {this.state.errorMessage}
+                      {isFetching ? <LoginSpinner />  : errorMessage}
                     </GridItem> 
                 </div>
               : null }
@@ -181,7 +176,10 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const mapStateToProps = state => ({ isFetching : state.auth.isFetching })
+const mapStateToProps = state => ({ 
+  isFetching : state.auth.isFetching,
+  errorMessage: state.auth.errorMessage
+ })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(LoginForm)))
 

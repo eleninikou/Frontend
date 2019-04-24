@@ -58,14 +58,15 @@ export const register = creds => {
 
 export const login = creds => {
     return async dispatch => {
-      const recieveLogin = token => { 
-        dispatch ({ type: LOGIN_SUCCESS, payload: token.success.user}); 
-        cookies.set("token", token.success.token, { path: "/", maxAge: 86399 });
-        cookies.set("user", token.success.user.id, { path: "/", maxAge: 86399 });
-        return token.success.user; 
+
+      const recieveLogin = response => { 
+        debugger;
+        dispatch ({ type: LOGIN_SUCCESS, payload: response.success.user}); 
+        cookies.set("token", response.success.token, { path: "/", maxAge: 86399 });
+        cookies.set("user", response.success.user.id, { path: "/", maxAge: 86399 });
+        return response.success.user; 
       }
   
-      try {
         dispatch({ type: LOGIN_REQUEST });
         const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/login`, {
           method: "POST",
@@ -76,10 +77,13 @@ export const login = creds => {
             'mode': 'no-cors'
           }
         })
-        const token = await res.json();
-        return recieveLogin(token);
+        const response = await res.json();
+        if(response.success) {
+          return recieveLogin(response);
+        } else { 
+          dispatch ({ type: LOGIN_FAILURE, message: response.message }) 
+        }
   
-      } catch (error) { dispatch ({ type: LOGIN_FAILURE, message: 'Could not login user' }); return error; }
     }
 };
 

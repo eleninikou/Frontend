@@ -54,8 +54,8 @@ class RegisterForm extends Component {
   }
 
   submit = event => {
-
-    event.preventDefault();
+    event.preventDefault()
+    debugger;
     if(this.state.password === this.state.repeatPassword) {
 
       const email =  '';
@@ -68,11 +68,12 @@ class RegisterForm extends Component {
         name: this.state.name,
         email: this.email,
         password: this.state.password
-      };
-      ;
+      }
+      debugger;
 
       this.props.register(creds)
       .then(res => {
+        debugger;
         if(res.email) {
           if (this.state.invitation) {
             this.props.redirect(this.state.invitation, true)
