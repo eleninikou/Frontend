@@ -1,22 +1,14 @@
 import React, { Component } from 'react'
 import { Switch, Route, withRouter, Redirect } from 'react-router-dom'
 import Cookies from 'universal-cookie'
-
-// import { Login, Home, CreateProject, Project, NotFoundPage, AcceptInvitation  } from '../../views'
-import  Login from '../../views/Login';
-import Home from '../../views/Home'
-import CreateProject from '../../views/CreateProject'
-import Project from '../../views/Project'
-import AcceptInvitation from '../../views/AcceptInvitation'
-import NotFoundPage from '../../views/NotFoundPage'
-
+import { Login, Home, CreateProject, Project, NotFoundPage, AcceptInvitation  } from '../../views'
 
 function PrivateRoute({ component: Component, ...rest }) {
   
-  // token ? show components : redirect to login
   const cookies = new Cookies()
-  var token = cookies.get('token');
-
+  var token = cookies.get('token')
+  
+  // token ? show components : redirect to login
   return (
     <Route
       {...rest}

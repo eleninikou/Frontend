@@ -1,19 +1,23 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { withRouter } from "react-router-dom"
-import { withStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-
-import GoogleLogin from 'react-google-login'
+// Redux
+import { connect } from 'react-redux'
 import { login, googleLogin, acceptInvitation } from '../../../redux/actions/auth/Actions'
-import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+// Material UI components
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import { withStyles } from '@material-ui/core/styles'
+import { FormControl } from '@material-ui/core'
+import FormHelperText from '@material-ui/core/FormHelperText'
+// Theme components
 import GridContainer from "../../theme/Grid/GridContainer.jsx"
 import GridItem from "../../theme/Grid/GridItem.jsx"
 import CardBody from '../../theme/Card/CardBody'
-import { FormControl } from '@material-ui/core'
+// external
 import Cookies from 'universal-cookie'
-
+import GoogleLogin from 'react-google-login'
+// Styles
+import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
 class LoginForm extends Component {
   constructor(props) {
@@ -22,19 +26,21 @@ class LoginForm extends Component {
     this.state = {
       email: this.props.email,
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+      hasError: false
     }
     this.handleChange = this.handleChange.bind(this)
-    this.submit = this.submit.bind(this);
+    this.submit = this.submit.bind(this)
     this.responseGoogle = this.responseGoogle.bind(this)
 }
 
+  // Login user when auth by google
   responseGoogle = response => {
     if (!response.error) {
       this.props.googleLogin(response.profileObj)
       .then(res => {
         if(res.success){ this.props.history.push('/home/dashboard') }
-        else { this.setState({ errorMessage: 'Could not log in, show error message'})}  
+        else { this.setState({ errorMessage: 'Could not log in user, try again later'})}  
       })
     }
   }
@@ -44,14 +50,14 @@ class LoginForm extends Component {
     const cookies = new Cookies()
     var invitation = cookies.get('invitation')
 
-    const creds = {
-      email: this.state.email,
-      password: this.state.password
-    }
+    if(this.state.email && this.state.password) {
+      const creds = {
+        email: this.state.email,
+        password: this.state.password
+      }
 
     this.props.login(creds)
     .then(res => {
-      console.log(res)
       if(res.email) {
         if (invitation) { 
           this.props.acceptInvitation(invitation)
@@ -64,8 +70,17 @@ class LoginForm extends Component {
           })
         } 
         else { this.props.history.push('/home/dashboard') }
-      } else { this.setState({ errorMessage: 'Could not log in, show error message'}) }
+      } else { 
+        if(res.message === 'Cannot read property \'user\' of undefined') {
+          this.setState({ errorMessage: 'Could not find user with that email, please sign up'}) 
+        }
+        console.log(res)
+        debugger;
+      }
     })
+    } else {
+      this.setState({ hasError: true })
+    }
   }
   
   handleChange = event => {
@@ -74,35 +89,42 @@ class LoginForm extends Component {
   }
 
   render () {
-  const { classes } = this.props
+  const { classes, isFetching } = this.props
+  const { hasError, email, password } = this.state
+
+  console.log(isFetching)
   return (
     <GridContainer >
-        <GridItem xs={12} sm={12} md={12}>
-          <GridContainer >
-            <CardBody >
+      <GridItem xs={12} sm={12} md={12}>
+        <GridContainer >
+          <CardBody >
             <form style={{ width: '100%', textAlign: 'center'}} onSubmit={this.submit}>
-              <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}}>
+            <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}}>
               <FormControl className={classes.formControl}>
+                {hasError && !email && <FormHelperText id="email">Fill in your email!</FormHelperText>}
                 <TextField 
+                   error={hasError && !email ? true : false}
                     name="email" 
                     type="email"
                     label="Email" 
                     className="my-input"
                     fullWidth
-                    value={this.state.email}
+                    value={email}
                     onChange={this.handleChange}
                 />
               </FormControl>
-              </GridItem>
-              <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}}>
-                <FormControl className={classes.formControl}>
+            </GridItem>
+            <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}}>
+              <FormControl className={classes.formControl}>
+                {hasError && !password && <FormHelperText id="password">Fill in your password!</FormHelperText>}
                   <TextField 
+                      error={hasError && !password ? true : false}  
                       name="password" 
                       type="password"
                       label="Password"
                       className="my-input"
                       fullWidth
-                      value={this.state.password}
+                      value={password}
                       onChange={this.handleChange}
                   />
                 </FormControl>
@@ -120,33 +142,34 @@ class LoginForm extends Component {
                     >
                     Log in
                   </Button> 
-                  </FormControl>
-                </GridItem> 
-            </form>
-            {!this.props.email ?
-            <div>
-              <GridItem xs={12} sm={12} md={5} style={{ margin: 'auto', textAlign: 'center', marginTop: '20px'}}>
-              <FormControl className={classes.formControl}>
-                <GoogleLogin
-                  clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
-                  buttonText="Use your Google account"
-                  onSuccess={this.responseGoogle}
-                  onFailure={this.responseGoogle}
-                  width="100%"
-                  className="google-btn"
-                  />
                 </FormControl>
-                </GridItem> 
-                <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
-                  {this.state.errorMessage}
-                </GridItem> 
+              </GridItem> 
+              </form>
+
+              {!this.props.email ? // If not redirected from invitation show google option
+                <div>
+                  <GridItem xs={12} sm={12} md={5} style={{ margin: 'auto', textAlign: 'center', marginTop: '20px'}}>
+                  <FormControl className={classes.formControl}>
+                    <GoogleLogin
+                      clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
+                      buttonText="Use your Google account"
+                      onSuccess={this.responseGoogle}
+                      onFailure={this.responseGoogle}
+                      width="100%"
+                      className="google-btn"
+                      />
+                    </FormControl>
+                    </GridItem> 
+                    <GridItem xs={12} sm={12} md={12} style={{ textAlign: 'center', marginTop: '20px'}}>
+                      {this.state.errorMessage}
+                    </GridItem> 
                 </div>
-                : null }
+              : null }
             </CardBody>
-            </GridContainer>    
+          </GridContainer>    
         </GridItem>
       </GridContainer>   
-  )
+    )
   }
 }
 
@@ -158,7 +181,7 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({ isFetching : state.auth.isFetching })
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(LoginForm)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(LoginForm)))
 
