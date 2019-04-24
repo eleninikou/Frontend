@@ -53,12 +53,10 @@ class LoginForm extends Component {
 
     // If everything is filled in
     if(this.state.email && this.state.password) {
-
       const creds = {
         email: this.state.email,
         password: this.state.password
       }
-
       this.props.login(creds)
       .then(res => {
         if(res && res.id) {
@@ -87,7 +85,6 @@ class LoginForm extends Component {
   const { classes, isFetching, errorMessage } = this.props
   const { hasError, email, password } = this.state
 
-  console.log(errorMessage)
   return (
     <GridContainer >
       <GridItem xs={12} sm={12} md={12}>
@@ -130,11 +127,7 @@ class LoginForm extends Component {
                     type="submit" 
                     variant="contained" 
                     color="primary" 
-                    style={{ 
-                      backgroundColor: '#66bb6a', 
-                      padding: '10px' 
-                    }} 
-                    >
+                    style={{ backgroundColor: '#66bb6a',  padding: '10px' }}>
                     Log in
                   </Button> 
                 </FormControl>

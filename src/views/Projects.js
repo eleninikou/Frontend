@@ -21,6 +21,7 @@ import FormControl from '@material-ui/core/FormControl'
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Components
 import ProjectsTable from '../components/project/ProjectsTable'
+import DashboardSpinner from '../components/spinner/DashboardSpinner'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
@@ -28,7 +29,7 @@ import '../assets/css/main.css'
 
 class Projects extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = { 
       successMessage: this.props.successMessage,
       errorMessage: '',
@@ -37,7 +38,7 @@ class Projects extends Component {
   }
 
   componentWillMount = () => {
-    this.props.getAllProjects();
+    this.props.getAllProjects()
 
     // To prevent errormessage from notification bar
     var id = window.setTimeout(null, 0)
@@ -85,12 +86,8 @@ class Projects extends Component {
 
         // Filter projects
         const filtredProjects = 
-          this.state.active === 0 ? projects.filter(project => {
-            return project.project.active === 0
-          })
-          : this.state.active === 1 ? projects.filter(project => {
-            return project.project.active === 1
-          })
+          this.state.active === 0 ? projects.filter(project => { return project.project.active === 0 })
+          : this.state.active === 1 ? projects.filter(project => { return project.project.active === 1 })
           : projects
         
 
@@ -124,6 +121,12 @@ class Projects extends Component {
                 <h4 className={this.props.classes.cardTitleWhite}>Projects</h4>
               </CardHeader>
                 <CardBody>
+                {this.props.isFetching ? 
+                  <div style={{ width: '100%', textAlign: 'center'}}>
+                    <DashboardSpinner /> 
+                  </div>
+                : 
+                <div>
                   <GridItem xs={12} sm={6} md={3}>
                     <FormControl className={this.props.classes.formControl}>       
                       <TextField
@@ -142,14 +145,16 @@ class Projects extends Component {
                   </GridItem>
                   <ProjectsTable 
                     projects={filtredProjects}
+                    isFetching={this.props.isFetching}
                     classes={this.props.classes}
-                    />
-                    <CardFooter style={{ justifyContent: 'flex-end'}}>
-                      <Button color="success"  onClick={this.createNewProject.bind(this)}>
-                        Create new Project
-                      </Button>
-                    </CardFooter>
-                </CardBody>
+                    /> 
+                </div>}
+                <CardFooter style={{ justifyContent: 'flex-end'}}>
+                  <Button color="success"  onClick={this.createNewProject.bind(this)}>
+                    Create new Project
+                  </Button>
+                </CardFooter>
+              </CardBody>
             </Card>
             </GridContainer>
           </GridItem>
@@ -161,7 +166,10 @@ class Projects extends Component {
 
 const mapDispatchToProps = dispatch => { return { getAllProjects: () => dispatch(getAllProjects()) }}
 
-const mapStateToProps = state => ({ allProjects: state.project.allProjects })
+const mapStateToProps = state => ({ 
+  allProjects: state.project.allProjects,
+  isFetching: state.project.isFetching 
+})
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Projects)))
   

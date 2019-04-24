@@ -34,7 +34,7 @@ class ProjectsTable extends Component {
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, projects.length  - page * rowsPerPage);
       
     return (
-        <div>
+      <div>
             <Table
                 page={page}
                 rowsPerPage={rowsPerPage}

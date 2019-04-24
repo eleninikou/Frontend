@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from "prop-types"
 import { withRouter, } from "react-router-dom"
-
 // Redux
 import { connect } from 'react-redux'
 import { getAllTickets } from '../redux/actions/tickets/Actions'
 import { getProjectsByUser, getAllProjects, getActivity } from '../redux/actions/projects/Actions'
 import { logout } from '../redux/actions/auth/Actions'
-
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
@@ -15,24 +13,19 @@ import Table from "../components/theme/Table/Table.jsx"
 import Card from "../components/theme/Card/Card"
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
 import TicketsTable from '../components/ticket/TicketsTable'
-
 // Material UI components
 import IconButton from "@material-ui/core/IconButton"
 import TablePagination from '@material-ui/core/TablePagination'
-import CircularProgress from '@material-ui/core/CircularProgress'
-
 // Icons
 import Note from "@material-ui/icons/Note"
 import Today from "@material-ui/icons/Today"
 import Timeline from "@material-ui/icons/Timeline"
 import Comment from "@material-ui/icons/Comment"
-
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 
-import StyledSpinner from '../components/spinner/Spinner'
-
+import DashboardSpinner from '../components/spinner/DashboardSpinner'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -92,7 +85,9 @@ class Dashboard extends Component {
                         tabIcon: Today,
                         tabContent: (
                           isFetching ?
-                            <StyledSpinner />
+                          <div style={{ width: '100%', textAlign: 'center'}}>
+                            <DashboardSpinner />
+                          </div>
                           :
                           <div>
                             <Table
@@ -162,7 +157,10 @@ class Dashboard extends Component {
                 </Card>
               </GridItem>
             </GridContainer>
-          </div> : < StyledSpinner />
+          </div> : 
+          <div style={{ width: '100%', textAlign: 'center'}}>
+            <DashboardSpinner />
+          </div>
         );
       }
 }
