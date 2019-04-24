@@ -20,6 +20,7 @@ import Button from '@material-ui/core/Button'
 import withStyles from "@material-ui/core/styles/withStyles"
 
 import { whiteColor, grayColor } from "../assets/jss/material-dashboard-react.jsx"
+import { Typography } from '@material-ui/core';
 
 const styles = {
   center: {
@@ -32,6 +33,7 @@ const styles = {
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
+    textAlign: 'center',
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
     textDecoration: "none",
@@ -53,7 +55,7 @@ class Login extends Component {
       register: false,
       errorMessage: '',
       title: 'Log in',
-      btnText: 'Sign up',
+      btnText: 'Register',
       infoText: 'Don\'t have an account yet?'
     }
 
@@ -74,15 +76,15 @@ class Login extends Component {
         this.setState({ 
           register: false,
           title: 'Log in',
-          btnText: 'Sign up',
+          btnText: 'Register',
           infoText: 'Don\'t have an account yet?'
         })
       } else {
         this.setState({ 
           register: true,
           title: 'Register',
-          btnText: 'Sign in',
-          infoText: 'Already hacve an account?'
+          btnText: 'Log in',
+          infoText: 'Already have an account?'
         })
       }
     }
@@ -103,8 +105,10 @@ class Login extends Component {
             </CardBody>
             <CardFooter>
               <div style={{ margin: 'auto'}}>
-                {this.state.infoText} 
-                <Button onClick={this.register}>{this.state.btnText}</Button>
+                <Typography>
+                  {this.state.infoText}
+                  <Button onClick={this.register}>{this.state.btnText}</Button>
+                </Typography> 
               </div>
             </CardFooter>  
           </Card>
@@ -117,7 +121,7 @@ class Login extends Component {
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
-};
+}
 
 export default withRouter(withStyles(styles)(Login))
   
