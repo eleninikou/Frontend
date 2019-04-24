@@ -108,7 +108,7 @@ class ProjectTeam extends Component {
                         <Person /> 
                       </Avatar>,
                       `${person.user.name}`, 
-                      `${person.role ? person.role.role : person.role_id ? 'admin' : null }`,
+                      `${person.role ? person.role.role : person.role_id ? 'Creator/Admin' : null }`,
                          (person.role_id !== 1 && creator) ?
                           <div>
                             <Tooltip

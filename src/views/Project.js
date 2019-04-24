@@ -135,6 +135,11 @@ class Project extends Component {
   render() {
       const { classes, team, project, tickets, isFetching } = this.props
       const { edit, successMessage, user, milestones } = this.state
+
+      const admins = team ? team.filter(user => user.role_id === 1 || 2 ) : null
+      const isAdmin = admins ? admins.filter(admin => admin.user_id == user) : null
+      const clients = team ? team.filter(user => user.role_id === 4 ) : null
+      
       return (
         isFetching ? 
         <div style={{ width: '100%', textAlign: 'center'}}>
@@ -175,6 +180,9 @@ class Project extends Component {
                             getEdit={this.getEdit.bind(this)}
                             classes={classes}
                             team={team}
+                            admins={admins}
+                            isAdmin={isAdmin}
+                            clients={clients}
                             creator={ project.creator_id === parseInt(user) ? true : false}
                           />
                         ) 
@@ -214,7 +222,7 @@ class Project extends Component {
                           />
                         )
                       },
-                      project.creator_id === parseInt(user) ?
+                      project.creator_id === parseInt(user) || isAdmin ?
                       {
                         tabName: "Delete",
                         tabIcon: Close,

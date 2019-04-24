@@ -24,7 +24,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle"
 // Material UI components
 import Typography from '@material-ui/core/Typography'
 
-const ProjectContent = ({ project, getEdit, classes, team, creator }) => {
+const ProjectContent = ({ project, getEdit, classes, team, creator, admins, clients, isAdmin }) => {
 
 const showForm = () => {getEdit(true)}
     return (
@@ -38,25 +38,30 @@ const showForm = () => {getEdit(true)}
               </GridItem>
               <GridItem xs={12} sm={12} md={4}>
               <List className="my-ticket-list">
-                <ListItem>
-                  <ListItemAvatar>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="Milestones"
-                      placement="top"
-                      classes={{ tooltip: classes.tooltip }}>  
-                      {project.creator ? project.creator.avatar ?
-                        <img src={project.creator.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
-                        :  
-                        <Avatar style={{ width: '30px', height: '30px' }}> 
-                          <AccountCircle style={{ fontSize: '18px'}}/> 
-                        </Avatar>
-                        : null}
-                      </Tooltip>
-                  </ListItemAvatar>
-                  <ListItemText primary={project.creator ? 'Admin: ' + project.creator.name : null} />
-                </ListItem>
-                {project.client ?
+              {admins ? admins.map(admin => {
+                return(
+                  <ListItem>
+                    <ListItemAvatar>
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title="Milestones"
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}>  
+                        {admin.user ? admin.user.avatar ?
+                          <img src={admin.user.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
+                          :  
+                          <Avatar style={{ width: '30px', height: '30px' }}> 
+                            <AccountCircle style={{ fontSize: '18px'}}/> 
+                          </Avatar>
+                          : null}
+                        </Tooltip>
+                    </ListItemAvatar>
+                    <ListItemText primary={admin.user ? 'Admin: ' + admin.user.name : null} />
+                  </ListItem>
+                )
+              }) : null }
+              {clients ? clients.map(client => {
+                return(
                   <ListItem>
                     <ListItemAvatar>
                       <Tooltip
@@ -64,17 +69,18 @@ const showForm = () => {getEdit(true)}
                           title="Milestones"
                           placement="top"
                           classes={{ tooltip: classes.tooltip }}>  
-                          {project.client.avatar ?
-                            <img src={project.client.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
+                          {client.user.avatar ?
+                            <img src={client.user.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
                           :
                             <Avatar style={{backgroundColor: '#ec407a', width: '30px', height: '30px'}}> 
                               <Face style={{ fontSize: '18px'}}/> 
                             </Avatar>}
                           </Tooltip>
                     </ListItemAvatar>
-                    <ListItemText primary={'Client: ' + project.client.name} />
+                    <ListItemText primary={'Client: ' + client.user.name} />
                   </ListItem>
-                : null} 
+                ) 
+                }) : null} 
                 <ListItem>
                   <ListItemAvatar>
                     <Tooltip
@@ -120,7 +126,7 @@ const showForm = () => {getEdit(true)}
               </List> 
               </GridItem>
               <GridItem xs={12} sm={12} md={12}>                
-                {creator ? 
+                {creator || isAdmin ? 
                 <Button color="success" onClick={showForm} style={{ float: 'right' }}>
                   Edit Project
                 </Button> : null }
