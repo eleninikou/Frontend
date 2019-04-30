@@ -228,7 +228,7 @@ class Ticket extends Component {
                 </GridContainer>
               </CardBody> 
               <CardFooter>
-                <GridContainer style={{ width: '100%', justifyContent: 'space-evenly'}}>
+                <GridContainer style={{ width: '100%', justifyContent: 'space-between'}}>
                   {comments.length && !addComment ?
                     <div>
                       <GridItem xs={12} sm={3} md={3}>

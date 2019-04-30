@@ -29,6 +29,7 @@ import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-
 import draftToHtml from 'draftjs-to-html'
 import ImageUploader from 'react-images-upload'
 import DangerDialogWrapped from '../../components/modal/DangerDialog'
+import CardFooter from '../theme/Card/CardFooter';
 
 
 class EditTicketForm extends Component {
@@ -61,14 +62,17 @@ class EditTicketForm extends Component {
     this.props.getTicketTypes()
     this.props.getTicketStatus()
 
+
     // Bug in wysiwyg if content is empty
-    if (this.props.description.blocks.text) {
+    if (this.props.description.blocks[0].text) {
+
       let html = draftToHtml(this.props.description)
-      const blocksFromHTML = convertFromHTML(html);
+      const blocksFromHTML = convertFromHTML(html)
+
       const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
         blocksFromHTML.entityMap
-      );
+      )
   
       this.setState({ editorState : EditorState.createWithContent(state)})
     } else {
@@ -212,7 +216,6 @@ class EditTicketForm extends Component {
                           disabled={ user == creator || admin ? false : true}
                           select
                             label="Type"
-                            // variant="outlined"
                             margin="normal"
                             className="my-input"
                             value={this.state.type_id}
@@ -256,7 +259,6 @@ class EditTicketForm extends Component {
                               select
                               disabled={ user == creator || admin ? false : true}
                               label="Milestone"
-                              // variant="outlined"
                               margin="normal"
                               className="my-input"
                               value={this.state.milestone_id}
@@ -275,7 +277,6 @@ class EditTicketForm extends Component {
                               select
                               disabled={ user == creator || admin ? false : true}
                               label="Priority"
-                              // variant="outlined"
                               margin="normal"
                               className="my-input"
                               value={this.state.priority}
@@ -294,7 +295,6 @@ class EditTicketForm extends Component {
                               select
                               disabled={ user == creator || admin ? false : true}
                               label="Assinged user"
-                              // variant="outlined"
                               margin="normal"
                               className="my-input"
                               fullWidth
@@ -316,7 +316,6 @@ class EditTicketForm extends Component {
                               disabled={ user == creator || admin ? false : true}
                               className="my-input"
                               fullWidth
-                              // variant="outlined"
                               value={this.state.selectedDate}
                               onChange={this.handleDateChange}
                               InputLabelProps={{ shrink: true }}
@@ -324,6 +323,7 @@ class EditTicketForm extends Component {
                         </FormControl>
                       </GridItem>
                       <GridItem xs={12} sm={12} md={12}>
+                      {console.log(editorState)}
                         <Editor
                             editorState={editorState}
                             toolbarClassName="toolbarClassName"
@@ -345,7 +345,7 @@ class EditTicketForm extends Component {
                       <GridContainer>
                         {(user == creator) && urls.length ? urls.map(url => {
                           return (
-                            <GridItem xs={12} sm={12} md={3} style={{ flexBasis: 'unset'}}>
+                            <GridItem key={url.id} xs={12} sm={12} md={3} style={{ flexBasis: 'unset'}}>
                               <div style={{ display: 'flex', width: '100%', position: 'relative'}}>
                                 <img src={url.attachment ? url.attachment : url} style={{ width: 'auto', maxWidth: '100%', maxHeight: '200px', display: 'block', position: 'relative'}} alt="preview" /> 
                                   <Tooltip
@@ -363,23 +363,24 @@ class EditTicketForm extends Component {
                           )
                         }) : null}
                       </GridContainer>
-
-                        {user == creator ?
-                        <div>
-                          <Button color="danger" onClick={this.handleClickOpen} style={{ float: 'right'}}> Delete </Button>
-                          <DangerDialogWrapped 
-                            type={'ticket'}
-                            title={'Are you sure you want to delete this ticket?'}
-                            id={this.props.match.params.id}
-                            open={this.state.open}
-                            onClose={this.handleClose}
-                          />
-                        </div>
-                        : null}
                         <Button color="primary" type="submit" style={{ float: 'right'}}> Save </Button>
                       </GridItem>
                   </GridContainer>
                 </CardBody>
+                <CardFooter>
+                  {user == creator ?
+                    <div>
+                      <Button color="danger" onClick={this.handleClickOpen} > Delete </Button>
+                      <DangerDialogWrapped 
+                        type={'ticket'}
+                        title={'Are you sure you want to delete this ticket?'}
+                        id={this.props.match.params.id}
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                      />
+                    </div>
+                  : null}
+                </CardFooter>
               </form> 
       )
   }

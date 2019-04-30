@@ -128,7 +128,6 @@ class Invite extends Component {
   const { classes, projects, project, roles, successMessage, emails, isFetching } = this.props
   const { page, team, backToProject, hasError } = this.state
 
-  console.log(projects)
   // let yourProjects = projects ? this.getUnique(projects,'project_id') : null
 
   return (

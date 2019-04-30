@@ -23,7 +23,6 @@ import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
 import DashboardSpinner from '../components/spinner/DashboardSpinner'
-
 // Style
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 

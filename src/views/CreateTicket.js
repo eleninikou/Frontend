@@ -4,17 +4,14 @@ import PropTypes from 'prop-types'
 import axios from "axios"
 import Cookies from "universal-cookie"
 import ImageUploader from 'react-images-upload'
-
 // Redux
 import { connect } from 'react-redux'
 import { ticketCreate, getTicketTypes, getTicketStatus,  deleteAttachment, removeFromStorage } from '../redux/actions/tickets/Actions'
 import { getAllProjects, getProject } from '../redux/actions/projects/Actions'
-
 // Wysiwyg
 import { Editor } from 'react-draft-wysiwyg'
 import { EditorState, convertToRaw } from 'draft-js'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
-
 // Theme components
 import Card from "../components/theme/Card/Card"
 import Button from "../components/theme/CustomButtons/Button.jsx"
@@ -23,8 +20,6 @@ import CardBody from "../components/theme/Card/CardBody.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
-
-
 // Material UI components
 import Avatar from '@material-ui/core/Avatar'
 import Tooltip from "@material-ui/core/Tooltip"
@@ -33,10 +28,8 @@ import TextField from '@material-ui/core/TextField'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import CircularProgress from '@material-ui/core/CircularProgress'
-
 // Icons
 import Remove from "@material-ui/icons/Remove"
-
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"

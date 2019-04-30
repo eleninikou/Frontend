@@ -21,6 +21,7 @@ import LinearScale from '@material-ui/icons/LinearScale'
 import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor"
 
 const TicketIconList = ({ ticket, classes }) => {
+  console.log(ticket)
     return (
         <List className="my-ticket-list">
             <ListItem>
