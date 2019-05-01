@@ -144,91 +144,91 @@ class Invite extends Component {
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <form className={classes.form} onSubmit={this.submit}>
-            <CardHeader color="info">
-              <h4 className={classes.cardTitleWhite}>Invite people to join project</h4>
-            </CardHeader>
-            <CardBody>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
-                  <FormControl className={classes.formControl}>       
-                  {hasError && !this.state.project_id && <FormHelperText id="project_id">Please select project!</FormHelperText>}
-                    <TextField
-                      select
-                      error={hasError && !this.state.project_id? true : false}
-                      disabled={backToProject ? true : false}
-                      label="Project"
-                      margin="normal"
-                      className="my-input"
-                      value={this.state.project_id}
-                      onChange={this.handleChange}
-                      inputProps={{
-                        name: 'project_id',
-                        id: 'project_id',
-                      }}>
-                      {project ? 
-                        <MenuItem defaultValue key={project.id} value={project.id}> 
-                          {project.name} 
-                        </MenuItem>
-                      : this.props.match.params.id && !project ?
-                        <MenuItem defaultValue key={''} value={'create'}> 
-                          You need to create a project first
-                        </MenuItem>   
-                      : null}
-
-                    {projects.projects ? projects.projects.map(project => {
-                      return <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
-                    }) :  null }
-                    </TextField>
-                  </FormControl>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <FormControl className={classes.formControl}>
-                  {hasError && !this.state.project_role && <FormHelperText id="project_role">Please select role in the project!</FormHelperText>}
-                    <TextField
-                        disabled={this.state.project_id ? false : true}
+              <CardHeader color="info">
+                <h4 className={classes.cardTitleWhite}>Invite people to join project</h4>
+              </CardHeader>
+              <CardBody>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <FormControl className={classes.formControl}>       
+                    {hasError && !this.state.project_id && <FormHelperText id="project_id">Please select project!</FormHelperText>}
+                      <TextField
                         select
-                        error={hasError && !this.state.project_role ? true : false}
-                        label="Role"
+                        error={hasError && !this.state.project_id? true : false}
+                        disabled={backToProject ? true : false}
+                        label="Project"
                         margin="normal"
                         className="my-input"
-                        value={this.state.project_role}
+                        value={this.state.project_id}
                         onChange={this.handleChange}
                         inputProps={{
-                          name: 'project_role',
-                          id: 'project_role',
+                          name: 'project_id',
+                          id: 'project_id',
                         }}>
-                        {roles ? roles.map(role => {
-                        return  <MenuItem key={role.id} value={role.id}> {role.role} </MenuItem>
-                      }) : null }
+                        {project ? 
+                          <MenuItem defaultValue key={project.id} value={project.id}> 
+                            {project.name} 
+                          </MenuItem>
+                        : this.props.match.params.id && !project ?
+                          <MenuItem defaultValue key={''} value={'create'}> 
+                            You need to create a project first
+                          </MenuItem>   
+                        : null}
+
+                      {projects.projects ? projects.projects.map(project => {
+                        return <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
+                      }) :  null }
                       </TextField>
-                  </FormControl>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={12}>
-                  <FormControl className={classes.formControl}>
-                  {hasError && !this.state.email && <FormHelperText id="project_role">Please fill in email!</FormHelperText>}
-                  <TextField
-                    disabled={this.state.project_id ? false : true}
-                    type="email"
-                    label="email" 
-                    error={hasError && !this.state.email ? true : false}
-                    className="my-input"
-                    id="email"
-                    formControlProps={{ fullWidth: true }}
-                    onChange={this.handleChange}
-                    name="email"
-                    fullWidth
-                  />
-                  </FormControl>
-                </GridItem>
-              </GridContainer>
-            </CardBody>
-            <CardFooter>
-              <Button type="submit" color="info" disabled={hasError ? true : false}>Invite</Button>
-              {backToProject ?
-              <Button color="info" onClick={this.goBack.bind(this)}>Back to project</Button>
-              : null }
-            </CardFooter>
-              </form>
+                    </FormControl>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={6}>
+                    <FormControl className={classes.formControl}>
+                    {hasError && !this.state.project_role && <FormHelperText id="project_role">Please select role in the project!</FormHelperText>}
+                      <TextField
+                          disabled={this.state.project_id ? false : true}
+                          select
+                          error={hasError && !this.state.project_role ? true : false}
+                          label="Role"
+                          margin="normal"
+                          className="my-input"
+                          value={this.state.project_role}
+                          onChange={this.handleChange}
+                          inputProps={{
+                            name: 'project_role',
+                            id: 'project_role',
+                          }}>
+                          {roles ? roles.map(role => {
+                          return  <MenuItem key={role.id} value={role.id}> {role.role} </MenuItem>
+                        }) : null }
+                        </TextField>
+                    </FormControl>
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={12}>
+                    <FormControl className={classes.formControl}>
+                    {hasError && !this.state.email && <FormHelperText id="project_role">Please fill in email!</FormHelperText>}
+                    <TextField
+                      disabled={this.state.project_id ? false : true}
+                      type="email"
+                      label="email" 
+                      error={hasError && !this.state.email ? true : false}
+                      className="my-input"
+                      id="email"
+                      formControlProps={{ fullWidth: true }}
+                      onChange={this.handleChange}
+                      name="email"
+                      fullWidth
+                    />
+                    </FormControl>
+                  </GridItem>
+                </GridContainer>
+              </CardBody>
+              <CardFooter>
+                <Button type="submit" color="info" disabled={hasError ? true : false}>Invite</Button>
+                {backToProject ?
+                <Button color="info" onClick={this.goBack.bind(this)}>Back to project</Button>
+                : null }
+              </CardFooter>
+            </form>
           </Card>
         </GridItem>
         <GridItem xs={12} sm={12} md={4}>
@@ -238,7 +238,6 @@ class Invite extends Component {
             </CardHeader>
             <CardBody>
               {team ? 
-              <div>
                 <Table
                   page={page}
                   rowsPerPage={team.length}
@@ -249,16 +248,14 @@ class Invite extends Component {
                     team ? team.map(user => {
                       return [
                         `${user.user ? user.user.name : null}`, 
-                        `${user.role ? user.role.role : null }`,
+                        `${user.role ? user.role.role : 'Admin' }`,
                       ] }) : null
                   ]} />
-              </div>
               : null}
               <div style={{ margin: '20px', textAlign: 'center'}}>
-              {isFetching ? <StyledSpinner />  : null }
+                {isFetching ? <StyledSpinner />  : null }
               </div>
               {emails.length && !isFetching ? 
-              <div>
                 <Table
                   page={page}
                   rowsPerPage={emails.length}
@@ -267,19 +264,16 @@ class Invite extends Component {
                   tableHead={["Invited", ]}
                   tableData={[
                     emails ? emails.map(email => {
-                      return [
-                        `${ email }`,
-                      ] }) 
+                      return [`${ email }`, ] }) 
                       : null  
                   ]} />
-              </div>
               : null}
             </CardBody>
           </Card>
         </GridItem>
       </GridContainer>
       )
-      }
+    }
 }
 
 

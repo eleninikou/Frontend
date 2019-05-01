@@ -1,19 +1,14 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import moment from 'moment'
-import Cookies from "universal-cookie"
-import axios from "axios"
-
 // Redux
 import { connect } from 'react-redux'
 import { updateTicket, getTicketTypes, getTicketStatus, deleteTicket, deleteAttachment, removeFromStorage } from '../../redux/actions/tickets/Actions'
-
 // Theme components
-import CardBody from "../theme/Card/CardBody.jsx"
-import GridContainer from "../theme/Grid/GridContainer.jsx"
-import GridItem from "../theme/Grid/GridItem.jsx"
 import Button from "../theme/CustomButtons/Button.jsx"
-
+import CardBody from "../theme/Card/CardBody.jsx"
+import GridItem from "../theme/Grid/GridItem.jsx"
+import CardFooter from '../theme/Card/CardFooter'
+import GridContainer from "../theme/Grid/GridContainer.jsx"
 // Material UI components
 import TextField from '@material-ui/core/TextField'
 import FormControl from '@material-ui/core/FormControl'
@@ -21,20 +16,21 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Avatar from '@material-ui/core/Avatar'
 import Tooltip from "@material-ui/core/Tooltip"
 import Remove from "@material-ui/icons/Remove"
-
-
+// Components
+import DangerDialogWrapped from '../../components/modal/DangerDialog'
+// External
+import axios from "axios"
+import moment from 'moment'
+import Cookies from "universal-cookie"
 import { Editor } from 'react-draft-wysiwyg'
-import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-js'
-
 import draftToHtml from 'draftjs-to-html'
 import ImageUploader from 'react-images-upload'
-import DangerDialogWrapped from '../../components/modal/DangerDialog'
-import CardFooter from '../theme/Card/CardFooter';
+import { EditorState, convertFromHTML, convertToRaw, ContentState } from 'draft-js'
 
 
 class EditTicketForm extends Component {
     constructor(props) {
-      super(props);
+      super(props)
 
       this.state = {
         ids_to_delete: [],
@@ -62,43 +58,42 @@ class EditTicketForm extends Component {
     this.props.getTicketTypes()
     this.props.getTicketStatus()
 
-
     // Bug in wysiwyg if content is empty
     if (this.props.description.blocks[0].text) {
 
       let html = draftToHtml(this.props.description)
       const blocksFromHTML = convertFromHTML(html)
-
       const state = ContentState.createFromBlockArray(
         blocksFromHTML.contentBlocks,
         blocksFromHTML.entityMap
       )
   
-      this.setState({ editorState : EditorState.createWithContent(state)})
+      this.setState({ 
+        editorState : EditorState.createWithContent(state)
+      })
     } else {
-      this.setState({ editorState: EditorState.createEmpty() })
+      this.setState({ 
+        editorState: EditorState.createEmpty() 
+      })
     }
   }
 
   handleChange = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
+    const { name, value } = event.target
+    this.setState({ [name]: value })
   }
   
-  onEditorStateChange = editorState => { this.setState({ editorState }) }
+  onEditorStateChange = editorState => { 
+    this.setState({ editorState }) 
+  }
 
-  handleDateChange = event => {this.setState({ selectedDate: event.target.value }) }
+  handleDateChange = event => {
+    this.setState({ selectedDate: event.target.value }) 
+  }
 
   onDrop = files => {      
     const cookies = new Cookies()
     var token = cookies.get('token')
-  
-    // Remove old urls from storage, images will upload again
-    // if(this.state.urls.length) {
-    //   this.state.urls.map(url => {
-    //     return this.props.removeFromStorage(url)
-    //   })
-    // }
   
     // Loop trough files and get url from storage
     for (var i = 0; i < files.length; i++) {
@@ -106,7 +101,6 @@ class EditTicketForm extends Component {
       
       let reader = new FileReader()
       const scope = this
-      scope.setState({ urls: []})
         reader.onload = (function(file) {
   
           const formData = new FormData()
@@ -136,23 +130,26 @@ class EditTicketForm extends Component {
   }
 
   submit = event => {
+
     event.preventDefault()
     let date = ''
-    if (this.state.selectedDate === '') {
+
+    if (this.state.selectedDate === '') { 
       this.date = this.state.due_date
     } else {
       this.date = this.state.selectedDate
     }
 
+    // If images are deleted
     if(this.state.ids_to_delete.length) {
       this.state.ids_to_delete.map(id => {
-        this.props.deleteAttachment(id)
+        return this.props.deleteAttachment(id)
       })
     }
 
     if(this.state.urls_to_delete) {
       this.state.urls_to_delete.map(url => {
-        this.props.removeFromStorage(url)
+        return this.props.removeFromStorage(url)
       })
     }
 
@@ -188,7 +185,6 @@ class EditTicketForm extends Component {
                 <CardBody>
                   <GridContainer>
                       <GridItem xs={12} sm={12} md={12}>
-                      <div>
                         <TextField 
                           disabled={ user == creator || admin ? false : true}
                           name="title" 
@@ -198,7 +194,6 @@ class EditTicketForm extends Component {
                           value={this.state.title}
                           onChange={this.handleChange}
                           fullWidth />
-                        </div>
                       </GridItem>
                       <GridItem xs={12} sm={12} md={12}>
                         <TextField 
@@ -233,7 +228,6 @@ class EditTicketForm extends Component {
                             <TextField
                               select
                               label="Status"
-                              // variant="outlined"
                               margin="normal"
                               className="my-input"
                               value={this.state.status_id}
@@ -323,7 +317,6 @@ class EditTicketForm extends Component {
                         </FormControl>
                       </GridItem>
                       <GridItem xs={12} sm={12} md={12}>
-                      {console.log(editorState)}
                         <Editor
                             editorState={editorState}
                             toolbarClassName="toolbarClassName"
@@ -367,10 +360,10 @@ class EditTicketForm extends Component {
                       </GridItem>
                   </GridContainer>
                 </CardBody>
-                <CardFooter>
+                <CardFooter style={{ justifyContent: 'center'}}>
                   {user == creator ?
                     <div>
-                      <Button color="danger" onClick={this.handleClickOpen} > Delete </Button>
+                      <Button color="danger" onClick={this.handleClickOpen}> Delete </Button>
                       <DangerDialogWrapped 
                         type={'ticket'}
                         title={'Are you sure you want to delete this ticket?'}

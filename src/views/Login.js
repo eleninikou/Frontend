@@ -53,9 +53,10 @@ class Login extends Component {
 
     this.state = {
       register: false,
+      login: false,
       errorMessage: '',
       title: 'Log in',
-      btnText: 'Register',
+      btnText: 'Sign Up',
       infoText: 'Don\'t have an account yet?'
     }
 
@@ -76,7 +77,7 @@ class Login extends Component {
         this.setState({ 
           register: false,
           title: 'Log in',
-          btnText: 'Register',
+          btnText: 'Sign Up',
           infoText: 'Don\'t have an account yet?'
         })
       } else {
@@ -89,15 +90,71 @@ class Login extends Component {
       }
     }
 
+    loginForm = () => {
+      this.setState({ 
+        register: false,
+        title: 'Log in',
+        btnText: 'Sign Up',
+        infoText: 'Don\'t have an account yet?'
+      })
+    }
+
+    registerForm = () => {
+      this.setState({ 
+        register: true,
+        title: 'Register',
+        btnText: 'Log in',
+        infoText: 'Already have an account?'
+      })
+    }
+
   render() {
 
     return (
         <GridContainer > 
-          <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', marginTop: '50vh', transform: 'translateY(-50%)'}}>
+          <GridItem xs={12} sm={12} md={12} style={{ display: 'flex', justifyContent: 'space-between'}}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 57 13.1" style={{ width: '150px', height: 'auto', alignSelf: 'center'}}>
+            <defs>
+              <style>
+                {/* .cls-1 { 
+                  stroke: #000;
+                  stroke-miterlimit: 10;
+                  stroke-width: 0.55px;
+                } */}
+              </style>
+            </defs>
+            <title>logo</title>
+            <g id="Layer_2" data-name="Layer 2">
+              <g id="Layer_1-2" data-name="Layer 1">
+                <g>
+                  <g>
+                    <path d="M7.4,9.4a3.7,3.7,0,0,1-3.7,3.7,3.8,3.8,0,0,1-2.4-1v.8H0V1.6H1.3V6.7a3.8,3.8,0,0,1,2.4-1A3.7,3.7,0,0,1,7.4,9.4Zm-1.3,0a2.4,2.4,0,1,0-2.4,2.4A2.4,2.4,0,0,0,6.1,9.4Z"/>
+                    <path d="M10.2,6.6a4.3,4.3,0,0,1,2.6-.9L12.5,7a2.2,2.2,0,0,0-2.2,2.1v3.8H8.9V5.9h1.3Z"/>
+                    <path d="M19.3,5.9h1.3v7.1H19.3v-.8a3.8,3.8,0,0,1-2.4,1,3.7,3.7,0,1,1,0-7.4,3.8,3.8,0,0,1,2.4,1Zm0,3.5A2.4,2.4,0,1,0,17,11.8,2.4,2.4,0,0,0,19.3,9.4Z"/>
+                    <path d="M28.7,11.6l-.4.4a3.6,3.6,0,0,1-2.6,1.1A3.7,3.7,0,0,1,23.1,12a3.7,3.7,0,0,1,0-5.2,3.7,3.7,0,0,1,2.6-1.1,3.6,3.6,0,0,1,2.6,1.1l.4.4L27.6,8a2.4,2.4,0,1,0-1.9,3.8,2.4,2.4,0,0,0,1.9-1Z"/>
+                    <path d="M36.8,12.9H35.1L32.5,9.4l-1.2,1.1v2.4H30V1.6h1.3V8.7l3.1-2.9h1.9L33.5,8.4Z"/>
+                    <path d="M43.5,9.7H38.1a2.2,2.2,0,0,0,2,2.1,2.7,2.7,0,0,0,1.7-.7l1.1.7-.9.8a4,4,0,0,1-1.9.5A3.2,3.2,0,0,1,37.8,12a3.6,3.6,0,0,1-1-2.2,2.2,2.2,0,0,1,0-.3,3.8,3.8,0,0,1,.1-.8,3.7,3.7,0,0,1,.9-1.7,3.2,3.2,0,0,1,2.4-1.1,3.3,3.3,0,0,1,2.4,1.1,3.6,3.6,0,0,1,.9,1.7A4.3,4.3,0,0,1,43.5,9.7ZM42.1,8.6h0a2.1,2.1,0,0,0-2-1.5,2.2,2.2,0,0,0-2,1.5h3.9Z"/>
+                    <polygon points="48.7 5.9 46.6 5.9 46.6 3.1 45.2 3.1 45.2 5.9 44 5.9 44 7.2 45.2 7.2 45.2 13.1 46.6 13.1 46.6 7.2 48.4 7.2 48.7 5.9"/>
+                  </g>
+                  <g>
+                    <path class="cls-1" d="M50.5.3H52V1h-.7V6.2H52v.8H50.5Z"/>
+                    <path class="cls-1" d="M55.2,6.2h.7V1h-.7V.3h1.5V6.9H55.2Z"/>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </svg>            
+            <ul className="Menu">
+                <li><Typography>Features</Typography></li>
+                <li onClick={this.loginForm}><Typography style={{ textTransform: 'uppercase'}}>Log In</Typography></li>
+                <li onClick={this.registerForm}><Typography  style={{ textTransform: 'uppercase'}}>Sign Up</Typography></li>
+            </ul>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={6}>
+            <Typography>BTS is built for every member in your team to help you work more collaboratively and get more done!</Typography>
+          </GridItem>
+          <GridItem xs={12} sm={6} md={6} style={{}}>
           <Card>
-            <CardHeader color="success">
-              <h4 className={this.props.classes.cardTitleWhite}>{this.state.title}</h4>
-            </CardHeader>
             <CardBody>
               {this.state.register ?
               <RegisterForm />

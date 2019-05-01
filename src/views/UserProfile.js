@@ -54,6 +54,7 @@ class UserProfile extends Component {
       password: null,
       repeatPassword: '',
       successMessage: '',
+      errorMessage: '',
       open: false,
     }
     this.onDrop= this.onDrop.bind(this)
@@ -64,12 +65,17 @@ class UserProfile extends Component {
     const user = cookies.get('user')
 
     this.props.getUser(user).then(res => {
-      this.setState({
-        user,
-        name: res.user.name,
-        email: res.user.email,
-        avatar: res.user.avatar
-      })
+      if(res.user) {
+        this.setState({
+          user,
+          name: res.user.name,
+          email: res.user.email,
+          avatar: res.user.avatar
+        }) 
+      } else {
+        this.setState({ errorMessage: 'No internet connection'})
+        this.showNotification('tr')
+      }
     })
 
 
@@ -154,7 +160,7 @@ class UserProfile extends Component {
 
   render() {
     const { classes, isFetching } = this.props
-    const { successMessage, user } = this.state
+    const { successMessage, errorMessage, user } = this.state
 
   return (
     <form className={classes.form} onSubmit={this.submit}>
@@ -163,6 +169,15 @@ class UserProfile extends Component {
         color="success"
         icon={CheckCircleOutline}
         message={successMessage}
+        open={this.state.tr}
+        closeNotification={() => this.setState({ tr: false })}
+        close
+      /> 
+      <Snackbar
+        place="tr"
+        color="danger"
+        // icon={CheckCircleOutline}
+        message={errorMessage}
         open={this.state.tr}
         closeNotification={() => this.setState({ tr: false })}
         close
@@ -223,7 +238,7 @@ class UserProfile extends Component {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={12}>
                         <TextField
-                          label="password"
+                          label="change password"
                           id="password"
                           type="password"
                           name="password"
@@ -248,7 +263,9 @@ class UserProfile extends Component {
                 </GridContainer> }
             </CardBody>
             <CardFooter >
-              <Button type="submit" color="rose">Update Profile</Button>
+              <Button type="submit" color="rose" style={{ float: 'right'}}>Update Profile</Button>
+            </CardFooter>
+            <CardFooter>
               <Button color="rose" onClick={this.handleClickOpen}>Remove Account</Button>
               <DangerDialogWrapped 
                 type={'account'}

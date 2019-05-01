@@ -263,7 +263,6 @@ class Ticket extends Component {
         {((ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id))) && edit ? 
           <Card>
             <CardHeader color="primary"> 
-            <h4 className={classes.cardTitleWhite}> <Edit /> </h4> 
             <h4 className={classes.cardTitleWhite}> Update ticket</h4> 
             </CardHeader>
             <GridContainer>         

@@ -29,7 +29,7 @@ import DashboardSpinner from '../components/spinner/DashboardSpinner'
 
 class Dashboard extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       page: 0,
       rowsPerPage: 5,
@@ -37,8 +37,6 @@ class Dashboard extends Component {
   }
 
   componentWillMount() {
-    this.props.getProjectsByUser()
-    this.props.getAllProjects()
     this.props.getActivity()
     this.props.getAllTickets()
   }
@@ -52,16 +50,7 @@ class Dashboard extends Component {
   getSuccess = successMessage => {
     this.setState({ successMessage })
     this.showNotification('tr')
-    this.props.getProject(this.props.match.params.id)
-    .then(res => {
-      this.setState({ 
-        id: res.project.id,
-        name: res.project.name,
-        description: res.project.description,
-        client_id: res.project.client_id,
-        milestones: res.project.milestones
-       })
-    })
+    this.props.getActivity()
   }
 
 
@@ -170,16 +159,12 @@ Dashboard.propTypes = { classes: PropTypes.object.isRequired }
 const mapDispatchToProps = dispatch => { 
   return { 
     logout: () => dispatch(logout()),
-    getProjectsByUser: () => dispatch(getProjectsByUser()),
-    getAllProjects: () => dispatch(getAllProjects()),
     getAllTickets: () => dispatch(getAllTickets()),
     getActivity: () => dispatch(getActivity())
   }
 }
 
 const mapStateToProps = state => ({ 
-  projects: state.project.projects, 
-  allProjects: state.project.allProjects,
   allTickets: state.ticket.allTickets, 
   activity: state.project.activity,
   isFetching: state.project.isFetching

@@ -85,8 +85,7 @@ submit = event => {
     this.state.project_id &&
     this.state.priority &&
     this.state.selectedDate &&
-    this.state.assigned_user_id &&
-    this.state.milestone_id
+    this.state.assigned_user_id
     ) {
   
     const ticket = {
@@ -397,9 +396,7 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
-                      {hasError && !this.state.milestone_id && <FormHelperText>Please select milestone!</FormHelperText>}
                         <TextField
-                          error={hasError && !this.state.milestone_id ? true : false}
                           select
                           label="milestone"
                           margin="normal"
