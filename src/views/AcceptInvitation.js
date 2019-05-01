@@ -140,7 +140,7 @@ const mapDispatchToProps = dispatch => {
   const mapStateToProps = state => ({
       user: state.auth.user,
       email: state.auth.email
-  });
+  })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(AcceptInvitation)))
   

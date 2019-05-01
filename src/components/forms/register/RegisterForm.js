@@ -55,7 +55,6 @@ class RegisterForm extends Component {
 
   submit = event => {
     event.preventDefault()
-    debugger;
     if(this.state.password === this.state.repeatPassword) {
 
       const email =  '';
@@ -69,11 +68,9 @@ class RegisterForm extends Component {
         email: this.email,
         password: this.state.password
       }
-      debugger;
 
       this.props.register(creds)
       .then(res => {
-        debugger;
         if(res.email) {
           if (this.state.invitation) {
             this.props.redirect(this.state.invitation, true)
@@ -116,7 +113,7 @@ class RegisterForm extends Component {
                     name="name" 
                     type="text"
                     label="Full name" 
-                    className="my-input"
+                    autoComplete="full name"
                     fullWidth
                     value={this.state.name}
                     onChange={this.handleChange}
@@ -129,8 +126,8 @@ class RegisterForm extends Component {
                     disabled={email ? true : false}
                     name="email" 
                     type="email"
+                    autoComplete="username"
                     label="Email" 
-                    className="my-input"
                     fullWidth
                     value={email}
                     onChange={this.handleChange}
@@ -142,8 +139,8 @@ class RegisterForm extends Component {
                 <TextField 
                       name="password" 
                       type="password"
+                      autoComplete="new-password"
                       label="Password"
-                      className="my-input"
                       fullWidth
                       value={this.state.password}
                       onChange={this.handleChange}
@@ -155,8 +152,8 @@ class RegisterForm extends Component {
                 <TextField 
                       name="repeatPassword" 
                       type="repeatPassword"
+                      autoComplete="new-password"
                       label="Repeat Password"
-                      className="my-input"
                       fullWidth
                       value={this.state.repeatPassword}
                       onChange={this.handleChange}

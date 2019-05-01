@@ -98,8 +98,8 @@ class LoginForm extends Component {
                    error={hasError && !email ? true : false}
                     name="email" 
                     type="email"
+                    autoComplete="username"
                     label="Email" 
-                    className="my-input"
                     fullWidth
                     value={email}
                     onChange={this.handleChange}
@@ -113,8 +113,8 @@ class LoginForm extends Component {
                       error={hasError && !password ? true : false}  
                       name="password" 
                       type="password"
+                      autoComplete="current-password"
                       label="Password"
-                      className="my-input"
                       fullWidth
                       value={password}
                       onChange={this.handleChange}

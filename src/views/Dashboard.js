@@ -36,9 +36,16 @@ class Dashboard extends Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getActivity()
     this.props.getAllTickets()
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if(this.props.activity !== nextProps.activity) {
+      return true
+    }
+    return false
   }
 
   goToTicket(id) { this.props.history.push(`/home/ticket/${id}`) }

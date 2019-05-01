@@ -239,7 +239,6 @@ render() {
   // Styles to input
   const styles = {
     input: {
-      marginBottom: '25px',
       minWidth: '100%'
     }
   }

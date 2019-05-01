@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
-import Cookies from 'universal-cookie'
-import PropTypes from 'prop-types'
-
 // Components
 import LoginForm from '../components/forms/login/LoginForm'
 import RegisterForm from '../components/forms/register/RegisterForm'
-
 // Theme components
 import Card from "../components/theme/Card/Card"
 import CardBody from '../components/theme/Card/CardBody'
@@ -16,21 +12,24 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
-
 // Material UI components
-import Button from '@material-ui/core/Button'
-import Icon from "@material-ui/core/Icon";
+import { Typography } from '@material-ui/core'
 import withStyles from "@material-ui/core/styles/withStyles"
 // Icons
-import ContactMail from "@material-ui/icons/ContactMail"
 import Note from "@material-ui/icons/Note"
-import BugReport from "@material-ui/icons/BugReport"
-import LowPriority from "@material-ui/icons/LowPriority"
-import Timeline from "@material-ui/icons/Timeline"
 import Person from "@material-ui/icons/Person"
-
+import Timeline from "@material-ui/icons/Timeline"
+import BugReport from "@material-ui/icons/BugReport"
+import PersonAdd from "@material-ui/icons/PersonAdd"
+import LowPriority from "@material-ui/icons/LowPriority"
+import ContactMail from "@material-ui/icons/ContactMail"
+import AccountCircle from "@material-ui/icons/AccountCircle"
+// Styles
 import { whiteColor, grayColor } from "../assets/jss/material-dashboard-react.jsx"
-import { Typography } from '@material-ui/core';
+// External
+import Cookies from 'universal-cookie'
+import PropTypes from 'prop-types'
+
 
 const styles = {
   center: {
@@ -53,9 +52,8 @@ const styles = {
       fontWeight: "400",
       lineHeight: "1"
     }
-  },
-
-};
+  }
+}
 
 class Login extends Component {
   constructor(props) {
@@ -69,10 +67,9 @@ class Login extends Component {
       btnText: 'Sign Up',
       infoText: 'Don\'t have an account yet?'
     }
-
 }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
       const cookies = new Cookies()
         if(this.props.match.url === '/home/logout') {
           cookies.remove('token', { path: '/' })
@@ -122,7 +119,7 @@ class Login extends Component {
 
     return (
         <GridContainer > 
-          <GridItem xs={12} sm={12} md={12} style={{ display: 'flex', justifyContent: 'space-between'}}>
+          <GridItem xs={12} sm={12} md={12} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '150px'}}>
             {/* <div style={{ width: '100%'}}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 57 13.1" style={{ width: '150px', height: 'auto', alignSelf: 'center'}}>
                <title>logo</title>
@@ -153,7 +150,7 @@ class Login extends Component {
               <li onClick={this.registerForm}><Typography  style={{ textTransform: 'uppercase'}}>Sign Up</Typography></li>
             </ul> */}
           </GridItem>
-          <GridItem xs={12} sm={6} md={6}>
+          <GridItem xs={12} sm={6} md={7}>
             <Card>
               <GridContainer > 
                 <GridItem xs={12} sm={10} md={12}>
@@ -180,7 +177,7 @@ class Login extends Component {
                             </CardIcon>
                           </CardHeader>
                           <CardBody>
-                            <Typography>Prioritize and Organize your work!</Typography>
+                            <Typography>Prioritize and Organize your work.</Typography>
                           </CardBody>
                         </Card>
                       </GridItem>
@@ -204,7 +201,7 @@ class Login extends Component {
                             </CardIcon>
                           </CardHeader>
                           <CardBody>
-                            <Typography>Assign tickets to your team members</Typography>
+                            <Typography>Assign tickets to your team members and follow their progress.</Typography>
                           </CardBody>
                         </Card>
                       </GridItem>
@@ -228,7 +225,7 @@ class Login extends Component {
                             </CardIcon>
                           </CardHeader>
                           <CardBody>
-                            <Typography>Report bugs and issues with ease and follow the process.</Typography>
+                            <Typography>Report bugs and issues with ease!</Typography>
                           </CardBody>
                         </Card>
                       </GridItem>
@@ -238,19 +235,19 @@ class Login extends Component {
               </GridContainer>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={6} md={6} style={{}}>
+          <GridItem xs={12} sm={6} md={5} style={{}}>
             <Card>
               <CustomTabs
                     headerColor="success"
                     tabs={[
                       {
                         tabName: 'LOG IN',
-                        tabIcon: '',
+                        tabIcon: AccountCircle,
                         tabContent: (<LoginForm/>)
                       },
                       {
                         tabName: 'SIGN UP',
-                        tabIcon: '',
+                        tabIcon: PersonAdd,
                         tabContent: (<RegisterForm />)
                       }
                     ]} />

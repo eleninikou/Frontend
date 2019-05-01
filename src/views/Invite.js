@@ -158,7 +158,6 @@ class Invite extends Component {
                         disabled={backToProject ? true : false}
                         label="Project"
                         margin="normal"
-                        className="my-input"
                         value={this.state.project_id}
                         onChange={this.handleChange}
                         inputProps={{
@@ -190,7 +189,6 @@ class Invite extends Component {
                           error={hasError && !this.state.project_role ? true : false}
                           label="Role"
                           margin="normal"
-                          className="my-input"
                           value={this.state.project_role}
                           onChange={this.handleChange}
                           inputProps={{
@@ -211,7 +209,6 @@ class Invite extends Component {
                       type="email"
                       label="email" 
                       error={hasError && !this.state.email ? true : false}
-                      className="my-input"
                       id="email"
                       formControlProps={{ fullWidth: true }}
                       onChange={this.handleChange}

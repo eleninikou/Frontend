@@ -168,7 +168,6 @@ render() {
                         type="text"
                         label="Title" 
                         id="title"
-                        className="my-input"
                         value={this.state.title}
                         onChange={this.handleChange}
                         fullWidth
@@ -184,7 +183,6 @@ render() {
                       type="text"
                       label="Focus" 
                       id="focus"
-                      className="my-input"
                       value={this.state.focus}
                       onChange={this.handleChange}
                       multiline
@@ -202,7 +200,6 @@ render() {
                           label="Project"
                           variant="outlined"
                           margin="normal"
-                          className="my-input"
                           value={project_id}
                           onChange={this.handleChange}
                           inputProps={{ name: 'project_id', id: 'project_id'}} >
@@ -231,7 +228,6 @@ render() {
                         type="date"
                         variant="outlined"
                         margin="normal"
-                        className="my-input"
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
                         InputLabelProps={{

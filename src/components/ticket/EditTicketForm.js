@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 import { updateTicket, getTicketTypes, getTicketStatus, deleteTicket, deleteAttachment, removeFromStorage } from '../../redux/actions/tickets/Actions'
 // Theme components
+import Card from "../theme/Card/Card"
 import Button from "../theme/CustomButtons/Button.jsx"
 import CardBody from "../theme/Card/CardBody.jsx"
 import GridItem from "../theme/Grid/GridItem.jsx"
@@ -184,24 +185,22 @@ class EditTicketForm extends Component {
             <form onSubmit={this.submit}>
                 <CardBody>
                   <GridContainer>
-                      <GridItem xs={12} sm={12} md={12}>
+                      <GridItem xs={12} sm={12} md={8}>
                         <TextField 
                           disabled={ user == creator || admin ? false : true}
                           name="title" 
                           type="text"
                           label="Title" 
-                          className="my-input"
                           value={this.state.title}
                           onChange={this.handleChange}
                           fullWidth />
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={12}>
+                      <GridItem xs={12} sm={12} md={4}>
                         <TextField 
                           disabled
                           name="project" 
                           type="text"
                           label="Project" 
-                          className="my-input"
                           value={this.state.project_name}
                           fullWidth />
                       </GridItem>
@@ -212,7 +211,6 @@ class EditTicketForm extends Component {
                           select
                             label="Type"
                             margin="normal"
-                            className="my-input"
                             value={this.state.type_id}
                             onChange={this.handleChange}
                             inputProps={{ name: 'type_id', id: 'type_id'}} 
@@ -229,7 +227,6 @@ class EditTicketForm extends Component {
                               select
                               label="Status"
                               margin="normal"
-                              className="my-input"
                               value={this.state.status_id}
                               onChange={this.handleChange}
                               inputProps={{ name: 'status_id', id: 'status_id', }}
@@ -254,7 +251,6 @@ class EditTicketForm extends Component {
                               disabled={ user == creator || admin ? false : true}
                               label="Milestone"
                               margin="normal"
-                              className="my-input"
                               value={this.state.milestone_id}
                               onChange={this.handleChange}
                               inputProps={{ name: 'milestone_id', id: 'milestone_id' }} 
@@ -272,7 +268,6 @@ class EditTicketForm extends Component {
                               disabled={ user == creator || admin ? false : true}
                               label="Priority"
                               margin="normal"
-                              className="my-input"
                               value={this.state.priority}
                               onChange={this.handleChange}
                               inputProps={{ name: 'priority', id: 'priority' }} 
@@ -290,7 +285,6 @@ class EditTicketForm extends Component {
                               disabled={ user == creator || admin ? false : true}
                               label="Assinged user"
                               margin="normal"
-                              className="my-input"
                               fullWidth
                               value={this.state.assigned_user_id}
                               onChange={this.handleChange}
@@ -301,14 +295,13 @@ class EditTicketForm extends Component {
                             </TextField>
                         </FormControl>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
+                      <GridItem xs={12} sm={12} md={4} style={{ marginTop: '15px'}}>
                         <FormControl className={classes.formControl}>
                           <TextField
                               id="date"
                               label="Due date"
                               type="date"
                               disabled={ user == creator || admin ? false : true}
-                              className="my-input"
                               fullWidth
                               value={this.state.selectedDate}
                               onChange={this.handleDateChange}

@@ -85,7 +85,6 @@ render() {
                       name="name" 
                       type="text"
                       label="Name" 
-                      className="my-input"
                       value={name}
                       onChange={this.handleChange}
                       fullWidth
@@ -100,7 +99,6 @@ render() {
                       name="description" 
                       type="text"
                       label="Description" 
-                      className="my-input"
                       value={description}
                       onChange={this.handleChange}
                       multiline
