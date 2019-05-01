@@ -11,10 +11,11 @@ import RegisterForm from '../components/forms/register/RegisterForm'
 import Card from "../components/theme/Card/Card"
 import CardBody from '../components/theme/Card/CardBody'
 import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardIcon from "../components/theme/Card/CardIcon.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
-import CardIcon from "../components/theme/Card/CardIcon.jsx"
 
 // Material UI components
 import Button from '@material-ui/core/Button'
@@ -147,10 +148,10 @@ class Login extends Component {
               </svg> 
               <Typography>Ticket Management System </Typography>     
             </div>       */}
-            <ul className="Menu">
+            {/* <ul className="Menu">
               <li onClick={this.loginForm}><Typography style={{ textTransform: 'uppercase'}}>Log In</Typography></li>
               <li onClick={this.registerForm}><Typography  style={{ textTransform: 'uppercase'}}>Sign Up</Typography></li>
-            </ul>
+            </ul> */}
           </GridItem>
           <GridItem xs={12} sm={6} md={6}>
             <Card>
@@ -239,18 +240,27 @@ class Login extends Component {
           </GridItem>
           <GridItem xs={12} sm={6} md={6} style={{}}>
             <Card>
-              <CardBody>
-                {this.state.register ?
-                <RegisterForm />
-                : <LoginForm/> }
-              </CardBody>
+              <CustomTabs
+                    headerColor="success"
+                    tabs={[
+                      {
+                        tabName: 'LOG IN',
+                        tabIcon: '',
+                        tabContent: (<LoginForm/>)
+                      },
+                      {
+                        tabName: 'SIGN UP',
+                        tabIcon: '',
+                        tabContent: (<RegisterForm />)
+                      }
+                    ]} />
               <CardFooter>
-                <div style={{ margin: 'auto'}}>
+                {/* <div style={{ margin: 'auto'}}>
                   <Typography>
                     {this.state.infoText}
                     <Button onClick={this.register}>{this.state.btnText}</Button>
                   </Typography> 
-                </div>
+                </div> */}
               </CardFooter>  
             </Card>
           </GridItem>
