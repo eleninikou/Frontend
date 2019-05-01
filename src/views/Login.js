@@ -148,7 +148,6 @@ class Login extends Component {
               <Typography>Ticket Management System </Typography>     
             </div>       */}
             <ul className="Menu">
-              {/* <li><Typography>Features</Typography></li> */}
               <li onClick={this.loginForm}><Typography style={{ textTransform: 'uppercase'}}>Log In</Typography></li>
               <li onClick={this.registerForm}><Typography  style={{ textTransform: 'uppercase'}}>Sign Up</Typography></li>
             </ul>
@@ -199,7 +198,7 @@ class Login extends Component {
                       <GridItem xs={12} sm={12} md={4}>
                         <Card>
                           <CardHeader>
-                            <CardIcon color="info">
+                            <CardIcon color="success">
                               <Person style={{ color: 'white'}} />
                             </CardIcon>
                           </CardHeader>

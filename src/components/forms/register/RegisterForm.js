@@ -184,7 +184,7 @@ class RegisterForm extends Component {
                   <FormControl className={classes.formControl}>
                     <GoogleLogin
                       clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
-                      buttonText="OR USER GOOGLE ACCOUNT"
+                      buttonText="USE GOOGLE ACCOUNT"
                       onSuccess={this.responseGoogle}
                       onFailure={this.responseGoogle}
                       width="100%"
