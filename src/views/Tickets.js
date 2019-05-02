@@ -42,7 +42,7 @@ class Tickets extends Component {
     this.createNewTicket = this.createNewTicket.bind(this)
   }
 
-  componentWillMount() { 
+  componentDidMount() { 
     this.props.getAllTickets().then(res => { this.setState({ tickets: res.tickets}) })
     this.props.getTicketStatus()
     this.props.getTicketTypes()

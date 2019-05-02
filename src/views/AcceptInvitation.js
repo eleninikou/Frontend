@@ -63,7 +63,7 @@ class AcceptInvitation extends Component {
     }
     
 
-    componentWillMount = () => {
+    componentDidMount = () => {
       const cookies = new Cookies()
 
       // Check if user is logged in

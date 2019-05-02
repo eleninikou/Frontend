@@ -99,7 +99,7 @@ showNotification = place => {
 }
 
 
-componentWillMount = () => {
+componentDidMount = () => {
 
   // If redirected from specific project preselect project
   if (this.props.location.state ? 

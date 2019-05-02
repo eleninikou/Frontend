@@ -40,7 +40,7 @@ class LoginForm extends Component {
     if (!response.error) {
       this.props.googleLogin(response.profileObj)
       .then(res => {
-        if(res.success){ this.props.history.push('/home/dashboard') }
+        if(res.success){ this.props.history.push('/home') }
         else { this.setState({ errorMessage: 'Could not log in user, try again later'})}  
       })
     }

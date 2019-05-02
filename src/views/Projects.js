@@ -40,7 +40,7 @@ class Projects extends Component {
      }
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     this.props.getAllProjects()
 
     // To prevent errormessage from notification bar

@@ -160,7 +160,7 @@ removeImage(url) {
   this.setState({ urls: filteredUrls });
 }
 
-componentWillMount = () => {
+componentDidMount = () => {
     const cookies = new Cookies()
     var user = cookies.get('user')
     this.setState({ user })

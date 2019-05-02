@@ -83,7 +83,7 @@ class Home extends React.Component {
 
   resizeFunction = () => { if (window.innerWidth >= 960) { this.setState({ mobileOpen: false }) } }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
 
     if (navigator.platform.indexOf("Win") > -1) {
       const ps = new PerfectScrollbar(this.refs.mainPanel)

@@ -46,7 +46,7 @@ class Ticket extends Component {
       }
   }
   
-  componentWillMount = () => {
+  componentDidMount = () => {
     // Fetch ticket and set to state
     this.props.getTicket(this.props.match.params.id)
     .then(res => {

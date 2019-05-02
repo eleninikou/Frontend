@@ -60,7 +60,7 @@ class UserProfile extends Component {
     this.onDrop= this.onDrop.bind(this)
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     const cookies = new Cookies()
     const user = cookies.get('user')
 

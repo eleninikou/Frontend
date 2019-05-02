@@ -1,20 +1,40 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react'
+import PropTypes from "prop-types"
 // @material-ui/core components
-import withStyles from "@material-ui/core/styles/withStyles";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
+import withStyles from "@material-ui/core/styles/withStyles"
+import Table from "@material-ui/core/Table"
+import TableHead from "@material-ui/core/TableHead"
+import TableRow from "@material-ui/core/TableRow"
+import TableBody from "@material-ui/core/TableBody"
+import TableCell from "@material-ui/core/TableCell"
 
 
 // core components
-import tableStyle from "../../../assets/jss/material-dashboard-react/components/tableStyle.jsx";
+import tableStyle from "../../../assets/jss/material-dashboard-react/components/tableStyle.jsx"
 import { withRouter} from "react-router-dom"
 
-function CustomTable({ ...props }) {
-  const { classes, tableHead, tableData, tableHeaderColor, page, rowsPerPage, emptyRows } = props;
+class CustomTable extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      tableData: []
+    }
+  }
+
+  componentDidMount() {
+    this.forceUpdate()
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if(this.props.tableData !== nextProps.tableData) {
+      return true
+    } else {
+      return 
+    }
+  }
+
+  render() {
+  const { classes, tableHead, tableData, tableHeaderColor, page, rowsPerPage, emptyRows } = this.props;
  
   return (
     <div className={classes.tableResponsive}>
@@ -42,6 +62,7 @@ function CustomTable({ ...props }) {
                   <TableRow key={key}  >
                     { prop ? prop.map((pro, key) => {
                       return (
+                        // To display links if table lists activities
                         (typeof pro === 'string' && pro.search('href') !== -1) || (typeof pro === 'string' && pro.search('deleted') !== -1) ? 
                             <TableCell className={classes.tableCell} key={key}>
                               <div dangerouslySetInnerHTML={{ __html: pro }} />
@@ -65,6 +86,7 @@ function CustomTable({ ...props }) {
       </Table>
     </div>
   );
+}
 }
 
 CustomTable.defaultProps = {

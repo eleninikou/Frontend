@@ -46,7 +46,7 @@ class Invite extends Component {
     }
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     // If redirected from a specific project
     if(this.props.match.params.id) {
       this.props.getProject(this.props.match.params.id)

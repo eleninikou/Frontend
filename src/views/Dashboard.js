@@ -4,7 +4,7 @@ import { withRouter, } from "react-router-dom"
 // Redux
 import { connect } from 'react-redux'
 import { getAllTickets } from '../redux/actions/tickets/Actions'
-import { getProjectsByUser, getAllProjects, getActivity } from '../redux/actions/projects/Actions'
+import { getActivity, clearDashboard } from '../redux/actions/projects/Actions'
 import { logout } from '../redux/actions/auth/Actions'
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx"
@@ -24,7 +24,7 @@ import Comment from "@material-ui/icons/Comment"
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-
+// Components
 import DashboardSpinner from '../components/spinner/DashboardSpinner'
 
 class Dashboard extends Component {
@@ -33,20 +33,32 @@ class Dashboard extends Component {
     this.state = {
       page: 0,
       rowsPerPage: 5,
+      activity: this.props.activity,
     }
   }
 
   componentDidMount() {
-    this.props.getActivity()
-    this.props.getAllTickets()
+      this.props.getActivity().then(res => {
+        if(res.activity) {
+          const activities = res.activity.flatMap(activity => activity)
+          this.setState({ activity: activities})
+        }
+      })
+      this.props.getAllTickets()
+      this.forceUpdate()
   }
 
   shouldComponentUpdate(nextProps) {
     if(this.props.activity !== nextProps.activity) {
-      return true
-    }
-    return false
+      this.setState({ activity: nextProps.activity})
+    } 
+    return true
   }
+
+  componentWillUnmount() {
+    this.setState({ activity: []})
+  }
+
 
   goToTicket(id) { this.props.history.push(`/home/ticket/${id}`) }
 
@@ -63,12 +75,16 @@ class Dashboard extends Component {
 
 
   render() {
-      const { classes, allTickets, activity, isFetching } = this.props
-      const { rowsPerPage, page } = this.state
+      const { classes, allTickets, isFetching } = this.props
+      const { rowsPerPage, page, activity } = this.state
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage)
 
         return (
-          activity ? 
+          isFetching ?
+          <div style={{ width: '100%', textAlign: 'center'}}>
+            <DashboardSpinner />
+          </div>
+          :
           <div>
             <GridContainer> 
               <GridItem xs={12} sm={12} md={12}>
@@ -80,11 +96,6 @@ class Dashboard extends Component {
                         tabName: "Activity",
                         tabIcon: Today,
                         tabContent: (
-                          isFetching ?
-                          <div style={{ width: '100%', textAlign: 'center'}}>
-                            <DashboardSpinner />
-                          </div>
-                          :
                           <div>
                             <Table
                               page={page}
@@ -153,10 +164,7 @@ class Dashboard extends Component {
                 </Card>
               </GridItem>
             </GridContainer>
-          </div> : 
-          <div style={{ width: '100%', textAlign: 'center'}}>
-            <DashboardSpinner />
-          </div>
+          </div> 
         );
       }
 }
@@ -167,7 +175,8 @@ const mapDispatchToProps = dispatch => {
   return { 
     logout: () => dispatch(logout()),
     getAllTickets: () => dispatch(getAllTickets()),
-    getActivity: () => dispatch(getActivity())
+    getActivity: () => dispatch(getActivity()),
+    clearDashboard: () => dispatch(clearDashboard())
   }
 }
 

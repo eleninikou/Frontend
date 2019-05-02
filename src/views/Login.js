@@ -116,7 +116,6 @@ class Login extends Component {
     }
 
   render() {
-
     return (
         <GridContainer > 
           <GridItem xs={12} sm={12} md={12} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '150px'}}>

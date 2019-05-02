@@ -31,7 +31,7 @@ class Milestones extends Component {
     }
   }
 
-  componentWillMount = () => { 
+  componentDidMount = () => { 
     this.props.getAllProjects() 
 
     // To prevent error message frmo notification bar

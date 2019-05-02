@@ -45,7 +45,7 @@ class Milestone extends Component {
       }
   }
   
-  componentWillMount() {
+  componentDidMount() {
     const cookies = new Cookies()
     var auth_user_id = cookies.get('user')
     this.setState( {auth_user_id })
