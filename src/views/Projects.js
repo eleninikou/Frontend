@@ -14,8 +14,6 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI components
 import Radio from '@material-ui/core/Radio'
-import MenuItem from '@material-ui/core/MenuItem'
-import TextField from '@material-ui/core/TextField'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import withStyles from "@material-ui/core/styles/withStyles"
 import FormControl from '@material-ui/core/FormControl'
@@ -28,27 +26,33 @@ import DashboardSpinner from '../components/spinner/DashboardSpinner'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
+import Cookies from 'universal-cookie'
 
 
 class Projects extends Component {
   constructor(props) {
     super(props)
     this.state = { 
-      successMessage: this.props.successMessage,
+      successMessage: '',
       errorMessage: '',
       active: ''
      }
   }
 
   componentDidMount = () => {
-    this.props.getAllProjects()
+    const cookies = new Cookies()
+    var token = cookies.get('token')
+    this.props.getAllProjects(token)
 
     // To prevent errormessage from notification bar
     var id = window.setTimeout(null, 0)
     while (id--) { window.clearTimeout(id) }
 
     // If redirected from create project display Success message
-    if (this.props.location.state ? this.props.location.state.successMessage || this.props.location.state.errorMessage : null) {
+    if (this.props.location.state ? 
+        this.props.location.state.successMessage || 
+        this.props.location.state.errorMessage 
+        : null) {
       this.setState({ 
         successMessage : this.props.location.state.successMessage, 
         errorMessage: this.props.location.state.errorMessage
@@ -74,7 +78,6 @@ class Projects extends Component {
 
   handleChange = event => { 
     this.setState({ active: event.target.value }) 
-    console.log(event.target.value)
   }
 
     render() {
@@ -94,6 +97,7 @@ class Projects extends Component {
           : this.state.active === "1" ? projects.filter(project => { return project.project.active === 1 })
           : projects
         
+          const { errorMessage, successMessage } = this.state
 
       return (
         <GridContainer> 
@@ -102,7 +106,7 @@ class Projects extends Component {
               place="tr"
               color="danger"
               icon={CheckCircleOutline}
-              message={this.state.errorMessage}
+              message={errorMessage}
               open={this.state.tr}
               closeNotification={() => this.setState({ tr: false })}
               close
@@ -112,7 +116,7 @@ class Projects extends Component {
               place="tr"
               color="success"
               icon={CheckCircleOutline}
-              message={this.state.successMessage}
+              message={successMessage}
               open={this.state.tr}
               closeNotification={() => this.setState({ tr: false })}
               close
@@ -167,7 +171,7 @@ class Projects extends Component {
 }
 
 
-const mapDispatchToProps = dispatch => { return { getAllProjects: () => dispatch(getAllProjects()) }}
+const mapDispatchToProps = dispatch => { return { getAllProjects: (token) => dispatch(getAllProjects(token)) }}
 
 const mapStateToProps = state => ({ 
   allProjects: state.project.allProjects,

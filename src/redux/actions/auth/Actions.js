@@ -23,10 +23,9 @@ import {
     ACCEPT_INVITATION_FAILURE,
 } from './Action-types';
 
-import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie'
 const cookies = new Cookies();
 var token = cookies.get('token')
-
 
 
 export const register = creds => {
@@ -61,7 +60,6 @@ export const login = creds => {
     return async dispatch => {
 
       const recieveLogin = response => { 
-        debugger;
         dispatch ({ type: LOGIN_SUCCESS, payload: response.success.user}); 
         cookies.set("token", response.success.token, { path: "/", maxAge: 86399 });
         cookies.set("user", response.success.user.id, { path: "/", maxAge: 86399 });
@@ -116,7 +114,7 @@ export const googleLogin = (googleAuth) => {
 
 
 
-export const logout = (token) => {
+export const logout = () => {
   return async dispatch => {
     const logoutSuccess = success => { dispatch ({ type: LOGOUT_SUCCESS, payload: success}); return success; }
     try {

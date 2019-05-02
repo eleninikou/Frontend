@@ -42,8 +42,8 @@ const initialState = {
     allProjects: [],
     activity: [],
     isFetching: false,
-    errorMessage: null,
-    successMessage: null
+    errorMessage: '',
+    successMessage: ''
 };
 
 const ProjectReducer = (state = initialState, action) => {

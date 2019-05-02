@@ -15,6 +15,7 @@ import BugReport from "@material-ui/icons/BugReport"
 import LowPriority from "@material-ui/icons/LowPriority"
 import LinearScale from '@material-ui/icons/LinearScale'
 import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor"
+import DashboardSpinner from '../spinner/DashboardSpinner'
 
 
 class TicketsTable extends Component {
@@ -37,17 +38,19 @@ class TicketsTable extends Component {
         const { classes, tickets } = this.props;
         const { rowsPerPage, page } = this.state;
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, tickets ? tickets.length : 0 - page * rowsPerPage);
-          
+
         return (
           <div>
+          {tickets.length ?
             <Table
               page={page}
               rowsPerPage={rowsPerPage}
               emptyRows={emptyRows}
               tableHeaderColor="primary"
               tableHead={["Title", "Project", "Type", "Status", "Priority", "Milestone", "Due Date", "Details"]}
-              tableData={[ tickets ? tickets.map(ticket => {
-                return [
+              tableData={[ 
+                tickets ? tickets.map(ticket => {
+                  return [
                   `${ticket.title}`,
                   `${ticket.project.name}`, 
                     <Tooltip
@@ -68,11 +71,11 @@ class TicketsTable extends Component {
                     </Tooltip> , 
                   `${ticket.status.status}`,
                   <Tooltip
-                  id="tooltip-top-start"
-                  title={ticket.priority}
-                  placement="top"
-                  classes={{ tooltip: classes.tooltip }}
-                  >
+                    id="tooltip-top-start"
+                    title={ticket.priority}
+                    placement="top"
+                    classes={{ tooltip: classes.tooltip }}
+                    >
                   {ticket.priority === 'low' ?
                   <Avatar style={{backgroundColor: '#FADC08', height: '30px', width: '30px', marginRight: '20px' }}> 
                     <Warning style={{ fontSize: '18px'}}/> 
@@ -86,7 +89,7 @@ class TicketsTable extends Component {
                     <Warning style={{ fontSize: '18px'}}/> 
                   </Avatar> }
                   </Tooltip>,
-                  `${ticket.milestone.title}`,
+                  `${ticket.milestone ? ticket.milestone.title: '-'}`,
                   `${moment(ticket.due_date).format('YYYY-MM-DD')}`,
                   <Tooltip
                       id="tooltip-top"
@@ -101,17 +104,23 @@ class TicketsTable extends Component {
                   ]
                 }) : null ]}
               />
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 20]}
-                component="div"
-                count={tickets ? tickets.length : 0}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                backIconButtonProps={{ 'aria-label': 'Previous Page' }}
-                nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-                onChangePage={this.handleChangePage}
-                onChangeRowsPerPage={this.handleChangeRowsPerPage}
-              />
+              :   
+              <div>                
+                <div style={{ width: '100%', textAlign: 'center'}}>
+                  <DashboardSpinner /> 
+                </div>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 20]}
+                  component="div"
+                  count={tickets ? tickets.length : 0}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                  nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+                  onChangePage={this.handleChangePage}
+                  onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                />
+              </div> }
             </div>
     )
   }

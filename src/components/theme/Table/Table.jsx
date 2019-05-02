@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from "prop-types"
 // @material-ui/core components
 import withStyles from "@material-ui/core/styles/withStyles"
@@ -13,28 +13,8 @@ import TableCell from "@material-ui/core/TableCell"
 import tableStyle from "../../../assets/jss/material-dashboard-react/components/tableStyle.jsx"
 import { withRouter} from "react-router-dom"
 
-class CustomTable extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      tableData: []
-    }
-  }
-
-  componentDidMount() {
-    this.forceUpdate()
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if(this.props.tableData !== nextProps.tableData) {
-      return true
-    } else {
-      return 
-    }
-  }
-
-  render() {
-  const { classes, tableHead, tableData, tableHeaderColor, page, rowsPerPage, emptyRows } = this.props;
+function CustomTable({ ...props }) {
+  const { classes, tableHead, tableData, tableHeaderColor, page, rowsPerPage, emptyRows } = props;
  
   return (
     <div className={classes.tableResponsive}>
@@ -87,7 +67,7 @@ class CustomTable extends Component {
     </div>
   );
 }
-}
+
 
 CustomTable.defaultProps = {
   tableHeaderColor: "gray"
@@ -104,8 +84,6 @@ CustomTable.propTypes = {
     "rose",
     "gray"
   ]),
-  tableHead: PropTypes.arrayOf(PropTypes.string),
-  tableData: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
 };
 
 export default withRouter(withStyles(tableStyle)(CustomTable));

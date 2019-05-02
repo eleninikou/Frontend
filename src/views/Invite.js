@@ -76,9 +76,10 @@ class Invite extends Component {
         project_role: this.state.project_role,
       }
 
-      this.props.invite(invitation)
-      .then(() => { if (this.props.successMessage) { this.showNotification('tr') } })
-
+      this.props.invite(invitation).then(()=> { 
+        if (this.props.successMessage) { 
+          this.showNotification('tr') } 
+        })
       this.props.getEmails(this.state.project_id)
       .then(res => { this.setState({ emails: res.emails }) })
 
@@ -125,8 +126,8 @@ class Invite extends Component {
 
 
   render() {
-  const { classes, projects, project, roles, successMessage, emails, isFetching } = this.props
-  const { page, team, backToProject, hasError } = this.state
+  const { classes, projects, project, roles, successMessage, isFetching } = this.props
+  const { page, team, backToProject, hasError, emails } = this.state
 
   // let yourProjects = projects ? this.getUnique(projects,'project_id') : null
 

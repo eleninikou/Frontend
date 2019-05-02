@@ -10,8 +10,6 @@ import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import Icon from "@material-ui/core/Icon"
-import AccountCircle from "@material-ui/icons/AccountCircle"
-import Avatar from '@material-ui/core/Avatar'
 
 import AdminNavbarLinks from "../Navbars/AdminNavbarLinks.jsx"
 import RTLNavbarLinks from "../Navbars/RTLNavbarLinks.jsx"
@@ -25,7 +23,7 @@ const Sidebar = ({ ...props }) => {
     return props.location.pathname.indexOf(routeName) > -1 ? true : false;
   }
 
-  const { classes, color, image, logo, logoText, routes } = props;
+  const { classes, color, image, logoText, routes } = props;
 
 
   var links = (

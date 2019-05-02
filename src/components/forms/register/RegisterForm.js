@@ -7,16 +7,15 @@ import { register, googleLogin, acceptInvitation } from '../../../redux/actions/
 import Cookies from 'universal-cookie'
 import GoogleLogin from 'react-google-login'
 
-import GridItem from "../../theme/Grid/GridItem.jsx";
+import GridItem from "../../theme/Grid/GridItem.jsx"
 import CardBody from '../../theme/Card/CardBody'
-import GridContainer from "../../theme/Grid/GridContainer.jsx";
+import GridContainer from "../../theme/Grid/GridContainer.jsx"
 
 // Material UI
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles'
-import { FormControl } from '@material-ui/core';
+import { FormControl } from '@material-ui/core'
 
 // Style
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
@@ -210,7 +209,5 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const mapStateToProps = state => ({});
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(RegisterForm)));
+export default withRouter(connect(null, mapDispatchToProps)(withStyles(dashboardStyle)(RegisterForm)))
 

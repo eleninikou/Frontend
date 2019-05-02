@@ -136,7 +136,7 @@ handleChange = event => {
 render() {
   const { classes, allProjects, successMessage, project  } = this.props
   const { project_id, project_name, backToProject, hasError, errorMessage } = this.state
-  const projects = allProjects.length ? allProjects.filter(project => project.role_id == 1) : null
+  const projects = allProjects.length ? allProjects.filter(project => project.role_id === 1) : null
 
   return (
       <GridContainer>

@@ -37,13 +37,18 @@ class Tickets extends Component {
       type_id: '',
       priority: '',
       status_id: '',
-      project_id: ''
+      project_id: '',
+      errorMessage: ''
     }
     this.createNewTicket = this.createNewTicket.bind(this)
   }
 
   componentDidMount() { 
-    this.props.getAllTickets().then(res => { this.setState({ tickets: res.tickets}) })
+    this.props.getAllTickets().then(res => {
+      if(res.tickets) {
+        this.setState({ tickets: res.tickets})
+      }
+    })
     this.props.getTicketStatus()
     this.props.getTicketTypes()
     this.props.getAllProjects()
@@ -76,16 +81,16 @@ class Tickets extends Component {
 
   render() {
     const { classes, ticketStatus, ticketTypes, allProjects } = this.props;
-    const { status_id, type_id, priority, project_id, tickets } = this.state;
+    const { status_id, type_id, priority, project_id, tickets, errorMessage } = this.state;
 
         let filteredTickets = tickets ? tickets.filter(ticket => {
-        return (
+          return (
           (status_id ? parseInt(ticket.status_id) === parseInt(status_id) : ticket) &&
           (type_id ? parseInt(ticket.type_id) === parseInt(type_id) : ticket) &&
           (priority ? ticket.priority === priority : ticket) &&
           (project_id ? parseInt(ticket.project_id) === parseInt(project_id) : ticket)
-        )
-      }) : tickets
+          )
+        }) : tickets
      
     return (
       <GridContainer>    
@@ -93,7 +98,7 @@ class Tickets extends Component {
           place="tr"
           color="danger"
           icon={CheckCircleOutline}
-          message={this.state.errorMessage}
+          message={errorMessage}
           open={this.state.tr}
           closeNotification={() => this.setState({ tr: false })}
           close
@@ -158,7 +163,6 @@ class Tickets extends Component {
                       label="Priority"
                       value={this.state.priority}
                       onChange={this.handleChange}
-                      // variant="outlined"
                       margin="normal"
                       inputProps={{ name: 'priority', id: 'priority' }} >
                         <MenuItem value={null}>All</MenuItem>
@@ -181,7 +185,6 @@ class Tickets extends Component {
                       label="Project"
                       value={this.state.project_id}
                       onChange={this.handleChange}
-                      // variant="outlined"
                       margin="normal"
                       inputProps={{ name: 'project_id', id: 'project_id' }} >
                         <MenuItem value={null}>All</MenuItem>

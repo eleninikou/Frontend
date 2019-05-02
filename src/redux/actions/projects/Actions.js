@@ -35,8 +35,6 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies()
 var token = cookies.get('token')
 
-
-
 export const getProject = id => {
   return async dispatch => {
     const recieveProject = project_with_team => { 
@@ -88,7 +86,7 @@ export const getProjectsByUser = () => {
 
 
 
-export const getAllProjects = () => {
+export const getAllProjects = (token) => {
     return async dispatch => {  
       const recieveAllProjects = projects => { 
         dispatch ({ type: GET_ALL_PROJECTS_USER_SUCCESS, payload: projects}); 
@@ -182,13 +180,13 @@ export const deleteProject = id => {
 }; 
  
 
-export const getActivity = () => {
+export const getActivity = (token) => {
   return async dispatch => {
     const recieveActivity = activity => { 
       dispatch ({ type: GET_ACTIVITY_SUCCESS, payload: activity}); 
       return activity; 
-  }
-
+    }
+    
     try {
       dispatch({ type: GET_ACTIVITY_REQUEST });
       const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/activity/user`, {
@@ -197,7 +195,8 @@ export const getActivity = () => {
           "Authorization": `Bearer ${token}`,
           'Access-Control-Allow-Origin': '*',
           "Content-Type": "application/json"}
-      })
+        })
+
       const activity = await res.json();
       return recieveActivity(activity);
 

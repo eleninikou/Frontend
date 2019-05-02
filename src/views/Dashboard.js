@@ -26,6 +26,7 @@ import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 // Components
 import DashboardSpinner from '../components/spinner/DashboardSpinner'
+import Cookies from 'universal-cookie'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -38,7 +39,9 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-      this.props.getActivity().then(res => {
+    const cookies = new Cookies()
+    var token = cookies.get('token')
+      this.props.getActivity(token).then(res => {
         if(res.activity) {
           const activities = res.activity.flatMap(activity => activity)
           this.setState({ activity: activities})
@@ -79,6 +82,7 @@ class Dashboard extends Component {
       const { rowsPerPage, page, activity } = this.state
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage)
 
+      console.log(activity)
         return (
           isFetching ?
           <div style={{ width: '100%', textAlign: 'center'}}>
@@ -175,7 +179,7 @@ const mapDispatchToProps = dispatch => {
   return { 
     logout: () => dispatch(logout()),
     getAllTickets: () => dispatch(getAllTickets()),
-    getActivity: () => dispatch(getActivity()),
+    getActivity: (token) => dispatch(getActivity(token)),
     clearDashboard: () => dispatch(clearDashboard())
   }
 }

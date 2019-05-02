@@ -59,7 +59,7 @@ class Project extends Component {
   }
 
   
-  componentWillMount = () => {
+  componentDidMount = () => {
     const cookies = new Cookies()
     var user = cookies.get('user')
     this.setState({ user })

@@ -22,7 +22,7 @@ function Header({ ...props }) {
       if (prop.layout + prop.path === props.location.pathname) {
         name = props.rtlActive ? prop.rtlName : prop.name;
       }
-      return null;
+      return '';
     });
     return name;
   }

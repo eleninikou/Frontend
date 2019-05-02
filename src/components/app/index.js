@@ -3,6 +3,8 @@ import { Switch, Route, withRouter, Redirect } from 'react-router-dom'
 import Cookies from 'universal-cookie'
 // import { Login, Home, CreateProject, NotFoundPage, AcceptInvitation  } from '../../views'
 import  Login from '../../views/Login'
+import  Logout from '../../views/Logout'
+
 import Home from '../../views/Home'
 import CreateProject from '../../views/CreateProject'
 import Project from '../../views/Project'
@@ -32,7 +34,7 @@ class App extends Component {
       <div className='App'>
         <Switch>
           <Route exact path='/' component={Login} />
-          <PrivateRoute path='/home/logout' component={Login} />
+          <PrivateRoute path='/home/logout' component={Logout} />
           <PrivateRoute path='/home' component={Home} />
           <PrivateRoute exact path='/home/create-project' component={CreateProject} />
           <PrivateRoute exact path='/home/project/{id}' component={Project} />

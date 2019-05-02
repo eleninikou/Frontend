@@ -24,29 +24,28 @@ import AccountCircle from "@material-ui/icons/AccountCircle"
 // Material UI components
 import Typography from '@material-ui/core/Typography'
 
-const ProjectContent = ({ project, getEdit, classes, team, creator, admins, clients, isAdmin }) => {
+const ProjectContent = ({ project, getEdit, team, creator, admins, clients, isAdmin }) => {
+
 
 const showForm = () => {getEdit(true)}
     return (
           <CardBody>
             <GridContainer>
               <GridItem xs={12} sm={12} md={8}>
-                <Typography>
-                  <h1>{project.name} </h1> 
-                  <h4> {project.description}</h4>
-                </Typography>
+                <Typography> {project.name} </Typography>
+                <Typography>{project.description}</Typography>
               </GridItem>
               <GridItem xs={12} sm={12} md={4}>
-              <List className="my-ticket-list">
+              <List>
               {admins ? admins.map(admin => {
                 return(
-                  <ListItem>
+                  <ListItem key={admin}>
                     <ListItemAvatar>
                       <Tooltip
                         id="tooltip-top-start"
                         title="Milestones"
                         placement="top"
-                        classes={{ tooltip: classes.tooltip }}>  
+                        >  
                         {admin.user ? admin.user.avatar ?
                           <img src={admin.user.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
                           :  
@@ -68,7 +67,7 @@ const showForm = () => {getEdit(true)}
                           id="tooltip-top-start"
                           title="Milestones"
                           placement="top"
-                          classes={{ tooltip: classes.tooltip }}>  
+                          >  
                           {client.user.avatar ?
                             <img src={client.user.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
                           :
@@ -87,7 +86,7 @@ const showForm = () => {getEdit(true)}
                       id="tooltip-top-start"
                       title="Milestones"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}>  
+                      >  
                         <Avatar style={{backgroundColor: '#ff9800', width: '30px', height: '30px'}}> 
                           <Timeline style={{ fontSize: '18px'}}/> 
                         </Avatar>
@@ -101,7 +100,7 @@ const showForm = () => {getEdit(true)}
                       id="tooltip-top-start"
                       title="Tickets"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}>  
+                      >  
                         <Avatar style={{backgroundColor: '#9c27b0', width: '30px', height: '30px'}}> 
                           <Note style={{ fontSize: '18px'}}/> 
                         </Avatar>
@@ -115,7 +114,7 @@ const showForm = () => {getEdit(true)}
                       id="tooltip-top-start"
                       title="Team"
                       placement="top"
-                      classes={{ tooltip: classes.tooltip }}>  
+                      >  
                         <Avatar style={{backgroundColor: '#26c6da', width: '30px', height: '30px'}}> 
                           <People style={{ fontSize: '18px'}}/> 
                         </Avatar>

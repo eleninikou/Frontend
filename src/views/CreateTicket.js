@@ -33,6 +33,7 @@ import Remove from "@material-ui/icons/Remove"
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import DashboardSpinner from '../components/spinner/DashboardSpinner'
 
 
 class CreateTicket extends Component {
@@ -175,18 +176,6 @@ componentDidMount = () => {
         project_id: this.props.location.state.project_id 
       })
       this.props.getProject(this.props.location.state.project_id)
-      .then(res => {
-        // If project doesn't have milestones yet redirect
-        if(!res.project.milestones.length) {
-          this.props.history.push({
-            pathname: '/home/create-milestone', 
-            state: { 
-              errorMessage: 'You have to create a milestone first!', 
-              project_id: this.state.project_id
-            }
-          })
-        }
-      })
     } else { this.props.getAllProjects()}
     
   this.props.getTicketTypes()
@@ -248,8 +237,8 @@ render() {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Create new ticket</h4>
+            <CardHeader color="primary" style={{ marginBottom: '30px'}}>
+              <h4 className={classes.cardTitleWhite} style={{ textTransform: 'uppercase'}}>Create ticket</h4>
             </CardHeader>
             <form className={classes.form} onSubmit={this.submit}>
               <CardBody>
@@ -427,7 +416,7 @@ render() {
                       />
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={12} style={{ marginTop: '100px'}}>
                   <FormControl className={classes.formControl}>
                       <Editor
                           editorState={editorState}
@@ -452,7 +441,7 @@ render() {
                           return(
                             <GridItem xs={12} sm={12} md={3} style={{ flexBasis: 'unset'}}>
                             <div style={{ display: 'flex', width: '100%', position: 'relative'}}>
-                              <img src={url} style={{ width: 'auto', maxWidth: '100%', maxHeight: '200px', display: 'block', position: 'relative'}} alt="preview" /> 
+                              <img src={url} style={{ width: 'auto', maxWidth: '100%',  maxHeight: '200px', display: 'block', position: 'relative'}} alt="preview" /> 
                                 <Tooltip
                                   id="tooltip-top-start"
                                   title="Remove image"
@@ -466,19 +455,18 @@ render() {
                             </div>
                             </GridItem>
                           )
-                        })
-                          : null}
+                        }) : null}
                       </GridContainer>
 
                     </FormControl>
                   </GridItem>
               </GridContainer>
             </CardBody>
-            <CardFooter>
+            <CardFooter style={{ justifyContent: 'flex-end' }}>
               <Button color="primary" type="submit">Create Ticket</Button>
-              {backToProject ? 
+              {/* {backToProject ? 
               <Button color="primary" onClick={this.goBack.bind(this)}>Back to project</Button>
-              : null}
+              : null} */}
             </CardFooter>
             </form> 
           </Card>
