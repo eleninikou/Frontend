@@ -28,26 +28,34 @@ class AddComment extends Component {
         editorState: '',
         ticket_id: this.props.ticket_id,
         urls: [],
-        uploading: false
+        uploading: false,
+        disabled: false
       }
   }
 
   componentWillMount = () => { this.setState({ editorState: EditorState.createEmpty() }) }
 
   sendComment = () => {
+
+    
     const comment = {
       comment: convertToRaw(this.state.editorState.getCurrentContent()),
       ticket_id: this.state.ticket_id,
       images: this.state.urls
     };
-    
-    this.props.commentCreate(comment)
-    .then(res => { 
-      if(this.props.successMessage) {
-        this.props.getSuccess(this.props.successMessage) 
-        this.props.hideForm(false)
-      } 
-    })
+
+
+    if(comment.comment.blocks[0].text !== '') {
+      this.props.commentCreate(comment)
+      .then(res => { 
+        if(this.props.successMessage) {
+          this.props.getSuccess(this.props.successMessage) 
+          this.props.hideForm(false)
+        } 
+      })
+    } else {
+      this.setState({ disabled: true})
+    }
   }
 
   onEditorStateChange = editorState => { this.setState({ editorState }) }
@@ -155,6 +163,7 @@ class AddComment extends Component {
             </GridContainer>
           </GridItem>
         </GridContainer> 
+        {console.log(this.state.editorState)}
         <Button 
           color="primary" 
           style={{ float: 'right'}}

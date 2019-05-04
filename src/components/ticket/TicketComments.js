@@ -43,7 +43,7 @@ import ImageGallery from 'react-image-gallery'
     <List>
         {comments ? comments.map(comment => {
           return(
-            <Card>
+            <Card key={comment.id}>
             <ListItem style={{ borderBottom: '1px solid grey', padding: '30px'}}>
               <GridContainer style={{ width: '100%'}}>          
               <GridItem xs={12} sm={12} md={12} >

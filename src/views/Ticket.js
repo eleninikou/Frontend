@@ -227,8 +227,7 @@ class Ticket extends Component {
                   </GridItem> 
                 </GridContainer>
               </CardBody> 
-              <CardFooter>
-                <GridContainer style={{ width: '100%', justifyContent: 'space-between'}}>
+              <CardFooter style={{ justifyContent: 'flex-end'}}>
                   {comments.length && !addComment ?
                     <div>
                       <GridItem xs={12} sm={3} md={3}>
@@ -244,15 +243,13 @@ class Ticket extends Component {
                   <GridItem xs={12} sm={3} md={3}>
                     <Button color="primary" onClick={this.showCommentForm} style={{minWidth: '163px'}}>{ButtonTextComment}</Button> 
                   </GridItem> }
-
+                  </CardFooter>
+                  <CardFooter  style={{ justifyContent: 'flex-end'}}>
                   {(ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id)) ?
-                  <div>
                     <GridItem xs={12} sm={3} md={3}>
                       <Button color="primary" onClick={this.showForm} style={{minWidth: '163px'}}> {ButtonText} </Button> 
                     </GridItem>
-                  </div>  
                   : null }
-                </GridContainer>
               </CardFooter>
             </Card>
           </GridItem> 
