@@ -5,6 +5,7 @@ import LoginForm from '../components/forms/login/LoginForm'
 import RegisterForm from '../components/forms/register/RegisterForm'
 // Theme components
 import Card from "../components/theme/Card/Card"
+import Button from "../components/theme/CustomButtons/Button.jsx"
 import CardBody from '../components/theme/Card/CardBody'
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardIcon from "../components/theme/Card/CardIcon.jsx"
@@ -118,9 +119,9 @@ class Login extends Component {
   render() {
     return (
         <GridContainer > 
-          <GridItem xs={12} sm={12} md={12} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '150px'}}>
-            {/* <div style={{ width: '100%'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 57 13.1" style={{ width: '150px', height: 'auto', alignSelf: 'center'}}>
+          <GridItem xs={12} sm={12} md={12} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '50px'}}>
+             <div style={{ width: '100%'}}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 57 13.1" style={{ width: '170px', height: 'auto', alignSelf: 'center', margin: '10px 0px 0px 10px'}}>
                <title>logo</title>
                   <g id="Layer_2" data-name="Layer 2">
                   <g id="Layer_1-2" data-name="Layer 1">
@@ -142,19 +143,25 @@ class Login extends Component {
                  </g>
                </g>
               </svg> 
-              <Typography>Ticket Management System </Typography>     
-            </div>       */}
-            {/* <ul className="Menu">
-              <li onClick={this.loginForm}><Typography style={{ textTransform: 'uppercase'}}>Log In</Typography></li>
-              <li onClick={this.registerForm}><Typography  style={{ textTransform: 'uppercase'}}>Sign Up</Typography></li>
-            </ul> */}
+              <Typography style={{ marginLeft: '10px'}}>Ticket Management System </Typography>     
+            </div>      
+            <ul className="Menu">
+              <li onClick={this.loginForm}>
+                <Button color="success" >
+                  Log In
+                </Button>
+              </li>
+              <li onClick={this.registerForm}>
+                <Button> Sign Up </Button></li>
+            </ul>
           </GridItem>
-          <GridItem xs={12} sm={6} md={7}>
+          <GridItem xs={12} sm={6} md={8}>
             <Card>
               <GridContainer > 
                 <GridItem xs={12} sm={10} md={12}>
                   <CardBody>
-                    <Typography style={{ fontSize: '28px'}}>BTMS is built for every member in your team to help you work more collaboratively and get more done!</Typography>
+                    <Typography style={{ fontSize: '40px'}}> A Collaboration platform built for every member of your team to simplify your workflow!</Typography>
+                    <Typography style={{ fontSize: '20px', marginTop: '10px'}}>Keep track of your project development with ease. Invite your team members and start sharing ideas, report bugs and organize your work. </Typography>
                     <GridContainer > 
                       <GridItem xs={12} sm={12} md={4}>
                         <Card>
@@ -234,28 +241,26 @@ class Login extends Component {
               </GridContainer>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={6} md={5} style={{}}>
+          <GridItem xs={12} sm={6} md={4}>
             <Card>
-              <CustomTabs
-                    headerColor="success"
-                    tabs={[
-                      {
-                        tabName: 'LOG IN',
-                        tabIcon: AccountCircle,
-                        tabContent: (<LoginForm/>)
-                      },
-                      {
-                        tabName: 'SIGN UP',
-                        tabIcon: PersonAdd,
-                        tabContent: (<RegisterForm />)
-                      }
-                    ]} />
+            <CardHeader>
+              <CardIcon color="success">
+                {this.state.register ? 
+                <PersonAdd style={{ color: 'white' }} />
+              : <AccountCircle style={{ color: 'white' }} />}
+              </CardIcon>
+            </CardHeader>
+            <CardBody>
+                {this.state.register ?
+                <RegisterForm />
+                : <LoginForm/> }
+              </CardBody>
               <CardFooter>
-                {/* <div style={{ margin: 'auto'}}>
+                {/* <div style={{ margin: 'auto', textAlign: 'center'}}>
                   <Typography>
                     {this.state.infoText}
-                    <Button onClick={this.register}>{this.state.btnText}</Button>
                   </Typography> 
+                    <Button onClick={this.register}>{this.state.btnText}</Button>
                 </div> */}
               </CardFooter>  
             </Card>
