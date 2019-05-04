@@ -9,6 +9,7 @@ import { getUser } from '../redux/actions/auth/Actions'
 // Theme components
 import Card from "../components/theme/Card/Card"
 import Button from "../components/theme/CustomButtons/Button.jsx"
+import CardIcon from "../components/theme/Card/CardIcon.jsx"
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardBody from "../components/theme/Card/CardBody.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
@@ -16,12 +17,16 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI components
+import Tooltip from "@material-ui/core/Tooltip"
+import IconButton from "@material-ui/core/IconButton"
 import withStyles from "@material-ui/core/styles/withStyles"
 // Components 
 import { TicketIconList, TicketContent, EditTicketForm, TicketComments, AddComment } from '../components'
 import DashboardSpinner from '../components/spinner/DashboardSpinner'
 // Icon
 import Edit from "@material-ui/icons/Edit"
+import Close from "@material-ui/icons/Close"
+import Comment from "@material-ui/icons/Comment"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
@@ -227,24 +232,13 @@ class Ticket extends Component {
                   </GridItem> 
                 </GridContainer>
               </CardBody> 
-              <CardFooter style={{ justifyContent: 'flex-end'}}>
-                  {comments.length && !addComment ?
-                    <div>
+                  <CardFooter  style={{ justifyContent: 'flex-end'}}>
+                  {
+                    !addComment && !showComments ?
                       <GridItem xs={12} sm={3} md={3}>
                         <Button color="primary" onClick={this.showComments}  style={{minWidth: '163px'}}>{CommentText}</Button> 
                       </GridItem>
-                      {showComments ? 
-                      <GridItem xs={12} sm={3} md={3}>
-                        <Button color="primary" onClick={this.showCommentForm}  style={{minWidth: '163px'}}>{ButtonTextComment}</Button>   
-                      </GridItem>
-                      : null }
-                    </div>  
-                  : 
-                  <GridItem xs={12} sm={3} md={3}>
-                    <Button color="primary" onClick={this.showCommentForm} style={{minWidth: '163px'}}>{ButtonTextComment}</Button> 
-                  </GridItem> }
-                  </CardFooter>
-                  <CardFooter  style={{ justifyContent: 'flex-end'}}>
+                      : null}
                   {(ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id)) ?
                     <GridItem xs={12} sm={3} md={3}>
                       <Button color="primary" onClick={this.showForm} style={{minWidth: '163px'}}> {ButtonText} </Button> 
@@ -259,7 +253,10 @@ class Ticket extends Component {
         {/* Edit Ticket if authorized */}
         {((ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id))) && edit ? 
           <Card>
-            <CardHeader color="primary"> 
+            <CardHeader > 
+              <CardIcon color="primary">
+                  <Edit style={{ color: 'white'}} />
+              </CardIcon>
             <h4 className={classes.cardTitleWhite}> Update ticket</h4> 
             </CardHeader>
             <GridContainer>         
@@ -292,8 +289,32 @@ class Ticket extends Component {
         {/* Display Comments */}
         {showComments || addComment ? 
           <Card>
-            <CardHeader color="primary"> 
-              <h4 className={classes.cardTitleWhite}>Comments</h4> 
+            <CardHeader style={{ display: 'flex', justifyContent: 'space-between'}} > 
+              <CardIcon color="info">
+                <Button  onClick={this.showCommentForm}  style={{ backgroundColor: 'transparent'}}>
+                <Comment style={{ color: 'white'}} /> 
+                  {ButtonTextComment}
+                </Button>   
+              </CardIcon>
+                  {comments.length && !addComment ?
+                    <div>
+                      <GridItem xs={12} sm={3} md={3}>
+                      <Tooltip
+                         onClick={this.showComments} 
+                         id="tooltip-top-start"
+                         title={CommentText}
+                         placement="top"
+                         classes={{ tooltip: classes.tooltip }}>
+                           <IconButton
+                             aria-label="Close"
+                             className={classes.tableActionButton}>
+                             <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
+                           </IconButton>
+                        </Tooltip>
+                      </GridItem>
+                    </div>  
+                  : 
+                  null }
             </CardHeader>
             <CardBody>
               {addComment ? 

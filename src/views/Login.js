@@ -11,7 +11,6 @@ import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardIcon from "../components/theme/Card/CardIcon.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
-import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI components
 import { Typography } from '@material-ui/core'

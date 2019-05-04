@@ -183,6 +183,18 @@ class EditTicketForm extends Component {
     
       return (
             <form onSubmit={this.submit}>
+                {user == creator ?
+                    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
+                      <Button style={{marginRight: '18px'}} color="danger" onClick={this.handleClickOpen}> Delete Ticket</Button>
+                      <DangerDialogWrapped 
+                        type={'ticket'}
+                        title={'Are you sure you want to delete this ticket?'}
+                        id={this.props.match.params.id}
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                      />
+                    </div>
+                  : null}
                 <CardBody>
                   <GridContainer>
                       <GridItem xs={12} sm={12} md={8}>
@@ -309,7 +321,7 @@ class EditTicketForm extends Component {
                             />
                         </FormControl>
                       </GridItem>
-                      <GridItem xs={12} sm={12} md={12}>
+                      <GridItem xs={12} sm={12} md={12} style={{ marginTop: '100px'}}>
                         <Editor
                             editorState={editorState}
                             toolbarClassName="toolbarClassName"
@@ -353,20 +365,6 @@ class EditTicketForm extends Component {
                       </GridItem>
                   </GridContainer>
                 </CardBody>
-                <CardFooter style={{ justifyContent: 'center'}}>
-                  {user == creator ?
-                    <div>
-                      <Button color="danger" onClick={this.handleClickOpen}> Delete </Button>
-                      <DangerDialogWrapped 
-                        type={'ticket'}
-                        title={'Are you sure you want to delete this ticket?'}
-                        id={this.props.match.params.id}
-                        open={this.state.open}
-                        onClose={this.handleClose}
-                      />
-                    </div>
-                  : null}
-                </CardFooter>
               </form> 
       )
   }

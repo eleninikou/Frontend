@@ -37,15 +37,13 @@ class AddComment extends Component {
 
   sendComment = () => {
 
-    
     const comment = {
       comment: convertToRaw(this.state.editorState.getCurrentContent()),
       ticket_id: this.state.ticket_id,
       images: this.state.urls
     };
 
-
-    if(comment.comment.blocks[0].text !== '') {
+    if(comment.comment.blocks[0].text !== '' || comment.images ) {
       this.props.commentCreate(comment)
       .then(res => { 
         if(this.props.successMessage) {
@@ -163,12 +161,11 @@ class AddComment extends Component {
             </GridContainer>
           </GridItem>
         </GridContainer> 
-        {console.log(this.state.editorState)}
         <Button 
-          color="primary" 
+          color="info" 
           style={{ float: 'right'}}
           onClick={this.sendComment.bind(this)}  >
-          Comment!
+          Send!
         </Button>
       </div>  
       )
