@@ -220,11 +220,8 @@ class Invite extends Component {
                   </GridItem>
                 </GridContainer>
               </CardBody>
-              <CardFooter>
+              <CardFooter style={{ justifyContent: 'flex-end'}}>
                 <Button type="submit" color="info" disabled={hasError ? true : false}>Invite</Button>
-                {backToProject ?
-                <Button color="info" onClick={this.goBack.bind(this)}>Back to project</Button>
-                : null }
               </CardFooter>
             </form>
           </Card>
@@ -269,6 +266,7 @@ class Invite extends Component {
             </CardBody>
           </Card>
         </GridItem>
+        {backToProject ? <Button color="info" style={{ margin: 'auto'}} onClick={this.goBack.bind(this)}>Back to project</Button> : null }
       </GridContainer>
       )
     }

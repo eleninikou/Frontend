@@ -32,7 +32,7 @@ const showForm = () => {getEdit(true)}
           <CardBody>
             <GridContainer>
               <GridItem xs={12} sm={12} md={8}>
-                <Typography style={{ color: 'grey'}}> Project name </Typography>
+                <Typography style={{ color: 'grey', marginTop: '25px'}}> Project name </Typography>
                 <Typography> {project.name} </Typography>
                 <Typography style={{ color: 'grey', marginTop: '25px'}}> Description </Typography>
                 <Typography>{project.description}</Typography>
@@ -58,95 +58,6 @@ const showForm = () => {getEdit(true)}
                 )
               }) : null }
 
-              </GridItem>
-              <GridItem xs={12} sm={12} md={4}>
-              {/* <List>
-              {admins ? admins.map(admin => {
-                return(
-                  <ListItem key={admin}>
-                    <ListItemAvatar>
-                      <Tooltip
-                        id="tooltip-top-start"
-                        title="Milestones"
-                        placement="top"
-                        >  
-                        {admin.user ? admin.user.avatar ?
-                          <img src={admin.user.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
-                          :  
-                          <Avatar style={{ width: '30px', height: '30px' }}> 
-                            <AccountCircle style={{ fontSize: '18px'}}/> 
-                          </Avatar>
-                          : null}
-                        </Tooltip>
-                    </ListItemAvatar>
-                    <ListItemText primary={admin.user ? 'Admin: ' + admin.user.name : null} />
-                  </ListItem>
-                )
-              }) : null }
-              {clients ? clients.map(client => {
-                return(
-                  <ListItem>
-                    <ListItemAvatar>
-                      <Tooltip
-                          id="tooltip-top-start"
-                          title="Milestones"
-                          placement="top"
-                          >  
-                          {client.user.avatar ?
-                            <img src={client.user.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%' }}/>
-                          :
-                            <Avatar style={{backgroundColor: '#ec407a', width: '30px', height: '30px'}}> 
-                              <Face style={{ fontSize: '18px'}}/> 
-                            </Avatar>}
-                          </Tooltip>
-                    </ListItemAvatar>
-                    <ListItemText primary={'Client: ' + client.user.name} />
-                  </ListItem>
-                ) 
-                }) : null} 
-                <ListItem>
-                  <ListItemAvatar>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="Milestones"
-                      placement="top"
-                      >  
-                        <Avatar style={{backgroundColor: '#ff9800', width: '30px', height: '30px'}}> 
-                          <Timeline style={{ fontSize: '18px'}}/> 
-                        </Avatar>
-                      </Tooltip>
-                  </ListItemAvatar>
-                  <ListItemText primary={project.milestones ? project.milestones.length : 0} />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="Tickets"
-                      placement="top"
-                      >  
-                        <Avatar style={{backgroundColor: '#9c27b0', width: '30px', height: '30px'}}> 
-                          <Note style={{ fontSize: '18px'}}/> 
-                        </Avatar>
-                      </Tooltip>
-                  </ListItemAvatar>
-                  <ListItemText primary={project.tickets ? project.tickets.length : 0} />
-                </ListItem>
-                <ListItem>
-                  <ListItemAvatar>
-                  <Tooltip
-                      id="tooltip-top-start"
-                      title="Team"
-                      placement="top"
-                      >  
-                        <Avatar style={{backgroundColor: '#26c6da', width: '30px', height: '30px'}}> 
-                          <People style={{ fontSize: '18px'}}/> 
-                        </Avatar>
-                      </Tooltip>
-                  </ListItemAvatar>
-                  <ListItemText primary={team ? team.length : 0 } />
-                </ListItem>
-              </List>  */}
               </GridItem>
               <GridItem xs={12} sm={12} md={12}>                
                 {creator || isAdmin ? 

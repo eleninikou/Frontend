@@ -164,7 +164,7 @@ class EditTicketForm extends Component {
       title: this.state.title,
       type_id: this.state.type_id,
       project_id: this.state.project_id,
-      image_urls: this.state.urls
+      urls: this.state.urls
     }
 
     this.props.updateTicket(ticket, this.props.match.params.id)
@@ -263,7 +263,7 @@ class EditTicketForm extends Component {
                               disabled={ user == creator || admin ? false : true}
                               label="Milestone"
                               margin="normal"
-                              value={this.state.milestone_id}
+                              value={this.state.milestone_id ? this.state.milestone_id : ''}
                               onChange={this.handleChange}
                               inputProps={{ name: 'milestone_id', id: 'milestone_id' }} 
                             >

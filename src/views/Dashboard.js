@@ -82,7 +82,6 @@ class Dashboard extends Component {
       const { rowsPerPage, page, activity } = this.state
       const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage)
 
-      console.log(activity)
         return (
           isFetching ?
           <div style={{ width: '100%', textAlign: 'center'}}>

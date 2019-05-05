@@ -31,6 +31,7 @@ import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import "react-image-gallery/styles/css/image-gallery.css"
+import { Typography } from '@material-ui/core'
 
 
 class Ticket extends Component {
@@ -45,7 +46,7 @@ class Ticket extends Component {
         addComment: false,
         ButtonTextComment: 'Add Comment',
         CommentText: 'Show Comments',
-        showComments: false,
+        showComments: true,
         successMessage: '',
         description: ''
       }
@@ -202,27 +203,28 @@ class Ticket extends Component {
           closeNotification={() => this.setState({ tr: false })} 
           close /> 
 
-        {isFetching && !ticket? 
+        {isFetching ? 
           <div style={{ width: '100%', textAlign: 'center'}}>
             <DashboardSpinner /> 
           </div> : 
         <GridContainer>          
           <GridItem xs={12} sm={12} md={12}>
             <Card>
+            {ticket ? 
+            <div>
               <CardHeader color="primary"> 
-                <h4 className={classes.cardTitleWhite} style={{ fontSize: '2em' }}>{ticket.title} </h4> 
-                <h4 className={classes.cardTitleWhite}>Assigned to {ticket.assigned_user ? ticket.assigned_user.name : null}
-                </h4>
+                <h4 className={classes.cardTitleWhite} style={{ fontSize: '2em' }}> Ticket | {ticket.title} </h4> 
+                <h4 className={classes.cardTitleWhite}>{ticket.type ? ticket.type.type : null}</h4>
               </CardHeader>
               <CardBody>
                 <GridContainer>          
+                  <GridItem xs={12} sm={12} md={5}>
+                    {ticket ? <TicketIconList ticket={ticket} classes={classes} /> : <div style={{ width: '100%', textAlign: 'center'}}><DashboardSpinner /></div>}
+                  </GridItem> 
                   <GridItem xs={12} sm={12} md={7}>
                     {description ?  <TicketContent description={description}/> : 
                       <div style={{ width: '100%', textAlign: 'center'}}><DashboardSpinner /></div>}
                   </GridItem>    
-                  <GridItem xs={12} sm={12} md={5}>
-                    {ticket ? <TicketIconList ticket={ticket} classes={classes} /> : <div style={{ width: '100%', textAlign: 'center'}}><DashboardSpinner /></div>}
-                  </GridItem> 
                   <GridItem xs={12} sm={12} md={12} >
                     {images.length ? 
                       <Card>
@@ -232,19 +234,21 @@ class Ticket extends Component {
                   </GridItem> 
                 </GridContainer>
               </CardBody> 
-                  <CardFooter  style={{ justifyContent: 'flex-end'}}>
-                  {
-                    !addComment && !showComments ?
-                      <GridItem xs={12} sm={3} md={3}>
-                        <Button color="primary" onClick={this.showComments}  style={{minWidth: '163px'}}>{CommentText}</Button> 
-                      </GridItem>
-                      : null}
-                  {(ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id)) ?
-                    <GridItem xs={12} sm={3} md={3}>
-                      <Button color="primary" onClick={this.showForm} style={{minWidth: '163px'}}> {ButtonText} </Button> 
-                    </GridItem>
-                  : null }
+              <CardFooter  style={{ justifyContent: 'flex-end'}}>
+                {!addComment && !showComments ?
+                    <Button color="primary" onClick={this.showComments}  style={{minWidth: '163px'}}>{CommentText}</Button> 
+                  : null}
               </CardFooter>
+              <CardFooter  style={{ justifyContent: 'flex-end'}}>
+                {(ticket.creator_id === parseInt(user.id)) || (ticket.assigned_user_id === parseInt(user.id)) ?
+                  <Button color="primary" onClick={this.showForm} style={{minWidth: '163px'}}> {ButtonText} </Button> 
+                : null }
+              </CardFooter>
+              </div>
+              :           
+              <div style={{ width: '100%', textAlign: 'center'}}>
+                <DashboardSpinner /> 
+              </div> }
             </Card>
           </GridItem> 
         </GridContainer> }
@@ -289,32 +293,17 @@ class Ticket extends Component {
         {/* Display Comments */}
         {showComments || addComment ? 
           <Card>
-            <CardHeader style={{ display: 'flex', justifyContent: 'space-between'}} > 
+            <CardHeader style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start'}} > 
               <CardIcon color="info">
-                <Button  onClick={this.showCommentForm}  style={{ backgroundColor: 'transparent'}}>
+              <div style={{ display: 'flex'}}>
+                <Comment style={{ color: 'white', marginRight: '5px'}}/> 
+                <Typography style={{ color: 'white'}}>{ticket.comments ? ticket.comments.length : 0}</Typography>
+              </div>
+              </CardIcon>
+                <Button onClick={this.showCommentForm} color="info">
                 <Comment style={{ color: 'white'}} /> 
                   {ButtonTextComment}
                 </Button>   
-              </CardIcon>
-                  {comments.length && !addComment ?
-                    <div>
-                      <GridItem xs={12} sm={3} md={3}>
-                      <Tooltip
-                         onClick={this.showComments} 
-                         id="tooltip-top-start"
-                         title={CommentText}
-                         placement="top"
-                         classes={{ tooltip: classes.tooltip }}>
-                           <IconButton
-                             aria-label="Close"
-                             className={classes.tableActionButton}>
-                             <Close className={ classes.tableActionButtonIcon + " " + classes.close}/>
-                           </IconButton>
-                        </Tooltip>
-                      </GridItem>
-                    </div>  
-                  : 
-                  null }
             </CardHeader>
             <CardBody>
               {addComment ? 

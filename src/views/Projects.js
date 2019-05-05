@@ -22,7 +22,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 // Icons
 import LibraryBooks from "@material-ui/icons/LibraryBooks"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
-
 // Components
 import ProjectsTable from '../components/project/ProjectsTable'
 import DashboardSpinner from '../components/spinner/DashboardSpinner'
@@ -30,7 +29,6 @@ import DashboardSpinner from '../components/spinner/DashboardSpinner'
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
 import Cookies from 'universal-cookie'
-import { Typography } from '@material-ui/core';
 
 
 class Projects extends Component {

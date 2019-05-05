@@ -22,7 +22,7 @@ import {
 } from '../actions/tickets/Action-types';
 
 const initialState = {
-    ticket: {},
+    ticket: '',
     comments: [],
     team: [],
     description: [],

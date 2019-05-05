@@ -11,32 +11,14 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 
 // Icons
 import Warning from "@material-ui/icons/Warning"
-import Comment from "@material-ui/icons/Comment"
-import Timeline from "@material-ui/icons/Timeline"
 import DateRange from "@material-ui/icons/DateRange"
 import PersonPin from "@material-ui/icons/PersonPin"
-import BugReport from "@material-ui/icons/BugReport"
-import LowPriority from "@material-ui/icons/LowPriority"
 import LinearScale from '@material-ui/icons/LinearScale'
-import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor"
 
 const TicketIconList = ({ ticket, classes }) => {
     return (
+        ticket ? 
         <List className="my-ticket-list">
-            <ListItem>
-              <ListItemAvatar>
-                <Tooltip
-                    id="tooltip-top-start"
-                    title="Due date"
-                    placement="top"
-                    classes={{ tooltip: classes.tooltip }}>
-                  <Avatar style={{ backgroundColor: '#041031', width: '30px', height: '30px' }}> 
-                    <DateRange style={{ fontSize: '18px'}}/> 
-                  </Avatar>
-                </Tooltip>
-              </ListItemAvatar>
-              <ListItemText primary={'Due date: ' + moment(ticket.due_date).format('YYYY-MM-DD')} />
-            </ListItem>
             <ListItem>
               <ListItemAvatar>
               <Tooltip
@@ -56,6 +38,20 @@ const TicketIconList = ({ ticket, classes }) => {
             <ListItem>
               <ListItemAvatar>
                 <Tooltip
+                    id="tooltip-top-start"
+                    title="Due date"
+                    placement="top"
+                    classes={{ tooltip: classes.tooltip }}>
+                  <Avatar style={{ backgroundColor: '#041031', width: '30px', height: '30px' }}> 
+                    <DateRange style={{ fontSize: '18px'}}/> 
+                  </Avatar>
+                </Tooltip>
+              </ListItemAvatar>
+              <ListItemText primary={'Due date: ' + moment(ticket.due_date).format('YYYY-MM-DD')} />
+            </ListItem>
+            <ListItem>
+              <ListItemAvatar>
+                <Tooltip
                   id="tooltip-top-start"
                   title="Status"
                   placement="top"
@@ -66,27 +62,6 @@ const TicketIconList = ({ ticket, classes }) => {
                 </Tooltip>
               </ListItemAvatar>
               <ListItemText primary={ticket.status ? 'Status: ' + ticket.status.status : null} />
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Tooltip
-                  id="tooltip-top-start"
-                  title="Ticket type"
-                  placement="top"
-                  classes={{ tooltip: classes.tooltip }}>
-                  <Avatar style={{ backgroundColor: '#8e24aa', width: '30px', height: '30px'}}> 
-                    {ticket.type_id === 1 ?
-                      <BugReport style={{ fontSize: '18px'}}/> 
-                      : ticket.type_id === 2 ?
-                      <LowPriority style={{ fontSize: '18px'}}/>
-                      : ticket.type_id === 3 ?
-                      <LinearScale style={{ fontSize: '18px'}}/>
-                      : 
-                      <YoutubeSearchedFor style={{ fontSize: '18px'}}/> }  
-                  </Avatar>
-                </Tooltip>
-              </ListItemAvatar>
-              <ListItemText primary={ticket.type ? 'Type: ' + ticket.type.type : null} />
             </ListItem>
             <ListItem>
               <ListItemAvatar> 
@@ -111,35 +86,8 @@ const TicketIconList = ({ ticket, classes }) => {
               </ListItemAvatar>
               <ListItemText primary={'Priority: ' + ticket.priority} />
             </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-              <Tooltip
-                id="tooltip-top-start"
-                title="Milestone"
-                placement="top"
-                classes={{ tooltip: classes.tooltip }}>  
-                  <Avatar style={{backgroundColor: '#ff9800', width: '30px', height: '30px'}}> 
-                    <Timeline style={{ fontSize: '18px'}}/> 
-                  </Avatar>
-                </Tooltip>
-              </ListItemAvatar>
-              <ListItemText primary={ticket.milestone ? 'Milestone: ' + ticket.milestone.title : null} />
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-              <Tooltip
-                id="tooltip-top-start"
-                title="Comments"
-                placement="top"
-                classes={{ tooltip: classes.tooltip }}>  
-                  <Avatar style={{backgroundColor: '#00acc1', width: '30px', height: '30px'}}> 
-                    <Comment style={{ fontSize: '18px'}}/> 
-                  </Avatar>
-                </Tooltip>
-              </ListItemAvatar>
-              <ListItemText primary={ticket.comments ? 'Comments: ' + ticket.comments.length : 0} />
-            </ListItem>
           </List>
+          : null 
     )
 }
 

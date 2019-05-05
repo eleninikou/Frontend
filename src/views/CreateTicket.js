@@ -164,6 +164,7 @@ removeImage(url) {
 componentDidMount = () => {
     const cookies = new Cookies()
     var user = cookies.get('user')
+    var token = cookies.get('token')
     this.setState({ user })
 
     // If redirected from specific project preselect project 
@@ -176,7 +177,7 @@ componentDidMount = () => {
         project_id: this.props.location.state.project_id 
       })
       this.props.getProject(this.props.location.state.project_id)
-    } else { this.props.getAllProjects()}
+    } else { this.props.getAllProjects(token)}
     
   this.props.getTicketTypes()
   this.props.getTicketStatus()
@@ -232,6 +233,8 @@ render() {
     }
   }
 
+  console.log(allProjects)
+  console.log(projects)
 
   return (
       <GridContainer>
@@ -262,7 +265,7 @@ render() {
                     </FormControl> 
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
-                  {allProjects || project ?
+                  {projects || project ?
                     <FormControl className={classes.formControl}>                    
                         {hasError && !this.state.project_id && <FormHelperText>Please select project!</FormHelperText>}
                         <TextField
@@ -279,7 +282,7 @@ render() {
                               <MenuItem  key={project.id} value={project.id}> 
                                 {project.name} 
                               </MenuItem>
-                          : allProjects ? allProjects.map(project => {
+                          : projects? projects.map(project => {
                             return  (
                               <MenuItem  key={project.project.id} value={project.project.id}>  
                                 {project.project.name} 
@@ -481,7 +484,7 @@ const mapDispatchToProps = dispatch => {
   return {  ticketCreate: project => dispatch(ticketCreate(project)),
             getTicketTypes: () => dispatch(getTicketTypes()),
             getTicketStatus: () => dispatch(getTicketStatus()),
-            getAllProjects: () => dispatch(getAllProjects()),
+            getAllProjects: token => dispatch(getAllProjects(token)),
             getProject: id => dispatch(getProject(id)),
             deleteAttachment: url => dispatch(deleteAttachment(url)),
             removeFromStorage: url => dispatch(removeFromStorage(url))

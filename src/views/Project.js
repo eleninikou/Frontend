@@ -229,7 +229,7 @@ class Project extends Component {
                           <CardBody>
                             <CardFooter style={{ justifyContent: 'center', flexDirection: 'column'}}>
                               <Typography style={{ marginBottom: '20px'}}>
-                                You can choose to inactivate this project if you're not working on it any more. <br />
+                                You can choose to inactivate this project if you're not currently working on it. <br />
                                 Deleting it will delete all project history.
                               </Typography>
                               <Button color="success" onClick={this.handleClickOpen}>

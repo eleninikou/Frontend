@@ -28,7 +28,6 @@ class AddComment extends Component {
         editorState: '',
         ticket_id: this.props.ticket_id,
         urls: [],
-        uploading: false,
         disabled: false
       }
   }
@@ -36,12 +35,11 @@ class AddComment extends Component {
   componentWillMount = () => { this.setState({ editorState: EditorState.createEmpty() }) }
 
   sendComment = () => {
-
     const comment = {
       comment: convertToRaw(this.state.editorState.getCurrentContent()),
       ticket_id: this.state.ticket_id,
       images: this.state.urls
-    };
+    }
 
     if(comment.comment.blocks[0].text !== '' || comment.images ) {
       this.props.commentCreate(comment)
@@ -66,7 +64,6 @@ class AddComment extends Component {
   }
 
   onDrop = files => {      
-    this.setState({ uploading: true })
     const cookies = new Cookies()
     var token = cookies.get('token')
     // Remove old urls from storage, images will upload again
@@ -113,7 +110,7 @@ class AddComment extends Component {
 
 
   render() {
-    const { editorState, urls, uploading } = this.state
+    const { editorState, urls } = this.state
     const { classes } = this.props
 
     return(
@@ -138,7 +135,6 @@ class AddComment extends Component {
                 maxFileSize={5242880}
             />
             <GridContainer>
-            {uploading ? <div style={{ width: '100%', textAlign: 'center'}}><DashboardSpinner /></div> : null }  
             {urls.length ? urls.map(url => {
               return (
                 <GridItem xs={3} sm={3} md={3}>
