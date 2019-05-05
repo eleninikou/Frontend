@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
+import { connect } from 'react-redux'
+import { logout } from '../redux/actions/auth/Actions'
 // Components
 import LoginForm from '../components/forms/login/LoginForm'
 import RegisterForm from '../components/forms/register/RegisterForm'
@@ -16,13 +18,7 @@ import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import { Typography } from '@material-ui/core'
 import withStyles from "@material-ui/core/styles/withStyles"
 // Icons
-import Note from "@material-ui/icons/Note"
-import Person from "@material-ui/icons/Person"
-import Timeline from "@material-ui/icons/Timeline"
-import BugReport from "@material-ui/icons/BugReport"
 import PersonAdd from "@material-ui/icons/PersonAdd"
-import LowPriority from "@material-ui/icons/LowPriority"
-import ContactMail from "@material-ui/icons/ContactMail"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 // Styles
 import { whiteColor, grayColor } from "../assets/jss/material-dashboard-react.jsx"
@@ -76,7 +72,11 @@ class Login extends Component {
           cookies.remove('token', { path: '/' })
           cookies.remove('user', { path: '/' })
           cookies.remove('invitation', { path: '/' })
-          this.props.history.push('/')
+          this.props.logout().then(res => {
+            console.log(res)
+            debugger;
+            this.props.history.push('/')
+          })
         }
     }
 
@@ -124,9 +124,7 @@ class Login extends Component {
             </div>      
             <ul className="Menu">
               <li onClick={this.loginForm}>
-                <Button color="success" >
-                  Log In
-                </Button>
+                <Button color="success"> Log In </Button>
               </li>
               <li onClick={this.registerForm}>
                 <Button color="success"> Sign Up </Button></li>
@@ -158,7 +156,7 @@ Login.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
 }
+const mapDispatchToProps = dispatch => { 
+  return {  logout: () => dispatch(logout()) }}
 
-export default withRouter(withStyles(styles)(Login))
-  
-
+export default withRouter(connect(null, mapDispatchToProps)(withStyles(styles)(Login)))
