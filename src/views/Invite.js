@@ -26,6 +26,7 @@ import People from "@material-ui/icons/People"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import Cookies from 'universal-cookie'
 
 
 class Invite extends Component {
@@ -47,21 +48,26 @@ class Invite extends Component {
   }
 
   componentDidMount = () => {
+    const cookies = new Cookies()
+    var token = cookies.get('token')
+
     // If redirected from a specific project
     if(this.props.match.params.id) {
       this.props.getProject(this.props.match.params.id)
-      .then(() => {  
-        this.setState({ 
-          project_id: this.props.project.id,
-          team: this.props.team,
-          backToProject: true
-        })
+      .then(res => {  
+        if(res.project) {
+          this.setState({ 
+            project_id: this.props.project.id,
+            team: this.props.team,
+            backToProject: true
+          })
+        }
       }) 
       this.props.getEmails(this.props.match.params.id)
       .then(() => { this.setState({ emails: this.props.emails }) })
     } else {
       // From dashboard. Get all projects
-      this.props.getProjectsByUser()
+      this.props.getProjectsByUser(token)
     }
     this.props.getRoles()
   }
@@ -250,7 +256,7 @@ class Invite extends Component {
               <div style={{ margin: '20px', textAlign: 'center'}}>
                 {isFetching ? <StyledSpinner />  : null }
               </div>
-              {emails.length && !isFetching ? 
+              {emails ? emails.length && !isFetching ? 
                 <Table
                   page={page}
                   rowsPerPage={emails.length}
@@ -262,7 +268,7 @@ class Invite extends Component {
                       return [`${ email }`, ] }) 
                       : null  
                   ]} />
-              : null}
+              : null : null}
             </CardBody>
           </Card>
         </GridItem>
@@ -275,7 +281,7 @@ class Invite extends Component {
 
 const mapDispatchToProps = dispatch => { 
   return { 
-    getProjectsByUser: () => dispatch(getProjectsByUser()),
+    getProjectsByUser: token => dispatch(getProjectsByUser(token)),
     getProject: id => dispatch(getProject(id)),
     getRoles: () => dispatch(getRoles()),
     getTeam: id => dispatch(getTeam(id)),

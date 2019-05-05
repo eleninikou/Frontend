@@ -78,6 +78,7 @@ class ProjectsTable extends Component {
                 ]} 
             />
             <TablePagination
+              style={{maxWidth: '100%'}}
               rowsPerPageOptions={[5, 10, 20]}
               component="div"
               count={projects.length}

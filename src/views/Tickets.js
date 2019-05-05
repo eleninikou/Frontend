@@ -26,6 +26,7 @@ import TicketsTable from '../components/ticket/TicketsTable'
 import DashboardSpinner from '../components/spinner/DashboardSpinner'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import Cookies from 'universal-cookie'
 
 
 class Tickets extends Component {
@@ -46,14 +47,17 @@ class Tickets extends Component {
   }
 
   componentDidMount() { 
-    this.props.getAllTickets().then(res => {
+    const cookies = new Cookies()
+    var token = cookies.get('token')
+
+    this.props.getAllTickets(token).then(res => {
       if(res.tickets) {
         this.setState({ tickets: res.tickets})
       }
     })
     this.props.getTicketStatus()
     this.props.getTicketTypes()
-    this.props.getAllProjects()
+    this.props.getAllProjects(token)
 
     if (this.props.location.state ? this.props.location.state.errorMessage : null) {
       this.setState({ 
@@ -222,10 +226,10 @@ class Tickets extends Component {
 
 const mapDispatchToProps = dispatch => { 
   return { 
-    getAllTickets: () => dispatch(getAllTickets()), 
+    getAllTickets: token => dispatch(getAllTickets(token)), 
     getTicketStatus: () => dispatch(getTicketStatus()),
     getTicketTypes: () => dispatch(getTicketTypes()),
-    getAllProjects: () => dispatch(getAllProjects())
+    getAllProjects: token => dispatch(getAllProjects(token))
   }}
 
 const mapStateToProps = state => ({ 

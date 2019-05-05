@@ -32,21 +32,18 @@ function Header({ ...props }) {
   });
 
   return (
-    <AppBar className={classes.appBar + appBarClasses}>
-      <Toolbar className={classes.container}>
-        <Hidden smDown implementation="css">
-           <AdminNavbarLinks />
-        </Hidden>
+    <AppBar className={classes.appBar + appBarClasses} >
+    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
         <Hidden mdUp implementation="css">
           <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={props.handleDrawerToggle}
-          >
-            <Menu style={{fontSize: '35px'}} />
+            >
+            <Menu style={{fontSize: '45px'}} />
           </IconButton>
         </Hidden>
-      </Toolbar>
+    </div>
     </AppBar>
   );
 }

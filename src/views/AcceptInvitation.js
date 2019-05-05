@@ -10,6 +10,7 @@ import RegisterForm from '../components/forms/register/RegisterForm'
 // Theme components
 import Card from "../components/theme/Card/Card"
 import CardBody from '../components/theme/Card/CardBody'
+import CardIcon from "../components/theme/Card/CardIcon.jsx"
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
@@ -17,7 +18,16 @@ import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import withStyles from "@material-ui/core/styles/withStyles"
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-
+import Note from "@material-ui/icons/Note"
+import Person from "@material-ui/icons/Person"
+import Timeline from "@material-ui/icons/Timeline"
+import BugReport from "@material-ui/icons/BugReport"
+import PersonAdd from "@material-ui/icons/PersonAdd"
+import LowPriority from "@material-ui/icons/LowPriority"
+import ContactMail from "@material-ui/icons/ContactMail"
+import AccountCircle from "@material-ui/icons/AccountCircle"
+import { Typography } from '@material-ui/core'
+import AppInfo from '../components/login/AppInfo';
 
 class AcceptInvitation extends Component {
   constructor(props) {
@@ -112,7 +122,8 @@ class AcceptInvitation extends Component {
     const { invitedUserEmail, existingUser } = this.state;
     return (
       <GridContainer > 
-        <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', marginTop: '50vh', transform: 'translateY(-50%)'}}>
+        <AppInfo />
+        <GridItem xs={12} sm={12} md={4} style={{ margin: 'auto', marginTop: '50vh', transform: 'translateY(-50%)'}}>
         <Card>
           <CardHeader color="success">
             <h4 className={this.props.classes.cardTitleWhite}>Accept Invitation</h4>

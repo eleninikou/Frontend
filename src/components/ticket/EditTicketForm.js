@@ -167,6 +167,8 @@ class EditTicketForm extends Component {
       urls: this.state.urls
     }
 
+    debugger;
+
     this.props.updateTicket(ticket, this.props.match.params.id)
     .then(res => { this.setSuccess(res.message) })
   }

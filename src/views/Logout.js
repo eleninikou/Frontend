@@ -67,18 +67,19 @@ class Logout extends Component {
       errorMessage: '',
       title: 'Log in',
       btnText: 'Sign Up',
-      infoText: 'Don\'t have an account yet?'
+      infoText: 'Don\'t have an account yet?',
+      message: ''
     }
 }
 
     componentDidMount = () => {
-          const cookies = new Cookies()
-          cookies.remove('token', { path: '/' })
-          cookies.remove('user', { path: '/' })
-          cookies.remove('invitation', { path: '/' })
-          this.props.logout().then(res => {
-              console.log(res)
-          })
+      const cookies = new Cookies()
+      cookies.remove('token', { path: '/' })
+      cookies.remove('user', { path: '/' })
+      cookies.remove('invitation', { path: '/' })
+      this.props.logout().then(res => {
+          this.setState({ message: res.message })
+      })
     }
 
 
@@ -91,87 +92,7 @@ class Logout extends Component {
           </GridItem>
           <GridItem xs={12} sm={6} md={7}>
             <Card>
-              <GridContainer > 
-                <GridItem xs={12} sm={10} md={12}>
-                  <CardBody>
-                    <Typography style={{ fontSize: '28px'}}>BTMS is built for every member in your team to help you work more collaboratively and get more done!</Typography>
-                    <GridContainer > 
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="info">
-                              <ContactMail style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Invite Clients and Developers to join your project!</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="rose">
-                              <LowPriority style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Prioritize and Organize your work.</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="primary">
-                              <Note style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Create tickets to keep track of your project development.</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="success">
-                              <Person style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Assign tickets to your team members and follow their progress.</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="warning">
-                              <Timeline style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Use milestones to help you plan features and establish release dates.</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="danger">
-                              <BugReport style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Report bugs and issues with ease!</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                    </GridContainer>
-                  </CardBody>
-                </GridItem>
-              </GridContainer>
+              <Typography>{this.state.message}</Typography>
             </Card>
           </GridItem>
           <GridItem xs={12} sm={6} md={5} style={{}}>

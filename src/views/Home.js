@@ -135,7 +135,7 @@ class Home extends React.Component {
             /> 
 
             {this.getRoute() ? (
-              <div className={classes.content} style={{ marginTop: '70px'}}>
+              <div className={classes.content} style={{ marginTop: '20px'}}>
                 <div className={classes.container}>{switchRoutes}</div>
               </div>
             ) : ('')} 

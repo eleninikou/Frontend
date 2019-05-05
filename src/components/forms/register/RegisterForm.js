@@ -159,7 +159,7 @@ class RegisterForm extends Component {
                   />
                 </FormControl>
                 </GridItem> 
-                <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto'}} >
+                <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}} >
                 <FormControl className={classes.formControl}>
                   <Button type="submit" variant="contained" color="primary" 
                     style={{ 
@@ -176,7 +176,7 @@ class RegisterForm extends Component {
             </form>
             {!this.state.invitation ?
             <div>
-                <GridItem xs={12} sm={12} md={6} style={{ textAlign: 'center', margin: 'auto'}}>
+                <GridItem xs={12} sm={12} md={8} style={{ textAlign: 'center', margin: 'auto'}}>
                   <FormControl className={classes.formControl}>
                     <GoogleLogin
                       clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"

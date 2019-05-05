@@ -27,8 +27,8 @@ import ProjectsTable from '../components/project/ProjectsTable'
 import DashboardSpinner from '../components/spinner/DashboardSpinner'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import '../assets/css/main.css'
 import Cookies from 'universal-cookie'
+import '../assets/css/main.css'
 
 
 class Projects extends Component {
@@ -75,12 +75,9 @@ class Projects extends Component {
       }.bind(this), 6000);
     }
 
-   createNewProject() { this.props.history.push('/home/create-project/') }
+  createNewProject() { this.props.history.push('/home/create-project/') }
 
-
-  handleChange = event => { 
-    this.setState({ active: event.target.value }) 
-  }
+  handleChange = event => { this.setState({ active: event.target.value }) }
 
     render() {
 

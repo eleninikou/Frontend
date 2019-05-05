@@ -51,7 +51,7 @@ export const getTicket = id => {
 }
 
 
-export const getAllTickets = () => {
+export const getAllTickets = token => {
     return async dispatch => {
       const recieveAllTickets = tickets => { 
         dispatch ({ type:  GET_ALL_TICKETS_USER_SUCCESS, payload: tickets}); 

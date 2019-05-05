@@ -62,10 +62,11 @@ class Project extends Component {
   componentDidMount = () => {
     const cookies = new Cookies()
     var user = cookies.get('user')
+    var token = cookies.get('token')
     this.setState({ user })
 
     // Fetch project and set to state
-    this.props.getProject(this.props.match.params.id)
+    this.props.getProject(this.props.match.params.id, token)
     .then(res => {
       if (res.project) {
         this.setState({ 
@@ -258,7 +259,7 @@ class Project extends Component {
   }
 
 
-const mapDispatchToProps = dispatch => { return { getProject: id => dispatch(getProject(id)) }}
+const mapDispatchToProps = dispatch => { return { getProject: (id, token) => dispatch(getProject(id, token)) }}
 
 const mapStateToProps = state => ({ 
   project: state.project.project,

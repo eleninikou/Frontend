@@ -29,6 +29,7 @@ import { whiteColor, grayColor } from "../assets/jss/material-dashboard-react.js
 // External
 import Cookies from 'universal-cookie'
 import PropTypes from 'prop-types'
+import AppInfo from '../components/login/AppInfo';
 
 
 const styles = {
@@ -151,117 +152,24 @@ class Login extends Component {
                 </Button>
               </li>
               <li onClick={this.registerForm}>
-                <Button> Sign Up </Button></li>
+                <Button color="success"> Sign Up </Button></li>
             </ul>
           </GridItem>
-          <GridItem xs={12} sm={6} md={8}>
-            <Card>
-              <GridContainer > 
-                <GridItem xs={12} sm={10} md={12}>
-                  <CardBody>
-                    <Typography style={{ fontSize: '40px'}}> A Collaboration platform built for every member of your team to simplify your workflow!</Typography>
-                    {/* <Typography style={{ fontSize: '20px', marginTop: '10px'}}>Keep track of your project development with ease. Invite your team members and start sharing ideas, report bugs and organize your work. </Typography> */}
-                    <GridContainer > 
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="info">
-                              <ContactMail style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Invite Clients and Developers to join your project!</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="rose">
-                              <LowPriority style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Prioritize and Organize your work.</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="primary">
-                              <Note style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Create tickets to keep track of your project development.</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="success">
-                              <Person style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Assign tickets to your team members and follow their progress.</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="warning">
-                              <Timeline style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Use milestones to help you plan features and establish release dates.</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem xs={12} sm={12} md={4}>
-                        <Card>
-                          <CardHeader>
-                            <CardIcon color="danger">
-                              <BugReport style={{ color: 'white'}} />
-                            </CardIcon>
-                          </CardHeader>
-                          <CardBody>
-                            <Typography>Report bugs and issues with ease!</Typography>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                    </GridContainer>
-                  </CardBody>
-                </GridItem>
-              </GridContainer>
-            </Card>
-          </GridItem>
+          <AppInfo />
           <GridItem xs={12} sm={6} md={4}>
             <Card>
-            <CardHeader>
+            {/* <CardHeader>
               <CardIcon color="success">
                 {this.state.register ? 
                 <PersonAdd style={{ color: 'white' }} />
               : <AccountCircle style={{ color: 'white' }} />}
               </CardIcon>
-            </CardHeader>
+            </CardHeader> */}
             <CardBody>
                 {this.state.register ?
                 <RegisterForm />
                 : <LoginForm/> }
               </CardBody>
-              <CardFooter>
-                {/* <div style={{ margin: 'auto', textAlign: 'center'}}>
-                  <Typography>
-                    {this.state.infoText}
-                  </Typography> 
-                    <Button onClick={this.register}>{this.state.btnText}</Button>
-                </div> */}
-              </CardFooter>  
             </Card>
           </GridItem>
         </GridContainer>

@@ -121,7 +121,7 @@ class LoginForm extends Component {
                   />
                 </FormControl>
               </GridItem> 
-              <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', marginTop: '30px'}}>
+              <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto', marginTop: '30px'}}>
                 <FormControl className={classes.formControl}>
                   <Button 
                     type="submit" 
@@ -136,7 +136,7 @@ class LoginForm extends Component {
 
               {!this.props.email ? // If not redirected from invitation show google option
                 <div>
-                  <GridItem xs={12} sm={12} md={6} style={{ margin: 'auto', textAlign: 'center', marginTop: '20px'}}>
+                  <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto', textAlign: 'center', marginTop: '20px'}}>
                   <FormControl className={classes.formControl}>
                     <GoogleLogin
                       clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"

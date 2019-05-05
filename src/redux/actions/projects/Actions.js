@@ -35,7 +35,7 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies()
 var token = cookies.get('token')
 
-export const getProject = id => {
+export const getProject = (id, token) => {
   return async dispatch => {
     const recieveProject = project_with_team => { 
       dispatch ({ type: GET_PROJECT_SUCCESS, payload: project_with_team}); 
@@ -60,7 +60,7 @@ export const getProject = id => {
 
 
 
-export const getProjectsByUser = () => {
+export const getProjectsByUser = token => {
     return async dispatch => {  
       const recieveProjectsByUser = projects => { 
         dispatch ({ type: GET_PROJECTS_BY_USER_SUCCESS, payload: projects}); 
