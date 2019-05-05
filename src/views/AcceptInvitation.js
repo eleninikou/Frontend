@@ -121,12 +121,13 @@ class AcceptInvitation extends Component {
   render() {
     const { invitedUserEmail, existingUser } = this.state;
     return (
-      <GridContainer > 
+      <div  style={{marginTop: '150px'}}>
+      <GridContainer> 
         <AppInfo />
-        <GridItem xs={12} sm={12} md={4} style={{ margin: 'auto', marginTop: '50vh', transform: 'translateY(-50%)'}}>
+        <GridItem xs={12} sm={12} md={4} >
         <Card>
           <CardHeader color="success">
-            <h4 className={this.props.classes.cardTitleWhite}>Accept Invitation</h4>
+            <h4 className={this.props.classes.cardTitleWhite}>Fill in to join the team!</h4>
           </CardHeader>
           <CardBody>
             {existingUser ?
@@ -136,6 +137,7 @@ class AcceptInvitation extends Component {
         </Card>
         </GridItem>
       </GridContainer>
+        </div>
     )
   }
 }
