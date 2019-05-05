@@ -123,7 +123,7 @@ class EditProjectForm extends Component {
               </GridContainer>
              </CardBody >
              <CardFooter>
-                <Button color="success" onClick={this.closeEdit}> Go Back</Button>
+                <Button color="success" onClick={this.closeEdit}> Close</Button>
                 <Button color="success" type="submit">Save</Button>
              </CardFooter>
       </form>  

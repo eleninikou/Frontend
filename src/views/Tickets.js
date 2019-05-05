@@ -9,11 +9,13 @@ import Card from "../components/theme/Card/Card"
 import Button from "../components/theme/CustomButtons/Button.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 import CardBody from "../components/theme/Card/CardBody.jsx"
+import CardIcon from "../components/theme/Card/CardIcon.jsx"
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI components
+import Note from "@material-ui/icons/Note"
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
 import withStyles from "@material-ui/core/styles/withStyles"
@@ -105,17 +107,13 @@ class Tickets extends Component {
           />          
           <GridItem xs={12} sm={12} md={12}>        
             <Card>
-              <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>Your tickets</h4>
-              </CardHeader>
-              <CardBody>
-              {this.props.isFetching ? 
-                  <div style={{ width: '100%', textAlign: 'center'}}>
-                    <DashboardSpinner /> 
-                  </div>
-                :
-              <div> 
-              <GridContainer style={{ padding: '10px 20px 20px'}}>
+              <CardHeader style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'flex-start'}}>
+                <CardIcon color="primary" style={{ display: 'flex'}}>
+                  <Note style={{ color: 'white', marginRight: '10px'}} /> 
+                  <h4 className={this.props.classes.cardTitleWhite}>Tickets</h4>
+                </CardIcon>
+                <GridItem xs={12} sm={12} md={12}>
+                <GridContainer style={{ padding: '0px 20px 20px'}}>
                 <GridItem xs={12} sm={12} md={3}>
                 <FormControl className={classes.formControl}>       
                   <TextField
@@ -198,7 +196,16 @@ class Tickets extends Component {
                     </TextField>
                     </FormControl>
                 </GridItem>
-                </GridContainer> 
+              </GridContainer> 
+              </GridItem>   
+              </CardHeader>
+              <CardBody>
+              {this.props.isFetching ? 
+                  <div style={{ width: '100%', textAlign: 'center'}}>
+                    <DashboardSpinner /> 
+                  </div>
+                :
+              <div> 
                 <TicketsTable tickets={filteredTickets} classes={classes}/>   
                  </div> }
                 </CardBody>

@@ -163,7 +163,7 @@ class Project extends Component {
                     headerColor="success"
                     tabs={[
                       {
-                        tabName: `${project.name}`,
+                        tabName: `Project | ${project.name}`,
                         tabIcon: Info,
                         tabContent: (
                           edit ?
@@ -186,7 +186,7 @@ class Project extends Component {
                           />
                         ) 
                       },{ 
-                        tabName: "Milestones",
+                        tabName: `Milestones | ${milestones.length}`,
                         tabIcon: Timeline,
                         tabContent: ( 
                           <ProjectMilestones 
@@ -198,7 +198,7 @@ class Project extends Component {
                           />
                           )
                       },{
-                        tabName: "Tickets",
+                        tabName: `Tickets | ${tickets.length}`,
                         tabIcon: Note,
                         tabContent: (
                           <ProjectTickets 
@@ -209,7 +209,7 @@ class Project extends Component {
                           />
                         )
                       },{
-                        tabName: "Team",
+                        tabName: `Team | ${team.length}`,
                         tabIcon: People,
                         tabContent: (
                           <ProjectTeam 

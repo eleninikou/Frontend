@@ -9,6 +9,7 @@ import Button from "../components/theme/CustomButtons/Button.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardBody from "../components/theme/Card/CardBody.jsx"
+import CardIcon from "../components/theme/Card/CardIcon.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
@@ -19,7 +20,9 @@ import withStyles from "@material-ui/core/styles/withStyles"
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 // Icons
+import LibraryBooks from "@material-ui/icons/LibraryBooks"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
+
 // Components
 import ProjectsTable from '../components/project/ProjectsTable'
 import DashboardSpinner from '../components/spinner/DashboardSpinner'
@@ -27,6 +30,7 @@ import DashboardSpinner from '../components/spinner/DashboardSpinner'
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
 import '../assets/css/main.css'
 import Cookies from 'universal-cookie'
+import { Typography } from '@material-ui/core';
 
 
 class Projects extends Component {
@@ -125,8 +129,29 @@ class Projects extends Component {
           <GridItem xs={12} sm={12} md={12}>
           <GridContainer>
             <Card>
-              <CardHeader color="success">
-                <h4 className={this.props.classes.cardTitleWhite}>Projects</h4>
+              <CardHeader style={{ display: 'flex', justifyContent: 'space-between'}}>
+              <div>
+                <CardIcon color="success" style={{ display: 'flex'}}>
+                  <LibraryBooks style={{ color: 'white', marginRight: '10px'}} /> 
+                  <h4 className={this.props.classes.cardTitleWhite}>Projects</h4>
+                </CardIcon>
+              </div>
+              <div>
+                <FormControl component="fieldset" className={this.props.classes.formControl}>
+                  <RadioGroup
+                    aria-label="active"
+                    name="active"
+                    className={this.props.classes.group}
+                    value={this.state.active}
+                    onChange={this.handleChange}
+                    style={{ flexDirection: 'row'}}
+                    >
+                    <FormControlLabel value="" control={<Radio />} label="All" />
+                    <FormControlLabel value="1" control={<Radio />} label="Active" />
+                    <FormControlLabel value="0" control={<Radio />} label="Inactive" />
+                  </RadioGroup>
+                </FormControl>
+              </div>
               </CardHeader>
                 <CardBody>
                 {this.props.isFetching ? 
@@ -135,21 +160,6 @@ class Projects extends Component {
                   </div>
                 : 
                 <div>
-                  <FormControl component="fieldset" className={this.props.classes.formControl}>
-                    <RadioGroup
-                      aria-label="active"
-                      name="active"
-                      className={this.props.classes.group}
-                      value={this.state.active}
-                      onChange={this.handleChange}
-                      style={{ flexDirection: 'row'}}
-                      >
-                      <FormControlLabel value="" control={<Radio />} label="All" />
-                      <FormControlLabel value="1" control={<Radio />} label="Active" />
-                      <FormControlLabel value="0" control={<Radio />} label="Inactive" />
-                    
-                    </RadioGroup>
-                  </FormControl>
                   <ProjectsTable 
                     projects={filtredProjects}
                     isFetching={this.props.isFetching}

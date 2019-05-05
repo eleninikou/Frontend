@@ -40,8 +40,8 @@ class TicketsTable extends Component {
         const emptyRows = rowsPerPage - Math.min(rowsPerPage, tickets ? tickets.length : 0 - page * rowsPerPage);
 
         return (
-          <div>
-          {tickets.length ?
+          tickets.length ?
+          <div> 
             <Table
               page={page}
               rowsPerPage={rowsPerPage}
@@ -70,25 +70,7 @@ class TicketsTable extends Component {
                       </Avatar>
                     </Tooltip> , 
                   `${ticket.status.status}`,
-                  <Tooltip
-                    id="tooltip-top-start"
-                    title={ticket.priority}
-                    placement="top"
-                    classes={{ tooltip: classes.tooltip }}
-                    >
-                  {ticket.priority === 'low' ?
-                  <Avatar style={{backgroundColor: '#FADC08', height: '30px', width: '30px', marginRight: '20px' }}> 
-                    <Warning style={{ fontSize: '18px'}}/> 
-                  </Avatar>
-                  : ticket.priority === 'normal' ?
-                  <Avatar style={{backgroundColor: '#4caf50', height: '30px', width: '30px', marginRight: '20px' }}> 
-                    <Warning style={{ fontSize: '18px'}}/> 
-                  </Avatar>
-                  :
-                  <Avatar style={{backgroundColor: '#f44336', height: '30px', width: '30px', marginRight: '20px'}}> 
-                    <Warning style={{ fontSize: '18px'}}/> 
-                  </Avatar> }
-                  </Tooltip>,
+                  `${ticket.priority}`,
                   `${ticket.milestone ? ticket.milestone.title: '-'}`,
                   `${moment(ticket.due_date).format('YYYY-MM-DD')}`,
                   <Tooltip
@@ -104,24 +86,19 @@ class TicketsTable extends Component {
                   ]
                 }) : null ]}
               />
-              :   
-              <div>                
-                <div style={{ width: '100%', textAlign: 'center'}}>
-                  <DashboardSpinner /> 
-                </div>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 20]}
-                  component="div"
-                  count={tickets ? tickets.length : 0}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  backIconButtonProps={{ 'aria-label': 'Previous Page' }}
-                  nextIconButtonProps={{ 'aria-label': 'Next Page' }}
-                  onChangePage={this.handleChangePage}
-                  onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                />
-              </div> }
-            </div>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 20]}
+                component="div"
+                count={tickets ? tickets.length : 0}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                backIconButtonProps={{ 'aria-label': 'Previous Page' }}
+                nextIconButtonProps={{ 'aria-label': 'Next Page' }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+              </div> 
+              : null 
     )
   }
 }

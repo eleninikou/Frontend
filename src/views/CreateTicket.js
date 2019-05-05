@@ -386,7 +386,7 @@ render() {
                     <FormControl className={classes.formControl}>
                         <TextField
                           select
-                          label="milestone"
+                          label="Milestone"
                           margin="normal"
                           style={styles.input}
                           value={this.state.milestone_id}

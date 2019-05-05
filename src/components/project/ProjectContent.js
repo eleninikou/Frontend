@@ -32,11 +32,35 @@ const showForm = () => {getEdit(true)}
           <CardBody>
             <GridContainer>
               <GridItem xs={12} sm={12} md={8}>
+                <Typography style={{ color: 'grey'}}> Project name </Typography>
                 <Typography> {project.name} </Typography>
+                <Typography style={{ color: 'grey', marginTop: '25px'}}> Description </Typography>
                 <Typography>{project.description}</Typography>
+
+                {clients.length ? <Typography style={{ color: 'grey', marginTop: '25px'}}> Client </Typography> : null}
+                {clients ? clients.map(client => {
+                  return <Typography>{client.user.name}</Typography>
+                }) : null}
+                <Typography style={{ color: 'grey' , marginTop: '25px'}}> Status </Typography>
+                <Typography> {project.active ? 'Active' : 'Inactive'} </Typography>
+
+                <Typography style={{ color: 'grey' , marginTop: '25px'}}> Admin</Typography>
+
+                {admins ? admins.map(admin => {
+                return(
+                    <div style={{ display: 'flex', alignItems: 'center'}}>
+                        {admin.user ? admin.user.avatar ?
+                          <img src={admin.user.avatar} alt="user" style={{ display: 'block', width: '30px', height: '30px', borderRadius: '50%', marginRight: '10px' }}/>
+                        : <Avatar style={{ width: '30px', height: '30px' }}> <AccountCircle style={{ fontSize: '18px'}}/> </Avatar>
+                        : null}
+                        <Typography> {admin.user ? admin.user.name : null} </Typography>
+                      </div>
+                )
+              }) : null }
+
               </GridItem>
               <GridItem xs={12} sm={12} md={4}>
-              <List>
+              {/* <List>
               {admins ? admins.map(admin => {
                 return(
                   <ListItem key={admin}>
@@ -122,7 +146,7 @@ const showForm = () => {getEdit(true)}
                   </ListItemAvatar>
                   <ListItemText primary={team ? team.length : 0 } />
                 </ListItem>
-              </List> 
+              </List>  */}
               </GridItem>
               <GridItem xs={12} sm={12} md={12}>                
                 {creator || isAdmin ? 

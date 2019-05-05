@@ -106,6 +106,7 @@ class Dashboard extends Component {
                               rowsPerPage={rowsPerPage}
                               emptyRows={emptyRows}
                               tableHeaderColor="primary"
+                              tableHead={["", "User", "Activity", "Project", "Date", "Type" ]}
                               tableData={[ activity ? activity.map(A => {
 
                                     const icon = '';

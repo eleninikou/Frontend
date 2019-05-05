@@ -150,7 +150,7 @@ render() {
           closeNotification={() => this.setState({ tr: false })}
           close
           /> : null}
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>Create new milestone</h4>
@@ -158,8 +158,11 @@ render() {
             {allProjects.length || project ? 
             <form className={classes.form} onSubmit={this.submit}>
             <CardBody>
+            <GridContainer>
+            <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
+
               <GridContainer>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <FormControl className={classes.formControl} >                    
                       {hasError && !this.state.title && <FormHelperText id="title">Please select title!</FormHelperText>}
                       <TextField 
@@ -174,7 +177,7 @@ render() {
                       />
                     </FormControl> 
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
+                  <GridItem xs={12} sm={12} md={6}>
                   <FormControl className={classes.formControl} >   
                     {hasError && !this.state.focus && <FormHelperText id="focus">Please select focus!</FormHelperText>}
                     <TextField 
@@ -198,7 +201,6 @@ render() {
                           select
                           disabled={ backToProject ? true : false}
                           label="Project"
-                          variant="outlined"
                           margin="normal"
                           value={project_id}
                           onChange={this.handleChange}
@@ -226,7 +228,6 @@ render() {
                         id="date"
                         label="Due date"
                         type="date"
-                        variant="outlined"
                         margin="normal"
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
@@ -237,12 +238,12 @@ render() {
                     </FormControl>
                   </GridItem>
               </GridContainer>
+              </GridItem>
+              </GridContainer>
             </CardBody>
+
             <CardFooter style={{ justifyContent: 'flex-end'}}>
               <Button color="warning" type="submit">Create milestone</Button>
-                {backToProject ? 
-              <Button color="warning" onClick={this.goBack.bind(this)}>Back to {project_name}</Button>
-              : null}
             </CardFooter>
             </form> 
             : 
@@ -259,6 +260,9 @@ render() {
           }
           </Card>
         </GridItem>
+          {backToProject ? 
+              <Button style={{ margin: 'auto'}} color="warning" onClick={this.goBack.bind(this)}>Back to {project_name}</Button>
+              : null} 
       </GridContainer>
     )
   }

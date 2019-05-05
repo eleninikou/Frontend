@@ -7,12 +7,14 @@ import { getAllProjects } from '../redux/actions/projects/Actions'
 import Card from "../components/theme/Card/Card"
 import Button from "../components/theme/CustomButtons/Button.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
+import CardIcon from "../components/theme/Card/CardIcon.jsx"
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardBody from "../components/theme/Card/CardBody.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI
+import Timeline from "@material-ui/icons/Timeline"
 import withStyles from "@material-ui/core/styles/withStyles"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Components
@@ -91,8 +93,11 @@ class Milestones extends Component {
              }
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="warning">
-              <h4 className={this.props.classes.cardTitleWhite}>Milestones</h4>
+            <CardHeader >
+              <CardIcon color="warning" style={{ display: 'flex'}}>
+                  <Timeline style={{ color: 'white', marginRight: '10px'}} /> 
+                  <h4 className={this.props.classes.cardTitleWhite}>Milestones</h4>
+                </CardIcon>
             </CardHeader>
             <CardBody>
             {this.props.isFetching ? 
@@ -102,7 +107,7 @@ class Milestones extends Component {
                 : 
               <MilestonesTable 
                 milestones={milestones ? milestones : null}
-            classes={this.props.classes} /> }
+                classes={this.props.classes} /> }
                 <CardFooter style={{ justifyContent: 'flex-end'}}>
                     <Button color="warning"  onClick={this.createNewMilestone.bind(this)}>
                       Create new Milestone

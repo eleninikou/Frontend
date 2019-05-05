@@ -7,16 +7,17 @@ import axios from "axios"
 import { connect } from 'react-redux'
 import { getUser, updateUser } from '../redux/actions/auth/Actions'
 // Theme components
-import GridItem from "../components/theme/Grid/GridItem.jsx"
-import GridContainer from "../components/theme/Grid/GridContainer.jsx"
-import Button from "../components/theme/CustomButtons/Button.jsx"
 import Card from "../components/theme/Card/Card.jsx"
-import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import Button from "../components/theme/CustomButtons/Button.jsx"
+import GridItem from "../components/theme/Grid/GridItem.jsx"
+import CardIcon from "../components/theme/Card/CardIcon.jsx"
 import CardBody from "../components/theme/Card/CardBody.jsx"
-import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx"
-import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
+import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import AccountCircle from "@material-ui/icons/AccountCircle"
+import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles"
 import TextField from '@material-ui/core/TextField'
@@ -185,8 +186,10 @@ class UserProfile extends Component {
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="rose">
-              <h4 className={classes.cardTitleWhite} style={{ textAlign: 'center'}}>Edit Profile</h4>
+            <CardHeader >
+               <CardIcon color="rose" style={{ display: 'flex'}}>
+                  <h4 className={this.props.classes.cardTitleWhite}>Profile</h4>
+                </CardIcon>
             </CardHeader>
             <CardBody>
               {isFetching ? 
@@ -214,7 +217,7 @@ class UserProfile extends Component {
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
                         <TextField
-                          label="name"
+                          label="Name"
                           id="name"
                           type="text"
                           name="name"
@@ -226,7 +229,7 @@ class UserProfile extends Component {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={12}>
                         <TextField
-                          label="email"
+                          label="Email"
                           type="email"
                           name="email"
                           id="email-address"
@@ -238,7 +241,7 @@ class UserProfile extends Component {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={12}>
                         <TextField
-                          label="change password"
+                          label="Change password"
                           id="password"
                           type="password"
                           name="password"
@@ -249,7 +252,7 @@ class UserProfile extends Component {
                     </GridItem>
                     <GridItem xs={12} sm={12} md={12}>
                       <TextField
-                        label="repeat password"
+                        label="Repeat password"
                         id="password"
                         type="password"
                         name="repeatPassword"
@@ -262,11 +265,9 @@ class UserProfile extends Component {
                 </GridItem>
                 </GridContainer> }
             </CardBody>
-            <CardFooter >
-              <Button type="submit" color="rose" style={{ float: 'right'}}>Update Profile</Button>
+            <CardFooter style={{ justifyContent: 'flex-end'}} >
+              <Button type="submit" color="rose" >Update Profile</Button>
             </CardFooter>
-            <CardFooter>
-              <Button color="rose" onClick={this.handleClickOpen}>Remove Account</Button>
               <DangerDialogWrapped 
                 type={'account'}
                 title={'Are you sure you want to delete your account?'}
@@ -274,9 +275,10 @@ class UserProfile extends Component {
                 open={this.state.open}
                 onClose={this.handleClose}
               />
-            </CardFooter>
           </Card>
         </GridItem>
+        <Button style={{ margin: 'auto'}} color="rose" onClick={this.handleClickOpen}>Remove Account</Button>
+
       </GridContainer>
     </form>
   )

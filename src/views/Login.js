@@ -160,7 +160,7 @@ class Login extends Component {
                 <GridItem xs={12} sm={10} md={12}>
                   <CardBody>
                     <Typography style={{ fontSize: '40px'}}> A Collaboration platform built for every member of your team to simplify your workflow!</Typography>
-                    <Typography style={{ fontSize: '20px', marginTop: '10px'}}>Keep track of your project development with ease. Invite your team members and start sharing ideas, report bugs and organize your work. </Typography>
+                    {/* <Typography style={{ fontSize: '20px', marginTop: '10px'}}>Keep track of your project development with ease. Invite your team members and start sharing ideas, report bugs and organize your work. </Typography> */}
                     <GridContainer > 
                       <GridItem xs={12} sm={12} md={4}>
                         <Card>
