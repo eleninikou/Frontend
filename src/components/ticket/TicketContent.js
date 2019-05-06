@@ -1,19 +1,19 @@
-import React from 'react'
-import draftToHtml from 'draftjs-to-html'
-import Typography from '@material-ui/core/Typography'
-
+import React from "react";
+import draftToHtml from "draftjs-to-html";
+import Typography from "@material-ui/core/Typography";
 
 const TicketContent = ({ description }) => {
-
   return (
     <div>
-      <Typography style={{ color: 'grey', marginTop: '25px'}}> Description </Typography>
+      <Typography style={{ color: "grey", marginTop: "25px" }}>
+        Description
+      </Typography>
 
-      {description  && description.blocks && description.entityMap ?  
+      {description && description.blocks && description.entityMap ? (
         <div dangerouslySetInnerHTML={{ __html: draftToHtml(description) }} />
-      : null }   
+      ) : null}
     </div>
-      )
-  }
+  );
+};
 
-export default TicketContent; 
+export default TicketContent;

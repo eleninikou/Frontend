@@ -10,7 +10,6 @@ import Note from "@material-ui/icons/Note"
 import ContactMail from "@material-ui/icons/ContactMail"
 import Person from "@material-ui/icons/Person"
 import Timeline from "@material-ui/icons/Timeline"
-import NotInterested from "@material-ui/icons/NotInterested"
 import Today from "@material-ui/icons/Today"
 
 
@@ -59,8 +58,8 @@ const dashboardRoutes = [
     },
     {
       path: "/logout",
-      name: "Log out",
-      icon: NotInterested,
+      name: "LOG OUT",
+      icon: '',
       layout: "/home"
     },
 ];

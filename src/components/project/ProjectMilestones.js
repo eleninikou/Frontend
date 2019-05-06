@@ -94,8 +94,10 @@ class ProjectMilestones extends Component {
               ? milestones.map(milestone => {
                   return [
                     `${milestone.title}`,
-                      milestone.focus ? `${milestone.focus}`: `-`,
-                      milestone.due_date ? ` ${moment(milestone.due_date).format("YYYY-MM-DD")}`: `-`,
+                    milestone.focus ? `${milestone.focus}` : `-`,
+                    milestone.due_date
+                      ? ` ${moment(milestone.due_date).format("YYYY-MM-DD")}`
+                      : `-`,
                     `${moment(milestone.updated_at).format("YYYY-MM-DD")}`,
                     <Tooltip
                       id="tooltip-top"

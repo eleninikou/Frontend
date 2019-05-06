@@ -17,12 +17,11 @@ import {
     UPDATE_USER_FAILURE,
     DELETE_USER_SUCCESS,
     DELETE_USER_FAILURE,
+    GET_EMAIL_REQUEST,
     GET_EMAIL_SUCCESS,
     GET_EMAIL_FAILURE,
     ACCEPT_INVITATION_SUCCESS,
     ACCEPT_INVITATION_FAILURE,
-    CHECK_INVITATION_SUCCESS,
-    CHECK_INVITATION_FAILURE
 } from './Action-types';
 
 import Cookies from 'universal-cookie'
@@ -187,6 +186,7 @@ export const getEmailFromInvitation = InvitationToken => {
   }
   
     try {
+      dispatch({ type: GET_EMAIL_REQUEST })
       const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/invitation/${InvitationToken}`, {
         method: "GET",
         headers: {

@@ -10,7 +10,7 @@ import {
   var token = cookies.get('token')
 
   
-  export const commentCreate = comment => {
+  export const commentCreate = (comment, token) => {
     return async dispatch => {  
       const commentSuccess = success => { 
         dispatch ({ type: CREATE_COMMENT_SUCCESS, payload: success}); return comment; 

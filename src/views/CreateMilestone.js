@@ -21,12 +21,12 @@ import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import { Typography } from "@material-ui/core";
 // Components
-import DashboardSpinner from '../components/spinner/DashboardSpinner'
+import DashboardSpinner from "../components/spinner/DashboardSpinner";
 // Icon
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import Cookies from 'universal-cookie'
+import Cookies from "universal-cookie";
 
 class CreateMilestone extends Component {
   constructor(props) {
@@ -41,7 +41,7 @@ class CreateMilestone extends Component {
       backToProject: false,
       hasError: false,
       errorMessage: "",
-      token: ''
+      token: ""
     };
     this.handleChange = this.handleChange.bind(this);
   }
@@ -94,9 +94,9 @@ class CreateMilestone extends Component {
   };
 
   componentDidMount = () => {
-    const cookies = new Cookies()
-    var token = cookies.get('token')
-    this.setState({ token })
+    const cookies = new Cookies();
+    var token = cookies.get("token");
+    this.setState({ token });
 
     // If redirected from specific project preselect project
     if (
@@ -143,7 +143,13 @@ class CreateMilestone extends Component {
   };
 
   render() {
-    const { classes, allProjects, successMessage, project, isFetching } = this.props;
+    const {
+      classes,
+      allProjects,
+      successMessage,
+      project,
+      isFetching
+    } = this.props;
     const {
       project_id,
       project_name,
@@ -174,16 +180,20 @@ class CreateMilestone extends Component {
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>Create new milestone</h4>
             </CardHeader>
-            {isFetching ?
-              <div style={{ width: '100%', textAlign: 'center'}}>
-                <DashboardSpinner /> 
+            {isFetching ? (
+              <div style={{ width: "100%", textAlign: "center" }}>
+                <DashboardSpinner />
               </div>
-            : 
-            allProjects.length || project ? (
+            ) : allProjects.length || project ? (
               <form className={classes.form} onSubmit={this.submit}>
                 <CardBody>
                   <GridContainer>
-                    <GridItem xs={12} sm={12} md={8} style={{ margin: "auto", marginTop: '20px' }}>
+                    <GridItem
+                      xs={12}
+                      sm={12}
+                      md={8}
+                      style={{ margin: "auto", marginTop: "20px" }}
+                    >
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={6}>
                           <FormControl className={classes.formControl}>
@@ -327,7 +337,8 @@ class CreateMilestone extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    milestoneCreate: (milestone, token) => dispatch(milestoneCreate(milestone, token)),
+    milestoneCreate: (milestone, token) =>
+      dispatch(milestoneCreate(milestone, token)),
     getProject: (id, token) => dispatch(getProject(id, token)),
     getAllProjects: token => dispatch(getAllProjects(token))
   };
