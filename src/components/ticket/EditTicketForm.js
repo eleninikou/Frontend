@@ -164,6 +164,7 @@ class EditTicketForm extends Component {
       project_id: this.state.project_id,
     }
 
+    // Old image is object
     const urls =[];
     this.state.urls.map(url => {
       if(url.attachment) {
@@ -179,12 +180,10 @@ class EditTicketForm extends Component {
     }
 
     this.props.updateAttachments(update)
-    .then(res => {
-      console.log(res)
-      debugger;
+    .then(() => {
+      this.props.updateTicket(ticket, this.props.match.params.id)
+      .then(res => { this.setSuccess(res.message) })
     })
-    this.props.updateTicket(ticket, this.props.match.params.id)
-    .then(res => { this.setSuccess(res.message) })
 
   }
 
@@ -197,6 +196,17 @@ class EditTicketForm extends Component {
   render() {
     const { classes, ticketStatus, ticketTypes, team, milestones, creator, user, admin } = this.props
     const { editorState, assigned_user_id, urls } = this.state
+
+    // https://reactgo.com/removeduplicateobjects/
+    function getUnique(arr, comp) {
+      const unique = arr.map(e => e[comp])
+          .map((e, i, final) => final.indexOf(e) === i && i)
+          .filter(e => arr[e]).map(e => arr[e]);
+       return unique;
+    }
+
+    let team_members = getUnique(team,'user_id')
+    let me_and_admin = team_members.filter(member => { return member.role_id === 1|| member.user_id === parseInt(user) })
     
       return (
             <form onSubmit={this.submit}>
@@ -318,9 +328,23 @@ class EditTicketForm extends Component {
                               value={this.state.assigned_user_id}
                               onChange={this.handleChange}
                               inputProps={{ name: 'assigned_user_id', id: 'assigned_user_id'}}>
-                            {team ? team.map(member => {
-                              return  <MenuItem key={member.user.id} value={member.user.id}> {member.user.name} </MenuItem>
-                            }): null }
+                              {console.log(user)}
+                              {console.log(creator)}
+                              {console.log(admin)}
+
+                              {user === creator ?
+                                  me_and_admin ? me_and_admin.map(member => {
+                                    return (
+                                      <MenuItem key={member.user.id} value={member.user.id}> 
+                                        {member.user.name} 
+                                      </MenuItem>
+                                    ) 
+                                  }) : null
+                              :       
+                                team ? team.map(member => {
+                                  return  <MenuItem key={member.user.id} value={member.user.id}> {member.user.name} </MenuItem>
+                                }) : null
+                              }
                             </TextField>
                         </FormControl>
                       </GridItem>

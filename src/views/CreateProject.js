@@ -69,12 +69,14 @@ render() {
 
   return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
+        <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="success">
               <h4 className={classes.cardTitleWhite}>Create new project</h4>
             </CardHeader>
             <form className={classes.form} onSubmit={this.submit}>
+          <GridContainer>
+          <GridItem xs={12} sm={12} md={8} style={{ margin: 'auto'}}>
             <CardBody >
               <GridContainer style={{ padding: '30px'}}>
                 <GridItem xs={12} sm={12} md={12}>
@@ -108,6 +110,8 @@ render() {
                   </GridItem>
               </GridContainer>
             </CardBody>
+          </GridItem>
+          </GridContainer>
             <CardFooter style={{ justifyContent: 'flex-end'}}>
               <Button color="success" type="submit">Create Project</Button>
             </CardFooter>

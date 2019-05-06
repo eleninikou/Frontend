@@ -223,7 +223,7 @@ class Project extends Component {
                           />
                         )
                       },
-                      project.creator_id === parseInt(user) || isAdmin ?
+                      project.creator_id === parseInt(user) || isAdmin.length ?
                       {
                         tabName: "Delete",
                         tabIcon: Close,

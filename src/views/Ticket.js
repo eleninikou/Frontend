@@ -53,8 +53,11 @@ class Ticket extends Component {
   }
   
   componentDidMount = () => {
+    const cookies = new Cookies()
+    var token = cookies.get('token')
+
     // Fetch ticket and set to state
-    this.props.getTicket(this.props.match.params.id)
+    this.props.getTicket(this.props.match.params.id, token)
     .then(res => {
       if(!res.ticket)
       // If no ticket, redirect with notification message
@@ -69,7 +72,6 @@ class Ticket extends Component {
     while (id--) { window.clearTimeout(id) }
 
     // Get loged in user for comments
-    const cookies = new Cookies()
     const user = cookies.get('user')
     this.props.getUser(user)
 
@@ -301,7 +303,7 @@ class Ticket extends Component {
               </div>
               </CardIcon>
                 <Button onClick={this.showCommentForm} color="info">
-                <Comment style={{ color: 'white'}} /> 
+                  <Comment style={{ color: 'white'}} /> 
                   {ButtonTextComment}
                 </Button>   
             </CardHeader>
@@ -331,7 +333,7 @@ class Ticket extends Component {
 
 const mapDispatchToProps = dispatch => { 
   return {  
-    getTicket: id => dispatch(getTicket(id)),
+    getTicket: (id, token) => dispatch(getTicket(id, token)),
     getUser: id => dispatch(getUser(id)),
   }
 }

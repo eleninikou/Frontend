@@ -222,9 +222,7 @@ render() {
   
   let projects = getUnique(allProjects,'project_id') 
   let team_members = getUnique(team,'user_id')
-
   let me_and_admin = team_members.filter(member => { return member.role_id === 1|| member.user_id === parseInt(user) })
-
 
   // Styles to input
   const styles = {
@@ -233,8 +231,6 @@ render() {
     }
   }
 
-  console.log(allProjects)
-  console.log(projects)
 
   return (
       <GridContainer>

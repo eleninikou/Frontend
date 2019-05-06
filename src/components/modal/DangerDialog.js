@@ -87,15 +87,14 @@ class DangerDialog extends Component {
             })
     }  
 
-    setSuccess = successMessage => { this.props.getSuccess(successMessage) }
-
+    
     removeUserFromTeam = () => {
       this.props.removeFromTeam(this.props.id)
       .then(() => {
         this.setSuccess(this.props.successMessageTeam)
       })
     }
-
+    
     deleteUser = () => {
       this.props.deleteUser(this.props.id)
       .then(() => {
@@ -106,14 +105,16 @@ class DangerDialog extends Component {
         this.props.history.push('/')
       })
     }
-
+    
     deleteComment = () => { 
       this.props.commentDelete(this.props.id)
       .then(() => {
         this.setSuccess(this.props.successMessageComment)
-        })
+      })
     }
-
+    
+    setSuccess = successMessage => { this.props.getSuccess(successMessage) }
+    
   render() {
     const { classes, onClose, selectedValue, id, title, type, ...other } = this.props;
 

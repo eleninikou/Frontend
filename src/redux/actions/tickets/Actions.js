@@ -29,7 +29,7 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies()
 var token = cookies.get('token')
 
-export const getTicket = id => {
+export const getTicket = (id, token)  => {
   return async dispatch => {
     const recieveTicket = ticket => { 
       dispatch ({ type: GET_TICKET_SUCCESS, payload: ticket}); 

@@ -174,6 +174,7 @@ class UserProfile extends Component {
         closeNotification={() => this.setState({ tr: false })}
         close
       /> 
+      {errorMessage ?
       <Snackbar
         place="tr"
         color="danger"
@@ -182,7 +183,7 @@ class UserProfile extends Component {
         open={this.state.tr}
         closeNotification={() => this.setState({ tr: false })}
         close
-      /> 
+      /> : null}
       <GridContainer>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
