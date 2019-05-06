@@ -21,6 +21,8 @@ import {
     DELETE_ATTACHMENT_FAILURE,
     REMOVE_FROM_STORAGE_SUCCESS,
     REMOVE_FROM_STORAGE_FAILURE,
+    UPDATE_ATTACHMENTS_SUCCESS,
+    UPDATE_ATTACHMENTS_FAILURE
 } from './Action-types';
 
 import Cookies from 'universal-cookie';
@@ -96,6 +98,30 @@ export const getAllTickets = token => {
       } catch (error) { return createTicketError(error) }
     }
   };    
+
+  export const updateAttachments = update => {
+
+    debugger;
+    return async dispatch => {  
+      const updateAttachmentsSuccess = success => { 
+        dispatch ({ type: UPDATE_ATTACHMENTS_SUCCESS, payload: success}); return success; 
+    }
+      try {
+        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/tickets/image/update`, {
+          method: "POST",
+          body: JSON.stringify(update),
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            'Access-Control-Allow-Origin': '*',
+            "Content-Type": "application/json"}
+        })
+        const success = await res.json();
+        debugger;
+        return updateAttachmentsSuccess(success);
+  
+      } catch (error) { return dispatch ({ type: UPDATE_ATTACHMENTS_FAILURE, message: 'Could not update images' })}
+    }
+  }; 
 
 
   export const updateTicket = (ticket, id) => {

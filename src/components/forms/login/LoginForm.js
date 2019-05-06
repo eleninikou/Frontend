@@ -60,10 +60,14 @@ class LoginForm extends Component {
       this.props.login(creds)
       .then(res => {
         if(res && res.id) {
+          debugger;
           // If cookie invitation -> accept invitation
           if (invitation) { 
+            debugger;
             this.props.acceptInvitation(invitation)
             .then(res => {
+              console.log(res)
+              debugger;
               this.props.history.push({
                 pathname: `/home/projects`,
                 state: { successMessage: res.message} // Display message that invitation is accepted

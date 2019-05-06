@@ -2,13 +2,11 @@ import React, { Component } from 'react'
 import { withRouter } from "react-router-dom"
 // Redux
 import { connect } from 'react-redux'
-import { updateTicket, getTicketTypes, getTicketStatus, deleteTicket, deleteAttachment, removeFromStorage } from '../../redux/actions/tickets/Actions'
+import { updateTicket, getTicketTypes, getTicketStatus, deleteTicket, deleteAttachment, removeFromStorage, updateAttachments } from '../../redux/actions/tickets/Actions'
 // Theme components
-import Card from "../theme/Card/Card"
 import Button from "../theme/CustomButtons/Button.jsx"
 import CardBody from "../theme/Card/CardBody.jsx"
 import GridItem from "../theme/Grid/GridItem.jsx"
-import CardFooter from '../theme/Card/CardFooter'
 import GridContainer from "../theme/Grid/GridContainer.jsx"
 // Material UI components
 import TextField from '@material-ui/core/TextField'
@@ -164,13 +162,30 @@ class EditTicketForm extends Component {
       title: this.state.title,
       type_id: this.state.type_id,
       project_id: this.state.project_id,
-      urls: this.state.urls
     }
 
-    debugger;
+    const urls =[];
+    this.state.urls.map(url => {
+      if(url.attachment) {
+        urls.push(url.attachment)
+      } else {
+        urls.push(url)
+      }
+    })
 
+    const update = {
+      urls: urls,
+      id: this.props.match.params.id 
+    }
+
+    this.props.updateAttachments(update)
+    .then(res => {
+      console.log(res)
+      debugger;
+    })
     this.props.updateTicket(ticket, this.props.match.params.id)
     .then(res => { this.setSuccess(res.message) })
+
   }
 
   handleClickOpen = () => { this.setState({ open: true }) }
@@ -379,7 +394,8 @@ class EditTicketForm extends Component {
     getTicketTypes: () => dispatch(getTicketTypes()),
     getTicketStatus: () => dispatch(getTicketStatus()),
     deleteAttachment: id => dispatch(deleteAttachment(id)),
-    removeFromStorage: url => dispatch(removeFromStorage(url))
+    removeFromStorage: url => dispatch(removeFromStorage(url)),
+    updateAttachments: update => dispatch(updateAttachments(update))
   }}
 
   const mapStateToProps = state => ({
