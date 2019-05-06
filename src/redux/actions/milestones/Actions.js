@@ -41,7 +41,7 @@ export const getMilestone = id => {
 
 
 
-export const milestoneCreate = milestone => {
+export const milestoneCreate = (milestone, token) => {
     return async dispatch => {  
       const createMilestoneSuccess = success => { 
         dispatch ({ type: CREATE_MILESTONE_SUCCESS, payload: success}); return milestone; 

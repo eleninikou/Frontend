@@ -41,7 +41,7 @@ class MilestonesTable extends Component {
                     milestones ? milestones.map(milestone => {
                       return [
                         `${milestone.title}`, 
-                        `${milestone.focus}`,
+                         milestone.focus ? `${milestone.focus}` : '-',
                         `${milestone.project ? milestone.project.name : null}`, 
                         `${milestone.tickets ? milestone.tickets.length : null}`,
                         `${moment(milestone.updated_at).format('YYYY-MM-DD')}`,

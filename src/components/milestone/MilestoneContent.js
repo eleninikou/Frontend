@@ -30,57 +30,15 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
               <CardBody>
                 <GridContainer>      
                   <GridItem xs={12} sm={12} md={8}>
-                  <Typography>
-                    <h1>{milestone.title} </h1> 
-                    <h4> {milestone.focus}</h4>
-                  </Typography>
-                  </GridItem>    
-                  <GridItem xs={12} sm={12} md={4}>
-                    <List className="my-ticket-list">
-                        <ListItem>
-                          <ListItemAvatar>
-                          <Tooltip
-                            id="tooltip-top-start"
-                            title="Due date"
-                            placement="top"
-                            classes={{ tooltip: classes.tooltip }}>  
-                            <Avatar style={{ backgroundColor: '#041031', width: '30px', height: '30px'}}> 
-                              <DateRange style={{ fontSize: '18px'}}/> 
-                            </Avatar>
-                            </Tooltip>
-                          </ListItemAvatar>
-                          <ListItemText primary={moment(milestone.due_date).format('YYYY-MM-DD') } />
-                        </ListItem>
-                        <ListItem>
-                          <ListItemAvatar>
-                          <Tooltip
-                            id="tooltip-top-start"
-                            title="project"
-                            placement="top"
-                            classes={{ tooltip: classes.tooltip }}>  
-                              <Avatar style={{backgroundColor: '#4caf50', width: '30px', height: '30px'}}> 
-                                <LibraryBooks style={{ fontSize: '18px'}}/> 
-                              </Avatar>
-                            </Tooltip>
-                          </ListItemAvatar>
-                          <ListItemText primary={ milestone.project.name } />
-                        </ListItem>
-                        <ListItem>
-                          <ListItemAvatar>
-                          <Tooltip
-                            id="tooltip-top-start"
-                            title="Tickets"
-                            placement="top"
-                            classes={{ tooltip: classes.tooltip }}>  
-                            <Avatar style={{ backgroundColor: '#9c27b0', width: '30px', height: '30px' }}> 
-                              <Note style={{ fontSize: '18px'}}/> 
-                            </Avatar>
-                            </Tooltip>
-                          </ListItemAvatar>
-                          <ListItemText primary={ milestone.tickets ? 'Tickets: ' + milestone.tickets.length : 0 } />
-                        </ListItem>
-                    </List> 
-                  </GridItem>    
+                    <Typography style={{ color: 'grey', marginTop: '25px'}}> Title </Typography>
+                    <Typography>{milestone.title}</Typography>
+                    <Typography style={{ color: 'grey', marginTop: '25px'}}> Focus </Typography>
+                    <Typography>{milestone.focus ? milestone.focus : '-'}</Typography>
+                    <Typography style={{ color: 'grey', marginTop: '25px'}}> Due date </Typography>
+                    <Typography>{milestone.due_date ? moment(milestone.due_date).format('YYYY-MM-DD'): '-'}</Typography>
+                    <Typography style={{ color: 'grey', marginTop: '25px'}}> Project </Typography>
+                    <Typography>{ milestone.project.name }</Typography>
+                  </GridItem>       
                 </GridContainer>
               </CardBody> 
                     {creator ? 
