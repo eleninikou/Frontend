@@ -33,7 +33,6 @@ import Remove from "@material-ui/icons/Remove"
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles"
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import DashboardSpinner from '../components/spinner/DashboardSpinner'
 
 
 class CreateTicket extends Component {
@@ -85,8 +84,7 @@ submit = event => {
     this.state.status_id &&
     this.state.project_id &&
     this.state.priority &&
-    this.state.selectedDate &&
-    this.state.assigned_user_id
+    this.state.selectedDate 
     ) {
   
     const ticket = {
@@ -179,8 +177,8 @@ componentDidMount = () => {
       this.props.getProject(this.props.location.state.project_id)
     } else { this.props.getAllProjects(token)}
     
-  this.props.getTicketTypes()
-  this.props.getTicketStatus()
+  this.props.getTicketTypes(token)
+  this.props.getTicketStatus(token)
 }
 
 // If image are uploaded but no ticket is created -> delete them
@@ -193,16 +191,18 @@ componentWillUnmount = () => {
 }
 
 handleChange = event => {
+  const cookies = new Cookies()
+  var token = cookies.get('token')
   const { name, value } = event.target;
   this.setState({ [name]: value });
 
   // Fetch project to get team, milestones
   if (event.target.name === "project_id" ) { 
-    this.props.getProject(value).then(() => {
-      if(this.state.user == this.props.project.client_id) {
+    this.props.getProject(value, token).then(res => {
+      if(this.state.user == res.project.client_id) {
         this.setState({ 
           status_id : 3,
-          assigned_user_id: this.props.project.creator_id })
+          assigned_user_id: res.project.creator_id })
       }
     })}
 }
@@ -347,9 +347,7 @@ render() {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
-                      {hasError && !this.state.assigned_user_id && <FormHelperText>Assign the ticket to a team member!</FormHelperText>}
                         <TextField
-                          error={hasError && !this.state.assigned_user_id ? true : false}
                           select
                           disabled={ project ? (user == project.client_id) ? true : false : null}
                           label="Assign user"
@@ -478,10 +476,10 @@ render() {
 
 const mapDispatchToProps = dispatch => { 
   return {  ticketCreate: project => dispatch(ticketCreate(project)),
-            getTicketTypes: () => dispatch(getTicketTypes()),
-            getTicketStatus: () => dispatch(getTicketStatus()),
+            getTicketTypes: token => dispatch(getTicketTypes(token)),
+            getTicketStatus: token => dispatch(getTicketStatus(token)),
             getAllProjects: token => dispatch(getAllProjects(token)),
-            getProject: id => dispatch(getProject(id)),
+            getProject: (id, token) => dispatch(getProject(id, token)),
             deleteAttachment: url => dispatch(deleteAttachment(url)),
             removeFromStorage: url => dispatch(removeFromStorage(url))
           }

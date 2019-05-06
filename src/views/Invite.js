@@ -137,6 +137,8 @@ class Invite extends Component {
 
     let yourProjects = projects ? projects.projects ? getUnique(projects.projects, 'id') : null : null
     console.log(yourProjects)
+    console.log(projects)
+    console.log(project)
 
   return (
     <GridContainer>
@@ -172,10 +174,10 @@ class Invite extends Component {
                           name: 'project_id',
                           id: 'project_id',
                         }}>
-                        {project ? 
-                          <MenuItem defaultValue key={project.id} value={project.id}> 
-                            {project.name} 
-                          </MenuItem>
+                        {project ? null
+                          // <MenuItem defaultValue key={project.id} value={project.id}> 
+                          //   {project.name} 
+                          // </MenuItem>
                         : this.props.match.params.id && !project ?
                           <MenuItem defaultValue key={''} value={'create'}> 
                             You need to create a project first

@@ -22,6 +22,7 @@ import MilestonesTable from '../components/milestone/MilestonesTable'
 import DashboardSpinner from '../components/spinner/DashboardSpinner'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import Cookies from "universal-cookie"
 
 
 class Milestones extends Component {
@@ -34,7 +35,9 @@ class Milestones extends Component {
   }
 
   componentDidMount = () => { 
-    this.props.getAllProjects() 
+    const cookies = new Cookies()
+    var token = cookies.get('token')
+    this.props.getAllProjects(token) 
 
     // To prevent error message frmo notification bar
     var id = window.setTimeout(null, 0)

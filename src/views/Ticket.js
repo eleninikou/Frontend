@@ -17,15 +17,12 @@ import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI components
-import Tooltip from "@material-ui/core/Tooltip"
-import IconButton from "@material-ui/core/IconButton"
 import withStyles from "@material-ui/core/styles/withStyles"
 // Components 
 import { TicketIconList, TicketContent, EditTicketForm, TicketComments, AddComment } from '../components'
 import DashboardSpinner from '../components/spinner/DashboardSpinner'
 // Icon
 import Edit from "@material-ui/icons/Edit"
-import Close from "@material-ui/icons/Close"
 import Comment from "@material-ui/icons/Comment"
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline"
 // Styles

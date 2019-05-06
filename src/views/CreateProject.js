@@ -18,6 +18,7 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
+import Cookies from 'universal-cookie'
 
 
 class CreateProject extends Component {
@@ -33,6 +34,8 @@ class CreateProject extends Component {
 }
 
 submit = event => {
+  const cookies = new Cookies()
+  var token = cookies.get('token')
   event.preventDefault()
 
   // Error if not filled in
@@ -42,7 +45,7 @@ submit = event => {
       description: this.state.description
     }
   
-    this.props.projectCreate(project)
+    this.props.projectCreate(project, token)
     .then(res => {
       if (!res.error) {
         if(this.props.successMessage) {
@@ -125,7 +128,7 @@ render() {
 
 
 const mapDispatchToProps = dispatch => { 
-  return { projectCreate: project => dispatch(projectCreate(project)) }
+  return { projectCreate: (project, token) => dispatch(projectCreate(project, token)) }
 }
 
 const mapStateToProps = state => ({ successMessage: state.project.successMessage })

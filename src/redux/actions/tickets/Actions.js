@@ -29,6 +29,7 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies()
 var token = cookies.get('token')
 
+
 export const getTicket = (id, token)  => {
   return async dispatch => {
     const recieveTicket = ticket => { 
@@ -146,7 +147,7 @@ export const getAllTickets = token => {
     }
   };   
 
-export const getTicketTypes = () => {
+export const getTicketTypes = token => {
     return async dispatch => {
       const getTicketTypesRequest = () => { dispatch({ type: GET_TICKET_TYPES_REQUEST}) };
   
@@ -174,7 +175,7 @@ export const getTicketTypes = () => {
 
 
 
-export const getTicketStatus = () => {
+export const getTicketStatus = token => {
   return async dispatch => {
     const recieveTicketStatus = Status => { 
       dispatch ({ type:  GET_TICKET_STATUS_SUCCESS, payload: Status}); 
