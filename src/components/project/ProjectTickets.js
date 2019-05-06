@@ -100,7 +100,6 @@ class ProjectTickets extends Component {
                   label="Type"
                   onChange={this.handleChange.bind(this)}
                   className="my-select"
-                  // variant="outlined"
                   margin="normal"
                   inputProps={{ name: 'type_id', id: 'type_id' }} >
                   <MenuItem value={null}>All</MenuItem>
@@ -135,7 +134,6 @@ class ProjectTickets extends Component {
                   value={this.state.priority}
                   onChange={this.handleChange.bind(this)}
                   className="my-select"
-                  // variant="outlined"
                   margin="normal"
                   inputProps={{ name: 'priority', id: 'priority' }} >
                     <MenuItem value={null}>All </MenuItem>
@@ -173,7 +171,7 @@ class ProjectTickets extends Component {
                     </Tooltip>
                     , 
                     `${ticket.priority}`,
-                    `${ticket.assigned_user.name}`,
+                    `${ticket.assigned_user ? ticket.assigned_user.name : 'No one'}`,
                     `${ticket.status.status}`,
                     `${moment(ticket.due_date).format('YYYY-MM-DD')}`,
                       <Tooltip

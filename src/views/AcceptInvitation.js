@@ -89,7 +89,9 @@ class AcceptInvitation extends Component {
       // If user is logged in. Check if same email address as invitation
       if (user) {
         this.props.getUser(user).then(res => {
-          this.setState({ loggedInUserEmail: res.user.email })
+          if(res.user) {
+            this.setState({ loggedInUserEmail: res.user.email })
+          }
         }).then(() => {
           this.props.getEmailFromInvitation(invitation)
           .then(res => {

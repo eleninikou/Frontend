@@ -132,7 +132,8 @@ class DangerDialog extends Component {
                   type === 'milestone' ? this.deleteMilestone.bind(this) :
                   type === 'comment' ? this.deleteComment.bind(this) : 
                   this.deleteUser.bind(this)
-                  } >
+                  }
+                  style={{ cursor: 'pointer'}}>
                   <ListItemAvatar >
                     <Avatar style={{ backgroundColor: '#f44336' }}>
                       <DeleteForever />
@@ -141,7 +142,7 @@ class DangerDialog extends Component {
                   <ListItemText primary="Delete" />
                 </ListItem>
 
-              <ListItem onClick={this.handleClose.bind(this)}>
+              <ListItem onClick={this.handleClose.bind(this)} style={{ cursor: 'pointer'}}>
                 <ListItemAvatar>
                   <Avatar>
                     <Cancel />

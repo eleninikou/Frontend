@@ -166,7 +166,7 @@ class MilestoneTickets extends Component {
                           : <YoutubeSearchedFor style={{ fontSize: '18px'}}/> }  
                       </Avatar>
                     </Tooltip>, 
-                    `${ticket.assigned_user.name}`,
+                    `${ticket.assigned_user ? ticket.assigned_user.name : 'No one'}`,
                     `${ticket.status.status}`,
                     <Tooltip
                       id="tooltip-top-start"
