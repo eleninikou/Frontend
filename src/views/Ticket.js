@@ -137,9 +137,12 @@ class Ticket extends Component {
 
   // show notification and update component
   getSuccess = successMessage => {
+    const cookies = new Cookies()
+    var token = cookies.get('token')
+
     this.setState({ successMessage })
     this.showNotification('tr')
-    this.props.getTicket(this.props.match.params.id).then(res => {
+    this.props.getTicket(this.props.match.params.id, token).then(res => {
       if(res.ticket) {
         this.setState({ 
           assigned_user_id: res.ticket.assigned_user_id,

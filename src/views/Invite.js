@@ -123,19 +123,20 @@ class Invite extends Component {
     }
   }
 
-  getUnique(arr, comp) {
-    const unique = arr.map(e => e[comp])
-        .map((e, i, final) => final.indexOf(e) === i && i)
-        .filter(e => arr[e]).map(e => arr[e]);
-     return unique;
-  }
-
-
+  
+  
   render() {
-  const { classes, projects, project, roles, successMessage, isFetching } = this.props
-  const { page, team, backToProject, hasError, emails } = this.state
+    const { classes, projects, project, roles, successMessage, isFetching } = this.props
+    const { page, team, backToProject, hasError, emails } = this.state
+    function getUnique(arr, comp) {
+      const unique = arr.map(e => e[comp])
+          .map((e, i, final) => final.indexOf(e) === i && i)
+          .filter(e => arr[e]).map(e => arr[e]);
+       return unique;
+    }
 
-  // let yourProjects = projects ? this.getUnique(projects,'project_id') : null
+    let yourProjects = projects ? projects.projects ? getUnique(projects.projects, 'id') : null : null
+    console.log(yourProjects)
 
   return (
     <GridContainer>
@@ -181,7 +182,7 @@ class Invite extends Component {
                           </MenuItem>   
                         : null}
 
-                      {projects.projects ? projects.projects.map(project => {
+                      {yourProjects? yourProjects.map(project => {
                         return <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
                       }) :  null }
                       </TextField>

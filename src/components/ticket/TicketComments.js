@@ -27,12 +27,15 @@ import ImageGallery from 'react-image-gallery'
   class TicketComments extends Component {
     constructor(props) {
       super(props)
-      this.state = { open: false }
+      this.state = { 
+        open: false,
+      }
   }
+
 
   handleClickOpen = () => { this.setState({ open: true }) }
 
-  handleClose = open => { this.setState({ open })}
+  handleClose = open => { this.setState({ open: false })}
 
   convertFromJSONToHTML = text => { return stateToHTML(convertFromRaw((text)) )}
 

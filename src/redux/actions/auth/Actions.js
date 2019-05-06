@@ -21,6 +21,8 @@ import {
     GET_EMAIL_FAILURE,
     ACCEPT_INVITATION_SUCCESS,
     ACCEPT_INVITATION_FAILURE,
+    CHECK_INVITATION_SUCCESS,
+    CHECK_INVITATION_FAILURE
 } from './Action-types';
 
 import Cookies from 'universal-cookie'
@@ -219,6 +221,7 @@ export const acceptInvitation = sendToken => {
     } catch (error) { dispatch ({ type: ACCEPT_INVITATION_FAILURE, message: 'Could not get email' }); return error; }
   }
 }; 
+ 
 
 
 export const deleteUser = id => {

@@ -11,11 +11,9 @@ import Button from "../components/theme/CustomButtons/Button.jsx"
 import CardBody from '../components/theme/Card/CardBody'
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardIcon from "../components/theme/Card/CardIcon.jsx"
-import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI components
-import { Typography } from '@material-ui/core'
 import withStyles from "@material-ui/core/styles/withStyles"
 // Icons
 import PersonAdd from "@material-ui/icons/PersonAdd"
@@ -73,8 +71,6 @@ class Login extends Component {
           cookies.remove('user', { path: '/' })
           cookies.remove('invitation', { path: '/' })
           this.props.logout().then(res => {
-            console.log(res)
-            debugger;
             this.props.history.push('/')
           })
         }

@@ -9,25 +9,18 @@ import LoginForm from '../components/forms/login/LoginForm'
 import RegisterForm from '../components/forms/register/RegisterForm'
 // Theme components
 import Card from "../components/theme/Card/Card"
+import Button from "../components/theme/CustomButtons/Button.jsx"
 import CardBody from '../components/theme/Card/CardBody'
-import CardIcon from "../components/theme/Card/CardIcon.jsx"
 import GridItem from "../components/theme/Grid/GridItem.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx"
+import CardFooter from "../components/theme/Card/CardFooter.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 // Material UI
 import withStyles from "@material-ui/core/styles/withStyles"
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx"
-import Note from "@material-ui/icons/Note"
-import Person from "@material-ui/icons/Person"
-import Timeline from "@material-ui/icons/Timeline"
-import BugReport from "@material-ui/icons/BugReport"
-import PersonAdd from "@material-ui/icons/PersonAdd"
-import LowPriority from "@material-ui/icons/LowPriority"
-import ContactMail from "@material-ui/icons/ContactMail"
-import AccountCircle from "@material-ui/icons/AccountCircle"
-import { Typography } from '@material-ui/core'
-import AppInfo from '../components/login/AppInfo';
+import AppInfo from '../components/login/AppInfo'
+import { Typography } from '@material-ui/core';
 
 class AcceptInvitation extends Component {
   constructor(props) {
@@ -37,7 +30,8 @@ class AcceptInvitation extends Component {
       invitedUserEmail: '',
       existingUser: '',
       register: false,
-      user: ''
+      user: '',
+      message: ''
     }
   }
 
@@ -46,13 +40,13 @@ class AcceptInvitation extends Component {
 
       if(this.state.loggedInUserEmail === this.state.invitedUserEmail) {
         
-        this.props.acceptInvitation(invitation).then(res => {
-          this.props.history.push({
-            pathname: `/home/projects`,
-            state: { successMessage: res.message}
-          })
-          cookies.remove('invitation', { path: '/' })
+      this.props.acceptInvitation(invitation).then(res => {
+        this.props.history.push({
+          pathname: `/home/projects`,
+          state: { successMessage: res.message}
         })
+        cookies.remove('invitation', { path: '/' })
+      })
 
       } else if(register) {
         this.props.acceptInvitation(invitation)
@@ -72,6 +66,9 @@ class AcceptInvitation extends Component {
       }
     }
     
+    goToLogin = () => {
+      this.props.history.push('/')
+    }
 
     componentDidMount = () => {
       const cookies = new Cookies()
@@ -86,6 +83,8 @@ class AcceptInvitation extends Component {
         { path: "/", maxAge: 86399 })
 
       var invitation = cookies.get('invitation')
+
+      // this.props.checkInvitation(invitation).then(res => { console.log(res)})
       
       // If user is logged in. Check if same email address as invitation
       if (user) {
@@ -125,6 +124,7 @@ class AcceptInvitation extends Component {
       <GridContainer> 
         <AppInfo />
         <GridItem xs={12} sm={12} md={4} >
+        {invitedUserEmail ?
         <Card>
           <CardHeader color="success">
             <h4 className={this.props.classes.cardTitleWhite}>Fill in to join the team!</h4>
@@ -135,6 +135,19 @@ class AcceptInvitation extends Component {
             : <RegisterForm email={invitedUserEmail} redirect={this.redirect.bind(this)}  />}
           </CardBody>
         </Card>
+        : 
+        <Card>
+          <CardHeader color="danger">
+            <h4 className={this.props.classes.cardTitleWhite}>OOPS!</h4>
+          </CardHeader>
+          <CardBody>
+            <Typography> It looks like your invitation allready has been used. </Typography>
+            <Typography> Login to start working on your projects!</Typography>
+          </CardBody>
+          <CardFooter >
+            <Button onClick={this.goToLogin} style={{ margin: 'auto'}} color="success">Login</Button>
+          </CardFooter>
+        </Card> }
         </GridItem>
       </GridContainer>
         </div>
@@ -146,7 +159,7 @@ const mapDispatchToProps = dispatch => {
     return { 
       getUser: id=> dispatch(getUser(id)),
       getEmailFromInvitation: token => dispatch(getEmailFromInvitation(token)),
-      acceptInvitation: token => dispatch(acceptInvitation(token))
+      acceptInvitation: token => dispatch(acceptInvitation(token)),
     }
   }
   

@@ -136,7 +136,6 @@ class Project extends Component {
       const { classes, team, project, tickets, isFetching } = this.props
       const { edit, successMessage, user, milestones } = this.state
 
-
       const admins = team ? team.filter(user => user.role ? user.role.role === 'Admin' : null | user.role_id === 1 ) : null
       const isAdmin = admins ? admins.filter(admin => admin.user_id == user) : null
       const clients = team ? team.filter(user => user.role ? user.role.role === 'Editor' : null) : null

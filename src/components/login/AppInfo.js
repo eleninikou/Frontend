@@ -20,7 +20,7 @@ import ContactMail from "@material-ui/icons/ContactMail"
 const AppInfo = () => {
     return (
 
-    <GridItem xs={12} sm={6} md={8}>
+    <GridItem xs={12} sm={12} md={8}>
     <Card>
       <GridContainer > 
         <GridItem xs={12} sm={10} md={12}>
