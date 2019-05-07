@@ -9,7 +9,7 @@ const TicketContent = ({ description }) => {
         Description
       </Typography>
 
-      {description && description.blocks && description.blocks.length && description.entityMap ? (
+      {description && description.blocks && description.blocks[0].text && description.entityMap ? (
         <div dangerouslySetInnerHTML={{ __html: draftToHtml(description) }} />
       ) : null}
     </div>
