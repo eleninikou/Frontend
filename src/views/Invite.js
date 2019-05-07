@@ -59,7 +59,7 @@ class Invite extends Component {
 
     // If redirected from a specific project
     if (this.props.match.params.id) {
-      this.props.getProject(this.props.match.params.id).then(res => {
+      this.props.getProject(this.props.match.params.id, token).then(res => {
         if (res.project) {
           this.setState({
             project_id: this.props.project.id,
@@ -68,7 +68,7 @@ class Invite extends Component {
           });
         }
       });
-      this.props.getEmails(this.props.match.params.id).then(() => {
+      this.props.getEmails(this.props.match.params.id).then(res => {
         this.setState({ emails: this.props.emails });
       });
     } else {
@@ -207,21 +207,22 @@ class Invite extends Component {
                           id: "project_id"
                         }}
                       >
-                        {project ? null : // <MenuItem defaultValue key={project.id} value={project.id}>
-                        //   {project.name}
-                        // </MenuItem>
+                        {project ? 
+                          <MenuItem defaultValue key={project.id} value={project.id}>
+                            {project.name}
+                          </MenuItem>
+                        :
                         this.props.match.params.id && !project ? (
                           <MenuItem defaultValue key={""} value={"create"}>
                             You need to create a project first
                           </MenuItem>
                         ) : null}
 
-                        {yourProjects
+                        {!project && yourProjects
                           ? yourProjects.map(project => {
                               return (
                                 <MenuItem key={project.id} value={project.id}>
-                                  {" "}
-                                  {project.name}{" "}
+                                  {project.name}
                                 </MenuItem>
                               );
                             })
@@ -255,8 +256,7 @@ class Invite extends Component {
                           ? roles.map(role => {
                               return (
                                 <MenuItem key={role.id} value={role.id}>
-                                  {" "}
-                                  {role.role}{" "}
+                                  {role.role}
                                 </MenuItem>
                               );
                             })
@@ -366,7 +366,7 @@ class Invite extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     getProjectsByUser: token => dispatch(getProjectsByUser(token)),
-    getProject: id => dispatch(getProject(id)),
+    getProject: (id, token) => dispatch(getProject(id, token)),
     getRoles: () => dispatch(getRoles()),
     getTeam: id => dispatch(getTeam(id)),
     invite: invitation => dispatch(invite(invitation)),
