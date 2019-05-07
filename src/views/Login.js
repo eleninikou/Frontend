@@ -131,7 +131,6 @@ class Login extends Component {
                 width: '100%',
                 height: '82px',
                 zIndex: 10,
-                backgroundColor: '#F4CCCC',
                 justifyContent: "space-between",
                 alignItems: 'baseline'
               }} >

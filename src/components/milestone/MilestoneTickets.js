@@ -31,6 +31,7 @@ import BugReport from "@material-ui/icons/BugReport";
 import LowPriority from "@material-ui/icons/LowPriority";
 import LinearScale from "@material-ui/icons/LinearScale";
 import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor";
+import Cookies from "universal-cookie";
 
 class MilestoneTickets extends Component {
   constructor(props) {
@@ -47,8 +48,10 @@ class MilestoneTickets extends Component {
   }
 
   componentWillMount = () => {
-    this.props.getTicketStatus();
-    this.props.getTicketTypes();
+    const cookies = new Cookies();
+    var token = cookies.get("token");
+    this.props.getTicketStatus(token);
+    this.props.getTicketTypes(token);
   };
 
   handleChangePage = (event, page) => {
@@ -303,8 +306,8 @@ class MilestoneTickets extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getTicketStatus: () => dispatch(getTicketStatus()),
-    getTicketTypes: () => dispatch(getTicketTypes())
+    getTicketStatus: token => dispatch(getTicketStatus(token)),
+    getTicketTypes: token => dispatch(getTicketTypes(token))
   };
 };
 

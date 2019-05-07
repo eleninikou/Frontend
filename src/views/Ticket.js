@@ -285,8 +285,7 @@ class Ticket extends Component {
                           onClick={this.showForm}
                           style={{ minWidth: "163px" }}
                         >
-                          {" "}
-                          {ButtonText}{" "}
+                          {ButtonText}
                         </Button>
                       ) : null}
                     </CardFooter>

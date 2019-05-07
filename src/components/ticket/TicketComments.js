@@ -27,12 +27,18 @@ class TicketComments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false
+      open: false,
+      id: ''
     };
   }
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
+  handleClickOpen = (id) => {
+    debugger;
+    this.setState({ 
+      open: true, 
+      id
+    });
+
   };
 
   handleClose = open => {
@@ -51,9 +57,7 @@ class TicketComments extends Component {
           ? comments.map(comment => {
               return (
                 <Card key={comment.id}>
-                  <ListItem
-                    style={{ borderBottom: "1px solid grey", padding: "30px" }}
-                  >
+                  <ListItem style={{ borderBottom: "1px solid grey", padding: "30px" }} >
                     <GridContainer style={{ width: "100%" }}>
                       <GridItem xs={12} sm={12} md={12}>
                         <GridContainer style={{ alignItems: "center" }}>
@@ -83,44 +87,35 @@ class TicketComments extends Component {
                                 comment.user
                                   ? comment.user.name +
                                     " | " +
-                                    moment(comment.created_at).format(
-                                      "YYYY-MM-DD"
-                                    )
+                                    moment(comment.created_at).format("YYYY-MM-DD")
                                   : null
                               }
                             />
                           </GridItem>
                           {comment.user_id === parseInt(user.id) ? (
                             <GridItem xs={12} sm={2} md={2}>
+                            {console.log(comment.id)}
                               <Tooltip
                                 id="tooltip-top-start"
                                 title="Delete comment"
                                 placement="top"
-                                onClick={this.handleClickOpen.bind(this)}
+                                onClick={() => this.handleClickOpen(comment.id, this)}
                                 classes={{ tooltip: classes.tooltip }}
                               >
                                 <IconButton
                                   aria-label="Close"
                                   className={classes.tableActionButton}
                                 >
-                                  <Close
-                                    className={
-                                      classes.tableActionButtonIcon +
-                                      " " +
-                                      classes.close
-                                    }
-                                  />
+                                  <Close className={ classes.tableActionButtonIcon + classes.close } />
                                 </IconButton>
                               </Tooltip>
                             </GridItem>
                           ) : null}
                           <DangerDialogWrapped
                             type={"comment"}
-                            title={
-                              "Are you sure you want to delete this comment?"
-                            }
+                            title={"Are you sure you want to delete this comment?"}
                             id={comment.id}
-                            open={this.state.open}
+                            open={this.state.id == comment.id ? this.state.open : false}
                             onClose={this.handleClose}
                             getSuccess={this.props.getSuccess.bind(this)}
                           />

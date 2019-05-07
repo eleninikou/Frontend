@@ -91,7 +91,6 @@ class DangerDialog extends Component {
 
   deleteUser = () => {
     this.props.deleteUser(this.props.id).then(() => {
-      debugger;
       const cookies = new Cookies();
       cookies.remove("token", { path: "/" });
       cookies.remove("user", { path: "/" });
@@ -100,8 +99,12 @@ class DangerDialog extends Component {
   };
 
   deleteComment = () => {
-    this.props.commentDelete(this.props.id).then(() => {
-      this.setSuccess(this.props.successMessageComment);
+    debugger;
+    this.handleClose()
+    this.props.commentDelete(this.props.id).then(res => {
+      if(res.message) {
+        this.setSuccess(res.message);
+      }
     });
   };
 
