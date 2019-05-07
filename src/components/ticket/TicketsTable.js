@@ -83,15 +83,15 @@ class TicketsTable extends Component {
                           marginRight: "20px"
                         }}
                       >
-                        {ticket.type.id === 1 ? (
+                        {ticket.type ? ticket.type.type == 'Bug' ? (
                           <BugReport style={{ fontSize: "18px" }} />
-                        ) : ticket.type.id === 2 ? (
+                        ) : ticket.type.type == 'Future request' ? (
                           <LowPriority style={{ fontSize: "18px" }} />
-                        ) : ticket.type.id === 3 ? (
+                        ) : ticket.type.type == 'Idea' ? (
                           <LinearScale style={{ fontSize: "18px" }} />
                         ) : (
                           <YoutubeSearchedFor style={{ fontSize: "18px" }} />
-                        )}
+                        ): null }
                       </Avatar>
                     </Tooltip>,
                     `${ticket.status.status}`,

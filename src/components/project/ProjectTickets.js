@@ -202,7 +202,6 @@ class ProjectTickets extends Component {
                           width: "30px"
                         }}
                       >
-                      {console.log(ticket)}
                         {ticket.type ? ticket.type.type == 'Bug' ? (
                           <BugReport style={{ fontSize: "18px" }} />
                         ) : ticket.type.type == 'Future request' ? (

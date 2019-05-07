@@ -64,8 +64,9 @@ class UserProfile extends Component {
   componentDidMount = () => {
     const cookies = new Cookies();
     const user = cookies.get("user");
+    const token = cookies.get("token");
 
-    this.props.getUser(user).then(res => {
+    this.props.getUser(user, token).then(res => {
       if (res.user) {
         this.setState({
           user,
@@ -333,7 +334,7 @@ class UserProfile extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getUser: id => dispatch(getUser(id)),
+    getUser: (id, token) => dispatch(getUser(id, token)),
     updateUser: (user, id) => dispatch(updateUser(user, id))
   };
 };
