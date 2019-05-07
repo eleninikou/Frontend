@@ -157,7 +157,7 @@ export const editProject = project => {
 }; 
 
 
-export const deleteProject = id => {
+export const deleteProject = (id, token ) => {
   return async dispatch => {  
     const deleteProjectSuccess = success => { 
       dispatch ({ type: DELETE_PROJECT_SUCCESS, payload: success}); return success; 
@@ -249,7 +249,7 @@ export const getTeam = id => {
   }
 };
 
-export const removeFromTeam = (id) => {
+export const removeFromTeam = (id, token ) => {
   return async dispatch => {  
     const removeSuccess = success => { 
       dispatch ({ type: REMOVE_FROM_TEAM_SUCCESS, payload: success}); return success; 

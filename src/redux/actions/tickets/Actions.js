@@ -197,7 +197,7 @@ export const getTicketStatus = token => {
 
 
 
-export const deleteTicket = id => {
+export const deleteTicket = (id, token ) => {
   return async dispatch => {  
     const deleteTicketSuccess = success => { 
       dispatch ({ type: DELETE_TICKET_SUCCESS, payload: success}); return success; 

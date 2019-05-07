@@ -224,7 +224,7 @@ export const acceptInvitation = sendToken => {
  
 
 
-export const deleteUser = id => {
+export const deleteUser = (id, token ) => {
   return async dispatch => {  
     const deleteUserSuccess = success => { 
       dispatch ({ type: DELETE_USER_SUCCESS, payload: success }); return success; 

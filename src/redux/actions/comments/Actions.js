@@ -33,7 +33,7 @@ import {
 }
 
 
-export const commentDelete = id=> {
+export const commentDelete = (id, token ) => {
   return async dispatch => {  
     const deleteSuccess = success => { 
       dispatch ({ type: DELETE_COMMENT_SUCCESS, payload: success}); return success; }

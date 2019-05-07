@@ -91,7 +91,7 @@ export const milestoneEdit = (milestone, id) => {
 
 
 
-export const deleteMilestone = id => {
+export const deleteMilestone = (id, token ) => {
   return async dispatch => {  
     const deleteMilestoneSuccess = success_message => { 
     dispatch ({ type: DELETE_MILESTONE_SUCCESS, payload: success_message.message }); return success_message; 

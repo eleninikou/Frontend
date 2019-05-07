@@ -35,6 +35,18 @@ const styles = {
 };
 
 class DangerDialog extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      token: ''
+    };
+  }
+  componentDidMount() {
+    const cookies = new Cookies();
+    const token = cookies.get('token')
+    this.setState({ token })
+
+  }
   handleClose = () => {
     this.props.onClose(false);
   };
@@ -44,7 +56,7 @@ class DangerDialog extends Component {
   };
 
   ticketDelete() {
-    this.props.deleteTicket(this.props.id).then(res => {
+    this.props.deleteTicket(this.props.id, this.state.token).then(res => {
       if (this.props.successMessage) {
         this.props.history.push({
           pathname: "/home/projects",
@@ -56,7 +68,7 @@ class DangerDialog extends Component {
 
   // Redirect to projects
   deleteProject = () => {
-    this.props.deleteProject(this.props.id).then(() => {
+    this.props.deleteProject(this.props.id, this.state.token).then(() => {
       if (this.props.successMessageProject) {
         this.props.history.push({
           pathname: "/home/projects",
@@ -68,7 +80,7 @@ class DangerDialog extends Component {
 
   deleteMilestone = () => {
     // Delete milestone and show notification
-    this.props.deleteMilestone(this.props.id).then(() => {
+    this.props.deleteMilestone(this.props.id, this.state.token).then(() => {
       this.handleClose({ open: false })
       if (this.props.location.state === undefined) {
         this.props.history.push({
@@ -84,7 +96,7 @@ class DangerDialog extends Component {
   };
 
   removeUserFromTeam = () => {
-    this.props.removeFromTeam(this.props.id).then(res => {
+    this.props.removeFromTeam(this.props.id, this.state.token).then(res => {
       if(res.message) {
         this.setSuccess(res.message);
       }
@@ -92,7 +104,7 @@ class DangerDialog extends Component {
   };
 
   deleteUser = () => {
-    this.props.deleteUser(this.props.id).then(() => {
+    this.props.deleteUser(this.props.id, this.state.token).then(() => {
       const cookies = new Cookies();
       cookies.remove("token", { path: "/" });
       cookies.remove("user", { path: "/" });
@@ -102,7 +114,7 @@ class DangerDialog extends Component {
 
   deleteComment = () => {
     this.handleClose()
-    this.props.commentDelete(this.props.id).then(res => {
+    this.props.commentDelete(this.props.id,this.state.token).then(res => {
       if(res.message) {
         this.setSuccess(res.message);
       }
@@ -185,12 +197,12 @@ DangerDialog.propTypes = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    deleteTicket: id => dispatch(deleteTicket(id)),
-    deleteProject: id => dispatch(deleteProject(id)),
-    deleteMilestone: id => dispatch(deleteMilestone(id)),
-    removeFromTeam: id => dispatch(removeFromTeam(id)),
-    deleteUser: id => dispatch(deleteUser(id)),
-    commentDelete: id => dispatch(commentDelete(id))
+    deleteTicket: (id, token) => dispatch(deleteTicket(id, token)),
+    deleteProject: (id, token)=> dispatch(deleteProject(id, token)),
+    deleteMilestone: (id, token) => dispatch(deleteMilestone(id, token)),
+    removeFromTeam: (id, token) => dispatch(removeFromTeam(id, token)),
+    deleteUser: (id, token) => dispatch(deleteUser(id, token)),
+    commentDelete: (id, token) => dispatch(commentDelete(id, token))
   };
 };
 
