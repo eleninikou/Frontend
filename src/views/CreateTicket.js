@@ -88,7 +88,7 @@ class CreateTicket extends Component {
 
   submit = event => {
     event.preventDefault();
-
+    
     // Check that everything is filled in
     if (
       this.state.title &&
@@ -97,20 +97,20 @@ class CreateTicket extends Component {
       this.state.status_id &&
       this.state.project_id &&
       this.state.priority 
-    ) {
-      const ticket = {
-        title: this.state.title,
-        description: convertToRaw(this.state.editorState.getCurrentContent()),
-        type_id: this.state.type_id,
-        status_id: this.state.status_id,
-        project_id: this.state.project_id,
-        priority: this.state.priority,
-        due_date: this.state.selectedDate,
-        assigned_user_id: this.state.assigned_user_id,
-        milestone_id: this.state.milestone_id,
-        image_urls: this.state.urls
-      };
-
+      ) {
+        const ticket = {
+          title: this.state.title,
+          description: convertToRaw(this.state.editorState.getCurrentContent()),
+          type_id: this.state.type_id,
+          status_id: this.state.status_id,
+          project_id: this.state.project_id,
+          priority: this.state.priority,
+          due_date: this.state.selectedDate,
+          assigned_user_id: this.state.assigned_user_id,
+          milestone_id: this.state.milestone_id,
+          image_urls: this.state.urls
+        };
+        
       // Create ticket. Redirect back to project
       this.props.ticketCreate(ticket).then(() => {
         if (this.props.successMessage) {
@@ -369,8 +369,7 @@ class CreateTicket extends Component {
                           ? ticketTypes.map(type => {
                               return (
                                 <MenuItem key={type.id} value={type.id}>
-                                  {" "}
-                                  {type.type}{" "}
+                                  {type.type}
                                 </MenuItem>
                               );
                             })
@@ -406,8 +405,7 @@ class CreateTicket extends Component {
                           ? ticketStatus.map(status => {
                               return (
                                 <MenuItem key={status.id} value={status.id}>
-                                  {" "}
-                                  {status.status}{" "}
+                                  {status.status}
                                 </MenuItem>
                               );
                             })
@@ -529,6 +527,7 @@ class CreateTicket extends Component {
                         type="date"
                         margin="normal"
                         style={styles.input}
+                        defaultValue={'dd/mm/YYYY'}
                         value={this.state.selectedDate}
                         onChange={this.handleDateChange}
                         InputLabelProps={{

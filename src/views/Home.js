@@ -29,6 +29,7 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import "../assets/css/main.css";
 import Cookies from "universal-cookie";
 import routes from "../routes.js";
+import { Typography } from "@material-ui/core";
 
 const switchRoutes = (
   <Switch>
@@ -164,6 +165,7 @@ class Home extends React.Component {
     </div>
     ) : (
     <div style={{ width: "100%", position: 'absolute', margin: 'auto', top: '50%', bottom: '0', left: '50%', right: '0' }}>
+      <Typography style={{ color: "#D4D4D4", fontSize: '15px' }}>Loading...</Typography>
       <DashboardSpinner />
     </div>
     )
