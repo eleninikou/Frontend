@@ -164,9 +164,9 @@ class Home extends React.Component {
         </div>
     </div>
     ) : (
-    <div style={{ width: "100%", position: 'absolute', margin: 'auto', top: '50%', bottom: '0', left: '50%', right: '0' }}>
+      <div style={{ width: "100%", textAlign: 'center', position: 'absolute', margin: 'auto', top: '50%', bottom: '0', left: '0', right: '0' }}>
       <Typography style={{ color: "#D4D4D4", fontSize: '15px' }}>Loading...</Typography>
-      <DashboardSpinner />
+      {/* <DashboardSpinner /> */}
     </div>
     )
     )

@@ -23,7 +23,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import TextField from "@material-ui/core/TextField";
 import Avatar from "@material-ui/core/Avatar";
 // Components
-import DashboardSpinner from "../components/spinner/DashboardSpinner";
+import LoadingSpinner from "../components/spinner/LoadingSpinner";
 import { DangerDialogWrapped } from "../components";
 
 const styles = {
@@ -180,7 +180,7 @@ class UserProfile extends Component {
   };
 
   render() {
-    const { classes, isFetching } = this.props;
+    const { classes, isFetching, text } = this.props;
     const { successMessage, errorMessage, user } = this.state;
 
     return (
@@ -215,9 +215,7 @@ class UserProfile extends Component {
               </CardHeader>
               <CardBody>
                 {isFetching ? (
-                  <div style={{ width: "100%", textAlign: "center" }}>
-                    <DashboardSpinner />
-                  </div>
+                  <LoadingSpinner text={text}/>
                 ) : (
                   <GridContainer>
                     <GridItem xs={12} sm={12} md={12}>
@@ -342,6 +340,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => ({
   user: state.auth.user,
   isFetching: state.auth.isFetching,
+  text: state.auth.text,
   successMessage: state.auth.successMessage
 });
 

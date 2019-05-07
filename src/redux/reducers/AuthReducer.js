@@ -36,7 +36,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: true,
-        text: 'Logging you in...'
+        text: 'Logging You In...'
       };
     case LOGIN_SUCCESS:
       return {
@@ -79,7 +79,8 @@ const authReducer = (state = initialState, action) => {
     case GOOGLE_AUTH_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        text: 'Logging You In!'
       };
     case GOOGLE_AUTH_SUCCESS:
       return {
@@ -96,7 +97,8 @@ const authReducer = (state = initialState, action) => {
     case GET_USER_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        text: 'Fetching You!'
       };
     case GET_USER_SUCCESS:
       return {
