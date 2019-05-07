@@ -13,7 +13,9 @@ import Drawer from "@material-ui/core/Drawer";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
+
 // Material UI components
+import Avatar from "@material-ui/core/Avatar";
 import withStyles from "@material-ui/core/styles/withStyles";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
 // Styles
@@ -31,6 +33,7 @@ import together from '../assets/img/NS2R7RJK.png'
 import sitting from '../assets/img/girlexplaining.png'
 import standing from '../assets/img/ZvTjn__9.png'
 import MobileMenu from "../components/login/MobileMenu";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 
 
 const styles = {
@@ -152,7 +155,9 @@ class Login extends Component {
                 alignItems: 'baseline'
               }} >
 
-            <div style={{ width: 'auto'}}>
+            <div style={{ width: 'auto', display: 'flex', alignItems: 'center'}}>
+              <Avatar style={{ backgroundColor: 'white'}}>
+              </Avatar>
               <h1 style={{ marginLeft: '10px', color: 'white'}} > [NAME] </h1>
             </div>
               <div style={{ width: "auto" }} />
@@ -242,7 +247,21 @@ class Login extends Component {
             </GridItem>
           </GridContainer>
         </GridItem>     
-        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: 'rgb(119, 186,193)', height: '10vh' }}>
+        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: 'rgb(119, 186,193)', height: '10vh', display: 'flex', width: '100%', justifyContent: 'space-around', alignItems: 'center'}}>
+         <GridContainer style={{ width: '100%', display: 'flex', alignItems: 'center'}}>
+         <GridItem xs={12} sm={2} md={2} style={{ textAlign: '-webkit-right'}}>
+         <Avatar style={{ backgroundColor: 'white'}}></Avatar>
+         </GridItem>     
+         <GridItem xs={12} sm={8} md={8} style={{ textAlign: 'center'}}>
+          <Typography style={{ fontSize: '12px', color: 'white' }}> Copyright 2019 NAME. All rights reserved.</Typography>
+          <Typography style={{ fontSize: '12px', color: 'white' }}> Bracket <sup>[ ]</sup></Typography>
+
+         </GridItem> 
+         <GridItem xs={12} sm={2} md={2} style={{ display: 'flex'}}>
+          <Avatar style={{ backgroundColor: 'white', marginRight:'15px'}}></Avatar>
+          <Avatar style={{ backgroundColor: 'white'}}></Avatar>
+         </GridItem> 
+         </GridContainer>
         </GridItem>     
 
       </GridContainer>
