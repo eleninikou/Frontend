@@ -87,6 +87,8 @@ class CreateTicket extends Component {
   };
 
   submit = event => {
+    const cookies = new Cookies();
+    var token = cookies.get("token")
     event.preventDefault();
     
     // Check that everything is filled in
@@ -112,7 +114,7 @@ class CreateTicket extends Component {
         };
         
       // Create ticket. Redirect back to project
-      this.props.ticketCreate(ticket).then(() => {
+      this.props.ticketCreate(ticket, token).then(() => {
         if (this.props.successMessage) {
           this.setState({ urls: [] });
           this.props.history.push({
@@ -193,7 +195,7 @@ class CreateTicket extends Component {
         backToProject: true,
         project_id: this.props.location.state.project_id
       });
-      this.props.getProject(this.props.location.state.project_id);
+      this.props.getProject(this.props.location.state.project_id, token);
     } else {
       this.props.getAllProjects(token);
     }
@@ -648,7 +650,7 @@ class CreateTicket extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    ticketCreate: project => dispatch(ticketCreate(project)),
+    ticketCreate: (ticket, token) => dispatch(ticketCreate(ticket, token)),
     getTicketTypes: token => dispatch(getTicketTypes(token)),
     getTicketStatus: token => dispatch(getTicketStatus(token)),
     getAllProjects: token => dispatch(getAllProjects(token)),

@@ -76,7 +76,7 @@ export const getAllTickets = token => {
     }
 };  
 
-  export const ticketCreate = ticket => {
+  export const ticketCreate = (ticket, token) => {
     return async dispatch => {  
       const createTicketSuccess = success => { 
         dispatch ({ type: CREATE_TICKET_SUCCESS, payload: success}); return ticket; 
