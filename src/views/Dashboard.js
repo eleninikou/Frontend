@@ -47,7 +47,7 @@ class Dashboard extends Component {
         this.setState({ activity: activities });
       }
     });
-    this.props.getAllTickets();
+    this.props.getAllTickets(token);
     this.forceUpdate();
   }
 
@@ -231,7 +231,7 @@ Dashboard.propTypes = { classes: PropTypes.object.isRequired };
 const mapDispatchToProps = dispatch => {
   return {
     logout: () => dispatch(logout()),
-    getAllTickets: () => dispatch(getAllTickets()),
+    getAllTickets: token => dispatch(getAllTickets(token)),
     getActivity: token => dispatch(getActivity(token)),
     clearDashboard: () => dispatch(clearDashboard())
   };

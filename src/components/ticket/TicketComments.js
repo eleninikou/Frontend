@@ -96,7 +96,7 @@ class TicketComments extends Component {
                                 id="tooltip-top-start"
                                 title="Delete comment"
                                 placement="top"
-                                onClick={this.handleClickOpen}
+                                onClick={this.handleClickOpen.bind(this)}
                                 classes={{ tooltip: classes.tooltip }}
                               >
                                 <IconButton
