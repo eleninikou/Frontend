@@ -166,7 +166,7 @@ class Login extends Component {
                 <GridItem xs={10} sm={6} md={5} style={{ margin: 'auto'}}>
                   <Typography style={{ fontSize: '28px'}}> [Name] is a Collaboration platform built for every member of your team to simplify your workflow!</Typography>
                   <Typography style={{ fontSize: '18px'}}> Invite Clients and developers to join your projects, create tickets and keep track of your development, plan features and much more! </Typography>
-                  <Button color="success" style={{ width: '200px'}}> Sign Up - it's free!</Button>
+                  <Button color="success" style={{ width: '200px'}} onClick={this.registerForm}> Sign Up - it's free!</Button>
                 </GridItem>
                 <GridItem xs={10} sm={6} md={7} style={{ margin: 'auto'}}>
                   <img src={collab} alt="collab" width="90%" height="auto" />
