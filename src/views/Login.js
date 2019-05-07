@@ -15,6 +15,10 @@ import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 import Avatar from "@material-ui/core/Avatar";
 import withStyles from "@material-ui/core/styles/withStyles";
 import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import Close from "@material-ui/icons/Close";
+
 // Styles
 import {
   whiteColor,
@@ -66,7 +70,8 @@ class Login extends Component {
       title: "Log in",
       btnText: "Sign Up",
       infoText: "Don't have an account yet?",
-      mobileOpen: false
+      mobileOpen: false,
+      display: false
     };
   }
 
@@ -102,6 +107,7 @@ class Login extends Component {
 
   loginForm = () => {
     this.setState({
+      display: true,
       register: false,
       title: "Log in",
       btnText: "Sign Up",
@@ -111,6 +117,7 @@ class Login extends Component {
 
   registerForm = () => {
     this.setState({
+      display: true,
       register: true,
       title: "Register",
       btnText: "Log in",
@@ -126,13 +133,16 @@ class Login extends Component {
     this.setState({ mobileOpen: !this.state.mobileOpen });
   };
 
+  handleClickOpen = () => {
+    this.setState({ display: false})
+  }
+
   render() {
     const { classes, ...rest } = this.props;
-    const { mobileOpen } = this.state;
+    const { mobileOpen, display } = this.state;
 
     return (
-      <GridContainer style={{ margin: '0px !important'}}>
-        <MobileMenu handleDrawerToggle={this.handleDrawerToggle} {...rest} />
+      <GridContainer>
         <GridItem
           xs={12}
           sm={12}
@@ -181,6 +191,7 @@ class Login extends Component {
                 </GridItem>
               </GridContainer>
               </GridItem>
+              {display ?
               <GridItem
                 xs={10}
                 sm={3}
@@ -193,13 +204,34 @@ class Login extends Component {
                 }}
               >
                 <Card>
+                  <div style={{ width: 'auto', display: 'flex', alignSelf: 'flex-end'}}>
+                    <Tooltip
+                      id="tooltip-top-start"
+                      title="Close"
+                      placement="top"
+                      onClick={this.handleClickOpen}
+                      classes={{ tooltip: classes.tooltip }}
+                    >
+                          <IconButton aria-label="Close" className={classes.tableActionButton} >
+                            <Close
+                              style={{ color: 'black' }}
+                              className={
+                                classes.tableActionButtonIcon +
+                                " " +
+                                classes.close
+                              }
+                            />
+                          </IconButton>
+                        </Tooltip>
+                  </div>
                   {this.state.register ? <RegisterForm /> : <LoginForm />}
                 </Card>
               </GridItem>
-
+              : null }
             </Hidden>
 
             <Hidden mdUp implementation="css">
+            <MobileMenu handleDrawerToggle={this.handleDrawerToggle} {...rest} />
               {mobileOpen ? (
                 <div
                   style={{
