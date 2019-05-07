@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { logout } from "../redux/actions/auth/Actions";
 // Components
@@ -8,17 +9,13 @@ import RegisterForm from "../components/forms/register/RegisterForm";
 // Theme components
 import Hidden from "@material-ui/core/Hidden";
 import Card from "../components/theme/Card/Card";
+import Drawer from "@material-ui/core/Drawer";
 import Button from "../components/theme/CustomButtons/Button.jsx";
-import CardBody from "../components/theme/Card/CardBody";
 import GridItem from "../components/theme/Grid/GridItem.jsx";
-import CardIcon from "../components/theme/Card/CardIcon.jsx";
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles";
-// Icons
-import PersonAdd from "@material-ui/icons/PersonAdd";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
 // Styles
 import {
   whiteColor,
@@ -70,7 +67,9 @@ class Login extends Component {
       errorMessage: "",
       title: "Log in",
       btnText: "Sign Up",
-      infoText: "Don't have an account yet?"
+      infoText: "Don't have an account yet?",
+      mobileOpen: false,
+
     };
   }
 
@@ -122,8 +121,17 @@ class Login extends Component {
     });
   };
 
+  handleDrawerToggle = () => {
+    this.setState({ mobileOpen: !this.state.mobileOpen });
+  };
+
+  handleDrawerToggle = () => {
+    this.setState({ mobileOpen: !this.state.mobileOpen });
+  };
+
   render() {
     const { classes, ...rest } = this.props;
+    const { mobileOpen } = this.state;
 
     return (
       <GridContainer >
@@ -163,6 +171,33 @@ class Login extends Component {
               </Card> 
             </GridItem>
           </Hidden>  
+
+          <Hidden mdUp implementation="css">
+              {mobileOpen ? 
+                <div>
+                  <GridItem xs={12} sm={10} md={10} style={{ position: 'fixed', right: '0px', top: '70px', zIndex: 10}}>
+                    <Card>
+                    <CustomTabs
+                    headerColor="success"
+                    tabs={[
+                      {
+                        tabName: 'LOG IN',
+                        tabIcon: '',
+                        tabContent: (<LoginForm/>)
+                      },
+                      {
+                        tabName: 'SIGN UP',
+                        tabIcon: '',
+                        tabContent: (<RegisterForm />)
+                      }
+                    ]} />
+                    </Card> 
+                  </GridItem>
+                </div>
+                : null }
+          </Hidden>    
+
+          {/* </Hidden>   */}
             <GridItem xs={10} sm={10} md={10} style={{ margin: 'auto', justifyContent: 'center', marginTop: '150px'}}>
               <GridContainer>
                 <GridItem xs={10} sm={10} md={5} style={{ margin: 'auto'}}>
@@ -180,9 +215,9 @@ class Login extends Component {
         <GridItem xs={12} sm={12} md={12} >
           <AppInfo />
         </GridItem>
-        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: '#E4E4E4', height: '80vh' }}>
+        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: '#E4E4E4', height: '100vh' }}>
           <GridContainer>
-            <GridItem xs={10} sm={10} md={10} style={{ margin: 'auto', justifyContent: 'center'}}>
+            <GridItem xs={10} sm={10} md={10} style={{ margin: 'auto', justifyContent: 'center', marginTop: '100px'}}>
               <GridContainer >
                 <GridItem xs={12} sm={12} md={5} style={{ margin: 'auto'}}>
                   <Typography style={{ fontSize: '20px', fontWeight: '600'}}> Share ideas and tasks!</Typography>
