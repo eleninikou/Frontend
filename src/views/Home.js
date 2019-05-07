@@ -61,7 +61,8 @@ class Home extends React.Component {
       color: "blue",
       hasImage: true,
       fixedClasses: "dropdown show",
-      mobileOpen: false
+      mobileOpen: false,
+      user: ''
     };
   }
 
@@ -106,9 +107,12 @@ class Home extends React.Component {
     if (!token) {
       this.props.history.push("/");
     }
-
     var user = cookies.get("user");
-    this.props.getUser(user);
+    this.props.getUser(user).then(res => {
+      if(res.user) {
+        this.setState({ user: res.user })
+      }
+    });
   };
 
   componentDidUpdate(e) {
@@ -125,9 +129,11 @@ class Home extends React.Component {
   }
 
   render() {
-    const { user, classes, isFetching, ...rest } = this.props;
+    const { classes, isFetching, ...rest } = this.props;
+    const { user } = this.state;
 
-    return user ? (
+    return (
+      user ? (
       <div className={classes.wrapper}>
         <Sidebar
           routes={routes}
@@ -155,12 +161,13 @@ class Home extends React.Component {
           )}
           {this.getRoute() ? <Footer /> : null}
         </div>
-      </div>
+    </div>
     ) : (
-      <div style={{ width: "100%", textAlign: "center" }}>
-        <DashboardSpinner />
-      </div>
-    );
+    <div style={{ width: "100%", textAlign: "center" }}>
+      <DashboardSpinner />
+    </div>
+    )
+    )
   }
 }
 

@@ -34,21 +34,26 @@ class Dashboard extends Component {
     this.state = {
       page: 0,
       rowsPerPage: 5,
-      activity: this.props.activity
+      activity: this.props.activity,
+      allTickets: this.props.tickets
     };
   }
 
   componentDidMount() {
     const cookies = new Cookies();
     var token = cookies.get("token");
+
     this.props.getActivity(token).then(res => {
       if (res.activity) {
         const activities = res.activity.flatMap(activity => activity);
         this.setState({ activity: activities });
       }
     });
-    this.props.getAllTickets(token);
-    this.forceUpdate();
+    this.props.getAllTickets(token).then(res => {
+      if(res.tickets) {
+        this.setState({ allTickets: res.tickets })
+      }
+    });
   }
 
   shouldComponentUpdate(nextProps) {
@@ -81,8 +86,8 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { classes, allTickets, isFetching } = this.props;
-    const { rowsPerPage, page, activity } = this.state;
+    const { classes, isFetching } = this.props;
+    const { rowsPerPage, page, activity, allTickets } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage);
 
