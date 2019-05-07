@@ -11,6 +11,7 @@ import ContactMail from "@material-ui/icons/ContactMail"
 import Person from "@material-ui/icons/Person"
 import Timeline from "@material-ui/icons/Timeline"
 import Today from "@material-ui/icons/Today"
+import Lock from "@material-ui/icons/Lock"
 
 
 const dashboardRoutes = [
@@ -59,7 +60,7 @@ const dashboardRoutes = [
     {
       path: "/logout",
       name: "LOG OUT",
-      icon: '',
+      icon: Lock,
       layout: "/home"
     },
 ];

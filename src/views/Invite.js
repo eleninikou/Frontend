@@ -49,13 +49,15 @@ class Invite extends Component {
       rowsPerPage: 5,
       backToProject: false,
       isFetching: false,
-      hasError: false
+      hasError: false,
+      token: ''
     };
   }
 
   componentDidMount = () => {
     const cookies = new Cookies();
     var token = cookies.get("token");
+    this.setState({ token })
 
     // If redirected from a specific project
     if (this.props.match.params.id) {
@@ -68,7 +70,7 @@ class Invite extends Component {
           });
         }
       });
-      this.props.getEmails(this.props.match.params.id).then(res => {
+      this.props.getEmails(this.props.match.params.id, token).then(res => {
         this.setState({ emails: this.props.emails });
       });
     } else {
@@ -88,12 +90,12 @@ class Invite extends Component {
         project_role: this.state.project_role
       };
 
-      this.props.invite(invitation).then(() => {
+      this.props.invite(invitation, this.state.token).then(() => {
         if (this.props.successMessage) {
           this.showNotification("tr");
         }
       });
-      this.props.getEmails(this.state.project_id).then(res => {
+      this.props.getEmails(this.state.project_id, this.state.token).then(res => {
         this.setState({ emails: res.emails });
       });
     } else {
@@ -129,11 +131,11 @@ class Invite extends Component {
 
     // Get team and invited emails when selecting projects
     if ([event.target.name] == "project_id") {
-      this.props.getTeam(event.target.value).then(res => {
+      this.props.getTeam(event.target.value, this.state.token).then(res => {
         this.setState({ team: res.team });
       });
 
-      this.props.getEmails(event.target.value).then(res => {
+      this.props.getEmails(event.target.value, this.state.token).then(res => {
         this.setState({ emails: res.emails });
       });
     }
@@ -367,10 +369,10 @@ const mapDispatchToProps = dispatch => {
   return {
     getProjectsByUser: token => dispatch(getProjectsByUser(token)),
     getProject: (id, token) => dispatch(getProject(id, token)),
-    getRoles: () => dispatch(getRoles()),
-    getTeam: id => dispatch(getTeam(id)),
-    invite: invitation => dispatch(invite(invitation)),
-    getEmails: id => dispatch(getEmails(id))
+    getRoles: (token) => dispatch(getRoles(token)),
+    getTeam: (id, token) => dispatch(getTeam(id, token)),
+    invite: (invitation, token) => dispatch(invite(invitation, token)),
+    getEmails: (id, token ) => dispatch(getEmails(id, token))
   };
 };
 

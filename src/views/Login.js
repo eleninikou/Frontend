@@ -171,7 +171,7 @@ class Login extends Component {
               <GridContainer style={{ width: '100%'}}>
                 <GridItem xs={3} sm={3} md={3} style={{ width: "auto", display: "flex", alignItems: "center" }}>
                   <Avatar style={{ backgroundColor: "white" }} />
-                  <h1 style={{ marginLeft: "10px", color: "white", fontFamily: 'Roboto' }}> / i ː z /</h1>
+                  <h1 style={{ marginLeft: "10px", color: "white", fontFamily: 'Roboto', fontSize: '40px' }}> / i ː z /</h1>
                 </GridItem>
                 <GridItem xs={9} sm={9} md={9} style={{ width: "auto", display: "flex", alignItems: "center", justifyContent: 'flex-end' }}>
                       <Button

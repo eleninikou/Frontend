@@ -8,9 +8,7 @@ import { getUser } from "../redux/actions/auth/Actions";
 import Footer from "../components/theme/Footer/Footer.jsx";
 import Sidebar from "../components/theme/Sidebar/Sidebar.jsx";
 import Navbar from "../components/theme/Navbars/Navbar.jsx";
-// Components
-import DashboardSpinner from "../components/spinner/DashboardSpinner";
-import PerfectScrollbar from "perfect-scrollbar";
+
 // Views
 import {
   CreateProject,
@@ -98,9 +96,6 @@ class Home extends React.Component {
   };
 
   componentDidMount = () => {
-    // if (navigator.platform.indexOf("Win") > -1) {
-    //   const ps = new PerfectScrollbar(this.refs.mainPanel);
-    // }
     window.addEventListener("resize", this.resizeFunction);
 
     const cookies = new Cookies();
@@ -166,7 +161,6 @@ class Home extends React.Component {
     ) : (
       <div style={{ width: "100%", textAlign: 'center', position: 'absolute', margin: 'auto', top: '50%', bottom: '0', left: '0', right: '0' }}>
       <Typography style={{ color: "#D4D4D4", fontSize: '15px' }}>Loading...</Typography>
-      {/* <DashboardSpinner /> */}
     </div>
     )
     )

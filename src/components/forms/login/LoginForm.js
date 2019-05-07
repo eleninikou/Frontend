@@ -190,7 +190,7 @@ class LoginForm extends Component {
                     md={12}
                     style={{ textAlign: "center", marginTop: "20px" }}
                   >
-                    {isFetching && text ? <LoginTextSpinner text={text}/> : 
+                    {isFetching && text ? <LoginTextSpinner text={text} /> : 
                     <Typography style={{ color: "#D4D4D4", fontSize: '15px' }}>
                         {errorMessage}
                     </Typography>}

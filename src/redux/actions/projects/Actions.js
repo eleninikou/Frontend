@@ -205,7 +205,7 @@ export const getActivity = (token) => {
 
 
 
-export const getRoles = () => {
+export const getRoles = (token) => {
   return async dispatch => {
     const recieveProject = roles => { 
       dispatch ({ type: GET_ROLES_SUCCESS, payload: roles }); 
@@ -228,7 +228,7 @@ export const getRoles = () => {
 };
 
 
-export const getTeam = id => {
+export const getTeam = (id, token) => {
   return async dispatch => {
     const recieveProject = team => { 
       dispatch ({ type: GET_TEAM_SUCCESS, payload: team }); 
@@ -271,7 +271,7 @@ export const removeFromTeam = (id, token ) => {
 }; 
 
 
-export const invite = invitation => {
+export const invite = (invitation, token)=> {
   return async dispatch => {
     const inviteSuccess = success => { 
       dispatch ({ type: INVITATION_SUCCESS, payload: success }); 
@@ -295,7 +295,7 @@ export const invite = invitation => {
 };
 
 
-export const getEmails = id => {
+export const getEmails = (id, token) => {
   return async dispatch => {
     const inviteSuccess = success => { 
       dispatch ({ type: GET_INVITATIONS_SUCCESS, payload: success }); 
