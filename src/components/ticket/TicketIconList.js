@@ -11,7 +11,7 @@ const TicketIconList = ({ ticket, classes }) => {
     <Typography style={{ color: "grey", marginTop: "25px" }}> Assigned user </Typography>
     <Typography> 
         {ticket.assigned_user ? (
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center'}}>
               <img
                 src={ticket.assigned_user.avatar}
                 alt="user"
@@ -19,13 +19,13 @@ const TicketIconList = ({ ticket, classes }) => {
                   display: "block",
                   width: "30px",
                   height: "30px",
-                  borderRadius: "50%"
+                  marginRight: '10px'
                 }}
               />
-              ticket.assigned_user.name
+              {ticket.assigned_user.name}
             </div>
           ) : (
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center'}}>
               <PersonPin style={{ fontSize: "18px" }} />
               Not assigned yet
             </div>
