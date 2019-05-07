@@ -84,8 +84,10 @@ class DangerDialog extends Component {
   };
 
   removeUserFromTeam = () => {
-    this.props.removeFromTeam(this.props.id).then(() => {
-      this.setSuccess(this.props.successMessageTeam);
+    this.props.removeFromTeam(this.props.id).then(res => {
+      if(res.message) {
+        this.setSuccess(res.message);
+      }
     });
   };
 
@@ -99,7 +101,6 @@ class DangerDialog extends Component {
   };
 
   deleteComment = () => {
-    debugger;
     this.handleClose()
     this.props.commentDelete(this.props.id).then(res => {
       if(res.message) {

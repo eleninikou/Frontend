@@ -32,7 +32,8 @@ class ProjectTeam extends Component {
       page: 0,
       rowsPerPage: 5,
       ticketRowsPerPage: 5,
-      open: false
+      open: false,
+      userId: ''
     };
     this.invitePeople = this.invitePeople.bind(this);
   }
@@ -40,6 +41,14 @@ class ProjectTeam extends Component {
     if (this.props.team) {
       this.setState({ team: this.props.team });
     }
+  };
+
+  handleClickOpen = (userId) => {
+    debugger;
+    this.setState({ 
+      open: true, 
+      userId
+    });
   };
 
   handleChangePage = (event, page) => {
@@ -139,7 +148,7 @@ class ProjectTeam extends Component {
                               id="tooltip-top-start"
                               title="Remove"
                               placement="top"
-                              onClick={this.handleClickOpen}
+                              onClick={() => this.handleClickOpen(person.id, this)}
                               classes={{ tooltip: classes.tooltip }}
                             >
                               <IconButton
@@ -161,7 +170,7 @@ class ProjectTeam extends Component {
                                 "Are you sure you want to remove this user from the team?"
                               }
                               id={person.id}
-                              open={this.state.open}
+                              open={this.state.userId == person.id ? this.state.open : false}
                               onClose={this.handleClose}
                               getSuccess={this.getSuccess.bind(this)}
                             />

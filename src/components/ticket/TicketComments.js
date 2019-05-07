@@ -38,7 +38,6 @@ class TicketComments extends Component {
       open: true, 
       id
     });
-
   };
 
   handleClose = open => {
@@ -94,7 +93,6 @@ class TicketComments extends Component {
                           </GridItem>
                           {comment.user_id === parseInt(user.id) ? (
                             <GridItem xs={12} sm={2} md={2}>
-                            {console.log(comment.id)}
                               <Tooltip
                                 id="tooltip-top-start"
                                 title="Delete comment"
