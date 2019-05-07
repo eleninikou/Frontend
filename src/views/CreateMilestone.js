@@ -175,7 +175,7 @@ class CreateMilestone extends Component {
             close
           />
         ) : null}
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="warning">
               <h4 className={classes.cardTitleWhite}>Create new milestone</h4>

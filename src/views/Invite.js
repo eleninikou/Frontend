@@ -16,6 +16,7 @@ import Table from "../components/theme/Table/Table.jsx";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import Snackbar from "../components/theme/Snackbar/Snackbar.jsx";
 import CardBody from "../components/theme/Card/CardBody.jsx";
+import CardIcon from "../components/theme/Card/CardIcon.jsx";
 import GridItem from "../components/theme/Grid/GridItem.jsx";
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
@@ -187,7 +188,10 @@ class Invite extends Component {
               </CardHeader>
               <CardBody>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={6}>
+                <GridItem xs={6} sm={6} md={6}>
+                <GridContainer>
+
+                  <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl}>
                       {hasError && !this.state.project_id && (
                         <FormHelperText id="project_id">
@@ -232,7 +236,7 @@ class Invite extends Component {
                       </TextField>
                     </FormControl>
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={6}>
+                  <GridItem xs={12} sm={12} md={12}>
                     <FormControl className={classes.formControl}>
                       {hasError && !this.state.project_role && (
                         <FormHelperText id="project_role">
@@ -286,26 +290,17 @@ class Invite extends Component {
                       />
                     </FormControl>
                   </GridItem>
-                </GridContainer>
-              </CardBody>
-              <CardFooter style={{ justifyContent: "flex-end" }}>
-                <Button
-                  type="submit"
-                  color="info"
-                  disabled={hasError ? true : false}
-                >
-                  Invite
-                </Button>
-              </CardFooter>
-            </form>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+                  </GridContainer>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={6}>
           <Card>
-            <CardHeader color="info">
+            <CardHeader>
+            <CardIcon color="info" style={{ display: "flex" }}>
+
               <h4 className={classes.cardTitleWhite}>
                 <People />
               </h4>
+              </CardIcon>
             </CardHeader>
             <CardBody>
               {team ? (
@@ -349,6 +344,20 @@ class Invite extends Component {
                 ) : null
               ) : null}
             </CardBody>
+          </Card>
+        </GridItem>
+                </GridContainer>
+              </CardBody>
+              <CardFooter style={{ justifyContent: "flex-end" }}>
+                <Button
+                  type="submit"
+                  color="info"
+                  disabled={hasError ? true : false}
+                >
+                  Invite
+                </Button>
+              </CardFooter>
+            </form>
           </Card>
         </GridItem>
         {backToProject ? (

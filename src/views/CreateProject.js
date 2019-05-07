@@ -70,7 +70,7 @@ class CreateProject extends Component {
 
     return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12}>
+        <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="success">
               <h4 className={classes.cardTitleWhite}>Create new project</h4>
