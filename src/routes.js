@@ -15,7 +15,7 @@ import Today from "@material-ui/icons/Today"
 
 const dashboardRoutes = [
     {
-      path: "/activty",
+      path: "/activity",
       name: "Activity",
       icon: Today,
       component: Dashboard,

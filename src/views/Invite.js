@@ -163,9 +163,6 @@ class Invite extends Component {
         ? getUnique(projects.projects, "id")
         : null
       : null;
-    console.log(yourProjects);
-    console.log(projects);
-    console.log(project);
 
     return (
       <GridContainer>
