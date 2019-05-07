@@ -202,9 +202,11 @@ Login.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string
 };
+
 const mapDispatchToProps = dispatch => {
   return { logout: () => dispatch(logout()) };
 };
+
 
 export default withRouter(
   connect(

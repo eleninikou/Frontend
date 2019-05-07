@@ -26,7 +26,7 @@ const initialState = {
   email: "",
   existing: false,
   isFetching: false,
-  isAuthenticated: false,
+  text: '',
   errorMessage: null
 };
 
@@ -36,7 +36,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: true,
-        isAuthenticated: false
+        text: 'Logging you in...'
       };
     case LOGIN_SUCCESS:
       return {
@@ -61,7 +61,8 @@ const authReducer = (state = initialState, action) => {
     case REGISTER_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        text: 'Creating Account...'
       };
     case REGISTER_SUCCESS:
       return {

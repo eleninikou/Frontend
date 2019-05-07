@@ -22,7 +22,7 @@ import Timeline from "@material-ui/icons/Timeline";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 // Material UI components
 import withStyles from "@material-ui/core/styles/withStyles";
-import DashboardSpinner from "../components/spinner/DashboardSpinner";
+import LoadingSpinner from "../components/spinner/LoadingSpinner";
 // Style
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
@@ -146,7 +146,7 @@ class Project extends Component {
   };
 
   render() {
-    const { classes, team, project, tickets, isFetching } = this.props;
+    const { classes, team, project, tickets, isFetching, text } = this.props;
     const { edit, successMessage, user, milestones } = this.state;
 
     const admins = team
@@ -162,9 +162,7 @@ class Project extends Component {
       : null;
 
     return isFetching ? (
-      <div style={{ width: "100%", textAlign: "center" }}>
-        <DashboardSpinner />
-      </div>
+      <LoadingSpinner text={text}/>
     ) : (
       <div>
         <Snackbar
@@ -301,6 +299,7 @@ const mapStateToProps = state => ({
   team: state.project.team,
   tickets: state.project.tickets,
   isFetching: state.project.isFetching,
+  text: state.project.text,
   successMessage: state.project.successMessage
 });
 

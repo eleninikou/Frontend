@@ -28,7 +28,6 @@ import {
   GET_INVITATIONS_FAILURE,
   REMOVE_FROM_TEAM_SUCCESS,
   REMOVE_FROM_TEAM_FAILURE,
-  CLEAR_DASHBOARD
 } from "../actions/projects/Action-types";
 
 const initialState = {
@@ -42,6 +41,7 @@ const initialState = {
   allProjects: [],
   activity: [],
   isFetching: false,
+  text: '',
   errorMessage: "",
   successMessage: ""
 };
@@ -51,7 +51,8 @@ const ProjectReducer = (state = initialState, action) => {
     case GET_PROJECT_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        text: 'Fetching Project...'
       };
     case GET_PROJECT_SUCCESS:
       return {
@@ -87,7 +88,9 @@ const ProjectReducer = (state = initialState, action) => {
     case GET_ALL_PROJECTS_USER_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        text: 'Fetching Your Projects...'
+
       };
     case GET_ALL_PROJECTS_USER_SUCCESS:
       return {
@@ -143,7 +146,8 @@ const ProjectReducer = (state = initialState, action) => {
     case GET_ACTIVITY_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        text: 'Fetching Latest Activity...'
       };
     case GET_ACTIVITY_SUCCESS:
       return {
@@ -221,12 +225,6 @@ const ProjectReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         errorMessage: action.message
-      };
-    case CLEAR_DASHBOARD:
-      return {
-        ...state,
-        isFetching: false,
-        activity: []
       };
     default:
       return state;

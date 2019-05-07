@@ -1,26 +1,22 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-
 import { connect } from "react-redux";
 import {
   register,
   googleLogin,
   acceptInvitation
 } from "../../../redux/actions/auth/Actions";
-
 import Cookies from "universal-cookie";
 import GoogleLogin from "react-google-login";
-
 import GridItem from "../../theme/Grid/GridItem.jsx";
 import CardBody from "../../theme/Card/CardBody";
 import GridContainer from "../../theme/Grid/GridContainer.jsx";
-
 // Material UI
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
 import { FormControl } from "@material-ui/core";
-
+import LoginTextSpinner from "../../spinner/LoginTextSpinner";
 // Style
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
@@ -45,7 +41,7 @@ class RegisterForm extends Component {
     if (!response.error) {
       this.props.googleLogin(response.profileObj).then(res => {
         if (res.success) {
-          this.props.history.push("/home/dashboard");
+          this.props.history.push("/home/activity");
         } else {
           this.setState({
             errorMessage: "Could not log in, show error message"
@@ -75,7 +71,7 @@ class RegisterForm extends Component {
           if (this.state.invitation) {
             this.props.redirect(this.state.invitation, true);
           } else {
-            this.props.history.push("/home/dashboard");
+            this.props.history.push("/home/activity");
           }
         } else {
           this.setState({
@@ -98,7 +94,7 @@ class RegisterForm extends Component {
   };
 
   render() {
-    const { classes, email } = this.props;
+    const { classes, email, isFetching, text, errorMessage } = this.props;
 
     return (
       <GridContainer>
@@ -180,14 +176,13 @@ class RegisterForm extends Component {
                   </FormControl>
                 </GridItem>
               </form>
-              {!this.state.invitation ? (
-                <div>
                   <GridItem
                     xs={12}
                     sm={12}
-                    md={8}
+                    md={12}
                     style={{ textAlign: "center", margin: "auto" }}
-                  >
+                    >
+                  {!this.state.invitation ? (
                     <FormControl className={classes.formControl}>
                       <GoogleLogin
                         clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
@@ -197,9 +192,16 @@ class RegisterForm extends Component {
                         width="100%"
                       />
                     </FormControl>
+                  ) : null}
                   </GridItem>
-                </div>
-              ) : null}
+                  <GridItem
+                    xs={12}
+                    sm={12}
+                    md={12}
+                    style={{ textAlign: "center", marginTop: "20px" }}
+                  >
+                    {isFetching ? <LoginTextSpinner text={text}/> : errorMessage}
+                  </GridItem>
               <GridItem
                 xs={12}
                 sm={12}
@@ -224,9 +226,15 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+const mapStateToProps = state => ({
+  isFetching: state.auth.isFetching,
+  text: state.auth.text,
+  errorMessage: state.auth.errorMessage
+});
+
 export default withRouter(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )(withStyles(dashboardStyle)(RegisterForm))
 );

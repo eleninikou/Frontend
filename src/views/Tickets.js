@@ -27,7 +27,7 @@ import FormControl from "@material-ui/core/FormControl";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 //Components
 import TicketsTable from "../components/ticket/TicketsTable";
-import DashboardSpinner from "../components/spinner/DashboardSpinner";
+import LoadingSpinner from "../components/spinner/LoadingSpinner";
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import Cookies from "universal-cookie";
@@ -96,7 +96,7 @@ class Tickets extends Component {
   };
 
   render() {
-    const { classes, ticketStatus, ticketTypes, allProjects } = this.props;
+    const { classes, ticketStatus, ticketTypes, allProjects, text, isFetching } = this.props;
     const {
       status_id,
       type_id,
@@ -124,6 +124,9 @@ class Tickets extends Component {
       : tickets;
 
     return (
+        isFetching ? (
+            <LoadingSpinner text={text}/>
+          ) : (
       <GridContainer>
         <Snackbar
           place="tr"
@@ -250,15 +253,7 @@ class Tickets extends Component {
               </GridItem>
             </CardHeader>
             <CardBody>
-              {this.props.isFetching ? (
-                <div style={{ width: "100%", textAlign: "center" }}>
-                  <DashboardSpinner />
-                </div>
-              ) : (
-                <div>
-                  <TicketsTable tickets={filteredTickets} classes={classes} />
-                </div>
-              )}
+              <TicketsTable tickets={filteredTickets} classes={classes} />
             </CardBody>
             <CardFooter style={{ justifyContent: "flex-end" }}>
               <Button color="primary" onClick={this.createNewTicket}>
@@ -268,6 +263,7 @@ class Tickets extends Component {
           </Card>
         </GridItem>
       </GridContainer>
+      )
     );
   }
 }
@@ -286,7 +282,8 @@ const mapStateToProps = state => ({
   ticketStatus: state.ticket.ticketStatus,
   ticketTypes: state.ticket.ticketTypes,
   allProjects: state.project.allProjects,
-  isFetching: state.ticket.isFetching
+  isFetching: state.ticket.isFetching,
+  text: state.ticket.text
 });
 
 export default withRouter(

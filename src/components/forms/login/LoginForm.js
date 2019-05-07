@@ -11,7 +11,7 @@ import {
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
-import { FormControl } from "@material-ui/core";
+import { FormControl, Typography } from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 // Theme components
 import GridContainer from "../../theme/Grid/GridContainer.jsx";
@@ -22,7 +22,7 @@ import Cookies from "universal-cookie";
 import GoogleLogin from "react-google-login";
 // Styles
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
-import LoginSpinner from "../../spinner/LoginSpinner";
+import LoginTextSpinner from "../../spinner/LoginTextSpinner";
 
 class LoginForm extends Component {
   constructor(props) {
@@ -92,7 +92,7 @@ class LoginForm extends Component {
   };
 
   render() {
-    const { classes, isFetching, errorMessage } = this.props;
+    const { classes, isFetching, errorMessage, text } = this.props;
     const { hasError, email, password } = this.state;
 
     return (
@@ -190,7 +190,10 @@ class LoginForm extends Component {
                     md={12}
                     style={{ textAlign: "center", marginTop: "20px" }}
                   >
-                    {isFetching ? <LoginSpinner /> : errorMessage}
+                    {isFetching ? <LoginTextSpinner text={text}/> : 
+                    <Typography style={{ color: "#D4D4D4", fontSize: '15px' }}>
+                        {errorMessage}
+                    </Typography>}
                   </GridItem>
                 </div>
               ) : null}
@@ -212,6 +215,7 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => ({
   isFetching: state.auth.isFetching,
+  text: state.auth.text,
   errorMessage: state.auth.errorMessage
 });
 

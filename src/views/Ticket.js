@@ -27,6 +27,8 @@ import {
   AddComment
 } from "../components";
 import DashboardSpinner from "../components/spinner/DashboardSpinner";
+import LoadingSpinner from "../components/spinner/LoadingSpinner";
+
 // Icon
 import Edit from "@material-ui/icons/Edit";
 import Comment from "@material-ui/icons/Comment";
@@ -41,6 +43,7 @@ class Ticket extends Component {
     super(props);
     this.state = {
       ticket: "",
+      comments: [],
       user: "",
       edit: "",
       ButtonText: "Update Ticket",
@@ -60,12 +63,18 @@ class Ticket extends Component {
 
     // Fetch ticket and set to state
     this.props.getTicket(this.props.match.params.id, token).then(res => {
-      if (!res.ticket)
+      if (!res.ticket) {
         // If no ticket, redirect with notification message
         this.props.history.push({
           pathname: "/home/tickets",
           state: { errorMessage: "There is no ticket with that id" }
         });
+      } else {
+        this.setState({ 
+          ticket: res.ticket,
+          comments: res.comments
+        })
+      }
     });
 
     // Notification bar
@@ -176,8 +185,7 @@ class Ticket extends Component {
       team,
       milestones,
       isFetching,
-      comments,
-      ticket,
+      text,
       description,
       user,
       images
@@ -190,7 +198,9 @@ class Ticket extends Component {
       ButtonTextComment,
       successMessage,
       CommentText,
-      showComments
+      showComments,
+      ticket,
+      comments
     } = this.state;
 
     // To display lightgallery images
@@ -216,21 +226,18 @@ class Ticket extends Component {
         />
 
         {isFetching ? (
-          <div style={{ width: "100%", textAlign: "center" }}>
-            <DashboardSpinner />
-          </div>
+          <LoadingSpinner text={text}/>
         ) : (
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
-              <Card>
                 {ticket ? (
+              <Card>
                   <div>
                     <CardHeader color="primary">
                       <h4
                         className={classes.cardTitleWhite}
                         style={{ fontSize: "2em" }}
                       >
-                        {" "}
                         Ticket | {ticket.title}{" "}
                       </h4>
                       <h4 className={classes.cardTitleWhite}>
@@ -290,12 +297,10 @@ class Ticket extends Component {
                       ) : null}
                     </CardFooter>
                   </div>
-                ) : (
-                  <div style={{ width: "100%", textAlign: "center" }}>
-                    <DashboardSpinner />
-                  </div>
-                )}
               </Card>
+                ) : (
+                    <LoadingSpinner text={text}/>
+                )}
             </GridItem>
           </GridContainer>
         )}
@@ -339,7 +344,7 @@ class Ticket extends Component {
         ) : null}
 
         {/* Display Comments */}
-        {showComments || addComment ? (
+        {(!isFetching && showComments) || (!isFetching && addComment) ? (
           <Card>
             <CardHeader
               style={{
@@ -396,6 +401,7 @@ const mapStateToProps = state => ({
   team: state.ticket.team,
   milestones: state.ticket.milestones,
   isFetching: state.ticket.isFetching,
+  text: state.ticket.text,
   user: state.auth.user,
   comments: state.ticket.comments,
   description: state.ticket.description,

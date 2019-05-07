@@ -24,7 +24,8 @@ import LibraryBooks from "@material-ui/icons/LibraryBooks";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 // Components
 import ProjectsTable from "../components/project/ProjectsTable";
-import DashboardSpinner from "../components/spinner/DashboardSpinner";
+import LoadingSpinner from "../components/spinner/LoadingSpinner";
+
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import Cookies from "universal-cookie";
@@ -113,6 +114,7 @@ class Projects extends Component {
         : projects;
 
     const { errorMessage, successMessage } = this.state;
+    const { isFetching, text } = this.props
 
     return (
       <GridContainer>
@@ -139,15 +141,14 @@ class Projects extends Component {
         )}
         <GridItem xs={12} sm={12} md={12}>
           <GridContainer>
+          {isFetching ? (
+              <LoadingSpinner text={text}/>
+            ) : (
             <Card>
-              <CardHeader
-                style={{ display: "flex", justifyContent: "space-between" }}
-              >
+              <CardHeader style={{ display: "flex", justifyContent: "space-between" }}>
                 <div>
                   <CardIcon color="success" style={{ display: "flex" }}>
-                    <LibraryBooks
-                      style={{ color: "white", marginRight: "10px" }}
-                    />
+                    <LibraryBooks style={{ color: "white", marginRight: "10px" }} />
                     <h4 className={this.props.classes.cardTitleWhite}>
                       Projects
                     </h4>
@@ -186,29 +187,22 @@ class Projects extends Component {
                 </div>
               </CardHeader>
               <CardBody>
-                {this.props.isFetching ? (
-                  <div style={{ width: "100%", textAlign: "center" }}>
-                    <DashboardSpinner />
-                  </div>
-                ) : (
-                  <div>
-                    <ProjectsTable
-                      projects={filtredProjects}
-                      isFetching={this.props.isFetching}
-                      classes={this.props.classes}
-                    />
-                  </div>
-                )}
+                <ProjectsTable
+                  projects={filtredProjects}
+                  isFetching={this.props.isFetching}
+                  classes={this.props.classes}
+                />
                 <CardFooter style={{ justifyContent: "flex-end" }}>
                   <Button
                     color="success"
                     onClick={this.createNewProject.bind(this)}
-                  >
+                    >
                     Create new Project
                   </Button>
                 </CardFooter>
               </CardBody>
             </Card>
+            )}
           </GridContainer>
         </GridItem>
       </GridContainer>
@@ -222,7 +216,8 @@ const mapDispatchToProps = dispatch => {
 
 const mapStateToProps = state => ({
   allProjects: state.project.allProjects,
-  isFetching: state.project.isFetching
+  isFetching: state.project.isFetching,
+  text: state.project.text
 });
 
 export default withRouter(

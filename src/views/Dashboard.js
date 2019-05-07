@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 // Redux
 import { connect } from "react-redux";
 import { getAllTickets } from "../redux/actions/tickets/Actions";
-import { getActivity, clearDashboard } from "../redux/actions/projects/Actions";
+import { getActivity } from "../redux/actions/projects/Actions";
 import { logout } from "../redux/actions/auth/Actions";
 // Theme components
 import GridItem from "../components/theme/Grid/GridItem.jsx";
@@ -27,6 +27,7 @@ import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboa
 // Components
 import DashboardSpinner from "../components/spinner/DashboardSpinner";
 import Cookies from "universal-cookie";
+import LoadingSpinner from "../components/spinner/LoadingSpinner";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -63,10 +64,6 @@ class Dashboard extends Component {
     return true;
   }
 
-  componentWillUnmount() {
-    this.setState({ activity: [] });
-  }
-
   goToTicket(id) {
     this.props.history.push(`/home/ticket/${id}`);
   }
@@ -86,15 +83,13 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { classes, isFetching } = this.props;
+    const { classes, isFetching, text } = this.props;
     const { rowsPerPage, page, activity, allTickets } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage);
 
     return isFetching ? (
-      <div style={{ width: "100%", textAlign: "center" }}>
-        <DashboardSpinner />
-      </div>
+      <LoadingSpinner text={text}/>
     ) : (
       <div>
         <GridContainer>
@@ -238,14 +233,14 @@ const mapDispatchToProps = dispatch => {
     logout: () => dispatch(logout()),
     getAllTickets: token => dispatch(getAllTickets(token)),
     getActivity: token => dispatch(getActivity(token)),
-    clearDashboard: () => dispatch(clearDashboard())
   };
 };
 
 const mapStateToProps = state => ({
   allTickets: state.ticket.allTickets,
   activity: state.project.activity,
-  isFetching: state.project.isFetching
+  isFetching: state.project.isFetching,
+  text: state.project.text
 });
 
 export default withRouter(

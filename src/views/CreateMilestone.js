@@ -181,7 +181,7 @@ class CreateMilestone extends Component {
               <h4 className={classes.cardTitleWhite}>Create new milestone</h4>
             </CardHeader>
             {isFetching ? (
-              <div style={{ width: "100%", textAlign: "center" }}>
+              <div style={{ width: "100%", position: 'absolute', margin: 'auto', top: '50%', bottom: '0', left: '50%', right: '0' }}>
                 <DashboardSpinner />
               </div>
             ) : allProjects.length || project ? (

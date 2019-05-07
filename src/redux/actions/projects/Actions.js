@@ -28,7 +28,6 @@ import {
   GET_INVITATIONS_FAILURE,
   REMOVE_FROM_TEAM_SUCCESS,
   REMOVE_FROM_TEAM_FAILURE,
-  CLEAR_DASHBOARD
 } from './Action-types';
 
 import Cookies from 'universal-cookie';
@@ -316,9 +315,3 @@ export const getEmails = id => {
     } catch (error) { dispatch ({ type: GET_INVITATIONS_FAILURE, message: 'Could not fetch emails' }); return error;  }
   }
 };
-
-export const clearDashboard = () => {
-  return async dispatch => {
-    dispatch({ type: CLEAR_DASHBOARD })
-  }
-}

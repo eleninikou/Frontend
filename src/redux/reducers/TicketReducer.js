@@ -10,6 +10,7 @@ import {
   GET_TICKET_STATUS_FAILURE,
   UPDATE_TICKET_SUCCESS,
   UPDATE_TICKET_FAILURE,
+  GET_TICKET_REQUEST,
   GET_TICKET_SUCCESS,
   GET_TICKET_FAILURE,
   DELETE_TICKET_SUCCESS,
@@ -32,6 +33,7 @@ const initialState = {
   ticketStatus: [],
   allTickets: [],
   isFetching: false,
+  text: '',
   errorMessage: null,
   succesMessage: "",
   url: ""
@@ -39,6 +41,12 @@ const initialState = {
 
 const TicketReducer = (state = initialState, action) => {
   switch (action.type) {
+    case GET_TICKET_REQUEST:
+    return {
+      ...state,
+      isFetching: true,
+      text: 'Fetching Ticket...'
+    };
     case GET_TICKET_SUCCESS:
       return {
         ...state,
@@ -59,7 +67,8 @@ const TicketReducer = (state = initialState, action) => {
     case GET_ALL_TICKETS_USER_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        text: 'Fetching Your Tickets'
       };
     case GET_ALL_TICKETS_USER_SUCCESS:
       return {

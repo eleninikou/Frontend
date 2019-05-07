@@ -141,7 +141,7 @@ class AcceptInvitation extends Component {
           <AppInfo />
           <GridItem xs={12} sm={12} md={4}>
             {isFetching ? (
-              <div style={{ width: "100%", textAlign: "center" }}>
+              <div style={{ width: "100%", position: 'absolute', margin: 'auto', top: '50%', bottom: '0', left: '50%', right: '0' }}>
                 <DashboardSpinner />
               </div>
             ) : invitedUserEmail ? (

@@ -15,6 +15,7 @@ const initialState = {
   milestones: [],
   tickets: [],
   isFetching: false,
+  text: '',
   errorMessage: null,
   successMessage: null
 };
@@ -50,7 +51,8 @@ const MilestoneReducer = (state = initialState, action) => {
     case GET_MILESTONE_REQUEST:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        text: 'Fetching Milestone...'
       };
     case GET_MILESTONE_SUCCESS:
       return {

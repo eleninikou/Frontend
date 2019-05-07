@@ -96,8 +96,7 @@ class CreateTicket extends Component {
       this.state.type_id &&
       this.state.status_id &&
       this.state.project_id &&
-      this.state.priority &&
-      this.state.selectedDate
+      this.state.priority 
     ) {
       const ticket = {
         title: this.state.title,
@@ -524,13 +523,7 @@ class CreateTicket extends Component {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
-                      {hasError && !this.state.due_date && (
-                        <FormHelperText>Please select due date!</FormHelperText>
-                      )}
                       <TextField
-                        error={
-                          hasError && !this.state.selectedDate ? true : false
-                        }
                         id="date"
                         label="Due date"
                         type="date"

@@ -19,7 +19,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 // Components
 import MilestonesTable from "../components/milestone/MilestonesTable";
-import DashboardSpinner from "../components/spinner/DashboardSpinner";
+import LoadingSpinner from "../components/spinner/LoadingSpinner";
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import Cookies from "universal-cookie";
@@ -79,6 +79,7 @@ class Milestones extends Component {
 
   render() {
     const milestones = this.props.milestones.flatMap(milestone => milestone);
+    const {isFetching } = this.props
     return (
       <GridContainer>
         {this.state.errorMessage ? (
@@ -102,6 +103,10 @@ class Milestones extends Component {
             close
           />
         )}
+
+      {isFetching ? (
+          <LoadingSpinner text={'Fetching Milestones'}/>
+              ) : (
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader>
@@ -113,27 +118,22 @@ class Milestones extends Component {
               </CardIcon>
             </CardHeader>
             <CardBody>
-              {this.props.isFetching ? (
-                <div style={{ width: "100%", textAlign: "center" }}>
-                  <DashboardSpinner />
-                </div>
-              ) : (
                 <MilestonesTable
                   milestones={milestones ? milestones : null}
                   classes={this.props.classes}
                 />
-              )}
               <CardFooter style={{ justifyContent: "flex-end" }}>
                 <Button
                   color="warning"
                   onClick={this.createNewMilestone.bind(this)}
-                >
+                  >
                   Create new Milestone
                 </Button>
               </CardFooter>
             </CardBody>
           </Card>
         </GridItem>
+        )}
       </GridContainer>
     );
   }

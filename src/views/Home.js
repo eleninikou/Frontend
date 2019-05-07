@@ -24,7 +24,7 @@ import {
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
-import image from "../assets/img/sidebar-2.jpg";
+import image from '../assets/img/NS2R7RJK.png'
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import "../assets/css/main.css";
 import Cookies from "universal-cookie";
@@ -163,7 +163,7 @@ class Home extends React.Component {
         </div>
     </div>
     ) : (
-    <div style={{ width: "100%", textAlign: "center" }}>
+    <div style={{ width: "100%", position: 'absolute', margin: 'auto', top: '50%', bottom: '0', left: '50%', right: '0' }}>
       <DashboardSpinner />
     </div>
     )

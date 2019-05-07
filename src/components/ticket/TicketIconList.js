@@ -5,7 +5,7 @@ import PersonPin from "@material-ui/icons/PersonPin";
 import Typography from "@material-ui/core/Typography";
 
 
-const TicketIconList = ({ ticket, classes }) => {
+const TicketIconList = ({ ticket }) => {
   return ticket ? (
     <div>
     <Typography style={{ color: "grey", marginTop: "25px" }}> Assigned user </Typography>
