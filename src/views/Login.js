@@ -139,7 +139,7 @@ class Login extends Component {
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
           />
-        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: '#F4CCCC', height: '90vh', padding: '0px', margin: '0px' }}>
+        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: 'rgb(119, 186,193)', height: '90vh', padding: '0px', margin: '0px' }}>
           <GridContainer >
           <Hidden smDown implementation="css">
             <GridItem xs={12} sm={12} md={12} style={{
@@ -153,15 +153,15 @@ class Login extends Component {
               }} >
 
             <div style={{ width: 'auto'}}>
-              <h1 style={{ marginLeft: '10px'}} > [NAME] </h1>
+              <h1 style={{ marginLeft: '10px', color: 'white'}} > [NAME] </h1>
             </div>
               <div style={{ width: "auto" }} />
               <ul className="Menu" style={{ padding: '0px', margin: '0px'}}>
                 <li onClick={this.loginForm}>
-                  <Button color="success" style={{ backgroundColor: 'transparent', border: '1px solid black', boxShadow: 'none'}}> Log In </Button>
+                  <Button style={{ backgroundColor: 'transparent', border: '1px solid black', boxShadow: 'none', color: 'black'}}> Log In </Button>
                 </li>
                 <li onClick={this.registerForm}>
-                  <Button> Sign Up </Button>
+                  <Button color="success" style={{ color: 'black'}}> Sign Up </Button>
                 </li>
               </ul>
             </GridItem>
@@ -201,9 +201,9 @@ class Login extends Component {
             <GridItem xs={10} sm={10} md={10} style={{ margin: 'auto', justifyContent: 'center', marginTop: '150px'}}>
               <GridContainer>
                 <GridItem xs={10} sm={10} md={5} style={{ margin: 'auto'}}>
-                  <Typography style={{ fontSize: '28px'}}> [Name] is a Collaboration platform built for every member of your team to simplify your workflow!</Typography>
+                  <Typography style={{ fontSize: '28px', fontWeight: '600'}}> [Name] is a Collaboration platform built for every member of your team to simplify your workflow!</Typography>
                   <Typography style={{ fontSize: '18px'}}> Invite Clients and developers to join your projects, create tickets and keep track of your development, plan features and much more! </Typography>
-                  <Button color="success" style={{ width: '200px'}} onClick={this.registerForm}> Sign Up - it's free!</Button>
+                  <Button color="success" style={{ width: '200px', color: 'black'}} onClick={this.registerForm}> Sign Up - it's free!</Button>
                 </GridItem>
                 <GridItem xs={10} sm={10} md={7} style={{ margin: 'auto'}}>
                   <img src={collab} alt="collab" width="90%" height="auto" />
@@ -212,26 +212,39 @@ class Login extends Component {
             </GridItem>
           </GridContainer>
         </GridItem>
-        <GridItem xs={12} sm={12} md={12} >
-          <AppInfo />
+        <GridItem xs={12} sm={10} md={10} style={{ margin: 'auto', justifyContent: 'center'}}>
+         <GridContainer>
+          <GridItem xs={10} sm={10} md={3} style={{ margin: 'auto'}}>
+            <Typography style={{ fontSize: '22px', fontWeight: '600'}}>Built for Developers,</Typography>
+            <Typography style={{ fontSize: '22px', fontWeight: '600'}}>Product Managers,</Typography>
+            <Typography style={{ fontSize: '22px', fontWeight: '600'}}>and UX Designers,</Typography>
+            <div style={{ width: '30%', height: '10px', backgroundColor: 'rgb(209, 0, 83)'}}></div>
+          </GridItem>
+          <GridItem xs={10} sm={10} md={9} style={{ margin: 'auto'}}>
+            <AppInfo />
+          </GridItem>
+          </GridContainer>
         </GridItem>
-        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: '#E4E4E4', height: '100vh' }}>
+        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: '#E4E4E4', height: '80vh' }}>
           <GridContainer>
-            <GridItem xs={10} sm={10} md={10} style={{ margin: 'auto', justifyContent: 'center', marginTop: '100px'}}>
+            <GridItem xs={10} sm={10} md={10} style={{ margin: 'auto', justifyContent: 'center', marginTop: '10px'}}>
               <GridContainer >
-                <GridItem xs={12} sm={12} md={5} style={{ margin: 'auto'}}>
+                <GridItem xs={12} sm={12} md={4} style={{ margin: 'auto'}}>
                   <Typography style={{ fontSize: '20px', fontWeight: '600'}}> Share ideas and tasks!</Typography>
                   <Typography style={{ fontSize: '18px', }}> Use [ NAME ] to speed up collaboration, communication, and idea exchange. Comment on each other's tickets, upload images and report bugs with ease.</Typography>
                 </GridItem>
                 <GridItem xs={12} sm={12} md={7} style={{ margin: 'auto', position: 'relative'}}>
                     <img src={together} alt="collab" width="100%" height="auto"  />
-                      <img src={sitting} alt="collab" width="45%" height="auto" style={{ position: 'absolute', right: '0', bottom: '20%', height: '60%', width: 'auto' }} />
-                      <img src={standing} alt="collab" width="45%" height="auto" style={{ position: 'absolute', left: '0', bottom: '20%', height: '60%', width: 'auto' }} />
+                      <img src={sitting} alt="collab" width="55%" height="auto" style={{ position: 'absolute', right: '0', bottom: '10%', height: '60%', width: 'auto' }} />
+                      <img src={standing} alt="collab" width="55%" height="auto" style={{ position: 'absolute', left: '0', bottom: '10%', height: '60%', width: 'auto' }} />
                 </GridItem>
               </GridContainer>
             </GridItem>
           </GridContainer>
-        </GridItem>          
+        </GridItem>     
+        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: 'rgb(119, 186,193)', height: '10vh' }}>
+        </GridItem>     
+
       </GridContainer>
     );
   }

@@ -73,7 +73,7 @@ class Invite extends Component {
       });
     } else {
       // From dashboard. Get all projects
-      this.props.getProjectsByUser(token);
+      this.props.getProjectsByUser(token)
     }
     this.props.getRoles();
   };
