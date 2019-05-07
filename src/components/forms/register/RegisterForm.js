@@ -109,7 +109,7 @@ class RegisterForm extends Component {
                 style={{ width: "100%", textAlign: "center" }}
                 onSubmit={this.submit}
               >
-                <GridItem xs={12} sm={12} md={8} style={{ margin: "auto" }}>
+                <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
                     <TextField
                       name="name"
@@ -122,7 +122,7 @@ class RegisterForm extends Component {
                     />
                   </FormControl>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={8} style={{ margin: "auto" }}>
+                <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
                     <TextField
                       disabled={email ? true : false}
@@ -136,7 +136,7 @@ class RegisterForm extends Component {
                     />
                   </FormControl>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={8} style={{ margin: "auto" }}>
+                <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
                     <TextField
                       name="password"
@@ -149,7 +149,7 @@ class RegisterForm extends Component {
                     />
                   </FormControl>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={8} style={{ margin: "auto" }}>
+                <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
                     <TextField
                       name="repeatPassword"
@@ -162,7 +162,7 @@ class RegisterForm extends Component {
                     />
                   </FormControl>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={8} style={{ margin: "auto" }}>
+                <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
                     <Button
                       type="submit"

@@ -104,7 +104,7 @@ class LoginForm extends Component {
                 style={{ width: "100%", textAlign: "center" }}
                 onSubmit={this.submit}
               >
-                <GridItem xs={12} sm={12} md={8} style={{ margin: "auto" }}>
+                <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
                     {hasError && !email && (
                       <FormHelperText id="email">
@@ -123,7 +123,7 @@ class LoginForm extends Component {
                     />
                   </FormControl>
                 </GridItem>
-                <GridItem xs={12} sm={12} md={8} style={{ margin: "auto" }}>
+                <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
                     {hasError && !password && (
                       <FormHelperText id="password">
@@ -145,7 +145,7 @@ class LoginForm extends Component {
                 <GridItem
                   xs={12}
                   sm={12}
-                  md={8}
+                  md={12}
                   style={{ margin: "auto", marginTop: "30px" }}
                 >
                   <FormControl className={classes.formControl}>
@@ -166,7 +166,7 @@ class LoginForm extends Component {
                   <GridItem
                     xs={12}
                     sm={12}
-                    md={8}
+                    md={12}
                     style={{
                       margin: "auto",
                       textAlign: "center",

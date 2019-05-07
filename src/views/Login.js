@@ -27,6 +27,12 @@ import {
 import Cookies from "universal-cookie";
 import PropTypes from "prop-types";
 import AppInfo from "../components/login/AppInfo";
+import { Typography } from '@material-ui/core'
+import collab from '../assets/img/enivorment.png'
+import together from '../assets/img/NS2R7RJK.png'
+import sitting from '../assets/img/girlexplaining.png'
+import standing from '../assets/img/ZvTjn__9.png'
+
 
 const styles = {
   center: {
@@ -116,44 +122,78 @@ class Login extends Component {
 
   render() {
     return (
-      <GridContainer>
-        <GridItem
-          xs={12}
-          sm={12}
-          md={12}
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: "50px"
-          }}
-        >
-          <div style={{ width: "100%" }} />
-          <ul className="Menu">
-            <li onClick={this.loginForm}>
-              <Button color="success"> Log In </Button>
-            </li>
-            <li onClick={this.registerForm}>
-              <Button color="success"> Sign Up </Button>
-            </li>
-          </ul>
+      <GridContainer >
+        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: '#F4CCCC', height: '100vh', padding: '0px', margin: '0px' }}>
+          <GridContainer >
+            <GridItem xs={12} sm={12} md={12} style={{
+                display: "flex",
+                position: 'fixed',
+                width: '100%',
+                height: '82px',
+                zIndex: 10,
+                backgroundColor: '#F4CCCC',
+                justifyContent: "space-between",
+                alignItems: 'baseline'
+              }} >
+            <div style={{ width: 'auto'}}>
+              <h1 style={{ marginLeft: '10px'}} > [NAME] </h1>
+            </div>
+              <div style={{ width: "auto" }} />
+              <ul className="Menu" style={{ padding: '0px', margin: '0px'}}>
+                <li onClick={this.loginForm}>
+                  <Button color="success" style={{ backgroundColor: 'transparent', border: '1px solid black', boxShadow: 'none'}}> Log In </Button>
+                </li>
+                <li onClick={this.registerForm}>
+                  <Button> Sign Up </Button>
+                </li>
+              </ul>
+            </GridItem>
+            <GridItem xs={10} sm={3} md={3} style={{ position: 'fixed', right: '0px', top: '80px', zIndex: 10}}>
+              <Card>
+                <CardHeader color="success">
+                  <CardIcon>
+                    {this.state.register ? (
+                      <PersonAdd style={{ color: "white" }} />
+                    ) : (
+                      <AccountCircle style={{ color: "white" }} />
+                    )}
+                  </CardIcon>
+                </CardHeader>
+                  {this.state.register ? <RegisterForm /> : <LoginForm />}
+              </Card> 
+            </GridItem>
+            <GridItem xs={12} sm={12} md={10} style={{ margin: 'auto', justifyContent: 'center', marginTop: '150px'}}>
+              <GridContainer>
+                <GridItem xs={10} sm={6} md={5} style={{ margin: 'auto'}}>
+                  <Typography style={{ fontSize: '28px'}}> [Name] is a Collaboration platform built for every member of your team to simplify your workflow!</Typography>
+                  <Typography style={{ fontSize: '18px'}}> Invite Clients and developers to join your projects, create tickets and keep track of your development, plan features and much more! </Typography>
+                  <Button color="success" style={{ width: '200px'}}> Sign Up - it's free!</Button>
+                </GridItem>
+                <GridItem xs={10} sm={6} md={7} style={{ margin: 'auto'}}>
+                  <img src={collab} alt="collab" width="90%" height="auto" />
+                </GridItem>
+              </GridContainer>
+            </GridItem>
+          </GridContainer>
         </GridItem>
         <AppInfo />
-        <GridItem xs={12} sm={6} md={4}>
-          <Card>
-            <CardHeader color="success">
-              <CardIcon>
-                {this.state.register ? (
-                  <PersonAdd style={{ color: "white" }} />
-                ) : (
-                  <AccountCircle style={{ color: "white" }} />
-                )}
-              </CardIcon>
-            </CardHeader>
-            <CardBody>
-              {this.state.register ? <RegisterForm /> : <LoginForm />}
-            </CardBody>
-          </Card>
-        </GridItem>
+        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: '#E4E4E4', height: '80vh' }}>
+          <GridContainer>
+            <GridItem xs={12} sm={12} md={10} style={{ margin: 'auto', justifyContent: 'center'}}>
+              <GridContainer >
+                <GridItem xs={12} sm={6} md={5} style={{ margin: 'auto', position: 'relative'}}>
+                  <Typography style={{ fontSize: '20px', position: 'absolute', bottom: '-40vh'}}> Share ideas and tasks</Typography>
+                  <Typography style={{ fontSize: '18px',  position: 'absolute', bottom: '-42vh'}}> Organize and filter your tickets after type and status.   </Typography>
+                </GridItem>
+                <GridItem xs={12} sm={6} md={7} style={{ margin: 'auto', position: 'relative' }}>
+                    <img src={together} alt="collab" width="100%" height="auto" style={{ position: 'absolute'}} />
+                    <img src={sitting} alt="collab" width="45%" height="auto" style={{ position: 'absolute', bottom: '-60vh', right: '0px'}} />
+                    <img src={standing} alt="collab" width="45%" height="auto" style={{ position: 'absolute', bottom: '-60vh', }} />
+                </GridItem>
+              </GridContainer>
+            </GridItem>
+          </GridContainer>
+        </GridItem>          
       </GridContainer>
     );
   }

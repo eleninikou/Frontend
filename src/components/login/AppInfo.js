@@ -19,14 +19,9 @@ import ContactMail from "@material-ui/icons/ContactMail"
 
 const AppInfo = () => {
     return (
-
-    <GridItem xs={12} sm={12} md={8}>
-    <Card>
-      <GridContainer > 
-        <GridItem xs={12} sm={10} md={12}>
+      <GridContainer style={{height: '60vh'}}> 
+        <GridItem xs={12} sm={8} md={8} style={{ margin: 'auto'}}>
           <CardBody>
-            <Typography style={{ fontSize: '32px'}}> A Collaboration platform built for every member of your team to simplify your workflow!</Typography>
-            {/* <Typography style={{ fontSize: '20px', marginTop: '10px'}}>Keep track of your project development with ease. Invite your team members and start sharing ideas, report bugs and organize your work. </Typography> */}
             <GridContainer > 
               <GridItem xs={12} sm={12} md={4}>
                 <Card>
@@ -104,8 +99,6 @@ const AppInfo = () => {
           </CardBody>
         </GridItem>
       </GridContainer>
-    </Card>
-  </GridItem>
     )
 }
 export default AppInfo;
