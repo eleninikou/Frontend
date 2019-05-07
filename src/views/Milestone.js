@@ -51,9 +51,10 @@ class Milestone extends Component {
   componentDidMount() {
     const cookies = new Cookies();
     var auth_user_id = cookies.get("user");
+    const token = cookies.get('token')
     this.setState({ auth_user_id });
 
-    this.props.getMilestone(this.props.match.params.id).then(res => {
+    this.props.getMilestone(this.props.match.params.id, token).then(res => {
       if (res.milestone) {
         this.setState({
           id: res.milestone.id,
@@ -239,7 +240,7 @@ class Milestone extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getMilestone: id => dispatch(getMilestone(id)),
+    getMilestone: (id, token) => dispatch(getMilestone(id, token)),
     milestoneEdit: (milestone, id) => dispatch(milestoneEdit(milestone, id))
   };
 };

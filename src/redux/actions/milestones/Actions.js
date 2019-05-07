@@ -15,7 +15,7 @@ const cookies = new Cookies()
 var token = cookies.get('token')
 
 
-export const getMilestone = id => {
+export const getMilestone = (id, token) => {
   return async dispatch => {
     const recieveMilestone = milestone_with_tickets => { 
       dispatch ({ type: GET_MILESTONE_SUCCESS, payload: milestone_with_tickets}); 
@@ -62,8 +62,6 @@ export const milestoneCreate = (milestone, token) => {
       } catch (error) { dispatch ({ type: CREATE_MILESTONE_FAILURE, message: 'Could not create milestone' }); return error; }
     }
 }
-
-
 
 
 
