@@ -6,6 +6,7 @@ import { logout } from "../redux/actions/auth/Actions";
 import LoginForm from "../components/forms/login/LoginForm";
 import RegisterForm from "../components/forms/register/RegisterForm";
 // Theme components
+import Hidden from "@material-ui/core/Hidden";
 import Card from "../components/theme/Card/Card";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import CardBody from "../components/theme/Card/CardBody";
@@ -32,6 +33,7 @@ import collab from '../assets/img/enivorment.png'
 import together from '../assets/img/NS2R7RJK.png'
 import sitting from '../assets/img/girlexplaining.png'
 import standing from '../assets/img/ZvTjn__9.png'
+import MobileMenu from "../components/login/MobileMenu";
 
 
 const styles = {
@@ -121,10 +123,17 @@ class Login extends Component {
   };
 
   render() {
+    const { classes, ...rest } = this.props;
+
     return (
       <GridContainer >
-        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: '#F4CCCC', height: '100vh', padding: '0px', margin: '0px' }}>
+          <MobileMenu
+            handleDrawerToggle={this.handleDrawerToggle}
+            {...rest}
+          />
+        <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: '#F4CCCC', height: '90vh', padding: '0px', margin: '0px' }}>
           <GridContainer >
+          <Hidden smDown implementation="css">
             <GridItem xs={12} sm={12} md={12} style={{
                 display: "flex",
                 position: 'fixed',
@@ -134,6 +143,7 @@ class Login extends Component {
                 justifyContent: "space-between",
                 alignItems: 'baseline'
               }} >
+
             <div style={{ width: 'auto'}}>
               <h1 style={{ marginLeft: '10px'}} > [NAME] </h1>
             </div>
@@ -147,47 +157,41 @@ class Login extends Component {
                 </li>
               </ul>
             </GridItem>
-            <GridItem xs={10} sm={3} md={3} style={{ position: 'fixed', right: '0px', top: '80px', zIndex: 10}}>
+            <GridItem xs={10} sm={3} md={3} style={{ position: 'fixed', right: '0px', top: '70px', zIndex: 10}}>
               <Card>
-                <CardHeader color="success">
-                  <CardIcon>
-                    {this.state.register ? (
-                      <PersonAdd style={{ color: "white" }} />
-                    ) : (
-                      <AccountCircle style={{ color: "white" }} />
-                    )}
-                  </CardIcon>
-                </CardHeader>
                   {this.state.register ? <RegisterForm /> : <LoginForm />}
               </Card> 
             </GridItem>
-            <GridItem xs={12} sm={12} md={10} style={{ margin: 'auto', justifyContent: 'center', marginTop: '150px'}}>
+          </Hidden>  
+            <GridItem xs={10} sm={10} md={10} style={{ margin: 'auto', justifyContent: 'center', marginTop: '150px'}}>
               <GridContainer>
-                <GridItem xs={10} sm={6} md={5} style={{ margin: 'auto'}}>
+                <GridItem xs={10} sm={10} md={5} style={{ margin: 'auto'}}>
                   <Typography style={{ fontSize: '28px'}}> [Name] is a Collaboration platform built for every member of your team to simplify your workflow!</Typography>
                   <Typography style={{ fontSize: '18px'}}> Invite Clients and developers to join your projects, create tickets and keep track of your development, plan features and much more! </Typography>
                   <Button color="success" style={{ width: '200px'}} onClick={this.registerForm}> Sign Up - it's free!</Button>
                 </GridItem>
-                <GridItem xs={10} sm={6} md={7} style={{ margin: 'auto'}}>
+                <GridItem xs={10} sm={10} md={7} style={{ margin: 'auto'}}>
                   <img src={collab} alt="collab" width="90%" height="auto" />
                 </GridItem>
               </GridContainer>
             </GridItem>
           </GridContainer>
         </GridItem>
-        <AppInfo />
+        <GridItem xs={12} sm={12} md={12} >
+          <AppInfo />
+        </GridItem>
         <GridItem xs={12} sm={12} md={12}  style={{ backgroundColor: '#E4E4E4', height: '80vh' }}>
           <GridContainer>
-            <GridItem xs={12} sm={12} md={10} style={{ margin: 'auto', justifyContent: 'center'}}>
+            <GridItem xs={10} sm={10} md={10} style={{ margin: 'auto', justifyContent: 'center'}}>
               <GridContainer >
-                <GridItem xs={12} sm={6} md={5} style={{ margin: 'auto', position: 'relative'}}>
-                  <Typography style={{ fontSize: '20px', position: 'absolute', bottom: '-40vh'}}> Share ideas and tasks</Typography>
-                  <Typography style={{ fontSize: '18px',  position: 'absolute', bottom: '-42vh'}}> Organize and filter your tickets after type and status.   </Typography>
+                <GridItem xs={12} sm={12} md={5} style={{ margin: 'auto'}}>
+                  <Typography style={{ fontSize: '20px', fontWeight: '600'}}> Share ideas and tasks!</Typography>
+                  <Typography style={{ fontSize: '18px', }}> Use [ NAME ] to speed up collaboration, communication, and idea exchange. Comment on each other's tickets, upload images and report bugs with ease.</Typography>
                 </GridItem>
-                <GridItem xs={12} sm={6} md={7} style={{ margin: 'auto', position: 'relative' }}>
-                    <img src={together} alt="collab" width="100%" height="auto" style={{ position: 'absolute'}} />
-                    <img src={sitting} alt="collab" width="45%" height="auto" style={{ position: 'absolute', bottom: '-60vh', right: '0px'}} />
-                    <img src={standing} alt="collab" width="45%" height="auto" style={{ position: 'absolute', bottom: '-60vh', }} />
+                <GridItem xs={12} sm={12} md={7} style={{ margin: 'auto', position: 'relative'}}>
+                    <img src={together} alt="collab" width="100%" height="auto"  />
+                      <img src={sitting} alt="collab" width="45%" height="auto" style={{ position: 'absolute', right: '0', bottom: '20%', height: '60%', width: 'auto' }} />
+                      <img src={standing} alt="collab" width="45%" height="auto" style={{ position: 'absolute', left: '0', bottom: '20%', height: '60%', width: 'auto' }} />
                 </GridItem>
               </GridContainer>
             </GridItem>

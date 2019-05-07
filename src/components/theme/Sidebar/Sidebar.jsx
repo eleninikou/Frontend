@@ -90,12 +90,12 @@ const Sidebar = ({ ...props }) => {
           [classes.logoLinkRTL]: props.rtlActive
         })}
       >
-        <div className={classes.logoImage} style={{ width: "auto", display: 'flex' }}>
+        <div className={classes.logoImage} style={{ width: "auto", display: 'flex', marginBottom: '15px' }}>
           {logo ? (
             <img
               src={logo}
               alt="logo"
-              style={{ borderRadius: '50%', height: "60px", width: "60px" }}
+              style={{ borderRadius: '50%', height: "50px", width: "50px" }}
             />
           ) : (
             <Avatar>
