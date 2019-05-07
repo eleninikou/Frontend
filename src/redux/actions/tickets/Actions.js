@@ -101,8 +101,6 @@ export const getAllTickets = token => {
   };    
 
   export const updateAttachments = update => {
-
-    debugger;
     return async dispatch => {  
       const updateAttachmentsSuccess = success => { 
         dispatch ({ type: UPDATE_ATTACHMENTS_SUCCESS, payload: success}); return success; 
@@ -117,7 +115,6 @@ export const getAllTickets = token => {
             "Content-Type": "application/json"}
         })
         const success = await res.json();
-        debugger;
         return updateAttachmentsSuccess(success);
   
       } catch (error) { return dispatch ({ type: UPDATE_ATTACHMENTS_FAILURE, message: 'Could not update images' })}

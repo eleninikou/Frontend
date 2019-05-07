@@ -28,20 +28,17 @@ const ProjectContent = ({
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Typography style={{ color: "grey", marginTop: "25px" }}>
-            {" "}
-            Project name{" "}
+            Project name
           </Typography>
           <Typography> {project.name} </Typography>
           <Typography style={{ color: "grey", marginTop: "25px" }}>
-            {" "}
-            Description{" "}
+            Description
           </Typography>
           <Typography>{project.description}</Typography>
 
           {clients.length ? (
             <Typography style={{ color: "grey", marginTop: "25px" }}>
-              {" "}
-              Client{" "}
+              Client
             </Typography>
           ) : null}
           {clients
@@ -50,8 +47,7 @@ const ProjectContent = ({
               })
             : null}
           <Typography style={{ color: "grey", marginTop: "25px" }}>
-            {" "}
-            Status{" "}
+            Status
           </Typography>
           <Typography> {project.active ? "Active" : "Inactive"} </Typography>
 

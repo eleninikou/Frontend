@@ -1,153 +1,45 @@
 import React from "react";
 import moment from "moment";
-
-// Material UI
-import List from "@material-ui/core/List";
-import Avatar from "@material-ui/core/Avatar";
-import Tooltip from "@material-ui/core/Tooltip";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-
 // Icons
-import Warning from "@material-ui/icons/Warning";
-import DateRange from "@material-ui/icons/DateRange";
 import PersonPin from "@material-ui/icons/PersonPin";
-import LinearScale from "@material-ui/icons/LinearScale";
+import Typography from "@material-ui/core/Typography";
+
 
 const TicketIconList = ({ ticket, classes }) => {
   return ticket ? (
-    <List className="my-ticket-list">
-      <ListItem>
-        <ListItemAvatar>
-          <Tooltip
-            id="tooltip-top-start"
-            title="Assigned user"
-            placement="top"
-            classes={{ tooltip: classes.tooltip }}
-          >
-            <Avatar
-              style={{
-                backgroundColor: "#f44336",
-                width: "30px",
-                height: "30px"
-              }}
-            >
-              {ticket.assigned_user ? (
-                <img
-                  src={ticket.assigned_user.avatar}
-                  alt="user"
-                  style={{
-                    display: "block",
-                    width: "30px",
-                    height: "30px",
-                    borderRadius: "50%"
-                  }}
-                />
-              ) : (
-                <PersonPin style={{ fontSize: "18px" }} />
-              )}
-            </Avatar>
-          </Tooltip>
-        </ListItemAvatar>
-        <ListItemText
-          primary={
-            ticket.assigned_user
-              ? "Assigned to: " + ticket.assigned_user.name
-              : null
-          }
-        />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Tooltip
-            id="tooltip-top-start"
-            title="Due date"
-            placement="top"
-            classes={{ tooltip: classes.tooltip }}
-          >
-            <Avatar
-              style={{
-                backgroundColor: "#041031",
-                width: "30px",
-                height: "30px"
-              }}
-            >
-              <DateRange style={{ fontSize: "18px" }} />
-            </Avatar>
-          </Tooltip>
-        </ListItemAvatar>
-        <ListItemText
-          primary={"Due date: " + moment(ticket.due_date).format("YYYY-MM-DD")}
-        />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Tooltip
-            id="tooltip-top-start"
-            title="Status"
-            placement="top"
-            classes={{ tooltip: classes.tooltip }}
-          >
-            <Avatar
-              style={{
-                backgroundColor: "#4caf50",
-                width: "30px",
-                height: "30px"
-              }}
-            >
-              <LinearScale style={{ fontSize: "18px" }} />
-            </Avatar>
-          </Tooltip>
-        </ListItemAvatar>
-        <ListItemText
-          primary={ticket.status ? "Status: " + ticket.status.status : null}
-        />
-      </ListItem>
-      <ListItem>
-        <ListItemAvatar>
-          <Tooltip
-            id="tooltip-top-start"
-            title="Priority"
-            placement="top"
-            classes={{ tooltip: classes.tooltip }}
-          >
-            {ticket.priority == "low" ? (
-              <Avatar
+    <div>
+    <Typography style={{ color: "grey", marginTop: "25px" }}> Assigned user </Typography>
+    <Typography> 
+        {ticket.assigned_user ? (
+            <div>
+              <img
+                src={ticket.assigned_user.avatar}
+                alt="user"
                 style={{
-                  backgroundColor: "#FADC08",
+                  display: "block",
                   width: "30px",
-                  height: "30px"
+                  height: "30px",
+                  borderRadius: "50%"
                 }}
-              >
-                <Warning style={{ fontSize: "18px" }} />
-              </Avatar>
-            ) : ticket.priority == "normal" ? (
-              <Avatar
-                style={{
-                  backgroundColor: "#4caf50",
-                  width: "30px",
-                  height: "30px"
-                }}
-              >
-                <Warning style={{ fontSize: "18px" }} />
-              </Avatar>
-            ) : (
-              <Avatar
-                style={{
-                  backgroundColor: "#f44336",
-                  width: "30px",
-                  height: "30px"
-                }}
-              >
-                <Warning style={{ fontSize: "18px" }} />
-              </Avatar>
-            )}
-          </Tooltip>
-        </ListItemAvatar>
-        <ListItemText primary={"Priority: " + ticket.priority} />
-      </ListItem>
-    </List>
+              />
+              ticket.assigned_user.name
+            </div>
+          ) : (
+            <div>
+              <PersonPin style={{ fontSize: "18px" }} />
+              Not assigned yet
+            </div>
+          )} </Typography>
+      <Typography style={{ color: "grey", marginTop: "25px" }}> Type </Typography>
+      <Typography>{ticket.type ? ticket.type.type : null} </Typography>
+      <Typography style={{ color: "grey", marginTop: "25px" }}> Due date </Typography>
+      <Typography>{ticket.due_date ? moment(ticket.due_date).format("YYYY-MM-DD") : '-' }</Typography>
+      <Typography style={{ color: "grey", marginTop: "25px" }}> Status </Typography>
+      <Typography>{ticket.status ? ticket.status.status : null} </Typography>
+      <Typography style={{ color: "grey", marginTop: "25px" }}> Priority </Typography>
+      <Typography> {ticket.priority ? ticket.priority : null} </Typography>
+
+    </div>
   ) : null;
 };
 
