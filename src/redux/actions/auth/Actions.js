@@ -135,7 +135,7 @@ export const logout = () => {
 };  
 
 
-export const getUser = (id) => {
+export const getUser = (id, token) => {
   return async dispatch => {
     const getUserSuccess = user=> { dispatch ({ type: GET_USER_SUCCESS, payload: user}); return user; }
     try {

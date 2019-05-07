@@ -108,7 +108,7 @@ class Home extends React.Component {
       this.props.history.push("/");
     }
     var user = cookies.get("user");
-    this.props.getUser(user).then(res => {
+    this.props.getUser(user, token).then(res => {
       if(res.user) {
         this.setState({ user: res.user })
       }
@@ -174,7 +174,7 @@ class Home extends React.Component {
 Home.propTypes = { classes: PropTypes.object.isRequired };
 
 const mapDispatchToProps = dispatch => {
-  return { getUser: id => dispatch(getUser(id)) };
+  return { getUser: (id, token) => dispatch(getUser(id, token)) };
 };
 
 const mapStateToProps = state => ({
