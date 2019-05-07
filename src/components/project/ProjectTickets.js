@@ -26,12 +26,12 @@ import FormControl from "@material-ui/core/FormControl";
 import TablePagination from "@material-ui/core/TablePagination";
 
 // Icons
-import Warning from "@material-ui/icons/Warning";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import BugReport from "@material-ui/icons/BugReport";
 import LowPriority from "@material-ui/icons/LowPriority";
 import LinearScale from "@material-ui/icons/LinearScale";
 import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor";
+import Cookies from "universal-cookie";
 
 class ProjectTickets extends Component {
   constructor(props) {
@@ -48,8 +48,10 @@ class ProjectTickets extends Component {
   }
 
   componentWillMount = () => {
-    this.props.getTicketStatus();
-    this.props.getTicketTypes();
+    const cookies = new Cookies();
+    var token = cookies.get("token");
+    this.props.getTicketStatus(token);
+    this.props.getTicketTypes(token);
   };
 
   handleChangePage = (event, page) => {
@@ -142,8 +144,7 @@ class ProjectTickets extends Component {
                       ? ticketStatus.map(status => {
                           return (
                             <MenuItem key={status.id} value={status.id}>
-                              {" "}
-                              {status.status}{" "}
+                              {status.status}
                             </MenuItem>
                           );
                         })
@@ -201,15 +202,16 @@ class ProjectTickets extends Component {
                           width: "30px"
                         }}
                       >
-                        {ticket.type_id === 1 ? (
+                      {console.log(ticket)}
+                        {ticket.type ? ticket.type.type == 'Bug' ? (
                           <BugReport style={{ fontSize: "18px" }} />
-                        ) : ticket.type_id === 2 ? (
+                        ) : ticket.type.type == 'Future request' ? (
                           <LowPriority style={{ fontSize: "18px" }} />
-                        ) : ticket.type_id === 3 ? (
+                        ) : ticket.type.type == 'Idea' ? (
                           <LinearScale style={{ fontSize: "18px" }} />
                         ) : (
                           <YoutubeSearchedFor style={{ fontSize: "18px" }} />
-                        )}
+                        ): null }
                       </Avatar>
                     </Tooltip>,
                     `${ticket.priority}`,
@@ -268,8 +270,8 @@ class ProjectTickets extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getTicketStatus: () => dispatch(getTicketStatus()),
-    getTicketTypes: () => dispatch(getTicketTypes())
+    getTicketStatus: token => dispatch(getTicketStatus(token)),
+    getTicketTypes: token => dispatch(getTicketTypes(token))
   };
 };
 

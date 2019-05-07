@@ -52,14 +52,15 @@ class Tickets extends Component {
   componentDidMount() {
     const cookies = new Cookies();
     var token = cookies.get("token");
+    this.setState({ token })
 
     this.props.getAllTickets(token).then(res => {
       if (res.tickets) {
         this.setState({ tickets: res.tickets });
       }
     });
-    this.props.getTicketStatus();
-    this.props.getTicketTypes();
+    this.props.getTicketStatus(token);
+    this.props.getTicketTypes(token);
     this.props.getAllProjects(token);
 
     if (
@@ -274,8 +275,8 @@ class Tickets extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     getAllTickets: token => dispatch(getAllTickets(token)),
-    getTicketStatus: () => dispatch(getTicketStatus()),
-    getTicketTypes: () => dispatch(getTicketTypes()),
+    getTicketStatus: token => dispatch(getTicketStatus(token)),
+    getTicketTypes: token => dispatch(getTicketTypes(token)),
     getAllProjects: token => dispatch(getAllProjects(token))
   };
 };
