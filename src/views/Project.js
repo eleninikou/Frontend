@@ -120,13 +120,15 @@ class Project extends Component {
     this.setState({ successMessage });
     this.showNotification("tr");
     this.props.getProject(this.props.match.params.id).then(res => {
-      this.setState({
-        id: res.project.id,
-        name: res.project.name,
-        description: res.project.description,
-        client_id: res.project.client_id,
-        milestones: res.project.milestones
-      });
+      if(res.project) {
+        this.setState({
+          id: res.project.id,
+          name: res.project.name,
+          description: res.project.description,
+          client_id: res.project.client_id,
+          milestones: res.project.milestones
+        });
+      }
     });
   };
 
