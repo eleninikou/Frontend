@@ -174,8 +174,8 @@ class Login extends Component {
 
           <Hidden mdUp implementation="css">
               {mobileOpen ? 
-                <div>
-                  <GridItem xs={12} sm={10} md={10} style={{ position: 'fixed', right: '0px', top: '70px', zIndex: 10}}>
+                <div style={{ backgroundColor: '#F4CCCC', zIndex: 5, height: '100vh'}}>
+                  <GridItem xs={12} sm={10} md={10} style={{ position: 'fixed', right: '0px', top: '70px', zIndex: 10, width: '100vw'}}>
                     <Card>
                     <CustomTabs
                     headerColor="success"
