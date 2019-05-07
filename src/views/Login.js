@@ -249,10 +249,11 @@ class Login extends Component {
                       right: "0px",
                       top: "70px",
                       zIndex: 10,
-                      width: "100vw"
+                      minWidth: "100vw",
+                      width: 'auto'
                     }}
                   >
-                    <Card>
+                    <Card style={{ padding: '0px'}}>
                       <CustomTabs
                         headerColor="success"
                         tabs={[
@@ -275,7 +276,7 @@ class Login extends Component {
             </Hidden>
 
             <GridItem
-              xs={10}
+              xs={12}
               sm={10}
               md={10}
               style={{
@@ -285,8 +286,8 @@ class Login extends Component {
               }}
             >
               <GridContainer>
-                <GridItem xs={10} sm={10} md={5} style={{ margin: "auto" }}>
-                  <Typography style={{ fontSize: "28px", fontWeight: "600" }}>
+                <GridItem xs={12} sm={10} md={5} style={{ margin: "auto" }}>
+                  <Typography style={{ fontSize: "1.5em", fontWeight: "600" }}>
                     / i ː z / is a collaboration platform built for every member of
                     your team to simplify your workflow!
                   </Typography>
@@ -317,7 +318,7 @@ class Login extends Component {
           style={{ margin: "auto", justifyContent: "center" }}
         >
           <GridContainer>
-            <GridItem xs={10} sm={10} md={3} style={{ margin: "auto" }}>
+            <GridItem xs={12} sm={10} md={3} style={{ margin: "auto" }}>
               <Typography style={{ fontSize: "22px", fontWeight: "600" }}>
                 Built for Developers,
               </Typography>
@@ -335,7 +336,7 @@ class Login extends Component {
                 }}
               />
             </GridItem>
-            <GridItem xs={10} sm={10} md={9} style={{ margin: "auto" }}>
+            <GridItem xs={12} sm={10} md={9} style={{ margin: "auto" }}>
               <AppInfo />
             </GridItem>
           </GridContainer>
@@ -412,21 +413,19 @@ class Login extends Component {
           md={12}
           style={{
             backgroundColor: "rgb(119, 186,193)",
-            height: "10vh",
+            height: "20vh",
             display: "flex",
             width: "100%",
             justifyContent: "space-around",
             alignItems: "center"
           }}
         >
-          <GridContainer
-            style={{ width: "100%", display: "flex", alignItems: "center" }}
-          >
+          <GridContainer style={{ width: "100%", display: "flex", alignItems: "center" }} >
             <GridItem
               xs={12}
               sm={2}
               md={2}
-              style={{ textAlign: "-webkit-right" }}
+              style={{ justifyContent: 'center' }}
             >
               <Avatar style={{ backgroundColor: "white" }} />
             </GridItem>
@@ -440,7 +439,7 @@ class Login extends Component {
                 </a>  
               </Typography>
             </GridItem>
-            <GridItem xs={12} sm={2} md={2} style={{ display: "flex" }}>
+            <GridItem xs={12} sm={2} md={2} style={{ display: "flex", justifyContent: 'center' }}>
               <a href="https://www.linkedin.com/in/eleni-nikou" style={{ textDecoration: 'none'}}>
                 <Avatar style={{ backgroundColor: "white", marginRight: "15px" }}>
                 <i className="fab fa-linkedin-in" style={{ color: 'black'}}></i>
