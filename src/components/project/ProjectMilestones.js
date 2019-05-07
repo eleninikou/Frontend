@@ -63,12 +63,14 @@ class ProjectMilestones extends Component {
     this.setState({ open });
   };
 
+  setSuccess = message => {
+    this.props.getSuccess(message)
+  }
+
   render() {
     const { milestones, classes, creator } = this.props;
     const { rowsPerPage, page } = this.state;
-    const emptyRows =
-      rowsPerPage -
-      Math.min(rowsPerPage, milestones.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, milestones.length - page * rowsPerPage);
 
     return (
       <div>
@@ -143,12 +145,11 @@ class ProjectMilestones extends Component {
                         </Tooltip>
                         <DangerDialogWrapped
                           type={"milestone"}
-                          title={
-                            "Are you sure you want to delete this milestone?"
-                          }
+                          title={ "Are you sure you want to delete this milestone?"}
                           id={milestone.id}
                           open={this.state.open}
                           onClose={this.handleClose}
+                          getSuccess={this.setSuccess.bind(this)}
                         />
                       </div>
                     ) : null

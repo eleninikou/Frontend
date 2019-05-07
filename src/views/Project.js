@@ -52,7 +52,8 @@ class Project extends Component {
       milestones: [],
       edit: false,
       successMessage: this.props.successMessage,
-      open: false
+      open: false,
+      token: ''
     };
   }
 
@@ -60,7 +61,7 @@ class Project extends Component {
     const cookies = new Cookies();
     var user = cookies.get("user");
     var token = cookies.get("token");
-    this.setState({ user });
+    this.setState({ user, token });
 
     // Fetch project and set to state
     this.props.getProject(this.props.match.params.id, token).then(res => {
@@ -119,7 +120,7 @@ class Project extends Component {
   getSuccess = successMessage => {
     this.setState({ successMessage });
     this.showNotification("tr");
-    this.props.getProject(this.props.match.params.id).then(res => {
+    this.props.getProject(this.props.match.params.id, this.state.token).then(res => {
       if(res.project) {
         this.setState({
           id: res.project.id,
@@ -216,9 +217,7 @@ class Project extends Component {
                           milestones={milestones}
                           project={project}
                           getSuccess={this.getSuccess.bind(this)}
-                          creator={
-                            project.creator_id === parseInt(user) ? true : false
-                          }
+                          creator={project.creator_id === parseInt(user) ? true : false}
                         />
                       )
                     },
@@ -243,9 +242,7 @@ class Project extends Component {
                           classes={classes}
                           project={project}
                           user={user}
-                          creator={
-                            project.creator_id === parseInt(user) ? true : false
-                          }
+                          creator={project.creator_id === parseInt(user) ? true : false }
                         />
                       )
                     },
@@ -275,9 +272,7 @@ class Project extends Component {
                               </CardFooter>
                               <DangerDialogWrapped
                                 type={"project"}
-                                title={
-                                  "Are you sure you want to delete this project?"
-                                }
+                                title={"Are you sure you want to delete this project?"}
                                 id={project.id}
                                 open={this.state.open}
                                 onClose={this.handleClose}

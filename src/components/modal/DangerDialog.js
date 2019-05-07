@@ -69,6 +69,7 @@ class DangerDialog extends Component {
   deleteMilestone = () => {
     // Delete milestone and show notification
     this.props.deleteMilestone(this.props.id).then(() => {
+      this.handleClose({ open: false })
       if (this.props.location.state === undefined) {
         this.props.history.push({
           pathname: "/home/milestones",
@@ -76,13 +77,10 @@ class DangerDialog extends Component {
         });
       } else {
         if (this.props.successMessageMilestone) {
-          this.props.history.push({
-            pathname: "/home/projects",
-            state: { successMessage: this.props.successMessageMilestone }
-          });
+            this.props.getSuccess(this.props.successMessageMilestone)
+          }
         }
-      }
-    });
+      })
   };
 
   removeUserFromTeam = () => {
