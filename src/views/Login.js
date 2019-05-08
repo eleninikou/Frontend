@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { logout } from "../redux/actions/auth/Actions";
+import {
+  logout,
+  getUser,
+  getEmailFromInvitation,
+  acceptInvitation
+} from "../redux/actions/auth/Actions"
 // Components
 import LoginForm from "../components/forms/login/LoginForm";
 import RegisterForm from "../components/forms/register/RegisterForm";
@@ -10,6 +15,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Card from "../components/theme/Card/Card";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import GridItem from "../components/theme/Grid/GridItem.jsx";
+import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 // Material UI components
 import Avatar from "@material-ui/core/Avatar";
@@ -71,7 +77,11 @@ class Login extends Component {
       btnText: "Sign Up",
       infoText: "Don't have an account yet?",
       mobileOpen: false,
-      display: false
+      display: false,
+      user: '',
+      loggedInUserEmail: null,
+      invitedUserEmail: "",
+      existingUser: "",
     };
   }
 
@@ -85,7 +95,83 @@ class Login extends Component {
         this.props.history.push("/");
       });
     }
-  };
+    var user = cookies.get("user")
+    this.setState({ user })
+
+    cookies.set("invitation", this.props.match.params.id, {
+      path: "/",
+      maxAge: 86399
+    })
+
+    var invitation = cookies.get("invitation")
+
+    // If user is logged in. Check if same email address as invitation
+    if (user) {
+      this.props
+        .getUser(user)
+        .then(res => {
+          if (res.user) {
+            this.setState({ loggedInUserEmail: res.user.email })
+          }
+        })
+        .then(() => {
+          this.props
+            .getEmailFromInvitation(invitation)
+            .then(res => {
+              if (res.email) {
+                this.setState({
+                  invitedUserEmail: res.email[0],
+                  existingUser: res.existing
+                })
+              }
+            })
+            .then(() => {
+              this.redirect(invitation, false)
+            })
+        })
+
+      // If no user is logged in. Set email from invitation in form.
+    } else {
+      this.props.getEmailFromInvitation(invitation).then(res => {
+        if (res.email) {
+          this.setState({
+            invitedUserEmail: res.email[0],
+            existingUser: res.existing
+          })
+        }
+      })
+    }  };
+
+  redirect(invitation, register) {
+    const cookies = new Cookies()
+
+    if (this.state.loggedInUserEmail === this.state.invitedUserEmail) {
+      this.props.acceptInvitation(invitation).then(res => {
+        this.props.history.push({
+          pathname: `/home/projects`,
+          state: { successMessage: res.message }
+        })
+        cookies.remove("invitation", { path: "/" })
+      })
+    } else if (register) {
+      this.props.acceptInvitation(invitation).then(res => {
+        this.props.history.push({
+          pathname: `/home/projects`,
+          state: { successMessage: res.message }
+        })
+        cookies.remove("invitation", { path: "/" })
+      })
+    } else {
+      this.props.getEmailFromInvitation(invitation).then(res => {
+        if (res.email) {
+          this.setState({
+            invitedUserEmail: res.email[0],
+            existingUser: res.existing
+          })
+        }
+      })
+    }
+  }
 
   register = () => {
     if (this.state.register) {
@@ -139,7 +225,7 @@ class Login extends Component {
 
   render() {
     const { classes, ...rest } = this.props;
-    const { mobileOpen, display } = this.state;
+    const { mobileOpen, display, invitedUserEmail, existingUser } = this.state;
 
     return (
       <GridContainer>
@@ -307,6 +393,31 @@ class Login extends Component {
                 <GridItem xs={10} sm={10} md={7} style={{ margin: "auto" }}>
                   <img src={collab} alt="collab" width="90%" height="auto" />
                 </GridItem>
+                {invitedUserEmail ? (
+                  <GridItem xs={10} sm={10} md={12} style={{ position: 'fixed', right: '0', top: '90px', zIndex: '10'}}>
+                    <Card>
+                      <CardHeader color="success">
+                        <h4 className={this.props.classes.cardTitleWhite}> Fill in to accept the invitation! </h4>
+                      </CardHeader>
+                        {existingUser ? (
+                          <LoginForm email={invitedUserEmail} />
+                        ) : (
+                          <RegisterForm email={invitedUserEmail} redirect={this.redirect.bind(this)} />
+                        )}
+                    </Card>
+                  </GridItem>
+                    ) : (
+                    <GridItem xs={10} sm={10} md={7} style={{ margin: "auto", position: 'absolute' }}>
+                    <Card>
+                        <h4 className={this.props.classes.cardTitleWhite}>OOPS!</h4>
+                        <Typography> It looks like your invitation allready has been used. </Typography>
+                        <Typography> Login to start working on your projects! </Typography>
+                        <Button onClick={this.goToLogin} style={{ margin: "auto" }} color="success" >
+                          Login
+                        </Button>
+                    </Card>
+                    </GridItem>
+                  )}
               </GridContainer>
             </GridItem>
           </GridContainer>
@@ -464,7 +575,12 @@ Login.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => {
-  return { logout: () => dispatch(logout()) };
+  return { 
+    logout: () => dispatch(logout()),
+    getUser: id => dispatch(getUser(id)),
+    getEmailFromInvitation: token => dispatch(getEmailFromInvitation(token)),
+    acceptInvitation: token => dispatch(acceptInvitation(token)) 
+  };
 };
 
 export default withRouter(

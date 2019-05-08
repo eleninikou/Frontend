@@ -43,7 +43,7 @@ class App extends Component {
             component={CreateProject}
           />
           <PrivateRoute exact path="/home/project/{id}" component={Project} />
-          <Route path="/accept/:id" component={AcceptInvitation} />
+          <Route path="/accept/:id" component={Login} />
           <Route component={NotFoundPage} />
         </Switch>
       </div>
