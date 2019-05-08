@@ -38,7 +38,8 @@ import {
   convertToRaw,
   ContentState
 } from "draft-js";
-
+import IconButton from "@material-ui/core/IconButton";
+import Close from "@material-ui/icons/Close";
 class EditTicketForm extends Component {
   constructor(props) {
     super(props);
@@ -490,11 +491,13 @@ class EditTicketForm extends Component {
                               position: "relative"
                             }}
                           >
+
                             <img
                               src={url.attachment ? url.attachment : url}
                               style={{
                                 width: "auto",
                                 maxWidth: "100%",
+                                height: 'auto',
                                 maxHeight: "200px",
                                 display: "block",
                                 position: "relative"
@@ -502,6 +505,11 @@ class EditTicketForm extends Component {
                               alt="preview"
                             />
                             <Tooltip
+                              style={{
+                                position: "absolute",
+                                right: "-12px",
+                                top: "-12px"
+                              }}
                               id="tooltip-top-start"
                               title="Remove image"
                               placement="top"
@@ -509,21 +517,18 @@ class EditTicketForm extends Component {
                                 this,
                                 url.id ? url.id : 0,
                                 url.attachment ? url.attachment : url
-                              )}
-                              classes={{ tooltip: classes.tooltip }}
+                              )}                               classes={{ tooltip: classes.tooltip }}
                             >
-                              <Avatar
-                                style={{
-                                  backgroundColor: "#f44336",
-                                  height: "30px",
-                                  width: "30px",
-                                  position: "absolute",
-                                  right: "-12px",
-                                  top: "-12px"
-                                }}
-                              >
-                                <Remove />
-                              </Avatar>
+                              <IconButton aria-label="Close" className={classes.tableActionButton} >
+                                <Close
+                                  style={{ color: 'black' }}
+                                  className={
+                                    classes.tableActionButtonIcon +
+                                    " " +
+                                    classes.close
+                                  }
+                                />
+                              </IconButton>
                             </Tooltip>
                           </div>
                         </GridItem>
@@ -551,7 +556,7 @@ const mapDispatchToProps = dispatch => {
     getTicketStatus: () => dispatch(getTicketStatus()),
     deleteAttachment: id => dispatch(deleteAttachment(id)),
     removeFromStorage: url => dispatch(removeFromStorage(url)),
-    updateAttachments: update => dispatch(updateAttachments(update))
+    updateAttachments: update => dispatch(updateAttachments(update)),
   };
 };
 

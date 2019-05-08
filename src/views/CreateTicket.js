@@ -11,7 +11,7 @@ import {
   getTicketTypes,
   getTicketStatus,
   deleteAttachment,
-  removeFromStorage
+  removeFromStorage,
 } from "../redux/actions/tickets/Actions";
 import { getAllProjects, getProject } from "../redux/actions/projects/Actions";
 // Wysiwyg
@@ -39,6 +39,7 @@ import Remove from "@material-ui/icons/Remove";
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+import TicketImagePreviews from "../components/ticket/TicketImagePreviews";
 
 class CreateTicket extends Component {
   constructor(props) {
@@ -66,11 +67,40 @@ class CreateTicket extends Component {
       editorContent: "",
       submitted: false,
       hasError: false,
-      user: ""
+      user: "",
+      token: ''
     };
     this.handleChange = this.handleChange.bind(this);
     this.onDrop = this.onDrop.bind(this);
+    this.filtered = this.filtered.bind(this)
   }
+
+  componentDidMount = () => {
+    const cookies = new Cookies();
+    var user = cookies.get("user");
+    var token = cookies.get("token");
+    this.setState({ user, token });
+
+    // If redirected from specific project preselect project
+    if (
+      this.props.location.state
+        ? this.props.location.state.project_id ||
+          this.props.location.state.backToProject
+        : null
+    ) {
+      this.setState({
+        backToProject: true,
+        project_id: this.props.location.state.project_id
+      });
+      this.props.getProject(this.props.location.state.project_id, token);
+    } else {
+      this.props.getAllProjects(token);
+    }
+
+    this.props.getTicketTypes(token);
+    this.props.getTicketStatus(token);
+  };
+
 
   onEditorStateChange = editorState => {
     this.setState({ editorState });
@@ -87,11 +117,9 @@ class CreateTicket extends Component {
   };
 
   submit = event => {
-    const cookies = new Cookies();
-    var token = cookies.get("token")
     event.preventDefault();
     
-    // Check that everything is filled in
+    // Check if required fields are filled in
     if (
       this.state.title &&
       this.state.description &&
@@ -114,7 +142,7 @@ class CreateTicket extends Component {
         };
         
       // Create ticket. Redirect back to project
-      this.props.ticketCreate(ticket, token).then(() => {
+      this.props.ticketCreate(ticket, this.state.token).then(() => {
         if (this.props.successMessage) {
           this.setState({ urls: [] });
           this.props.history.push({
@@ -129,6 +157,7 @@ class CreateTicket extends Component {
   };
 
   onDrop(files) {
+
     const cookies = new Cookies();
     var token = cookies.get("token");
 
@@ -142,7 +171,6 @@ class CreateTicket extends Component {
     // Loop trough files and get url from storage
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
-
       let reader = new FileReader();
       const scope = this;
       scope.setState({ urls: [] });
@@ -150,11 +178,8 @@ class CreateTicket extends Component {
         const formData = new FormData();
         formData.append("file", file);
 
-        return axios
-          .post(
-            `${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,
-            formData,
-            {
+        return axios.post( `${process.env.REACT_APP_API_BASE_URL}/api/tickets/image`,
+            formData,{
               headers: {
                 "X-Requested-With": "XMLHttpRequest",
                 "Access-Control-Allow-Origin": "*",
@@ -172,37 +197,9 @@ class CreateTicket extends Component {
   }
 
   // remove url from storage with preview
-  removeImage(url) {
-    this.props.removeFromStorage(url);
-    let filteredUrls = this.state.urls.filter(u => u !== url);
-    this.setState({ urls: filteredUrls });
+  filtered(urls) {
+    this.setState({ urls });
   }
-
-  componentDidMount = () => {
-    const cookies = new Cookies();
-    var user = cookies.get("user");
-    var token = cookies.get("token");
-    this.setState({ user });
-
-    // If redirected from specific project preselect project
-    if (
-      this.props.location.state
-        ? this.props.location.state.project_id ||
-          this.props.location.state.backToProject
-        : null
-    ) {
-      this.setState({
-        backToProject: true,
-        project_id: this.props.location.state.project_id
-      });
-      this.props.getProject(this.props.location.state.project_id, token);
-    } else {
-      this.props.getAllProjects(token);
-    }
-
-    this.props.getTicketTypes(token);
-    this.props.getTicketStatus(token);
-  };
 
   // If image are uploaded but no ticket is created -> delete them
   componentWillUnmount = () => {
@@ -214,14 +211,12 @@ class CreateTicket extends Component {
   };
 
   handleChange = event => {
-    const cookies = new Cookies();
-    var token = cookies.get("token");
     const { name, value } = event.target;
     this.setState({ [name]: value });
 
     // Fetch project to get team, milestones
     if (event.target.name === "project_id") {
-      this.props.getProject(value, token).then(res => {
+      this.props.getProject(value, this.state.token).then(res => {
         if (this.state.user == res.project.client_id) {
           this.setState({
             status_id: 3,
@@ -511,7 +506,6 @@ class CreateTicket extends Component {
                                     key={milestone.id}
                                     value={milestone.id}
                                   >
-                                    {" "}
                                     {milestone.title}
                                   </MenuItem>
                                 );
@@ -538,12 +532,7 @@ class CreateTicket extends Component {
                       />
                     </FormControl>
                   </GridItem>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    style={{ marginTop: "100px" }}
-                  >
+                  <GridItem xs={12} sm={12} md={12} style={{ marginTop: "100px" }} >
                     <FormControl className={classes.formControl}>
                       <Editor
                         editorState={editorState}
@@ -574,71 +563,13 @@ class CreateTicket extends Component {
                         maxFileSize={5242880}
                       />
 
-                      <GridContainer>
-                        {urls.length
-                          ? urls.map(url => {
-                              return (
-                                <GridItem
-                                  xs={12}
-                                  sm={12}
-                                  md={3}
-                                  style={{ flexBasis: "unset" }}
-                                >
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      width: "100%",
-                                      position: "relative"
-                                    }}
-                                  >
-                                    <img
-                                      src={url}
-                                      style={{
-                                        width: "auto",
-                                        maxWidth: "100%",
-                                        maxHeight: "200px",
-                                        display: "block",
-                                        position: "relative"
-                                      }}
-                                      alt="preview"
-                                    />
-                                    <Tooltip
-                                      id="tooltip-top-start"
-                                      title="Remove image"
-                                      placement="top"
-                                      onClick={this.removeImage.bind(this, url)}
-                                      classes={{ tooltip: classes.tooltip }}
-                                    >
-                                      <Avatar
-                                        style={{
-                                          backgroundColor: "#f44336",
-                                          height: "30px",
-                                          width: "30px",
-                                          position: "absolute",
-                                          right: "-12px",
-                                          top: "-12px"
-                                        }}
-                                      >
-                                        <Remove />
-                                      </Avatar>
-                                    </Tooltip>
-                                  </div>
-                                </GridItem>
-                              );
-                            })
-                          : null}
-                      </GridContainer>
+                      <TicketImagePreviews urls={urls} filtered={this.filtered} classes={{classes}}/>
                     </FormControl>
                   </GridItem>
                 </GridContainer>
               </CardBody>
               <CardFooter style={{ justifyContent: "flex-end" }}>
-                <Button color="primary" type="submit">
-                  Create Ticket
-                </Button>
-                {/* {backToProject ? 
-              <Button color="primary" onClick={this.goBack.bind(this)}>Back to project</Button>
-              : null} */}
+                <Button color="primary" type="submit"> Create Ticket </Button>
               </CardFooter>
             </form>
           </Card>
@@ -656,7 +587,7 @@ const mapDispatchToProps = dispatch => {
     getAllProjects: token => dispatch(getAllProjects(token)),
     getProject: (id, token) => dispatch(getProject(id, token)),
     deleteAttachment: url => dispatch(deleteAttachment(url)),
-    removeFromStorage: url => dispatch(removeFromStorage(url))
+    removeFromStorage: url => dispatch(removeFromStorage(url)),
   };
 };
 
