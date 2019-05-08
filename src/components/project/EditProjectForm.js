@@ -127,7 +127,6 @@ class EditProjectForm extends Component {
         </CardBody>
         <CardFooter>
           <Button color="success" onClick={this.closeEdit}>
-            {" "}
             Close
           </Button>
           <Button color="success" type="submit">
@@ -146,9 +145,4 @@ const mapStateToProps = state => ({
   successMessage: state.ticket.successMessage
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(EditProjectForm)
-);
+export default withRouter( connect( mapStateToProps, mapDispatchToProps )(EditProjectForm));

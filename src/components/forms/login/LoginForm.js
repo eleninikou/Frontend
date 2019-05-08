@@ -100,17 +100,10 @@ class LoginForm extends Component {
         <GridItem xs={12} sm={12} md={12}>
           <GridContainer>
             <CardBody style={{ padding: '0px'}}>
-              <form
-                style={{ width: "100%", textAlign: "center" }}
-                onSubmit={this.submit}
-              >
+              <form style={{ width: "100%", textAlign: "center" }} onSubmit={this.submit} >
                 <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
-                    {hasError && !email && (
-                      <FormHelperText id="email">
-                        Fill in your email!
-                      </FormHelperText>
-                    )}
+                    {hasError && !email && ( <FormHelperText id="email"> Fill in your email! </FormHelperText>)}
                     <TextField
                       error={hasError && !email ? true : false}
                       name="email"
@@ -125,11 +118,7 @@ class LoginForm extends Component {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
-                    {hasError && !password && (
-                      <FormHelperText id="password">
-                        Fill in your password!
-                      </FormHelperText>
-                    )}
+                    {hasError && !password && ( <FormHelperText id="password"> Fill in your password! </FormHelperText>)}
                     <TextField
                       error={hasError && !password ? true : false}
                       name="password"
@@ -142,12 +131,7 @@ class LoginForm extends Component {
                     />
                   </FormControl>
                 </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  style={{ margin: "auto", marginTop: "30px" }}
-                >
+                <GridItem xs={12} sm={12} md={12}style={{ textAlign: "center", marginTop: "20px" }} >
                   <FormControl className={classes.formControl}>
                     <Button
                       type="submit"
@@ -163,16 +147,7 @@ class LoginForm extends Component {
 
               {!this.props.email ? ( // If not redirected from invitation show google option
                 <div>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    style={{
-                      margin: "auto",
-                      textAlign: "center",
-                      marginTop: "20px"
-                    }}
-                  >
+                  <GridItem xs={12} sm={12} md={12}style={{ textAlign: "center", marginTop: "20px" }} >
                     <FormControl className={classes.formControl}>
                       <GoogleLogin
                         clientId="490433308929-go7fh6c8fd4hbq4mgcp6qbpu0hcm1c2h.apps.googleusercontent.com"
@@ -184,15 +159,10 @@ class LoginForm extends Component {
                       />
                     </FormControl>
                   </GridItem>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    style={{ textAlign: "center", marginTop: "20px" }}
-                  >
+                  <GridItem xs={12} sm={12} md={12}style={{ textAlign: "center", marginTop: "20px" }} >
                     {isFetching && text ? <LoginTextSpinner text={text} /> : 
                     <Typography style={{ color: "#D4D4D4", fontSize: '15px' }}>
-                        {errorMessage}
+                        {/* {errorMessage} */}
                     </Typography>}
                   </GridItem>
                 </div>

@@ -7,22 +7,12 @@ import CardBody from "../theme/Card/CardBody.jsx";
 import CardFooter from "../theme/Card/CardFooter.jsx";
 import GridContainer from "../theme/Grid/GridContainer.jsx";
 // Material UI
-import List from "@material-ui/core/List";
-import Avatar from "@material-ui/core/Avatar";
-import Tooltip from "@material-ui/core/Tooltip";
-import ListItem from "@material-ui/core/ListItem";
-import DateRange from "@material-ui/icons/DateRange";
 import Typography from "@material-ui/core/Typography";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-// Icons
-import Note from "@material-ui/icons/Note";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
 
-const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
-  const showForm = () => {
-    getEdit(true);
-  };
+
+const MilestoneContent = ({ milestone, getEdit, creator }) => {
+  
+  const showForm = () => { getEdit(true) }
 
   return (
     <GridContainer>
@@ -31,18 +21,15 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
           <GridContainer>
             <GridItem xs={12} sm={12} md={8}>
               <Typography style={{ color: "grey", marginTop: "25px" }}>
-                {" "}
-                Title{" "}
+                Title
               </Typography>
               <Typography>{milestone.title}</Typography>
               <Typography style={{ color: "grey", marginTop: "25px" }}>
-                {" "}
-                Focus{" "}
+                Focus
               </Typography>
               <Typography>{milestone.focus ? milestone.focus : "-"}</Typography>
               <Typography style={{ color: "grey", marginTop: "25px" }}>
-                {" "}
-                Due date{" "}
+                Due date
               </Typography>
               <Typography>
                 {milestone.due_date
@@ -50,8 +37,7 @@ const MilestoneContent = ({ milestone, getEdit, classes, creator }) => {
                   : "-"}
               </Typography>
               <Typography style={{ color: "grey", marginTop: "25px" }}>
-                {" "}
-                Project{" "}
+                Project
               </Typography>
               <Typography>{milestone.project.name}</Typography>
             </GridItem>

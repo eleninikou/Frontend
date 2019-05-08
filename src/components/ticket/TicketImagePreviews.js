@@ -63,7 +63,6 @@ class TicketImagePreviews extends Component {
                           style={{ color: 'black' }}
                           className={
                             classes.tableActionButtonIcon +
-                            " " +
                             classes.close
                           }
                         />

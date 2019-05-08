@@ -91,8 +91,7 @@ class ProjectTeam extends Component {
   render() {
     const { classes, creator, successMessage } = this.props;
     const { rowsPerPage, page, team } = this.state;
-    const emptyRows =
-      rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
 
     return (
       <div>
@@ -185,7 +184,6 @@ class ProjectTeam extends Component {
         {creator ? (
           <CardFooter style={{ justifyContent: "flex-end" }}>
             <Button color="success" onClick={this.invitePeople}>
-              {" "}
               Invite people
             </Button>
           </CardFooter>
@@ -202,9 +200,4 @@ const mapStateToProps = state => ({
   successMessage: state.project.successMessage
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ProjectTeam)
-);
+export default withRouter(connect( mapStateToProps, mapDispatchToProps )(ProjectTeam));

@@ -31,12 +31,7 @@ class MilestonesTable extends Component {
   };
 
   render() {
-    const emptyRows =
-      this.state.rowsPerPage -
-      Math.min(
-        this.state.rowsPerPage,
-        this.props.milestones.length - this.state.page * this.state.rowsPerPage
-      );
+    const emptyRows = this.state.rowsPerPage - Math.min( this.state.rowsPerPage, this.props.milestones.length - this.state.page * this.state.rowsPerPage);
     const { milestones } = this.props;
 
     return (

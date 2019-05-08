@@ -8,16 +8,17 @@ import Button from "../theme/CustomButtons/Button.jsx";
 import GridItem from "../theme/Grid/GridItem.jsx";
 import GridContainer from "../theme/Grid/GridContainer.jsx";
 // Material UI components
-import Avatar from "@material-ui/core/Avatar";
 import Tooltip from "@material-ui/core/Tooltip";
 // Icons
-import Remove from "@material-ui/icons/Remove";
 // External
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw } from "draft-js";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import ImageUploader from "react-images-upload";
+import IconButton from "@material-ui/core/IconButton";
+import Close from "@material-ui/icons/Close";
+
 
 class AddComment extends Component {
   constructor(props) {
@@ -174,25 +175,27 @@ class AddComment extends Component {
                             alt="preview"
                           />
                           <Tooltip
-                            id="tooltip-top-start"
-                            title="Remove image"
-                            placement="top"
-                            onClick={this.removeImage.bind(this, url)}
-                            classes={{ tooltip: classes.tooltip }}
-                          >
-                            <Avatar
                               style={{
-                                backgroundColor: "#f44336",
-                                height: "30px",
-                                width: "30px",
                                 position: "absolute",
                                 right: "-12px",
                                 top: "-12px"
                               }}
+                              id="tooltip-top-start"
+                              title="Remove image"
+                              placement="top"
+                              onClick={this.removeImage.bind(this, url)}
+                              classes={{ tooltip: classes.tooltip }}
                             >
-                              <Remove />
-                            </Avatar>
-                          </Tooltip>
+                              <IconButton aria-label="Close" className={classes.tableActionButton} >
+                                <Close
+                                  style={{ color: 'black' }}
+                                  className={
+                                    classes.tableActionButtonIcon +
+                                    classes.close
+                                  }
+                                />
+                              </IconButton>
+                            </Tooltip>
                         </div>
                       </GridItem>
                     );

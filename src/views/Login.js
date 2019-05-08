@@ -116,8 +116,7 @@ class Login extends Component {
           }
         })
         .then(() => {
-          this.props
-            .getEmailFromInvitation(invitation)
+          this.props.getEmailFromInvitation(invitation)
             .then(res => {
               if (res.email) {
                 this.setState({
@@ -126,9 +125,7 @@ class Login extends Component {
                 })
               }
             })
-            .then(() => {
-              this.redirect(invitation, false)
-            })
+            .then(() => { this.redirect(invitation, false)})
         })
 
       // If no user is logged in. Set email from invitation in form.
@@ -233,10 +230,7 @@ class Login extends Component {
 
     return (
       <GridContainer>
-        <GridItem
-          xs={12}
-          sm={12}
-          md={12}
+        <GridItem xs={12} sm={12} md={12}
           style={{
             backgroundColor: "rgb(119, 186,193)",
             height: "90vh",
@@ -246,10 +240,7 @@ class Login extends Component {
         >
           <GridContainer>
             <Hidden smDown implementation="css">
-              <GridItem
-                xs={12}
-                sm={12}
-                md={12}
+              <GridItem xs={12} sm={12} md={12}
                 style={{
                   display: "flex",
                   position: "fixed",
@@ -299,16 +290,16 @@ class Login extends Component {
                       onClick={this.handleClickOpen}
                       classes={{ tooltip: classes.tooltip }}
                     >
-                          <IconButton aria-label="Close" className={classes.tableActionButton} >
-                            <Close
-                              style={{ color: 'black' }}
-                              className={
-                                classes.tableActionButtonIcon +
-                                classes.close
-                              }
-                            />
-                          </IconButton>
-                        </Tooltip>
+                      <IconButton aria-label="Close" className={classes.tableActionButton} >
+                        <Close
+                          style={{ color: 'black' }}
+                          className={
+                            classes.tableActionButtonIcon +
+                            classes.close
+                          }
+                        />
+                      </IconButton>
+                    </Tooltip>
                   </div>
                   {this.state.register ? <RegisterForm /> : <LoginForm />}
                 </Card>

@@ -1,17 +1,14 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
-
 // Redux
 import { connect } from "react-redux";
 import { milestoneEdit } from "../../redux/actions/milestones/Actions";
-
 // Theme components
 import CardBody from "../theme/Card/CardBody.jsx";
 import GridContainer from "../theme/Grid/GridContainer.jsx";
 import GridItem from "../theme/Grid/GridItem.jsx";
 import Button from "../theme/CustomButtons/Button.jsx";
-
 // Material UI components
 import TextField from "@material-ui/core/TextField";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -153,9 +150,4 @@ const mapStateToProps = state => ({
   successMessage: state.ticket.successMessage
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(EditMilestoneForm)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditMilestoneForm));

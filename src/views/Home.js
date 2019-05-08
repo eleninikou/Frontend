@@ -8,6 +8,9 @@ import { getUser } from "../redux/actions/auth/Actions";
 import Footer from "../components/theme/Footer/Footer.jsx";
 import Sidebar from "../components/theme/Sidebar/Sidebar.jsx";
 import Navbar from "../components/theme/Navbars/Navbar.jsx";
+// Material UI
+import withStyles from "@material-ui/core/styles/withStyles";
+import { Typography } from "@material-ui/core";
 
 // Views
 import {
@@ -21,13 +24,12 @@ import {
 } from "../views";
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/layouts/dashboardStyle.jsx";
-import withStyles from "@material-ui/core/styles/withStyles";
-import image from '../assets/img/NS2R7RJK.png'
 import "perfect-scrollbar/css/perfect-scrollbar.css";
 import "../assets/css/main.css";
+
 import Cookies from "universal-cookie";
+import image from '../assets/img/NS2R7RJK.png'
 import routes from "../routes.js";
-import { Typography } from "@material-ui/core";
 
 const switchRoutes = (
   <Switch>
@@ -178,9 +180,4 @@ const mapStateToProps = state => ({
   isFetching: state.auth.isFetching
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(dashboardStyle)(Home))
-);
+export default withRouter( connect( mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Home)));

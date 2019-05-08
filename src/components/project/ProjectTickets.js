@@ -118,8 +118,7 @@ class ProjectTickets extends Component {
                       ? ticketTypes.map(type => {
                           return (
                             <MenuItem key={type.id} value={type.id}>
-                              {" "}
-                              {type.type}{" "}
+                              {type.type}
                             </MenuItem>
                           );
                         })
@@ -279,9 +278,4 @@ const mapStateToProps = state => ({
   ticketTypes: state.ticket.ticketTypes
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ProjectTickets)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProjectTickets));

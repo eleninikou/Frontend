@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-  register,
-  googleLogin,
-  acceptInvitation
-} from "../../../redux/actions/auth/Actions";
+import { register, googleLogin, acceptInvitation } from "../../../redux/actions/auth/Actions";
 import Cookies from "universal-cookie";
 import GoogleLogin from "react-google-login";
 import GridItem from "../../theme/Grid/GridItem.jsx";
@@ -87,7 +83,7 @@ class RegisterForm extends Component {
     this.setState({ [name]: value });
   };
 
-  componentWillMount = () => {
+  componentDidMount = () => {
     const cookies = new Cookies();
     var invitation = cookies.get("invitation");
     this.setState({ invitation });
@@ -101,10 +97,7 @@ class RegisterForm extends Component {
         <GridItem xs={12} sm={12} md={12}>
           <GridContainer>
             <CardBody style={{ padding: '0px'}}>
-              <form
-                style={{ width: "100%", textAlign: "center" }}
-                onSubmit={this.submit}
-              >
+              <form style={{ width: "100%", textAlign: "center" }} onSubmit={this.submit} >
                 <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
                     <TextField
@@ -176,12 +169,7 @@ class RegisterForm extends Component {
                   </FormControl>
                 </GridItem>
               </form>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    style={{ textAlign: "center", margin: "auto" }}
-                    >
+                <GridItem xs={12} sm={12} md={12}style={{ textAlign: "center", marginTop: "20px" }} >
                   {!this.state.invitation ? (
                     <FormControl className={classes.formControl}>
                       <GoogleLogin
@@ -193,23 +181,13 @@ class RegisterForm extends Component {
                       />
                     </FormControl>
                   ) : null}
-                  </GridItem>
-                  <GridItem
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    style={{ textAlign: "center", marginTop: "20px" }}
-                  >
-                    {isFetching ? <LoginTextSpinner text={text}/> : errorMessage}
-                  </GridItem>
-              <GridItem
-                xs={12}
-                sm={12}
-                md={12}
-                style={{ textAlign: "center", marginTop: "20px" }}
-              >
-                {this.state.errorMessage}
-              </GridItem>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}style={{ textAlign: "center", marginTop: "20px" }} >
+                {isFetching ? <LoginTextSpinner text={text}/> : ''}
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}style={{ textAlign: "center", marginTop: "20px" }} >
+                  {this.state.errorMessage}
+                </GridItem>
             </CardBody>
           </GridContainer>
         </GridItem>
@@ -232,9 +210,4 @@ const mapStateToProps = state => ({
   errorMessage: state.auth.errorMessage
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(dashboardStyle)(RegisterForm))
-);
+export default withRouter(connect( mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(RegisterForm)));

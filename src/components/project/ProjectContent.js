@@ -11,18 +11,10 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 // Material UI components
 import Typography from "@material-ui/core/Typography";
 
-const ProjectContent = ({
-  project,
-  getEdit,
-  team,
-  creator,
-  admins,
-  clients,
-  isAdmin
-}) => {
-  const showForm = () => {
-    getEdit(true);
-  };
+const ProjectContent = ({ project, getEdit, creator, admins, clients, isAdmin }) => {
+
+  const showForm = () => { getEdit(true) }
+  
   return (
     <CardBody>
       <GridContainer>
@@ -50,9 +42,7 @@ const ProjectContent = ({
             Status
           </Typography>
           <Typography> {project.active ? "Active" : "Inactive"} </Typography>
-
           <Typography style={{ color: "grey", marginTop: "25px" }}>
-            {" "}
             Admin
           </Typography>
 
@@ -75,13 +65,11 @@ const ProjectContent = ({
                         />
                       ) : (
                         <Avatar style={{ width: "30px", height: "30px" }}>
-                          {" "}
                           <AccountCircle style={{ fontSize: "18px" }} />{" "}
                         </Avatar>
                       )
                     ) : null}
                     <Typography>
-                      {" "}
                       {admin.user ? admin.user.name : null}{" "}
                     </Typography>
                   </div>

@@ -192,9 +192,7 @@ class CreateTicket extends Component {
   }
 
   // remove url from storage with preview
-  filtered(urls) {
-    this.setState({ urls });
-  }
+  filtered(urls) { this.setState({ urls }) }
 
   // If image are uploaded but no ticket is created -> delete them from storage
   componentWillUnmount = () => {
@@ -426,8 +424,7 @@ class CreateTicket extends Component {
                           id: "milestone_id"
                         }}
                       >
-                        {project
-                          ? project.milestones
+                        {project ? project.milestones
                             ? project.milestones.map(milestone => {
                                 return (
                                   <MenuItem key={milestone.id} value={milestone.id} >
@@ -435,8 +432,7 @@ class CreateTicket extends Component {
                                   </MenuItem>
                                 );
                               })
-                            : null
-                          : null}
+                            : null : null}
                       </TextField>
                     </FormControl>
                   </GridItem>

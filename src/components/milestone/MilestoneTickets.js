@@ -77,8 +77,7 @@ class MilestoneTickets extends Component {
   render() {
     const { tickets, classes, ticketStatus, ticketTypes } = this.props;
     const { rowsPerPage, page, status_id, type_id, priority } = this.state;
-    const emptyRows =
-      rowsPerPage - Math.min(rowsPerPage, tickets.length - page * rowsPerPage);
+    const emptyRows =rowsPerPage - Math.min(rowsPerPage, tickets.length - page * rowsPerPage);
 
     let filteredTickets = tickets
       ? tickets.filter(ticket => {
@@ -117,8 +116,7 @@ class MilestoneTickets extends Component {
                           ? ticketTypes.map(type => {
                               return (
                                 <MenuItem key={type.id} value={type.id}>
-                                  {" "}
-                                  {type.type}{" "}
+                                  {type.type}
                                 </MenuItem>
                               );
                             })
@@ -142,8 +140,7 @@ class MilestoneTickets extends Component {
                           ? ticketStatus.map(status => {
                               return (
                                 <MenuItem key={status.id} value={status.id}>
-                                  {" "}
-                                  {status.status}{" "}
+                                  {status.status}
                                 </MenuItem>
                               );
                             })
@@ -317,9 +314,4 @@ const mapStateToProps = state => ({
   ticketTypes: state.ticket.ticketTypes
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(MilestoneTickets)
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MilestoneTickets));
