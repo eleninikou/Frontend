@@ -346,7 +346,7 @@ class Invite extends Component {
             </CardBody>
           </Card>
         </GridItem>
-                </GridContainer>
+        </GridContainer>
               </CardBody>
               <CardFooter style={{ justifyContent: "flex-end" }}>
                 <Button
@@ -361,6 +361,8 @@ class Invite extends Component {
           </Card>
         </GridItem>
         {backToProject ? (
+        <GridItem xs={12} sm={12} md={8} style={{ textAlign: 'center'}}>
+
           <Button
             color="info"
             style={{ margin: "auto" }}
@@ -368,6 +370,8 @@ class Invite extends Component {
           >
             Back to project
           </Button>
+          </GridItem>
+
         ) : null}
       </GridContainer>
     );
