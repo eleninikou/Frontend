@@ -282,10 +282,7 @@ class Login extends Component {
               </GridContainer>
               </GridItem>
               {display ?
-              <GridItem
-                xs={10}
-                sm={3}
-                md={3}
+              <GridItem xs={10} sm={3} md={3}
                 style={{
                   position: "fixed",
                   right: "0px",
@@ -307,7 +304,6 @@ class Login extends Component {
                               style={{ color: 'black' }}
                               className={
                                 classes.tableActionButtonIcon +
-                                " " +
                                 classes.close
                               }
                             />
@@ -330,10 +326,7 @@ class Login extends Component {
                     height: "100vh"
                   }}
                 >
-                  <GridItem
-                    xs={12}
-                    sm={10}
-                    md={10}
+                  <GridItem xs={12} sm={10} md={10}
                     style={{
                       position: "fixed",
                       right: "0px",
@@ -365,10 +358,7 @@ class Login extends Component {
               ) : null}
             </Hidden>
 
-            <GridItem
-              xs={12}
-              sm={10}
-              md={10}
+            <GridItem xs={12} sm={10} md={10}
               style={{
                 margin: "auto",
                 justifyContent: "center",
@@ -427,12 +417,7 @@ class Login extends Component {
             </GridItem>
           </GridContainer>
         </GridItem>
-        <GridItem
-          xs={12}
-          sm={10}
-          md={10}
-          style={{ margin: "auto", justifyContent: "center" }}
-        >
+        <GridItem xs={12} sm={10} md={10} style={{ margin: "auto", justifyContent: "center" }} >
           <GridContainer>
             <GridItem xs={12} sm={10} md={3} style={{ margin: "auto" }}>
               <Typography style={{ fontSize: "22px", fontWeight: "600" }}>
@@ -457,17 +442,9 @@ class Login extends Component {
             </GridItem>
           </GridContainer>
         </GridItem>
-        <GridItem
-          xs={12}
-          sm={12}
-          md={12}
-          style={{ backgroundColor: "#E4E4E4", height: "80vh" }}
-        >
+        <GridItem xs={12} sm={12} md={12} style={{ backgroundColor: "#E4E4E4", height: "80vh" }} >
           <GridContainer>
-            <GridItem
-              xs={10}
-              sm={10}
-              md={10}
+            <GridItem xs={10} sm={10} md={10}
               style={{
                 margin: "auto",
                 justifyContent: "center",
@@ -485,12 +462,7 @@ class Login extends Component {
                     images and report bugs with ease.
                   </Typography>
                 </GridItem>
-                <GridItem
-                  xs={12}
-                  sm={12}
-                  md={7}
-                  style={{ margin: "auto", position: "relative" }}
-                >
+                <GridItem xs={12} sm={12} md={7} style={{ margin: "auto", position: "relative" }} >
                   <img src={together} alt="collab" width="100%" height="auto" />
                   <img
                     src={sitting}
@@ -588,9 +560,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withRouter(
-  connect(
-    null,
-    mapDispatchToProps
-  )(withStyles(styles)(Login))
-);
+export default withRouter(connect( null,  mapDispatchToProps)(withStyles(styles)(Login)));

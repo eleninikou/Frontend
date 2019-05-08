@@ -27,19 +27,15 @@ import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardFooter from "../components/theme/Card/CardFooter.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 // Material UI components
-import Avatar from "@material-ui/core/Avatar";
-import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import CircularProgress from "@material-ui/core/CircularProgress";
-// Icons
-import Remove from "@material-ui/icons/Remove";
 // Styles
 import withStyles from "@material-ui/core/styles/withStyles";
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 import TicketImagePreviews from "../components/ticket/TicketImagePreviews";
+import DashboardSpinner from "../components/spinner/DashboardSpinner";
 
 class CreateTicket extends Component {
   constructor(props) {
@@ -157,7 +153,6 @@ class CreateTicket extends Component {
   };
 
   onDrop(files) {
-
     const cookies = new Cookies();
     var token = cookies.get("token");
 
@@ -201,7 +196,7 @@ class CreateTicket extends Component {
     this.setState({ urls });
   }
 
-  // If image are uploaded but no ticket is created -> delete them
+  // If image are uploaded but no ticket is created -> delete them from storage
   componentWillUnmount = () => {
     if (this.state.urls.length) {
       this.state.urls.map(url => {
@@ -228,15 +223,9 @@ class CreateTicket extends Component {
   };
 
   render() {
-    const {
-      classes,
-      allProjects,
-      ticketTypes,
-      ticketStatus,
-      project,
-      team
-    } = this.props;
+    const { classes, allProjects, ticketTypes, ticketStatus, project, team } = this.props;
     const { editorState, backToProject, hasError, user, urls } = this.state;
+    const styles = { input: { minWidth: "100%" } };
 
     // https://reactgo.com/removeduplicateobjects/
     function getUnique(arr, comp) {
@@ -250,39 +239,24 @@ class CreateTicket extends Component {
 
     let projects = getUnique(allProjects, "project_id");
     let team_members = getUnique(team, "user_id");
-    let me_and_admin = team_members.filter(member => {
-      return member.role_id === 1 || member.user_id === parseInt(user);
-    });
 
-    // Styles to input
-    const styles = {
-      input: {
-        minWidth: "100%"
-      }
-    };
+    // If user is Developer or Editor => restrictions in who to assign
+    let me_and_admin = team_members.filter(member => { return member.role_id === 1 || member.user_id === parseInt(user) });
+
 
     return (
       <GridContainer>
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary" style={{ marginBottom: "30px" }}>
-              <h4
-                className={classes.cardTitleWhite}
-                style={{ textTransform: "uppercase" }}
-              >
-                Create ticket
-              </h4>
+              <h4 className={classes.cardTitleWhite} style={{ textTransform: "uppercase" }}> Create ticket </h4>
             </CardHeader>
             <form className={classes.form} onSubmit={this.submit}>
               <CardBody>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={8}>
                     <FormControl className={classes.formControl}>
-                      {hasError && !this.state.title && (
-                        <FormHelperText id="title">
-                          Please select title!
-                        </FormHelperText>
-                      )}
+                      {hasError && !this.state.title && ( <FormHelperText id="title"> Please select title! </FormHelperText>)}
                       <TextField
                         error={hasError && !this.state.title ? true : false}
                         id="title"
@@ -301,15 +275,9 @@ class CreateTicket extends Component {
                   <GridItem xs={12} sm={12} md={4}>
                     {projects || project ? (
                       <FormControl className={classes.formControl}>
-                        {hasError && !this.state.project_id && (
-                          <FormHelperText>
-                            Please select project!
-                          </FormHelperText>
-                        )}
+                        {hasError && !this.state.project_id && ( <FormHelperText> Please select project! </FormHelperText>)}
                         <TextField
-                          error={
-                            hasError && !this.state.project_id ? true : false
-                          }
+                          error={ hasError && !this.state.project_id ? true : false }
                           style={styles.input}
                           select
                           disabled={backToProject ? true : false}
@@ -320,37 +288,24 @@ class CreateTicket extends Component {
                           inputProps={{ name: "project_id", id: "project_id" }}
                         >
                           {backToProject && project ? (
-                            <MenuItem key={project.id} value={project.id}>
-                              {project.name}
-                            </MenuItem>
+                            <MenuItem key={project.id} value={project.id}> {project.name} </MenuItem>
                           ) : projects ? (
                             projects.map(project => {
                               return (
-                                <MenuItem
-                                  key={project.project.id}
-                                  value={project.project.id}
-                                >
-                                  {project.project.name}
-                                </MenuItem>
+                                <MenuItem key={project.project.id} value={project.project.id}> {project.project.name} </MenuItem>
                               );
                             })
                           ) : null}
                         </TextField>
                       </FormControl>
                     ) : (
-                      <CircularProgress
-                        className="my-spinner"
-                        color="primary"
-                      />
+                      <DashboardSpinner />
+                      
                     )}
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
-                      {hasError && !this.state.type_id && (
-                        <FormHelperText>
-                          Please select ticket type!
-                        </FormHelperText>
-                      )}
+                      {hasError && !this.state.type_id && ( <FormHelperText> Please select ticket type! </FormHelperText> )}
                       <TextField
                         error={hasError && !this.state.type_id ? true : false}
                         classes={classes}
@@ -364,11 +319,7 @@ class CreateTicket extends Component {
                       >
                         {ticketTypes
                           ? ticketTypes.map(type => {
-                              return (
-                                <MenuItem key={type.id} value={type.id}>
-                                  {type.type}
-                                </MenuItem>
-                              );
+                              return ( <MenuItem key={type.id} value={type.id}> {type.type} </MenuItem> );
                             })
                           : null}
                       </TextField>
@@ -376,11 +327,7 @@ class CreateTicket extends Component {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
-                      {hasError && !this.state.status_id && (
-                        <FormHelperText>
-                          Please select ticket status!
-                        </FormHelperText>
-                      )}
+                      {hasError && !this.state.status_id && ( <FormHelperText> Please select ticket status! </FormHelperText>)}
                       <TextField
                         error={hasError && !this.state.status_id ? true : false}
                         select
@@ -400,21 +347,14 @@ class CreateTicket extends Component {
                       >
                         {ticketStatus
                           ? ticketStatus.map(status => {
-                              return (
-                                <MenuItem key={status.id} value={status.id}>
-                                  {status.status}
-                                </MenuItem>
-                              );
+                              return ( <MenuItem key={status.id} value={status.id}> {status.status} </MenuItem> );
                             })
                           : null}
                       </TextField>
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
-                    <FormControl className={classes.formControl}>
-                      {hasError && !this.state.priority && (
-                        <FormHelperText>Please select priority!</FormHelperText>
-                      )}
+                    <FormControl className={classes.formControl}> <FormHelperText>Please select priority!</FormHelperText> )}
                       <TextField
                         error={hasError && !this.state.priority ? true : false}
                         select
@@ -457,30 +397,18 @@ class CreateTicket extends Component {
                           ? project.creator_id === parseInt(user)
                             ? team
                               ? team.map(member => {
-                                  return (
-                                    <MenuItem
-                                      key={member.user.id}
-                                      value={member.user.id}
-                                    >
-                                      {member.user.name}
-                                    </MenuItem>
-                                  );
+                                  return ( <MenuItem key={member.user.id} value={member.user.id} > {member.user.name} </MenuItem> );
                                 })
                               : null
                             : // Choose admin or self
-                            me_and_admin
-                            ? me_and_admin.map(member => {
+                            me_and_admin ? me_and_admin.map(member => {
                                 return (
-                                  <MenuItem
-                                    key={member.user.id}
-                                    value={member.user.id}
-                                  >
+                                  <MenuItem key={member.user.id} value={member.user.id} >
                                     {member.user.name}
                                   </MenuItem>
                                 );
                               })
-                            : null
-                          : null}
+                            : null : null}
                       </TextField>
                     </FormControl>
                   </GridItem>
@@ -502,10 +430,7 @@ class CreateTicket extends Component {
                           ? project.milestones
                             ? project.milestones.map(milestone => {
                                 return (
-                                  <MenuItem
-                                    key={milestone.id}
-                                    value={milestone.id}
-                                  >
+                                  <MenuItem key={milestone.id} value={milestone.id} >
                                     {milestone.title}
                                   </MenuItem>
                                 );
@@ -562,7 +487,6 @@ class CreateTicket extends Component {
                         imgExtension={[".jpg", ".gif", ".png", ".gif", ".jpeg"]}
                         maxFileSize={5242880}
                       />
-
                       <TicketImagePreviews urls={urls} filtered={this.filtered} classes={{classes}}/>
                     </FormControl>
                   </GridItem>
@@ -604,9 +528,4 @@ const mapStateToProps = state => ({
 
 TextField.propTypes = { classes: PropTypes.object };
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(dashboardStyle)(CreateTicket))
-);
+export default withRouter(connect( mapStateToProps, mapDispatchToProps )(withStyles(dashboardStyle)(CreateTicket)));
