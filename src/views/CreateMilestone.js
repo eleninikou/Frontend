@@ -26,6 +26,7 @@ import DashboardSpinner from "../components/spinner/DashboardSpinner";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 // Styles
 import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
+
 import Cookies from "universal-cookie";
 
 class CreateMilestone extends Component {
@@ -49,6 +50,7 @@ class CreateMilestone extends Component {
   submit = event => {
     event.preventDefault();
 
+    // Check if required data is filled in
     if (this.state.title && this.state.project_id) {
       const milestone = {
         title: this.state.title,
@@ -58,7 +60,10 @@ class CreateMilestone extends Component {
         backToProject: false
       };
 
-      this.props.milestoneCreate(milestone, this.state.token).then(() => {
+      // Create new milestone and redirect back to Project if 
+      // created from project. Otherwise back to milestones
+      this.props.milestoneCreate(milestone, this.state.token)
+      .then(() => {
         if (this.state.backToProject) {
           if (this.props.successMessage) {
             this.props.history.push({

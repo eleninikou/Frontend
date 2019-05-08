@@ -1,4 +1,3 @@
-export { default as AcceptInvitation } from './AcceptInvitation'
 export { default as CreateMilestone } from './CreateMilestone'
 export { default as CreateProject } from './CreateProject'
 export { default as CreateTicket } from './CreateTicket'

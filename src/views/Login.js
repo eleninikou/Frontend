@@ -95,6 +95,7 @@ class Login extends Component {
         this.props.history.push("/");
       });
     }
+
     var user = cookies.get("user")
     this.setState({ user })
 
@@ -140,7 +141,9 @@ class Login extends Component {
           })
         }
       })
-    }  };
+    }  
+  };
+  
 
   redirect(invitation, register) {
     const cookies = new Cookies()
@@ -171,6 +174,7 @@ class Login extends Component {
         }
       })
     }
+  
   }
 
   register = () => {
@@ -408,14 +412,15 @@ class Login extends Component {
                   </GridItem>
                     ) : (
                     <GridItem xs={10} sm={10} md={7} style={{ margin: "auto", position: 'absolute' }}>
-                    <Card>
+                    
+                    {/* <Card>
                         <h4 className={this.props.classes.cardTitleWhite}>OOPS!</h4>
                         <Typography> It looks like your invitation allready has been used. </Typography>
                         <Typography> Login to start working on your projects! </Typography>
                         <Button onClick={this.goToLogin} style={{ margin: "auto" }} color="success" >
                           Login
                         </Button>
-                    </Card>
+                    </Card> */}
                     </GridItem>
                   )}
               </GridContainer>

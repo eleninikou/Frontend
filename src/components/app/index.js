@@ -7,7 +7,6 @@ import Login from "../../views/Login";
 import Home from "../../views/Home";
 import CreateProject from "../../views/CreateProject";
 import Project from "../../views/Project";
-import AcceptInvitation from "../../views/AcceptInvitation";
 import NotFoundPage from "../../views/NotFoundPage";
 
 function PrivateRoute({ component: Component, ...rest }) {
