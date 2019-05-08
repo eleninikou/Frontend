@@ -56,10 +56,10 @@ class DangerDialog extends Component {
   };
 
   ticketDelete() {
-    this.props.deleteTicket(this.props.id, this.state.token).then(res => {
+    this.props.deleteTicket(this.props.id, this.state.token).then(() => {
       if (this.props.successMessage) {
         this.props.history.push({
-          pathname: "/home/projects",
+          pathname: "/home/tickets",
           state: { successMessage: this.props.successMessage }
         });
       }

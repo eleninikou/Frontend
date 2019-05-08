@@ -402,10 +402,6 @@ class EditTicketForm extends Component {
                     id: "assigned_user_id"
                   }}
                 >
-                  {console.log(user)}
-                  {console.log(creator)}
-                  {console.log(admin)}
-
                   {user === creator
                     ? me_and_admin
                       ? me_and_admin.map(member => {
