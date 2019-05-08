@@ -171,7 +171,7 @@ class Login extends Component {
               <GridContainer style={{ width: '100%'}}>
                 <GridItem xs={3} sm={3} md={3} style={{ width: "auto", display: "flex", alignItems: "center" }}>
                   <Avatar style={{ backgroundColor: "white" }} />
-                  <h1 style={{ marginLeft: "10px", color: "white", fontFamily: 'Roboto', fontSize: '40px' }}> / i ː z /</h1>
+                  <h1 style={{ marginLeft: "10px", color: "white", fontFamily: 'Roboto', fontSize: '40px' }}>  [ N A M E ] </h1>
                 </GridItem>
                 <GridItem xs={9} sm={9} md={9} style={{ width: "auto", display: "flex", alignItems: "center", justifyContent: 'flex-end' }}>
                       <Button
@@ -288,7 +288,7 @@ class Login extends Component {
               <GridContainer>
                 <GridItem xs={12} sm={10} md={5} style={{ margin: "auto" }}>
                   <Typography style={{ fontSize: "1.5em", fontWeight: "600" }}>
-                    / i ː z / is a collaboration platform built for every member of
+                    [ N A M E ] is a collaboration platform built for every member of
                     your team to simplify your workflow!
                   </Typography>
                   <Typography style={{ fontSize: "18px" }}>
@@ -326,7 +326,7 @@ class Login extends Component {
                 Product Managers,
               </Typography>
               <Typography style={{ fontSize: "22px", fontWeight: "600" }}>
-                and UX Designers,
+                and UX Designers
               </Typography>
               <div
                 style={{
@@ -413,7 +413,7 @@ class Login extends Component {
           md={12}
           style={{
             backgroundColor: "rgb(119, 186,193)",
-            height: "20vh",
+            height: "18vh",
             display: "flex",
             width: "100%",
             justifyContent: "space-around",
@@ -439,7 +439,7 @@ class Login extends Component {
                 </a>  
               </Typography>
             </GridItem>
-            <GridItem xs={12} sm={2} md={2} style={{ display: "flex", justifyContent: 'center' }}>
+            <GridItem xs={12} sm={2} md={2} style={{ display: "flex", justifyContent: 'center', marginTop: '10px' }}>
               <a href="https://www.linkedin.com/in/eleni-nikou" style={{ textDecoration: 'none'}}>
                 <Avatar style={{ backgroundColor: "white", marginRight: "15px" }}>
                 <i className="fab fa-linkedin-in" style={{ color: 'black'}}></i>
