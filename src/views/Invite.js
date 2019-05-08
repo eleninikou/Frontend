@@ -78,7 +78,7 @@ class Invite extends Component {
       // From dashboard. Get all projects
       this.props.getProjectsByUser(token)
     }
-    this.props.getRoles();
+    this.props.getRoles(token);
   };
 
   submit = event => {
