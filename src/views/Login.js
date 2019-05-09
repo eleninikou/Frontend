@@ -202,8 +202,11 @@ class Login extends Component {
 
     return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12} style={{ backgroundColor: "rgb(119, 186,193)", height: "90vh", padding: "0px", margin: "0px" }} >
-          <GridContainer>
+        <GridItem 
+          xs={12} sm={12} md={12} 
+          style={{ backgroundColor: "rgb(119, 186,193)", minHeight: "90vh", height: 'auto', padding: "0px", margin: "0px" }} >
+          <GridContainer style={{ padding: '0px'}}>
+            {/*  Desktop Menu  */}
             <Hidden smDown implementation="css">
               <Header loginForm={this.loginForm.bind(this)} registerForm={this.registerForm.bind(this)} />
               {display ? 
@@ -213,22 +216,19 @@ class Login extends Component {
                   handleClickOpen={this.handleClickOpen.bind(this)}/> 
               : null }
             </Hidden>
+            {/*  Mobile Menu */}
             <Hidden mdUp implementation="css">
               <MobileMenu handleDrawerToggle={this.handleDrawerToggle} {...rest} />
               {mobileOpen ? ( <MobileFormDisplay /> ) : null}
             </Hidden>
-            <GridItem xs={12} sm={11} md={11} style={{ margin: "auto", justifyContent: "center",  marginTop: "150px" }} >
-              <GridContainer>
-                <SectionOne registerForm={this.registerForm.bind(this)}/>
-                <InvitationFormDisplay 
-                  classes={classes} 
-                  invitedUserEmail={invitedUserEmail} 
-                  existingUser={existingUser}
-                  display={display}
-                  invitation={invitation}
-                  />
-              </GridContainer>
-            </GridItem>
+            <SectionOne registerForm={this.registerForm.bind(this)}/>
+            <InvitationFormDisplay 
+              classes={classes} 
+              invitedUserEmail={invitedUserEmail} 
+              existingUser={existingUser}
+              display={display}
+              invitation={invitation}
+              />
           </GridContainer>
         </GridItem>
         <SectionTwo />

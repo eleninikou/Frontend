@@ -6,7 +6,7 @@ import Avatar from "@material-ui/core/Avatar";
 
 const Header = ({ registerForm, loginForm }) => {
     return (
-        <GridItem xs={12} sm={12} md={12}
+      <GridItem xs={12} sm={12} md={12}
         style={{
           display: "flex",
           position: "fixed",
@@ -14,11 +14,12 @@ const Header = ({ registerForm, loginForm }) => {
           width: "100%",
           height: "82px",
           zIndex: 10,
+          padding: '0px'
         }}
       >
       <GridContainer style={{ width: '100%'}}>
         <GridItem xs={3} sm={3} md={3} style={{ width: "auto", display: "flex", alignItems: "center", padding: '0px !important' }}>
-          <Avatar style={{ backgroundColor: "white" }} />
+          {/* <Avatar style={{ backgroundColor: "white" }} /> */}
           <h1 style={{ marginLeft: "10px", color: "white", fontFamily: 'Roboto', fontSize: '40px' }}>  [ N A M E ] </h1>
         </GridItem>
         <GridItem xs={9} sm={9} md={9} style={{ width: "auto", display: "flex", alignItems: "center", justifyContent: 'flex-end' }}>

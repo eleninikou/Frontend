@@ -8,15 +8,15 @@ import standing from "../../assets/img/ZvTjn__9.png";
 
 const SectionThree = () => {
     return (
-        <GridItem xs={12} sm={12} md={12} style={{ backgroundColor: "#E4E4E4", height: "80vh" }} >
+        <GridItem xs={12} sm={12} md={12} style={{ backgroundColor: "#E4E4E4", minHeight: "70vh", height: 'auto' }} >
           <GridContainer>
             <GridItem xs={10} sm={10} md={10} style={{ margin: "auto", justifyContent: "center",  marginTop: "10px" }} >
               <GridContainer>
                 <GridItem xs={12} sm={12} md={4} style={{ margin: "auto" }}>
-                  <Typography style={{ fontSize: "20px", fontWeight: "600" }}>
+                  <Typography style={{ fontSize: "1.4em", fontWeight: "600" }}>
                     Share ideas and tasks!
                   </Typography>
-                  <Typography style={{ fontSize: "18px" }}>
+                  <Typography style={{ fontSize: "1em" }}>
                     Use [ NAME ] to speed up collaboration, communication, and
                     idea exchange. Comment on each other's tickets, upload
                     images and report bugs with ease.

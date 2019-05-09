@@ -21,7 +21,7 @@ const InfoIcons = () => {
     return (
       <GridContainer style={{ minHeight: '60vh'}}> 
         <GridItem xs={12} sm={12} md={12} style={{ margin: 'auto'}}>
-          <CardBody>
+          <CardBody style={{ margin: 'auto'}}>
             <GridContainer > 
               <GridItem xs={12} sm={12} md={4}>
                 <Card>
