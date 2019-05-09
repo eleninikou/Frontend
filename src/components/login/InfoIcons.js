@@ -17,7 +17,7 @@ import LowPriority from "@material-ui/icons/LowPriority"
 import ContactMail from "@material-ui/icons/ContactMail"
 
 
-const AppInfo = () => {
+const InfoIcons = () => {
     return (
       <GridContainer style={{ minHeight: '60vh'}}> 
         <GridItem xs={12} sm={12} md={12} style={{ margin: 'auto'}}>
@@ -101,4 +101,4 @@ const AppInfo = () => {
       </GridContainer>
     )
 }
-export default AppInfo;
+export default InfoIcons;

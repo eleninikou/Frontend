@@ -60,6 +60,8 @@ class Invite extends Component {
     var token = cookies.get("token");
     this.setState({ token })
 
+    this.props.getRoles(token);
+
     // If redirected from a specific project
     if (this.props.match.params.id) {
       this.props.getProject(this.props.match.params.id, token).then(res => {
@@ -78,7 +80,6 @@ class Invite extends Component {
       // From dashboard. Get all projects
       this.props.getProjectsByUser(token)
     }
-    this.props.getRoles(token);
   };
 
   submit = event => {
@@ -99,9 +100,7 @@ class Invite extends Component {
       this.props.getEmails(this.state.project_id, this.state.token).then(res => {
         this.setState({ emails: res.emails });
       });
-    } else {
-      this.setState({ hasError: true });
-    }
+    } else { this.setState({ hasError: true }) }
   };
 
   goBack = () => {

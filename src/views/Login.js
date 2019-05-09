@@ -1,56 +1,22 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+// Redux
 import { connect } from "react-redux";
-import {
-  logout,
-  getUser,
-  getEmailFromInvitation,
-  acceptInvitation
-} from "../redux/actions/auth/Actions"
-// Components
-import LoginForm from "../components/forms/login/LoginForm";
-import RegisterForm from "../components/forms/register/RegisterForm";
+import {logout, getUser, getEmailFromInvitation, acceptInvitation } from "../redux/actions/auth/Actions"
 // Theme components
 import Hidden from "@material-ui/core/Hidden";
-import Card from "../components/theme/Card/Card";
-import Button from "../components/theme/CustomButtons/Button.jsx";
 import GridItem from "../components/theme/Grid/GridItem.jsx";
-import CardIcon from "../components/theme/Card/CardIcon.jsx"
-import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 // Material UI components
-import Avatar from "@material-ui/core/Avatar";
 import withStyles from "@material-ui/core/styles/withStyles";
-import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import Close from "@material-ui/icons/Close";
-// Icons
-import PersonAdd from "@material-ui/icons/PersonAdd"
-import AccountCircle from "@material-ui/icons/AccountCircle"
-
 // Styles
-import {
-  whiteColor,
-  grayColor
-} from "../assets/jss/material-dashboard-react.jsx";
+import { whiteColor, grayColor } from "../assets/jss/material-dashboard-react.jsx";
 // External
 import Cookies from "universal-cookie";
-import PropTypes from "prop-types";
-import AppInfo from "../components/login/AppInfo";
-import { Typography } from "@material-ui/core";
-import collab from "../assets/img/enivorment.png";
-import together from "../assets/img/NS2R7RJK.png";
-import sitting from "../assets/img/girlexplaining.png";
-import standing from "../assets/img/ZvTjn__9.png";
-import MobileMenu from "../components/login/MobileMenu";
+
+import { MobileMenu, SectionOne, SectionTwo, SectionThree, Header, FormDisplay, InvitationFormDisplay, Footer, MobileFormDisplay } from '../components/login'
 
 const styles = {
-  center: {
-    width: "100vw",
-    transform: "translateY(50%) translateX(15%)",
-    margin: "auto"
-  },
   cardTitleWhite: {
     color: whiteColor,
     marginTop: "0px",
@@ -91,29 +57,28 @@ class Login extends Component {
 
   componentDidMount = () => {
     const cookies = new Cookies();
+    const token = cookies.get("token")
+
+    // If Logout remove all cookies
     if (this.props.match.url === "/home/logout") {
-      cookies.remove("token", { path: "/" });
-      cookies.remove("user", { path: "/" });
-      cookies.remove("invitation", { path: "/" });
-      this.props.logout().then(res => {
+      this.props.logout(token).then(() => {
+        cookies.remove("token", { path: "/" });
+        cookies.remove("user", { path: "/" });
+        cookies.remove("invitation", { path: "/" });
         this.props.history.push("/");
       });
     }
 
-    var user = cookies.get("user")
+    // If redirected from invitation
+    const user = cookies.get("user")
     this.setState({ user })
 
-    cookies.set("invitation", this.props.match.params.id, {
-      path: "/",
-      maxAge: 86399
-    })
+    cookies.set("invitation", this.props.match.params.id, { path: "/", maxAge: 86399})
+    const invitation = cookies.get("invitation")
 
-    var invitation = cookies.get("invitation")
-
-    // If user is logged in. Check if same email address as invitation
+    // If user allready is logged in. Check if same email address as invitation
     if (user) {
-      this.props
-        .getUser(user)
+      this.props.getUser(user)
         .then(res => {
           if (res.user) {
             this.setState({ loggedInUserEmail: res.user.email })
@@ -146,6 +111,7 @@ class Login extends Component {
   };
   
 
+  
   redirect(invitation, register) {
     const cookies = new Cookies()
 
@@ -230,327 +196,46 @@ class Login extends Component {
 
   render() {
     const { classes, ...rest } = this.props;
-    const { mobileOpen, display, invitedUserEmail, existingUser } = this.state;
+    const { mobileOpen, display, invitedUserEmail, existingUser, register, login } = this.state;
 
     return (
       <GridContainer>
-        <GridItem xs={12} sm={12} md={12}
-          style={{
-            backgroundColor: "rgb(119, 186,193)",
-            height: "90vh",
-            padding: "0px",
-            margin: "0px"
-          }}
-        >
+        <GridItem xs={12} sm={12} md={12} style={{ backgroundColor: "rgb(119, 186,193)", height: "90vh", padding: "0px", margin: "0px" }} >
           <GridContainer>
             <Hidden smDown implementation="css">
-              <GridItem xs={12} sm={12} md={12}
-                style={{
-                  display: "flex",
-                  position: "fixed",
-                  backgroundColor: "rgb(119, 186,193)",
-                  width: "100%",
-                  height: "82px",
-                  zIndex: 10,
-                }}
-              >
-              <GridContainer style={{ width: '100%'}}>
-                <GridItem xs={3} sm={3} md={3} style={{ width: "auto", display: "flex", alignItems: "center", padding: '0px !important' }}>
-                  <Avatar style={{ backgroundColor: "white" }} />
-                  <h1 style={{ marginLeft: "10px", color: "white", fontFamily: 'Roboto', fontSize: '40px' }}>  [ N A M E ] </h1>
-                </GridItem>
-                <GridItem xs={9} sm={9} md={9} style={{ width: "auto", display: "flex", alignItems: "center", justifyContent: 'flex-end' }}>
-                      <Button
-                        onClick={this.loginForm}
-                        style={{
-                          backgroundColor: "transparent",
-                          border: "1px solid white",
-                          boxShadow: "none",
-                          color: "black",
-                          marginRight: '20px',
-                          width: '150px',
-                          textTransform: 'unset', fontSize: '15px'
-                        }}
-                      >
-                        Log In
-                      </Button>
-                      <Button 
-                      onClick={this.registerForm} 
-                      color="success" 
-                      style={{ 
-                        color: "black", 
-                        border: "1px solid rgb(102, 187, 106)", 
-                        textTransform: 'unset', 
-                        fontSize: '15px',
-                        width: '150px',
-                        }}> Sign Up </Button>
-                </GridItem>
-              </GridContainer>
-              </GridItem>
-              {display ?
-              <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: "17px", top: "70px",  zIndex: 10 }} >
-                <Card style={{ minWidth: '312px', marginRight: '10px'}}>
-                <CardHeader style={{ display: 'flex', justifyContent: 'space-between'}}>
-                    <CardIcon color="success">
-                    {this.state.register ?
-                      <PersonAdd style={{ color: 'white'}} />
-                      : <AccountCircle style={{ color: 'white'}} /> }
-                    </CardIcon>
-                      <div style={{ width: 'auto', display: 'flex', alignSelf: 'flex-end'}}>
-                        <Tooltip
-                          id="tooltip-top-start"
-                          title="Close"
-                          placement="top"
-                          onClick={this.handleClickOpen}
-                          classes={{ tooltip: classes.tooltip }}
-                        >
-                          <IconButton aria-label="Close" className={classes.tableActionButton} >
-                            <Close
-                              style={{ color: 'black' }}
-                              className={
-                                classes.tableActionButtonIcon +
-                                classes.close
-                              }
-                            />
-                          </IconButton>
-                        </Tooltip>
-                      </div>
-                  </CardHeader>
-                  {this.state.register ? <RegisterForm /> : <LoginForm />}
-                </Card>
-              </GridItem>
+              <Header loginForm={this.loginForm.bind(this)} registerForm={this.registerForm.bind(this)} />
+              {display ? 
+                <FormDisplay 
+                  classes={classes} 
+                  register={this.state.register} 
+                  handleClickOpen={this.handleClickOpen.bind(this)}/> 
               : null }
             </Hidden>
-
             <Hidden mdUp implementation="css">
-            <MobileMenu handleDrawerToggle={this.handleDrawerToggle} {...rest} />
-              {mobileOpen ? (
-                <div
-                  style={{
-                    backgroundColor: "#F4CCCC",
-                    zIndex: 5,
-                    height: "100vh"
-                  }}
-                >
-                  <GridItem xs={12} sm={10} md={10}
-                    style={{
-                      position: "fixed",
-                      right: "0px",
-                      top: "70px",
-                      zIndex: 10,
-                      minWidth: "100vw",
-                      width: 'auto'
-                    }}
-                  >
-                    <Card style={{ padding: '0px'}}>
-                      <CustomTabs
-                        headerColor="success"
-                        tabs={[
-                          {
-                            tabName: "LOG IN",
-                            tabIcon: "",
-                            tabContent: <LoginForm />
-                          },
-                          {
-                            tabName: "SIGN UP",
-                            tabIcon: "",
-                            tabContent: <RegisterForm />
-                          }
-                        ]}
-                      />
-                    </Card>
-                  </GridItem>
-                </div>
-              ) : null}
+              <MobileMenu handleDrawerToggle={this.handleDrawerToggle} {...rest} />
+              {mobileOpen ? ( <MobileFormDisplay /> ) : null}
             </Hidden>
-
-            <GridItem xs={12} sm={11} md={11}
-              style={{ margin: "auto", justifyContent: "center",  marginTop: "150px" }} >
+            <GridItem xs={12} sm={11} md={11} style={{ margin: "auto", justifyContent: "center",  marginTop: "150px" }} >
               <GridContainer>
-                <GridItem xs={12} sm={10} md={6} style={{ margin: "auto" }}>
-                  <Typography style={{ fontSize: "2em", fontWeight: "600" }}>
-                    [ N A M E ] is a collaboration platform built for every member of
-                    your team to simplify your workflow!
-                  </Typography>
-                  <Typography style={{ fontSize: "18px" }}>
-                    Invite clients and developers to join your projects, create
-                    tickets and keep track of your development, plan features
-                    and much more!
-                  </Typography>
-                  <Button
-                    color="success"
-                    style={{ width: "200px", color: "black" , textTransform: 'unset', fontSize: '15px'}}
-                    onClick={this.registerForm}
-                  >
-                    Sign Up - it's free!
-                  </Button>
-                </GridItem>
-                <GridItem xs={10} sm={10} md={6} style={{ margin: "auto" }}>
-                  <img src={collab} alt="collab" width="90%" height="auto" />
-                </GridItem>
-                {invitedUserEmail ? (
-              <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: "17px", top: "90px",  zIndex: 10 }} >
-                <Card style={{ minWidth: '312px', marginRight: '10px'}}>
-                      <CardHeader color="success">
-                        <h4 className={this.props.classes.cardTitleWhite}> Fill in to accept the invitation! </h4>
-                      </CardHeader>
-                        {existingUser ? (
-                          <LoginForm email={invitedUserEmail} />
-                        ) : (
-                          <RegisterForm email={invitedUserEmail} redirect={this.redirect.bind(this)} />
-                        )}
-                    </Card>
-                  </GridItem>
-                    ) : (
-                    <GridItem xs={10} sm={10} md={7} style={{ margin: "auto", position: 'absolute' }}>
-                    
-                    {/* <Card>
-                        <h4 className={this.props.classes.cardTitleWhite}>OOPS!</h4>
-                        <Typography> It looks like your invitation allready has been used. </Typography>
-                        <Typography> Login to start working on your projects! </Typography>
-                        <Button onClick={this.goToLogin} style={{ margin: "auto" }} color="success" >
-                          Login
-                        </Button>
-                    </Card> */}
-                    </GridItem>
-                  )}
+                <SectionOne registerForm={this.registerForm.bind(this)}/>
+                <InvitationFormDisplay 
+                  classes={classes} 
+                  invitedUserEmail={invitedUserEmail} 
+                  existingUser={existingUser}
+                  display={display}
+                  />
               </GridContainer>
             </GridItem>
           </GridContainer>
         </GridItem>
-        <GridItem xs={12} sm={10} md={10} style={{ margin: "auto", justifyContent: "center" }} >
-          <GridContainer>
-            <GridItem xs={12} sm={10} md={3} style={{ margin: "auto" }}>
-              <Typography style={{ fontSize: "22px", fontWeight: "600" }}>
-                Built for Developers,
-              </Typography>
-              <Typography style={{ fontSize: "22px", fontWeight: "600" }}>
-                Product Managers,
-              </Typography>
-              <Typography style={{ fontSize: "22px", fontWeight: "600" }}>
-                and UX Designers
-              </Typography>
-              <div
-                style={{
-                  width: "30%",
-                  height: "10px",
-                  backgroundColor: "rgb(209, 0, 83)"
-                }}
-              />
-            </GridItem>
-            <GridItem xs={12} sm={10} md={9} style={{ margin: "auto" }}>
-              <AppInfo />
-            </GridItem>
-          </GridContainer>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={12} style={{ backgroundColor: "#E4E4E4", height: "80vh" }} >
-          <GridContainer>
-            <GridItem xs={10} sm={10} md={10}
-              style={{
-                margin: "auto",
-                justifyContent: "center",
-                marginTop: "10px"
-              }}
-            >
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={4} style={{ margin: "auto" }}>
-                  <Typography style={{ fontSize: "20px", fontWeight: "600" }}>
-                    Share ideas and tasks!
-                  </Typography>
-                  <Typography style={{ fontSize: "18px" }}>
-                    Use [ NAME ] to speed up collaboration, communication, and
-                    idea exchange. Comment on each other's tickets, upload
-                    images and report bugs with ease.
-                  </Typography>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={7} style={{ margin: "auto", position: "relative" }} >
-                  <img src={together} alt="collab" width="100%" height="auto" />
-                  <img
-                    src={sitting}
-                    alt="collab"
-                    width="55%"
-                    height="auto"
-                    style={{
-                      position: "absolute",
-                      right: "0",
-                      bottom: "10%",
-                      height: "60%",
-                      width: "auto"
-                    }}
-                  />
-                  <img
-                    src={standing}
-                    alt="collab"
-                    width="55%"
-                    height="auto"
-                    style={{
-                      position: "absolute",
-                      left: "0",
-                      bottom: "10%",
-                      height: "60%",
-                      width: "auto"
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-            </GridItem>
-          </GridContainer>
-        </GridItem>
-        <GridItem
-          xs={12}
-          sm={12}
-          md={12}
-          style={{
-            backgroundColor: "rgb(119, 186,193)",
-            height: "18vh",
-            display: "flex",
-            width: "100%",
-            justifyContent: "space-around",
-            alignItems: "center"
-          }}
-        >
-          <GridContainer style={{ width: "100%", display: "flex", alignItems: "center" }} >
-            <GridItem
-              xs={12}
-              sm={2}
-              md={2}
-              style={{ justifyContent: 'center' }}
-            >
-              <Avatar style={{ backgroundColor: "white" }} />
-            </GridItem>
-            <GridItem xs={12} sm={8} md={8} style={{ textAlign: "center" }}>
-              <Typography style={{ fontSize: "12px", color: "white" }}>
-                Copyright 2019 NAME. All rights reserved.
-              </Typography>
-              <Typography style={{ fontSize: "12px", color: "white" }}>
-                <a href="https://bracket.gr" style={{ textDecoration: 'none', color: 'white'}}>
-                  Bracket <sup>[ ]</sup>
-                </a>  
-              </Typography>
-            </GridItem>
-            <GridItem xs={12} sm={2} md={2} style={{ display: "flex", justifyContent: 'center', marginTop: '10px' }}>
-              <a href="https://www.linkedin.com/in/eleni-nikou" style={{ textDecoration: 'none'}}>
-                <Avatar style={{ backgroundColor: "white", marginRight: "15px" }}>
-                <i className="fab fa-linkedin-in" style={{ color: 'black'}}></i>
-              </Avatar>
-              </a>  
-              <a href="mailto:eleni.nikou@mail.com" style={{ textDecoration: 'none'}}>
-                <Avatar style={{ backgroundColor: "white" }}>
-                <i className="fas fa-envelope" style={{ color: 'black'}}></i>
-              </Avatar>
-              </a>
-            </GridItem>
-          </GridContainer>
-        </GridItem>
+        <SectionTwo />
+        <SectionThree />     
+        <Footer />       
       </GridContainer>
     );
   }
 }
 
-Login.propTypes = {
-  classes: PropTypes.object.isRequired,
-  className: PropTypes.string
-};
 
 const mapDispatchToProps = dispatch => {
   return { 
