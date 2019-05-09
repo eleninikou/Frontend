@@ -288,15 +288,8 @@ class Login extends Component {
               </GridContainer>
               </GridItem>
               {display ?
-              <GridItem xs={10} sm={3} md={3}
-                style={{
-                  position: "fixed",
-                  right: "0px",
-                  top: "70px",
-                  zIndex: 10
-                }}
-              >
-                <Card style={{ minWidth: '300px'}}>
+              <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: "17px", top: "70px",  zIndex: 10 }} >
+                <Card style={{ minWidth: '312px', marginRight: '10px'}}>
                 <CardHeader style={{ display: 'flex', justifyContent: 'space-between'}}>
                     <CardIcon color="success">
                     {this.state.register ?
@@ -396,8 +389,8 @@ class Login extends Component {
                   <img src={collab} alt="collab" width="90%" height="auto" />
                 </GridItem>
                 {invitedUserEmail ? (
-                  <GridItem xs={10} sm={10} md={12} style={{ position: 'fixed', right: '0', top: '90px', zIndex: '10'}}>
-                    <Card>
+              <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: "17px", top: "90px",  zIndex: 10 }} >
+                <Card style={{ minWidth: '312px', marginRight: '10px'}}>
                       <CardHeader color="success">
                         <h4 className={this.props.classes.cardTitleWhite}> Fill in to accept the invitation! </h4>
                       </CardHeader>
