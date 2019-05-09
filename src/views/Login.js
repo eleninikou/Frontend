@@ -244,13 +244,14 @@ class Login extends Component {
                 style={{
                   display: "flex",
                   position: "fixed",
+                  backgroundColor: "rgb(119, 186,193)",
                   width: "100%",
                   height: "82px",
                   zIndex: 10,
                 }}
               >
               <GridContainer style={{ width: '100%'}}>
-                <GridItem xs={3} sm={3} md={3} style={{ width: "auto", display: "flex", alignItems: "center" }}>
+                <GridItem xs={3} sm={3} md={3} style={{ width: "auto", display: "flex", alignItems: "center", padding: '0px !important' }}>
                   <Avatar style={{ backgroundColor: "white" }} />
                   <h1 style={{ marginLeft: "10px", color: "white", fontFamily: 'Roboto', fontSize: '40px' }}>  [ N A M E ] </h1>
                 </GridItem>
@@ -259,16 +260,26 @@ class Login extends Component {
                         onClick={this.loginForm}
                         style={{
                           backgroundColor: "transparent",
-                          border: "1px solid black",
+                          border: "1px solid white",
                           boxShadow: "none",
                           color: "black",
                           marginRight: '20px',
+                          width: '150px',
                           textTransform: 'unset', fontSize: '15px'
                         }}
                       >
                         Log In
                       </Button>
-                      <Button onClick={this.registerForm} color="success" style={{ color: "black", border: "1px solid rgb(102, 187, 106)", textTransform: 'unset', fontSize: '15px' }}> Sign Up </Button>
+                      <Button 
+                      onClick={this.registerForm} 
+                      color="success" 
+                      style={{ 
+                        color: "black", 
+                        border: "1px solid rgb(102, 187, 106)", 
+                        textTransform: 'unset', 
+                        fontSize: '15px',
+                        width: '150px',
+                        }}> Sign Up </Button>
                 </GridItem>
               </GridContainer>
               </GridItem>
@@ -349,16 +360,11 @@ class Login extends Component {
               ) : null}
             </Hidden>
 
-            <GridItem xs={12} sm={10} md={10}
-              style={{
-                margin: "auto",
-                justifyContent: "center",
-                marginTop: "150px"
-              }}
-            >
+            <GridItem xs={12} sm={11} md={11}
+              style={{ margin: "auto", justifyContent: "center",  marginTop: "150px" }} >
               <GridContainer>
-                <GridItem xs={12} sm={10} md={5} style={{ margin: "auto" }}>
-                  <Typography style={{ fontSize: "1.5em", fontWeight: "600" }}>
+                <GridItem xs={12} sm={10} md={6} style={{ margin: "auto" }}>
+                  <Typography style={{ fontSize: "2em", fontWeight: "600" }}>
                     [ N A M E ] is a collaboration platform built for every member of
                     your team to simplify your workflow!
                   </Typography>
@@ -375,7 +381,7 @@ class Login extends Component {
                     Sign Up - it's free!
                   </Button>
                 </GridItem>
-                <GridItem xs={10} sm={10} md={7} style={{ margin: "auto" }}>
+                <GridItem xs={10} sm={10} md={6} style={{ margin: "auto" }}>
                   <img src={collab} alt="collab" width="90%" height="auto" />
                 </GridItem>
                 {invitedUserEmail ? (
