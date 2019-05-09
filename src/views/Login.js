@@ -15,6 +15,7 @@ import Hidden from "@material-ui/core/Hidden";
 import Card from "../components/theme/Card/Card";
 import Button from "../components/theme/CustomButtons/Button.jsx";
 import GridItem from "../components/theme/Grid/GridItem.jsx";
+import CardIcon from "../components/theme/Card/CardIcon.jsx"
 import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import GridContainer from "../components/theme/Grid/GridContainer.jsx";
 // Material UI components
@@ -24,6 +25,9 @@ import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
+// Icons
+import PersonAdd from "@material-ui/icons/PersonAdd"
+import AccountCircle from "@material-ui/icons/AccountCircle"
 
 // Styles
 import {
@@ -292,26 +296,33 @@ class Login extends Component {
                   zIndex: 10
                 }}
               >
-                <Card>
-                  <div style={{ width: 'auto', display: 'flex', alignSelf: 'flex-end'}}>
-                    <Tooltip
-                      id="tooltip-top-start"
-                      title="Close"
-                      placement="top"
-                      onClick={this.handleClickOpen}
-                      classes={{ tooltip: classes.tooltip }}
-                    >
-                      <IconButton aria-label="Close" className={classes.tableActionButton} >
-                        <Close
-                          style={{ color: 'black' }}
-                          className={
-                            classes.tableActionButtonIcon +
-                            classes.close
-                          }
-                        />
-                      </IconButton>
-                    </Tooltip>
-                  </div>
+                <Card style={{ minWidth: '300px'}}>
+                <CardHeader style={{ display: 'flex', justifyContent: 'space-between'}}>
+                    <CardIcon color="success">
+                    {this.state.register ?
+                      <PersonAdd style={{ color: 'white'}} />
+                      : <AccountCircle style={{ color: 'white'}} /> }
+                    </CardIcon>
+                      <div style={{ width: 'auto', display: 'flex', alignSelf: 'flex-end'}}>
+                        <Tooltip
+                          id="tooltip-top-start"
+                          title="Close"
+                          placement="top"
+                          onClick={this.handleClickOpen}
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <IconButton aria-label="Close" className={classes.tableActionButton} >
+                            <Close
+                              style={{ color: 'black' }}
+                              className={
+                                classes.tableActionButtonIcon +
+                                classes.close
+                              }
+                            />
+                          </IconButton>
+                        </Tooltip>
+                      </div>
+                  </CardHeader>
                   {this.state.register ? <RegisterForm /> : <LoginForm />}
                 </Card>
               </GridItem>
