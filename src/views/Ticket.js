@@ -231,13 +231,9 @@ class Ticket extends Component {
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
                 {ticket ? (
-              <Card>
-                  <div>
+                <Card>
                     <CardHeader color="primary">
-                      <h4
-                        className={classes.cardTitleWhite}
-                        style={{ fontSize: "2em" }}
-                      >
+                      <h4 className={classes.cardTitleWhite}  style={{ fontSize: "2em" }} >
                         Ticket | {ticket.title}{" "}
                       </h4>
                       <h4 className={classes.cardTitleWhite}>
@@ -287,17 +283,12 @@ class Ticket extends Component {
                     <CardFooter style={{ justifyContent: "flex-end" }}>
                       {ticket.creator_id === parseInt(user.id) ||
                       ticket.assigned_user_id === parseInt(user.id) ? (
-                        <Button
-                          color="primary"
-                          onClick={this.showForm}
-                          style={{ minWidth: "163px" }}
-                        >
+                        <Button color="primary" onClick={this.showForm} style={{ minWidth: "163px" }} >
                           {ButtonText}
                         </Button>
                       ) : null}
                     </CardFooter>
-                  </div>
-              </Card>
+                  </Card>
                 ) : (
                     <LoadingSpinner text={text}/>
                 )}

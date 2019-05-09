@@ -175,190 +175,152 @@ class Invite extends Component {
               </CardHeader>
               <CardBody>
                 <GridContainer>
-                <GridItem xs={6} sm={6} md={6}>
-                <GridContainer>
+                  <GridItem xs={6} sm={6} md={6}>
+                    <GridContainer>
+                      <GridItem xs={12} sm={12} md={12}>
+                        <FormControl className={classes.formControl}>
+                          {hasError && !this.state.project_id && ( <FormHelperText id="project_id"> Please select project! </FormHelperText>)}
+                            <TextField
+                              select
+                              error={ hasError && !this.state.project_id ? true : false }
+                              disabled={backToProject ? true : false}
+                              label="Project"
+                              margin="normal"
+                              value={this.state.project_id}
+                              onChange={this.handleChange}
+                              inputProps={{ name: "project_id", id: "project_id" }}
+                            >
+                            {project ? 
+                              <MenuItem defaultValue key={project.id} value={project.id}>
+                                {project.name}
+                              </MenuItem>
+                            :
+                            this.props.match.params.id && !project ? (
+                              <MenuItem defaultValue key={""} value={"create"}>
+                                You need to create a project first
+                              </MenuItem>
+                            ) : null}
 
-                  <GridItem xs={12} sm={12} md={12}>
-                    <FormControl className={classes.formControl}>
-                      {hasError && !this.state.project_id && (
-                        <FormHelperText id="project_id">
-                          Please select project!
-                        </FormHelperText>
-                      )}
-                      <TextField
-                        select
-                        error={
-                          hasError && !this.state.project_id ? true : false
-                        }
-                        disabled={backToProject ? true : false}
-                        label="Project"
-                        margin="normal"
-                        value={this.state.project_id}
-                        onChange={this.handleChange}
-                        inputProps={{
-                          name: "project_id",
-                          id: "project_id"
-                        }}
-                      >
-                        {project ? 
-                          <MenuItem defaultValue key={project.id} value={project.id}>
-                            {project.name}
-                          </MenuItem>
-                        :
-                        this.props.match.params.id && !project ? (
-                          <MenuItem defaultValue key={""} value={"create"}>
-                            You need to create a project first
-                          </MenuItem>
-                        ) : null}
-
-                        {!project && yourProjects
-                          ? yourProjects.map(project => {
-                              return (
-                                <MenuItem key={project.id} value={project.id}>
-                                  {project.name}
-                                </MenuItem>
-                              );
-                            })
-                          : null}
-                      </TextField>
-                    </FormControl>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <FormControl className={classes.formControl}>
-                      {hasError && !this.state.project_role && (
-                        <FormHelperText id="project_role">
-                          Please select role in the project!
-                        </FormHelperText>
-                      )}
-                      <TextField
-                        disabled={this.state.project_id ? false : true}
-                        select
-                        error={
-                          hasError && !this.state.project_role ? true : false
-                        }
-                        label="Role"
-                        margin="normal"
-                        value={this.state.project_role}
-                        onChange={this.handleChange}
-                        inputProps={{
-                          name: "project_role",
-                          id: "project_role"
-                        }}
-                      >
-                        {roles
-                          ? roles.map(role => {
-                              return (
-                                <MenuItem key={role.id} value={role.id}>
-                                  {role.role}
-                                </MenuItem>
-                              );
-                            })
-                          : null}
-                      </TextField>
-                    </FormControl>
-                  </GridItem>
-                  <GridItem xs={12} sm={12} md={12}>
-                    <FormControl className={classes.formControl}>
-                      {hasError && !this.state.email && (
-                        <FormHelperText id="project_role">
-                          Please fill in email!
-                        </FormHelperText>
-                      )}
-                      <TextField
-                        disabled={this.state.project_id ? false : true}
-                        type="email"
-                        label="email"
-                        error={hasError && !this.state.email ? true : false}
-                        id="email"
-                        formControlProps={{ fullWidth: true }}
-                        onChange={this.handleChange}
-                        name="email"
-                        fullWidth
-                      />
-                    </FormControl>
-                  </GridItem>
+                            {!project && yourProjects
+                              ? yourProjects.map(project => {
+                                  return (
+                                    <MenuItem key={project.id} value={project.id}>
+                                      {project.name}
+                                    </MenuItem>
+                                  );
+                                })
+                              : null}
+                            </TextField>
+                        </FormControl>
+                      </GridItem>
+                      <GridItem xs={12} sm={12} md={12}>
+                        <FormControl className={classes.formControl}>
+                          {hasError && !this.state.project_role && (<FormHelperText id="project_role"> Please select role in the project! </FormHelperText> )}
+                            <TextField
+                              disabled={this.state.project_id ? false : true}
+                              select
+                              error={ hasError && !this.state.project_role ? true : false }
+                              label="Role"
+                              margin="normal"
+                              value={this.state.project_role}
+                              onChange={this.handleChange}
+                              inputProps={{ name: "project_role", id: "project_role" }}
+                            >
+                            {roles
+                              ? roles.map(role => {
+                                  return (
+                                    <MenuItem key={role.id} value={role.id}>
+                                      {role.role}
+                                    </MenuItem>
+                                  );
+                                })
+                              : null}
+                            </TextField>
+                          </FormControl>
+                        </GridItem>
+                        <GridItem xs={12} sm={12} md={12}>
+                          <FormControl className={classes.formControl}>
+                            {hasError && !this.state.email && (
+                              <FormHelperText id="project_role">
+                                Please fill in email!
+                              </FormHelperText>
+                            )}
+                            <TextField
+                              disabled={this.state.project_id ? false : true}
+                              type="email"
+                              label="email"
+                              error={hasError && !this.state.email ? true : false}
+                              id="email"
+                              formControlProps={{ fullWidth: true }}
+                              onChange={this.handleChange}
+                              name="email"
+                              fullWidth
+                            />
+                          </FormControl>
+                         </GridItem>
+                        </GridContainer>
+                      </GridItem>
+                    <GridItem xs={12} sm={12} md={6}>
+                    <Card>
+                      <CardHeader>
+                        <CardIcon color="info" style={{ display: "flex" }}>
+                          <People style={{ color: 'white'}}/>
+                        </CardIcon>
+                      </CardHeader>
+                      <CardBody>
+                        {team ? (
+                          <Table
+                            page={page}
+                            rowsPerPage={team.length}
+                            emptyRows={0}
+                            tableHeaderColor="info"
+                            tableHead={["Name", "Role"]}
+                            tableData={[
+                              team
+                                ? team.map(user => {
+                                    return [
+                                      `${user.user ? user.user.name : null}`,
+                                      `${user.role ? user.role.role : "Admin"}`
+                                    ];
+                                  })
+                                : null
+                            ]}
+                          />
+                          ) : null}
+                          <div style={{ margin: "20px", textAlign: "center" }}>
+                            {isFetching ? <StyledSpinner /> : null}
+                          </div>
+                          {emails ? (
+                            emails.length && !isFetching ? (
+                              <Table
+                                page={page}
+                                rowsPerPage={emails.length}
+                                emptyRows={0}
+                                tableHeaderColor="info"
+                                tableHead={["Invited"]}
+                                tableData={[ emails ? emails.map(email => { return [`${email}`] }) : null ]}
+                              />
+                            ) : null
+                          ) : null}
+                       </CardBody>
+                      </Card>
+                    </GridItem>
                   </GridContainer>
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-          <Card>
-            <CardHeader>
-            <CardIcon color="info" style={{ display: "flex" }}>
-
-              <h4 className={classes.cardTitleWhite}>
-                <People />
-              </h4>
-              </CardIcon>
-            </CardHeader>
-            <CardBody>
-              {team ? (
-                <Table
-                  page={page}
-                  rowsPerPage={team.length}
-                  emptyRows={0}
-                  tableHeaderColor="info"
-                  tableHead={["Name", "Role"]}
-                  tableData={[
-                    team
-                      ? team.map(user => {
-                          return [
-                            `${user.user ? user.user.name : null}`,
-                            `${user.role ? user.role.role : "Admin"}`
-                          ];
-                        })
-                      : null
-                  ]}
-                />
-              ) : null}
-              <div style={{ margin: "20px", textAlign: "center" }}>
-                {isFetching ? <StyledSpinner /> : null}
-              </div>
-              {emails ? (
-                emails.length && !isFetching ? (
-                  <Table
-                    page={page}
-                    rowsPerPage={emails.length}
-                    emptyRows={0}
-                    tableHeaderColor="info"
-                    tableHead={["Invited"]}
-                    tableData={[
-                      emails
-                        ? emails.map(email => {
-                            return [`${email}`];
-                          })
-                        : null
-                    ]}
-                  />
-                ) : null
-              ) : null}
-            </CardBody>
-          </Card>
-        </GridItem>
-        </GridContainer>
-              </CardBody>
-              <CardFooter style={{ justifyContent: "flex-end" }}>
-                <Button
-                  type="submit"
-                  color="info"
-                  disabled={hasError ? true : false}
-                >
-                  Invite
-                </Button>
-              </CardFooter>
-            </form>
-          </Card>
-        </GridItem>
-        {backToProject ? (
-        <GridItem xs={12} sm={12} md={8} style={{ textAlign: 'center'}}>
-
-          <Button
-            color="info"
-            style={{ margin: "auto" }}
-            onClick={this.goBack.bind(this)}
-          >
-            Back to project
-          </Button>
+                </CardBody>
+                <CardFooter style={{ justifyContent: "flex-end" }}>
+                  <Button type="submit" color="info"  disabled={hasError ? true : false} >
+                    Invite
+                  </Button>
+                </CardFooter>
+              </form>
+            </Card>
           </GridItem>
-
+          {backToProject ? (
+          <GridItem xs={12} sm={12} md={8} style={{ textAlign: 'center'}}>
+            <Button color="info" style={{ margin: "auto" }} onClick={this.goBack.bind(this)}>
+              Back to project
+            </Button>
+          </GridItem>
         ) : null}
       </GridContainer>
     );
@@ -386,9 +348,4 @@ const mapStateToProps = state => ({
   emails: state.project.emails
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(dashboardStyle)(Invite))
-);
+export default withRouter(connect( mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Invite)));

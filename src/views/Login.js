@@ -52,6 +52,7 @@ class Login extends Component {
       loggedInUserEmail: null,
       invitedUserEmail: "",
       existingUser: "",
+      invitation: ''
     };
   }
 
@@ -70,47 +71,48 @@ class Login extends Component {
     }
 
     // If redirected from invitation
-    const user = cookies.get("user")
-    this.setState({ user })
+    if(this.props.match.params.id) {
 
-    cookies.set("invitation", this.props.match.params.id, { path: "/", maxAge: 86399})
-    const invitation = cookies.get("invitation")
+      cookies.set("invitation", this.props.match.params.id, { path: "/", maxAge: 86399})
 
-    // If user allready is logged in. Check if same email address as invitation
-    if (user) {
-      this.props.getUser(user)
-        .then(res => {
-          if (res.user) {
-            this.setState({ loggedInUserEmail: res.user.email })
+      const user = cookies.get("user")
+      const invitation = cookies.get("invitation")
+      this.setState({ user, invitation })
+
+      // If user allready is logged in. Check if same email address as invitation
+      if (user) {
+        this.props.getUser(user)
+          .then(res => {
+            if (res.user) {
+              this.setState({ loggedInUserEmail: res.user.email })
+            }
+          })
+          .then(() => {
+            this.props.getEmailFromInvitation(invitation)
+              .then(res => {
+                if (res.email) {
+                  this.setState({
+                    invitedUserEmail: res.email[0],
+                    existingUser: res.existing
+                  })
+                }
+              })
+              .then(() => { this.redirect(invitation, false)})
+          })
+
+        // If no user is logged in. Set email from invitation in form.
+      } else {
+        this.props.getEmailFromInvitation(invitation).then(res => {
+          if (res.email) {
+            this.setState({
+              invitedUserEmail: res.email[0],
+              existingUser: res.existing
+            })
           }
         })
-        .then(() => {
-          this.props.getEmailFromInvitation(invitation)
-            .then(res => {
-              if (res.email) {
-                this.setState({
-                  invitedUserEmail: res.email[0],
-                  existingUser: res.existing
-                })
-              }
-            })
-            .then(() => { this.redirect(invitation, false)})
-        })
-
-      // If no user is logged in. Set email from invitation in form.
-    } else {
-      this.props.getEmailFromInvitation(invitation).then(res => {
-        if (res.email) {
-          this.setState({
-            invitedUserEmail: res.email[0],
-            existingUser: res.existing
-          })
-        }
-      })
-    }  
+      }  
+    }
   };
-  
-
   
   redirect(invitation, register) {
     const cookies = new Cookies()
@@ -196,7 +198,7 @@ class Login extends Component {
 
   render() {
     const { classes, ...rest } = this.props;
-    const { mobileOpen, display, invitedUserEmail, existingUser, register, login } = this.state;
+    const { mobileOpen, display, invitedUserEmail, existingUser, invitation } = this.state;
 
     return (
       <GridContainer>
@@ -223,6 +225,7 @@ class Login extends Component {
                   invitedUserEmail={invitedUserEmail} 
                   existingUser={existingUser}
                   display={display}
+                  invitation={invitation}
                   />
               </GridContainer>
             </GridItem>

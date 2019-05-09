@@ -3,10 +3,7 @@ import { withRouter } from "react-router-dom";
 import Cookies from "universal-cookie";
 // Redux
 import { connect } from "react-redux";
-import {
-  getMilestone,
-  milestoneEdit
-} from "../redux/actions/milestones/Actions";
+import {getMilestone, milestoneEdit } from "../redux/actions/milestones/Actions";
 // Theme components
 import Card from "../components/theme/Card/Card";
 import Button from "../components/theme/CustomButtons/Button.jsx";

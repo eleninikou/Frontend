@@ -9,7 +9,8 @@ import CardIcon from "../theme/Card/CardIcon.jsx"
 import ErrorOutline from "@material-ui/icons/ErrorOutline"
 import CardBody from '../theme/Card/CardBody.jsx';
 
-const InvitationFormDisplay = ({ invitedUserEmail, existingUser, classes, display }) => {
+const InvitationFormDisplay = ({ invitedUserEmail, existingUser, classes, display, invitation }) => {
+  console.log(invitation)
     return (
         invitedUserEmail ? (
         <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: "17px", top: "90px",  zIndex: 10 }} >
@@ -23,7 +24,7 @@ const InvitationFormDisplay = ({ invitedUserEmail, existingUser, classes, displa
             </Card>
         </GridItem>
         ) : display ? null 
-        : (
+        : invitation ? (
           <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: "17px", top: "90px",  zIndex: 10 }} >
             <Card style={{ minWidth: '312px', marginRight: '10px'}}>
             <CardHeader >
@@ -37,7 +38,7 @@ const InvitationFormDisplay = ({ invitedUserEmail, existingUser, classes, displa
               </CardBody>
             </Card>
           </GridItem>
-        ) 
+        ) : null
     )
 }
 export default InvitationFormDisplay;
