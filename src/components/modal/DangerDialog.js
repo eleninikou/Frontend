@@ -112,6 +112,16 @@ class DangerDialog extends Component {
     });
   };
 
+  deleteInvitation = () => {
+    console.log('delete invitation')
+    // this.props.deleteInvitation(this.props.id, this.state.token)
+    // .then(res => {
+    //   if(res.message) {
+    //     this.setSuccess(res.message)
+    //   }
+    // });
+  };
+
   deleteComment = () => {
     this.props.commentDelete(this.props.id,this.state.token)
     .then(res => {
@@ -159,6 +169,8 @@ class DangerDialog extends Component {
                   ? this.deleteMilestone.bind(this)
                   : type === "comment"
                   ? this.deleteComment.bind(this)
+                  : type === "invitation"
+                  ? this.deleteInvitation.bind(this)
                   : this.deleteUser.bind(this)
               }
               style={{ cursor: "pointer" }}

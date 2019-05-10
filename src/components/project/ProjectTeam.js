@@ -112,7 +112,7 @@ class ProjectTeam extends Component {
           rowsPerPage={team ? team.length : null}
           emptyRows={emptyRows}
           tableHeaderColor="success"
-          tableHead={ creator ? ["", "Name", "Role",  "Remove"] : ["", "Name", "Role",  ""] }
+          tableHead={ creator ? ["", "Name", "Role", "Invitation", "Remove"] : ["", "Name", "Role", "Invitation", ""] }
           tableData={[ 
             team ? team.map(person => {
                   return person.user
@@ -171,7 +171,6 @@ class ProjectTeam extends Component {
                   : null
           ]}
         />
-        <Typography style={{fontSize: '1.5em', color: 'grey'}}>Invitations</Typography>
         <Table
           page={page}
           rowsPerPage={invitations ? invitations.length : null}
@@ -198,7 +197,7 @@ class ProjectTeam extends Component {
                       </IconButton>
                     </Tooltip>
                     <DangerDialogWrapped
-                      type={"team"}
+                      type={"invitation"}
                       title={"Are you sure you want to remove this user from the team?"}
                       id={invitation.id}
                       open={this.state.userId == invitation.id ? this.state.open : false}
