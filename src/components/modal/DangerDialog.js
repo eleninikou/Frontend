@@ -113,8 +113,8 @@ class DangerDialog extends Component {
   };
 
   deleteComment = () => {
-    this.handleClose()
-    this.props.commentDelete(this.props.id,this.state.token).then(res => {
+    this.props.commentDelete(this.props.id,this.state.token)
+    .then(res => {
       if(res.message) {
         this.setSuccess(res.message);
       }

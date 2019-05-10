@@ -1,7 +1,7 @@
 export { default as CreateMilestone } from './CreateMilestone'
 export { default as CreateProject } from './CreateProject'
 export { default as CreateTicket } from './CreateTicket'
-export { default as Dashboard } from './Dashboard'
+export { default as Activity } from './Activity'
 export { default as Home } from './Home'
 export { default as Invite } from './Invite'
 export { default as Login } from './Login'

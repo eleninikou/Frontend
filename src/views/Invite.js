@@ -92,13 +92,17 @@ class Invite extends Component {
         project_role: this.state.project_role
       };
 
-      this.props.invite(invitation, this.state.token).then(() => {
-        if (this.props.successMessage) {
+      this.props.invite(invitation, this.state.token)
+      .then(res => {
+        if (res.message) {
           this.showNotification("tr");
+        
+          this.props.getEmails(this.state.project_id, this.state.token)
+          .then(res => {
+            console.log(res)
+            this.setState({ emails: res.emails });
+          });
         }
-      });
-      this.props.getEmails(this.state.project_id, this.state.token).then(res => {
-        this.setState({ emails: res.emails });
       });
     } else { this.setState({ hasError: true }) }
   };

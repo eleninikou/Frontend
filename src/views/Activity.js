@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import { withRouter } from "react-router-dom"
 // Redux
 import { connect } from "react-redux"
-import { getAllTickets } from "../redux/actions/tickets/Actions"
 import { getActivity } from "../redux/actions/projects/Actions"
 import { logout } from "../redux/actions/auth/Actions"
 // Theme components
@@ -11,8 +10,7 @@ import GridItem from "../components/theme/Grid/GridItem.jsx"
 import GridContainer from "../components/theme/Grid/GridContainer.jsx"
 import Table from "../components/theme/Table/Table.jsx"
 import Card from "../components/theme/Card/Card"
-import CustomTabs from "../components/theme/CustomTabs/CustomTabs.jsx"
-import TicketsTable from "../components/ticket/TicketsTable"
+import CardBody from "../components/theme/Card/CardBody.jsx";
 // Material UI components
 import IconButton from "@material-ui/core/IconButton"
 import TablePagination from "@material-ui/core/TablePagination"
@@ -27,8 +25,12 @@ import dashboardStyle from "../assets/jss/material-dashboard-react/views/dashboa
 // Components
 import LoadingSpinner from "../components/spinner/LoadingSpinner"
 import Cookies from "universal-cookie"
+import CardHeader from "../components/theme/Card/CardHeader.jsx";
+import CardIcon from "../components/theme/Card/CardIcon.jsx";
 
-class Dashboard extends Component {
+
+
+class Activity extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -49,11 +51,6 @@ class Dashboard extends Component {
       if (res.activity) {
         const activities = res.activity.flatMap(activity => activity)
         this.setState({ activity: activities })
-      }
-    })
-    this.props.getAllTickets(token).then(res => {
-      if(res.tickets) {
-        this.setState({ allTickets: res.tickets })
       }
     })
   }
@@ -83,7 +80,7 @@ class Dashboard extends Component {
 
   render() {
     const { classes, isFetching, text } = this.props
-    const { rowsPerPage, page, activity, allTickets } = this.state
+    const { rowsPerPage, page, activity } = this.state
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, activity.length - page * rowsPerPage)
 
     return isFetching ? (
@@ -92,13 +89,15 @@ class Dashboard extends Component {
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
             <Card>
-              <CustomTabs
-                headerColor="primary"
-                tabs={[
-                  {
-                    tabName: "Activity",
-                    tabIcon: Today,
-                    tabContent: (
+            <CardHeader>
+              <CardIcon color="primary" style={{ display: "flex" }}>
+                <Today style={{ color: "white", marginRight: "10px" }} />
+                <h4 className={this.props.classes.cardTitleWhite}>
+                  Activity
+                </h4>
+              </CardIcon>
+            </CardHeader>
+            <CardBody>
                       <div>
                         <Table
                           page={page}
@@ -177,21 +176,7 @@ class Dashboard extends Component {
                           onChangeRowsPerPage={this.handleChangeRowsPerPage}
                         />
                       </div>
-                    )
-                  },
-                  {
-                    tabName: " My Tickets",
-                    tabIcon: Note,
-                    tabContent: (
-                      <TicketsTable
-                        tickets={allTickets}
-                        classes={classes}
-                        getSuccess={this.getSuccess.bind(this)}
-                      />
-                    )
-                  }
-                ]}
-              />
+                    </CardBody>
             </Card>
           </GridItem>
         </GridContainer>
@@ -199,21 +184,19 @@ class Dashboard extends Component {
   }
 }
 
-Dashboard.propTypes = { classes: PropTypes.object.isRequired }
+Activity.propTypes = { classes: PropTypes.object.isRequired }
 
 const mapDispatchToProps = dispatch => {
   return {
     logout: () => dispatch(logout()),
-    getAllTickets: token => dispatch(getAllTickets(token)),
     getActivity: token => dispatch(getActivity(token)),
   }
 }
 
 const mapStateToProps = state => ({
-  allTickets: state.ticket.allTickets,
   activity: state.project.activity,
   isFetching: state.project.isFetching,
   text: state.project.text
 })
 
-export default withRouter(connect( mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Dashboard)))
+export default withRouter(connect( mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Activity)))

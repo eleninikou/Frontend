@@ -352,7 +352,7 @@ class CreateTicket extends Component {
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
-                    <FormControl className={classes.formControl}> <FormHelperText>Please select priority!</FormHelperText> )}
+                    <FormControl className={classes.formControl}> <FormHelperText>Please select priority!</FormHelperText>
                       <TextField
                         error={hasError && !this.state.priority ? true : false}
                         select

@@ -28,7 +28,7 @@ import {
 } from "../components";
 import DashboardSpinner from "../components/spinner/DashboardSpinner";
 import LoadingSpinner from "../components/spinner/LoadingSpinner";
-
+import DangerDialogWrapped from "../components/modal/DangerDialog";
 // Icon
 import Edit from "@material-ui/icons/Edit";
 import Comment from "@material-ui/icons/Comment";
@@ -149,6 +149,14 @@ class Ticket extends Component {
     this.setState({ showComments: true, CommentText: "Hide Comments" });
   };
 
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = open => {
+    this.setState({ open });
+  };
+
   // show notification and update component
   getSuccess = successMessage => {
     const cookies = new Cookies();
@@ -171,7 +179,7 @@ class Ticket extends Component {
           project_id: res.ticket.project_id,
           creator: res.ticket.project.creator_id,
           ticket: res.ticket,
-          comment: null,
+          comments: res.ticket.comments,
           edit: false,
           ButtonText: "Edit Ticket"
         });
@@ -204,13 +212,7 @@ class Ticket extends Component {
     } = this.state;
 
     // To display lightgallery images
-    var galleryImages = [
-      images
-        ? images.map(image => {
-            return { original: image.attachment, thumbnail: image.attachment };
-          })
-        : null
-    ];
+    var galleryImages = [ images ? images.map(image => { return { original: image.attachment, thumbnail: image.attachment } }) : null ];
 
     return (
       <div>
@@ -225,16 +227,15 @@ class Ticket extends Component {
           close
         />
 
-        {isFetching ? (
-          <LoadingSpinner text={text}/>
+        {isFetching ? ( <LoadingSpinner text={text}/>
         ) : (
           <GridContainer>
             <GridItem xs={12} sm={12} md={12}>
-                {ticket ? (
+                {ticket && !edit ? (
                 <Card>
                     <CardHeader color="primary">
                       <h4 className={classes.cardTitleWhite}  style={{ fontSize: "2em" }} >
-                        Ticket | {ticket.title}{" "}
+                        Ticket | {ticket.title}
                       </h4>
                       <h4 className={classes.cardTitleWhite}>
                         {ticket.type ? ticket.type.type : null}
@@ -271,11 +272,7 @@ class Ticket extends Component {
                     </CardBody>
                     <CardFooter style={{ justifyContent: "flex-end" }}>
                       {!addComment && !showComments ? (
-                        <Button
-                          color="primary"
-                          onClick={this.showComments}
-                          style={{ minWidth: "163px" }}
-                        >
+                        <Button color="primary" onClick={this.showComments} style={{ minWidth: "163px" }} >
                           {CommentText}
                         </Button>
                       ) : null}
@@ -290,7 +287,7 @@ class Ticket extends Component {
                     </CardFooter>
                   </Card>
                 ) : (
-                    <LoadingSpinner text={text}/>
+                  <LoadingSpinner text={text}/>
                 )}
             </GridItem>
           </GridContainer>
@@ -301,15 +298,41 @@ class Ticket extends Component {
           ticket.assigned_user_id === parseInt(user.id)) &&
         edit ? (
           <Card>
-            <CardHeader>
+            <CardHeader style={{ display: 'flex', justifyContent: 'space-between'}}>
               <CardIcon color="primary">
                 <Edit style={{ color: "white" }} />
               </CardIcon>
-              <h4 className={classes.cardTitleWhite}> Update ticket</h4>
+                <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }} >
+
+                {user.id == ticket.creator_id ? (
+                  <div>
+                    <Button
+                      style={{ marginRight: "18px" }}
+                      color="danger"
+                      onClick={this.handleClickOpen}
+                      >
+                      Delete Ticket
+                    </Button>
+                    <DangerDialogWrapped
+                      type={"ticket"}
+                      title={"Are you sure you want to delete this ticket?"}
+                      id={this.props.match.params.id}
+                      open={this.state.open}
+                      onClose={this.handleClose}
+                    />
+                  </div>
+                      ) : null}
+                  <Button color="primary" onClick={this.showForm} style={{ minWidth: "163px" }} >
+                      {ButtonText}
+                  </Button>
+                </div>
             </CardHeader>
+
             <GridContainer>
               <GridItem xs={12} sm={12} md={12}>
                 <EditTicketForm
+                  showForm={this.showForm.bind(this)}
+                  ButtonText={ButtonText}
                   images={images}
                   creator={ticket.creator_id}
                   user={user.id}
@@ -400,9 +423,4 @@ const mapStateToProps = state => ({
   images: state.ticket.images
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(dashboardStyle)(Ticket))
-);
+export default withRouter(connect( mapStateToProps, mapDispatchToProps )(withStyles(dashboardStyle)(Ticket)));

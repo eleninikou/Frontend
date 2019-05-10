@@ -1,4 +1,4 @@
-import Dashboard from "./views/Dashboard"
+import Activity from "./views/Activity"
 import Projects from "./views/Projects"
 import Tickets from "./views/Tickets"
 import Invite from "./views/Invite"
@@ -19,7 +19,7 @@ const dashboardRoutes = [
       path: "/activity",
       name: "Activity",
       icon: Today,
-      component: Dashboard,
+      component: Activity,
       layout: "/home"
     },
     {

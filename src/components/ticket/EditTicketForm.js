@@ -24,7 +24,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Remove from "@material-ui/icons/Remove";
 // Components
-import DangerDialogWrapped from "../../components/modal/DangerDialog";
 // External
 import axios from "axios";
 import moment from "moment";
@@ -40,6 +39,8 @@ import {
 } from "draft-js";
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
+
+
 class EditTicketForm extends Component {
   constructor(props) {
     super(props);
@@ -67,8 +68,11 @@ class EditTicketForm extends Component {
   }
 
   componentWillMount = () => {
-    this.props.getTicketTypes();
-    this.props.getTicketStatus();
+    const cookies = new Cookies();
+    var token = cookies.get("token");
+
+    this.props.getTicketTypes(token);
+    this.props.getTicketStatus(token);
 
     // Bug in wysiwyg if content is empty
     if (this.props.description.blocks[0].text) {
@@ -203,13 +207,6 @@ class EditTicketForm extends Component {
     });
   };
 
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = open => {
-    this.setState({ open });
-  };
 
   setSuccess = successMessage => {
     this.props.getSuccess(successMessage);
@@ -224,8 +221,9 @@ class EditTicketForm extends Component {
       milestones,
       creator,
       user,
-      admin
+      admin,
     } = this.props;
+
     const { editorState, assigned_user_id, urls } = this.state;
 
     // https://reactgo.com/removeduplicateobjects/
@@ -245,31 +243,6 @@ class EditTicketForm extends Component {
 
     return (
       <form onSubmit={this.submit}>
-        {user == creator ? (
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "flex-end"
-            }}
-          >
-            <Button
-              style={{ marginRight: "18px" }}
-              color="danger"
-              onClick={this.handleClickOpen}
-            >
-              {" "}
-              Delete Ticket
-            </Button>
-            <DangerDialogWrapped
-              type={"ticket"}
-              title={"Are you sure you want to delete this ticket?"}
-              id={this.props.match.params.id}
-              open={this.state.open}
-              onClose={this.handleClose}
-            />
-          </div>
-        ) : null}
         <CardBody>
           <GridContainer>
             <GridItem xs={12} sm={12} md={8}>
@@ -308,8 +281,7 @@ class EditTicketForm extends Component {
                     ? ticketTypes.map(type => {
                         return (
                           <MenuItem key={type.id} value={type.id}>
-                            {" "}
-                            {type.type}{" "}
+                            {type.type}
                           </MenuItem>
                         );
                       })
@@ -407,10 +379,7 @@ class EditTicketForm extends Component {
                     ? me_and_admin
                       ? me_and_admin.map(member => {
                           return (
-                            <MenuItem
-                              key={member.user.id}
-                              value={member.user.id}
-                            >
+                            <MenuItem key={member.user.id}  value={member.user.id} >
                               {member.user.name}
                             </MenuItem>
                           );
@@ -420,8 +389,7 @@ class EditTicketForm extends Component {
                     ? team.map(member => {
                         return (
                           <MenuItem key={member.user.id} value={member.user.id}>
-                            {" "}
-                            {member.user.name}{" "}
+                            {member.user.name}
                           </MenuItem>
                         );
                       })
@@ -522,11 +490,7 @@ class EditTicketForm extends Component {
                               <IconButton aria-label="Close" className={classes.tableActionButton} >
                                 <Close
                                   style={{ color: 'black' }}
-                                  className={
-                                    classes.tableActionButtonIcon +
-                                    " " +
-                                    classes.close
-                                  }
+                                  className={ classes.tableActionButtonIcon + classes.close }
                                 />
                               </IconButton>
                             </Tooltip>
@@ -537,8 +501,7 @@ class EditTicketForm extends Component {
                   : null}
               </GridContainer>
               <Button color="primary" type="submit" style={{ float: "right" }}>
-                {" "}
-                Save{" "}
+                Save
               </Button>
             </GridItem>
           </GridContainer>
@@ -552,8 +515,8 @@ const mapDispatchToProps = dispatch => {
   return {
     updateTicket: (ticket, id) => dispatch(updateTicket(ticket, id)),
     deleteTicket: id => dispatch(deleteTicket(id)),
-    getTicketTypes: () => dispatch(getTicketTypes()),
-    getTicketStatus: () => dispatch(getTicketStatus()),
+    getTicketTypes: (token) => dispatch(getTicketTypes(token)),
+    getTicketStatus: (token) => dispatch(getTicketStatus(token)),
     deleteAttachment: id => dispatch(deleteAttachment(id)),
     removeFromStorage: url => dispatch(removeFromStorage(url)),
     updateAttachments: update => dispatch(updateAttachments(update)),

@@ -36,11 +36,7 @@ class App extends Component {
           <Route exact path="/" component={Login} />
           <PrivateRoute path="/home/logout" component={Login} />
           <PrivateRoute path="/home" component={Home} />
-          <PrivateRoute
-            exact
-            path="/home/create-project"
-            component={CreateProject}
-          />
+          <PrivateRoute exact path="/home/create-project" component={CreateProject}/>
           <PrivateRoute exact path="/home/project/{id}" component={Project} />
           <Route path="/accept/:id" component={Login} />
           <Route component={NotFoundPage} />

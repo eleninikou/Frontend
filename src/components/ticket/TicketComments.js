@@ -8,12 +8,12 @@ import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import CircularProgress from "@material-ui/core/CircularProgress";
 // Theme components
 import Card from "../theme/Card/Card";
 import GridItem from "../theme/Grid/GridItem.jsx";
 import GridContainer from "../theme/Grid/GridContainer.jsx";
 // Components
+import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 import DangerDialogWrapped from "../../components/modal/DangerDialog";
 // Icons
 import Close from "@material-ui/icons/Close";
@@ -32,8 +32,7 @@ class TicketComments extends Component {
     };
   }
 
-  handleClickOpen = (id) => {
-    debugger;
+  handleClickOpen = id => {
     this.setState({ 
       open: true, 
       id
@@ -54,8 +53,8 @@ class TicketComments extends Component {
       <List>
         {comments
           ? comments.map(comment => {
-              return (
-                <Card key={comment.id}>
+            return (
+              <Card key={comment.id}>
                   <ListItem style={{ borderBottom: "1px solid grey", padding: "30px" }} >
                     <GridContainer style={{ width: "100%" }}>
                       <GridItem xs={12} sm={12} md={12}>
@@ -81,8 +80,7 @@ class TicketComments extends Component {
                             </ListItemAvatar>
                           </GridItem>
                           <GridItem xs={12} sm={8} md={8}>
-                            <ListItemText
-                              primary={
+                            <ListItemText primary={
                                 comment.user
                                   ? comment.user.name +
                                     " | " +
@@ -100,11 +98,8 @@ class TicketComments extends Component {
                                 onClick={() => this.handleClickOpen(comment.id, this)}
                                 classes={{ tooltip: classes.tooltip }}
                               >
-                                <IconButton
-                                  aria-label="Close"
-                                  className={classes.tableActionButton}
-                                >
-                                  <Close className={ classes.tableActionButtonIcon + classes.close } />
+                                <IconButton aria-label="Close" className={classes.tableActionButton} >
+                                <Close className={ classes.tableActionButtonIcon + classes.close } />
                                 </IconButton>
                               </Tooltip>
                             </GridItem>
@@ -120,30 +115,15 @@ class TicketComments extends Component {
                         </GridContainer>
                       </GridItem>
                       <GridItem xs={12} sm={12} md={12}>
-                        {comment.comment ? (
-                          comment.comment.blocks[0].text ? (
-                            <div
-                              dangerouslySetInnerHTML={{
-                                __html: this.convertFromJSONToHTML(
-                                  comment.comment
-                                )
-                              }}
-                            />
-                          ) : null
-                        ) : (
-                          <CircularProgress
-                            className="my-spinner"
-                            color="primary"
-                          />
-                        )}
+                        {comment.comment ? 
+                          comment.comment.blocks ?
+                            comment.comment.blocks[0].text ? (
+                            <div dangerouslySetInnerHTML={{ __html: this.convertFromJSONToHTML(comment.comment)}} />
+                            ) : null 
+                       : null : null }
                       </GridItem>
-                      {comment.images.length ? (
-                        <GridItem
-                          xs={12}
-                          sm={12}
-                          md={12}
-                          style={{ marginTop: "100px" }}
-                        >
+                      {comment.image ? comment.images.length ? (
+                        <GridItem xs={12} sm={12} md={12} style={{ marginTop: "100px" }} >
                           <ImageGallery
                             items={comment.images.map(image => {
                               return {
@@ -153,7 +133,7 @@ class TicketComments extends Component {
                             })}
                           />
                         </GridItem>
-                      ) : null}
+                      ) : null : null}
                     </GridContainer>
                   </ListItem>
                 </Card>

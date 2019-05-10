@@ -9,9 +9,8 @@ const TicketIconList = ({ ticket }) => {
   return ticket ? (
     <div>
     <Typography style={{ color: "grey", marginTop: "25px" }}> Assigned user </Typography>
-    <Typography> 
         {ticket.assigned_user ? (
-            <div style={{ display: 'flex', alignItems: 'center'}}>
+          <div style={{ display: 'flex', alignItems: 'center'}}>
               <img
                 src={ticket.assigned_user.avatar}
                 alt="user"
@@ -21,15 +20,17 @@ const TicketIconList = ({ ticket }) => {
                   height: "30px",
                   marginRight: '10px'
                 }}
-              />
+                />
               {ticket.assigned_user.name}
             </div>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center'}}>
               <PersonPin style={{ fontSize: "18px" }} />
-              Not assigned yet
+              <Typography> 
+                  Not assigned yet
+              </Typography>
             </div>
-          )} </Typography>
+          )} 
       <Typography style={{ color: "grey", marginTop: "25px" }}> Type </Typography>
       <Typography>{ticket.type ? ticket.type.type : null} </Typography>
       <Typography style={{ color: "grey", marginTop: "25px" }}> Due date </Typography>
