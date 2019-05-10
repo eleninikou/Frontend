@@ -99,7 +99,6 @@ class Invite extends Component {
         
           this.props.getEmails(this.state.project_id, this.state.token)
           .then(res => {
-            console.log(res)
             this.setState({ emails: res.emails });
           });
         }

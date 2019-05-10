@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import Cookies from "universal-cookie";
 // Redux
 import { connect } from "react-redux";
-import { getProject } from "../redux/actions/projects/Actions";
+import { getProject, } from "../redux/actions/projects/Actions";
 // Theme components
 import Card from "../components/theme/Card/Card";
 import Button from "../components/theme/CustomButtons/Button.jsx";
@@ -53,7 +53,8 @@ class Project extends Component {
       edit: false,
       successMessage: this.props.successMessage,
       open: false,
-      token: ''
+      token: '',
+      invitations: []
     };
   }
 
@@ -64,14 +65,16 @@ class Project extends Component {
     this.setState({ user, token });
 
     // Fetch project and set to state
-    this.props.getProject(this.props.match.params.id, token).then(res => {
+    this.props.getProject(this.props.match.params.id, token)
+    .then(res => {
       if (res.project) {
         this.setState({
           id: res.project.id,
           name: res.project.name,
           description: res.project.description,
           client_id: res.project.client_id,
-          milestones: res.project.milestones
+          milestones: res.project.milestones,
+          invitations: res.invites
         });
       } else {
         this.props.history.push({
@@ -113,10 +116,6 @@ class Project extends Component {
     );
   };
 
-  componentWillUnmount = () => {
-    this.setState({ successMessage: "" });
-  };
-
   getSuccess = successMessage => {
     this.setState({ successMessage });
     this.showNotification("tr");
@@ -147,19 +146,11 @@ class Project extends Component {
 
   render() {
     const { classes, team, project, tickets, isFetching, text } = this.props;
-    const { edit, successMessage, user, milestones } = this.state;
+    const { edit, successMessage, user, milestones, invitations } = this.state;
 
-    const admins = team
-      ? team.filter(user =>
-          user.role ? user.role.role === "Admin" : null | (user.role_id === 1)
-        )
-      : null;
-    const isAdmin = admins
-      ? admins.filter(admin => admin.user_id == user)
-      : null;
-    const clients = team
-      ? team.filter(user => (user.role ? user.role.role === "Editor" : null))
-      : null;
+    const admins = team ? team.filter(user => user.role ? user.role.role === "Admin" : null | (user.role_id === 1) )  : null;
+    const isAdmin = admins ? admins.filter(admin => admin.user_id == user) : null;
+    const clients = team ? team.filter(user => (user.role ? user.role.role === "Editor" : null)) : null;
 
     return isFetching ? (
       <LoadingSpinner text={text}/>
@@ -240,6 +231,7 @@ class Project extends Component {
                           classes={classes}
                           project={project}
                           user={user}
+                          invitations={invitations}
                           creator={project.creator_id === parseInt(user) ? true : false }
                         />
                       )
@@ -291,7 +283,9 @@ class Project extends Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return { getProject: (id, token) => dispatch(getProject(id, token)) };
+  return { 
+    getProject: (id, token) => dispatch(getProject(id, token)),
+  };
 };
 
 const mapStateToProps = state => ({
@@ -303,9 +297,5 @@ const mapStateToProps = state => ({
   successMessage: state.project.successMessage
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(dashboardStyle)(Project))
+export default withRouter(connect( mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Project))
 );

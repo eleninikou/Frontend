@@ -21,6 +21,7 @@ import Person from "@material-ui/icons/Person";
 import Close from "@material-ui/icons/Close";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 import { DangerDialogWrapped } from "../../components";
+import { Typography } from "@material-ui/core";
 
 class ProjectTeam extends Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class ProjectTeam extends Component {
     };
     this.invitePeople = this.invitePeople.bind(this);
   }
+
   componentWillMount = () => {
     if (this.props.team) {
       this.setState({ team: this.props.team });
@@ -89,10 +91,11 @@ class ProjectTeam extends Component {
   };
 
   render() {
-    const { classes, creator, successMessage } = this.props;
+    const { classes, creator, successMessage, invitations } = this.props;
     const { rowsPerPage, page, team } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
 
+    console.log(invitations)
     return (
       <div>
         <Snackbar
@@ -109,12 +112,9 @@ class ProjectTeam extends Component {
           rowsPerPage={team ? team.length : null}
           emptyRows={emptyRows}
           tableHeaderColor="success"
-          tableHead={
-            creator ? ["", "Name", "Role", "Remove"] : ["", "Name", "Role", ""]
-          }
-          tableData={[
-            team
-              ? team.map(person => {
+          tableHead={ creator ? ["", "Name", "Role",  "Remove"] : ["", "Name", "Role",  ""] }
+          tableData={[ 
+            team ? team.map(person => {
                   return person.user
                     ? [
                         person.user.avatar ? (
@@ -141,6 +141,7 @@ class ProjectTeam extends Component {
                             ? "Creator/Admin"
                             : null
                         }`,
+                        'Accepted',
                         person.role_id !== 1 && creator ? (
                           <div>
                             <Tooltip
@@ -150,24 +151,13 @@ class ProjectTeam extends Component {
                               onClick={() => this.handleClickOpen(person.id, this)}
                               classes={{ tooltip: classes.tooltip }}
                             >
-                              <IconButton
-                                aria-label="Close"
-                                className={classes.tableActionButton}
-                              >
-                                <Close
-                                  className={
-                                    classes.tableActionButtonIcon +
-                                    " " +
-                                    classes.close
-                                  }
-                                />
+                              <IconButton aria-label="Close" className={classes.tableActionButton} >
+                              <Close className={ classes.tableActionButtonIcon + classes.close } />
                               </IconButton>
                             </Tooltip>
                             <DangerDialogWrapped
                               type={"team"}
-                              title={
-                                "Are you sure you want to remove this user from the team?"
-                              }
+                              title={"Are you sure you want to remove this user from the team?"}
                               id={person.id}
                               open={this.state.userId == person.id ? this.state.open : false}
                               onClose={this.handleClose}
@@ -177,10 +167,49 @@ class ProjectTeam extends Component {
                         ) : null
                       ]
                     : null;
-                })
-              : null
+                  })
+                  : null
           ]}
         />
+        <Typography style={{fontSize: '1.5em', color: 'grey'}}>Invitations</Typography>
+        <Table
+          page={page}
+          rowsPerPage={invitations ? invitations.length : null}
+          emptyRows={emptyRows}
+          tableHeaderColor="success"
+          tableHead={ creator ? ["Email", "Role", "Invitation", "Remove"] : ["Email", "Role", "Invitation", ""] }
+          tableData={[ 
+            invitations ? invitations.map(invitation => {
+              console.log(invitation)
+            return [
+                `${invitation.email}`,
+                `${invitation.role ? invitation.role.role : null}`,
+                'Waiting',
+                  <div>
+                    <Tooltip
+                      id="tooltip-top-start"
+                      title="Remove"
+                      placement="top"
+                      onClick={() => this.handleClickOpen(invitation.id, this)}
+                      classes={{ tooltip: classes.tooltip }}
+                    >
+                      <IconButton aria-label="Close" className={classes.tableActionButton} >
+                      <Close className={ classes.tableActionButtonIcon + classes.close } />
+                      </IconButton>
+                    </Tooltip>
+                    <DangerDialogWrapped
+                      type={"team"}
+                      title={"Are you sure you want to remove this user from the team?"}
+                      id={invitation.id}
+                      open={this.state.userId == invitation.id ? this.state.open : false}
+                      onClose={this.handleClose}
+                      getSuccess={this.getSuccess.bind(this)}
+                    />
+                  </div>
+              ]
+            }) : null
+          ]}
+          />
         {creator ? (
           <CardFooter style={{ justifyContent: "flex-end" }}>
             <Button color="success" onClick={this.invitePeople}>

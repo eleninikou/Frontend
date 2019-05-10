@@ -49,7 +49,7 @@ const ProjectContent = ({ project, getEdit, creator, admins, clients, isAdmin })
           {admins
             ? admins.map(admin => {
                 return (
-                  <div style={{ display: "flex", alignItems: "center" }}>
+                  <div key={admin.user.id} style={{ display: "flex", alignItems: "center" }}>
                     {admin.user ? (
                       admin.user.avatar ? (
                         <img
