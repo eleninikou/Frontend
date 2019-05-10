@@ -255,7 +255,6 @@ class Invite extends Component {
                               label="email"
                               error={hasError && !this.state.email ? true : false}
                               id="email"
-                              formControlProps={{ fullWidth: true }}
                               onChange={this.handleChange}
                               name="email"
                               fullWidth
