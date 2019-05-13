@@ -179,11 +179,11 @@ class ProjectTeam extends Component {
           tableHead={ creator ? ["Email", "Role", "Invitation", "Remove"] : ["Email", "Role", "Invitation", ""] }
           tableData={[ 
             invitations ? invitations.map(invitation => {
-              console.log(invitation)
             return [
                 `${invitation.email}`,
                 `${invitation.role ? invitation.role.role : null}`,
                 'Waiting',
+                creator ?
                   <div>
                     <Tooltip
                       id="tooltip-top-start"
@@ -205,6 +205,7 @@ class ProjectTeam extends Component {
                       getSuccess={this.getSuccess.bind(this)}
                     />
                   </div>
+                  : null
               ]
             }) : null
           ]}

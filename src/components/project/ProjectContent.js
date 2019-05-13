@@ -10,6 +10,7 @@ import Avatar from "@material-ui/core/Avatar";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 // Material UI components
 import Typography from "@material-ui/core/Typography";
+import FiberManualRecord from "@material-ui/icons/FiberManualRecord";
 
 const ProjectContent = ({ project, getEdit, creator, admins, clients, isAdmin }) => {
 
@@ -41,7 +42,18 @@ const ProjectContent = ({ project, getEdit, creator, admins, clients, isAdmin })
           <Typography style={{ color: "grey", marginTop: "25px" }}>
             Status
           </Typography>
-          <Typography> {project.active ? "Active" : "Inactive"} </Typography>
+          <Typography> 
+            {project.active === 1 ? (
+              <FiberManualRecord
+                style={{ color: "#4caf50", fontSize: "15px", marginRight: '5px' }}
+              />
+            ) : (
+              <FiberManualRecord
+                style={{ color: "#ef5350", fontSize: "15px", marginRight: '5px'}}
+              />
+            )}
+          {project.active ? "Active" : "Inactive"} 
+          </Typography>
           <Typography style={{ color: "grey", marginTop: "25px" }}>
             Admin
           </Typography>

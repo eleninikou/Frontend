@@ -77,12 +77,15 @@ class Login extends Component {
 
       const user = cookies.get("user")
       const invitation = cookies.get("invitation")
+      const token = cookies.get("token")
+
       this.setState({ user, invitation })
 
       // If user allready is logged in. Check if same email address as invitation
       if (user) {
-        this.props.getUser(user)
+        this.props.getUser(user, token)
           .then(res => {
+            console.log(res)
             if (res.user) {
               this.setState({ loggedInUserEmail: res.user.email })
             }
@@ -243,7 +246,7 @@ class Login extends Component {
 const mapDispatchToProps = dispatch => {
   return { 
     logout: () => dispatch(logout()),
-    getUser: id => dispatch(getUser(id)),
+    getUser: (id, token) => dispatch(getUser(id, token)),
     getEmailFromInvitation: token => dispatch(getEmailFromInvitation(token)),
     acceptInvitation: token => dispatch(acceptInvitation(token)) 
   };

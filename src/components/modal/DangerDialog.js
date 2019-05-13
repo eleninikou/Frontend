@@ -37,10 +37,10 @@ const styles = {
 class DangerDialog extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      token: ''
-    };
+    this.state = { token: '' }
+    this.handleClose = this.handleClose.bind(this)
   }
+
   componentDidMount() {
     const cookies = new Cookies();
     const token = cookies.get('token')

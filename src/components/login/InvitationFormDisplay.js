@@ -14,8 +14,8 @@ const InvitationFormDisplay = ({ invitedUserEmail, existingUser, classes, displa
     return (
         invitedUserEmail ? (
         <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: "17px", top: "90px",  zIndex: 10 }} >
-            <Card style={{ minWidth: '312px', marginRight: '10px'}}>
-              <CardHeader color="success">
+            <Card style={{ minWidth: '312px', marginRight: '10px', paddingBottom: '50px'}}>
+              <CardHeader color="success" style={{ marginBottom: '20px'}}>
                 <h4 className={classes.cardTitleWhite}> Fill in to accept the invitation! </h4>
               </CardHeader>
                 { existingUser ? 
