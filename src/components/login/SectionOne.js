@@ -8,11 +8,14 @@ import Hidden from "@material-ui/core/Hidden";
 
 const SectionOne = ({ registerForm }) => {
   return (
-  <GridItem xs={12} sm={11} md={11} style={{ margin: "auto", justifyContent: "center",  marginTop: "150px" }} >
+  <GridItem xs={12} sm={11} md={10} style={{ margin: "auto", justifyContent: "center",  marginTop: "150px" }} >
     <GridContainer>
+            <GridItem xs={12} sm={10} md={6} style={{ margin: "auto" }}>
+              <img src={collab} alt="collab" width="90%" height="auto" />
+            </GridItem>
       <GridItem xs={12} sm={10} md={6} style={{ margin: "auto" }}>
-        <Typography style={{ fontSize: "2em", fontWeight: "600" }}>
-          [ N A M E ] is a collaboration platform built for every member of your
+        <Typography style={{ fontSize: "2em", fontWeight: "600", paddingRight: '20px' }}>
+          ease is a collaboration platform built for every member of your
           team to simplify your workflow!
         </Typography>
         <Typography style={{ fontSize: "18px" }}>
@@ -21,10 +24,11 @@ const SectionOne = ({ registerForm }) => {
         </Typography>
         <Hidden smDown implementation="css">
           <Button
-            color="success"
+            color=""
             style={{
               width: "200px",
               color: "black",
+              backgroundColor: "rgb(119, 186, 193)",
               textTransform: "unset",
               fontSize: "15px"
             }}
@@ -33,9 +37,6 @@ const SectionOne = ({ registerForm }) => {
             Sign Up - it's free!
           </Button>
         </Hidden>
-      </GridItem>
-      <GridItem xs={12} sm={10} md={6} style={{ margin: "auto" }}>
-        <img src={collab} alt="collab" width="90%" height="auto" />
       </GridItem>
     </GridContainer>
   </GridItem>

@@ -160,7 +160,7 @@ class LoginForm extends Component {
                     </FormControl>
                   </GridItem>
                   <GridItem xs={12} sm={12} md={12}style={{ textAlign: "center", marginTop: "20px" }} >
-                    {isFetching && text ? <LoginTextSpinner text={text} /> : 
+                    {isFetching && text ? <LoginTextSpinner text={text} style={{ marginBottom: '20px'}}/> : 
                     <Typography style={{ color: "#D4D4D4", fontSize: '15px' }}>
                         {/* {errorMessage} */}
                     </Typography>}

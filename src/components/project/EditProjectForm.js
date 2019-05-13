@@ -15,6 +15,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
+import Cookies from "universal-cookie";
+
 
 class EditProjectForm extends Component {
   constructor(props) {
@@ -25,7 +27,8 @@ class EditProjectForm extends Component {
       id: this.props.project.id,
       client_id: this.props.project.client_id,
       active: this.props.project.active,
-      label: this.props.project.active ? "Active" : "Inactive"
+      label: this.props.project.active ? "Active" : "Inactive",
+      token: ''
     };
   }
 
@@ -39,11 +42,17 @@ class EditProjectForm extends Component {
       active: this.state.active
     };
 
-    this.props.editProject(project).then(res => {
+    this.props.editProject(project, this.state.token).then(res => {
       this.setSuccess(res.message);
       this.closeEdit();
     });
   };
+
+  componentWillMount = () => {
+    const cookies = new Cookies();
+    var token = cookies.get("token");
+    this.setState({ token})
+  }
 
   handleChange = event => {
     const { name, value } = event.target;
@@ -139,10 +148,8 @@ class EditProjectForm extends Component {
 }
 
 const mapDispatchToProps = dispatch => {
-  return { editProject: id => dispatch(editProject(id)) };
+  return { editProject: (project, token) => dispatch(editProject(project, token)) };
 };
-const mapStateToProps = state => ({
-  successMessage: state.ticket.successMessage
-});
+const mapStateToProps = state => ({ successMessage: state.ticket.successMessage});
 
 export default withRouter( connect( mapStateToProps, mapDispatchToProps )(EditProjectForm));

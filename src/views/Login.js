@@ -85,7 +85,6 @@ class Login extends Component {
       if (user) {
         this.props.getUser(user, token)
           .then(res => {
-            console.log(res)
             if (res.user) {
               this.setState({ loggedInUserEmail: res.user.email })
             }
@@ -205,9 +204,7 @@ class Login extends Component {
 
     return (
       <GridContainer>
-        <GridItem 
-          xs={12} sm={12} md={12} 
-          style={{ backgroundColor: "rgb(119, 186,193)", minHeight: "90vh", height: 'auto', padding: "0px", margin: "0px" }} >
+        <GridItem  xs={12} sm={12} md={12} style={{ backgroundColor: "#00acc1", minHeight: "80vh", height: 'auto', padding: "0px", margin: "0px" }} >
           <GridContainer style={{ padding: '0px'}}>
             {/*  Desktop Menu  */}
             <Hidden smDown implementation="css">

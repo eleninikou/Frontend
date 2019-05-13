@@ -20,9 +20,8 @@ import DeleteForever from "@material-ui/icons/DeleteForever";
 import Cancel from "@material-ui/icons/Cancel";
 
 import { connect } from "react-redux";
-import { removeFromTeam } from "../../redux/actions/projects/Actions";
-import { deleteTicket } from "../../redux/actions/tickets/Actions";
-import { deleteProject } from "../../redux/actions/projects/Actions";
+import { removeFromTeam, deleteProject, deleteInvitation } from "../../redux/actions/projects/Actions";
+import { deleteTicket,  } from "../../redux/actions/tickets/Actions";
 import { deleteMilestone } from "../../redux/actions/milestones/Actions";
 import { deleteUser } from "../../redux/actions/auth/Actions";
 import { commentDelete } from "../../redux/actions/comments/Actions";
@@ -214,7 +213,8 @@ const mapDispatchToProps = dispatch => {
     deleteMilestone: (id, token) => dispatch(deleteMilestone(id, token)),
     removeFromTeam: (id, token) => dispatch(removeFromTeam(id, token)),
     deleteUser: (id, token) => dispatch(deleteUser(id, token)),
-    commentDelete: (id, token) => dispatch(commentDelete(id, token))
+    commentDelete: (id, token) => dispatch(commentDelete(id, token)),
+    deleteInvitation: (id, token) => dispatch(deleteInvitation(id, token))
   };
 };
 

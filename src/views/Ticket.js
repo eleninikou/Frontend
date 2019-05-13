@@ -53,16 +53,19 @@ class Ticket extends Component {
       CommentText: "Show Comments",
       showComments: true,
       successMessage: "",
-      description: ""
+      description: "",
+      token: ''
     };
   }
 
   componentDidMount = () => {
     const cookies = new Cookies();
     var token = cookies.get("token");
+    this.setState({ token })
 
     // Fetch ticket and set to state
-    this.props.getTicket(this.props.match.params.id, token).then(res => {
+    this.props.getTicket(this.props.match.params.id, token)
+    .then(res => {
       if (!res.ticket) {
         // If no ticket, redirect with notification message
         this.props.history.push({
@@ -79,13 +82,11 @@ class Ticket extends Component {
 
     // Notification bar
     var id = window.setTimeout(null, 0);
-    while (id--) {
-      window.clearTimeout(id);
-    }
+    while (id--) { window.clearTimeout(id) }
 
     // Get loged in user for comments
     const user = cookies.get("user");
-    this.props.getUser(user);
+    this.props.getUser(user, token);
 
     this.setState({ edit: false });
   };
@@ -159,12 +160,11 @@ class Ticket extends Component {
 
   // show notification and update component
   getSuccess = successMessage => {
-    const cookies = new Cookies();
-    var token = cookies.get("token");
 
     this.setState({ successMessage });
     this.showNotification("tr");
-    this.props.getTicket(this.props.match.params.id, token).then(res => {
+    this.props.getTicket(this.props.match.params.id, this.state.token)
+    .then(res => {
       if (res.ticket) {
         this.setState({
           assigned_user_id: res.ticket.assigned_user_id,
@@ -296,21 +296,16 @@ class Ticket extends Component {
         {/* Edit Ticket if authorized */}
         {(ticket.creator_id === parseInt(user.id) ||
           ticket.assigned_user_id === parseInt(user.id)) &&
-        edit ? (
+          edit ? (
           <Card>
             <CardHeader style={{ display: 'flex', justifyContent: 'space-between'}}>
               <CardIcon color="primary">
                 <Edit style={{ color: "white" }} />
               </CardIcon>
                 <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }} >
-
-                {user.id == ticket.creator_id ? (
+                  {user.id == ticket.creator_id ? (
                   <div>
-                    <Button
-                      style={{ marginRight: "18px" }}
-                      color="danger"
-                      onClick={this.handleClickOpen}
-                      >
+                    <Button style={{ marginRight: "18px" }} color="danger" onClick={this.handleClickOpen} >
                       Delete Ticket
                     </Button>
                     <DangerDialogWrapped
@@ -321,7 +316,7 @@ class Ticket extends Component {
                       onClose={this.handleClose}
                     />
                   </div>
-                      ) : null}
+                  ) : null}
                   <Button color="primary" onClick={this.showForm} style={{ minWidth: "163px" }} >
                       {ButtonText}
                   </Button>
@@ -360,13 +355,7 @@ class Ticket extends Component {
         {/* Display Comments */}
         {(!isFetching && showComments) || (!isFetching && addComment) ? (
           <Card>
-            <CardHeader
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "start"
-              }}
-            >
+            <CardHeader style={{ display: "flex", justifyContent: "space-between",  alignItems: "start" }} >
               <CardIcon color="info">
                 <div style={{ display: "flex" }}>
                   <Comment style={{ color: "white", marginRight: "5px" }} />
@@ -406,7 +395,7 @@ class Ticket extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     getTicket: (id, token) => dispatch(getTicket(id, token)),
-    getUser: id => dispatch(getUser(id))
+    getUser: (id, token) => dispatch(getUser(id, token))
   };
 };
 

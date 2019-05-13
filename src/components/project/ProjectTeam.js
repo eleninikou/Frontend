@@ -1,27 +1,23 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-
 // Redux
 import { connect } from "react-redux";
 import { getTeam } from "../../redux/actions/projects/Actions";
-
 // Theme components
 import Table from "../theme/Table/Table.jsx";
 import Button from "../theme/CustomButtons/Button.jsx";
 import CardFooter from "../theme/Card/CardFooter.jsx";
 import Snackbar from "../theme/Snackbar/Snackbar.jsx";
 import Avatar from "@material-ui/core/Avatar";
-
 // Material UI components
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import Person from "@material-ui/icons/Person";
-
 // Icons
 import Close from "@material-ui/icons/Close";
 import CheckCircleOutline from "@material-ui/icons/CheckCircleOutline";
 import { DangerDialogWrapped } from "../../components";
-import { Typography } from "@material-ui/core";
+import Cookies from "universal-cookie";
 
 class ProjectTeam extends Component {
   constructor(props) {
@@ -34,19 +30,22 @@ class ProjectTeam extends Component {
       rowsPerPage: 5,
       ticketRowsPerPage: 5,
       open: false,
-      userId: ''
+      userId: '',
+      token: ''
     };
     this.invitePeople = this.invitePeople.bind(this);
   }
 
-  componentWillMount = () => {
+  componentDidMount = () => {
+    const cookies = new Cookies();
+    var token = cookies.get("token");
+    this.setState({ token })
     if (this.props.team) {
       this.setState({ team: this.props.team });
     }
   };
 
   handleClickOpen = (userId) => {
-    debugger;
     this.setState({ 
       open: true, 
       userId
@@ -71,8 +70,8 @@ class ProjectTeam extends Component {
   getSuccess = successMessage => {
     this.setState({ successMessage });
     this.showNotification("tr");
-    this.props.getTeam(this.props.match.params.id).then(res => {
-      debugger;
+    this.props.getTeam(this.props.match.params.id, this.state.token)
+    .then(res => {
       this.setState({ team: res.team });
     });
   };
@@ -95,7 +94,6 @@ class ProjectTeam extends Component {
     const { rowsPerPage, page, team } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
 
-    console.log(invitations)
     return (
       <div>
         <Snackbar
@@ -222,11 +220,7 @@ class ProjectTeam extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return { getTeam: id => dispatch(getTeam(id)) };
-};
-const mapStateToProps = state => ({
-  successMessage: state.project.successMessage
-});
+const mapDispatchToProps = dispatch => { return { getTeam: (id, token) => dispatch(getTeam(id, token)) } };
+const mapStateToProps = state => ({ successMessage: state.project.successMessage });
 
 export default withRouter(connect( mapStateToProps, mapDispatchToProps )(ProjectTeam));

@@ -24,15 +24,15 @@ import {
   INVITATION_REQUEST,
   INVITATION_SUCCESS,
   INVITATION_FAILURE,
+  DELETE_INVITATION_REQUEST,
+  DELETE_INVITATION_SUCCESS,
+  DELETE_INVITATION_FAILURE,
   GET_INVITATIONS_SUCCESS,
   GET_INVITATIONS_FAILURE,
   REMOVE_FROM_TEAM_SUCCESS,
   REMOVE_FROM_TEAM_FAILURE,
 } from './Action-types';
 
-import Cookies from 'universal-cookie';
-const cookies = new Cookies()
-var token = cookies.get('token')
 
 export const getProject = (id, token) => {
   return async dispatch => {
@@ -134,7 +134,7 @@ export const projectCreate = (project, token)=> {
 
 
 
-export const editProject = project => {
+export const editProject = (project, token) => {
   return async dispatch => {  
     const editProjectSuccess = success => { 
       dispatch ({ type: UPDATE_PROJECT_SUCCESS, payload: success}); return success; 
@@ -267,6 +267,28 @@ export const removeFromTeam = (id, token ) => {
       return removeSuccess(success);
 
     } catch (error) { dispatch ({ type: REMOVE_FROM_TEAM_FAILURE, message: 'Could not delete project' }); return error; }
+  }
+}; 
+
+export const deleteInvitation = (id, token ) => {
+  return async dispatch => {  
+    const deleteInvitationSuccess = success => { 
+      dispatch ({ type: DELETE_INVITATION_SUCCESS, payload: success}); return success; 
+  }
+
+    try {
+      dispatch ({ type: DELETE_INVITATION_REQUEST})
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/invitation/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Access-Control-Allow-Origin': '*',
+          "Content-Type": "application/json"}
+      })
+      const success = await res.json();
+      return deleteInvitationSuccess(success);
+
+    } catch (error) { dispatch ({ type: DELETE_INVITATION_FAILURE, message: 'Could not delete project' }); return error; }
   }
 }; 
 

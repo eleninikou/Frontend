@@ -13,7 +13,6 @@ import Card from "../theme/Card/Card";
 import GridItem from "../theme/Grid/GridItem.jsx";
 import GridContainer from "../theme/Grid/GridContainer.jsx";
 // Components
-import LoadingSpinner from "../../components/spinner/LoadingSpinner";
 import DangerDialogWrapped from "../../components/modal/DangerDialog";
 // Icons
 import Close from "@material-ui/icons/Close";
@@ -28,7 +27,8 @@ class TicketComments extends Component {
     super(props);
     this.state = {
       open: false,
-      id: ''
+      id: '',
+      comments: []
     };
   }
 
@@ -48,7 +48,7 @@ class TicketComments extends Component {
   };
 
   render() {
-    const { comments, user, classes } = this.props;
+    const { user, classes, comments } = this.props;
     return (
       <List>
         {comments
@@ -115,12 +115,10 @@ class TicketComments extends Component {
                         </GridContainer>
                       </GridItem>
                       <GridItem xs={12} sm={12} md={12}>
-                        {comment.comment ? 
-                          comment.comment.blocks ?
-                            comment.comment.blocks[0].text ? (
-                            <div dangerouslySetInnerHTML={{ __html: this.convertFromJSONToHTML(comment.comment)}} />
-                            ) : null 
-                       : null : null }
+                      {console.log(comment.comment.blocks)}
+                        {comment.comment && comment.comment.blocks ? 
+                          <div dangerouslySetInnerHTML={{ __html: this.convertFromJSONToHTML(comment.comment)}} />
+                       : null }
                       </GridItem>
                       {comment.image ? comment.images.length ? (
                         <GridItem xs={12} sm={12} md={12} style={{ marginTop: "100px" }} >

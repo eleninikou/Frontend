@@ -10,7 +10,7 @@ const Footer = () => {
     return (
         <GridItem xs={12} sm={12} md={12}
           style={{
-            backgroundColor: "rgb(119, 186,193)",
+            backgroundColor: "#00acc1",
             height: "18vh",
             display: "flex",
             width: "100%",

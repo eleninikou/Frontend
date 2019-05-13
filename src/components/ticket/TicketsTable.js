@@ -42,9 +42,7 @@ class TicketsTable extends Component {
   render() {
     const { classes, tickets } = this.props;
     const { rowsPerPage, page } = this.state;
-    const emptyRows =
-      rowsPerPage -
-      Math.min(rowsPerPage, tickets ? tickets.length : 0 - page * rowsPerPage);
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, tickets ? tickets.length : 0 - page * rowsPerPage);
 
     return tickets.length ? (
       <div>
@@ -95,7 +93,47 @@ class TicketsTable extends Component {
                       </Avatar>
                     </Tooltip>,
                     `${ticket.status.status}`,
-                    `${ticket.priority}`,
+                      <Tooltip
+                        id="tooltip-top-start"
+                        title={ticket.priority}
+                        placement="top"
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        {ticket.priority === "low" ? (
+                          <Avatar
+                            style={{
+                              backgroundColor: "#FADC08",
+                              height: "30px",
+                              width: "30px",
+                              marginRight: "20px"
+                            }}
+                          >
+                            <Warning style={{ fontSize: "18px" }} />
+                          </Avatar>
+                        ) : ticket.priority === "normal" ? (
+                          <Avatar
+                            style={{
+                              backgroundColor: "#4caf50",
+                              height: "30px",
+                              width: "30px",
+                              marginRight: "20px"
+                            }}
+                          >
+                            <Warning style={{ fontSize: "18px" }} />
+                          </Avatar>
+                        ) : (
+                          <Avatar
+                            style={{
+                              backgroundColor: "#f44336",
+                              height: "30px",
+                              width: "30px",
+                              marginRight: "20px"
+                            }}
+                          >
+                            <Warning style={{ fontSize: "18px" }} />
+                          </Avatar>
+                        )}
+                      </Tooltip>,
                     `${ticket.milestone ? ticket.milestone.title : "-"}`,
                     `${moment(ticket.due_date).format("YYYY-MM-DD")}`,
                     <Tooltip

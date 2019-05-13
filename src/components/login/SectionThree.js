@@ -17,7 +17,7 @@ const SectionThree = () => {
                     Share ideas and tasks!
                   </Typography>
                   <Typography style={{ fontSize: "1em" }}>
-                    Use [ NAME ] to speed up collaboration, communication, and
+                    Speed up collaboration, communication, and
                     idea exchange. Comment on each other's tickets, upload
                     images and report bugs with ease.
                   </Typography>

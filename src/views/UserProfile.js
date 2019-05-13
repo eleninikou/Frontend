@@ -206,7 +206,7 @@ class UserProfile extends Component {
           />
         ) : null}
         <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
+          <GridItem xs={12} sm={12} md={8}>
             <Card>
               <CardHeader>
                 <CardIcon color="rose" style={{ display: "flex" }}>
@@ -317,13 +317,15 @@ class UserProfile extends Component {
               />
             </Card>
           </GridItem>
-          <Button
-            style={{ margin: "auto" }}
-            color="rose"
-            onClick={this.handleClickOpen}
-          >
+          <GridItem xs={12} sm={12} md={8} style={{ textAlign: 'center'}}>
+            <Button
+              style={{ margin: "auto" }}
+              color="rose"
+              onClick={this.handleClickOpen}
+            >
             Remove Account
-          </Button>
+            </Button>
+          </GridItem>
         </GridContainer>
       </form>
     );

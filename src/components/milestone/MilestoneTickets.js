@@ -97,8 +97,6 @@ class MilestoneTickets extends Component {
       <div>
         <GridContainer>
           <GridItem xs={12} sm={12} md={12}>
-            <GridContainer>
-              <GridItem xs={12} sm={12} md={6} style={{ margin: "auto" }}>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={4}>
                     <FormControl className={classes.formControl}>
@@ -166,8 +164,6 @@ class MilestoneTickets extends Component {
                       </TextField>
                     </FormControl>
                   </GridItem>
-                </GridContainer>
-              </GridItem>
             </GridContainer>
             <Table
               page={page}
@@ -211,11 +207,7 @@ class MilestoneTickets extends Component {
                         ): null }
                       </Avatar>
                     </Tooltip>,
-                    `${
-                      ticket.assigned_user
-                        ? ticket.assigned_user.name
-                        : "No one"
-                    }`,
+                    `${ticket.assigned_user ? ticket.assigned_user.name : "No one"}`,
                     `${ticket.status.status}`,
                     <Tooltip
                       id="tooltip-top-start"
@@ -266,15 +258,10 @@ class MilestoneTickets extends Component {
                       classes={{ tooltip: classes.tooltip }}
                       onClick={this.goToTicket.bind(this, ticket.id)}
                     >
-                      <IconButton
-                        aria-label="Go to"
-                        className={classes.tableActionButton}
-                      >
+                      <IconButton aria-label="Go to" className={classes.tableActionButton} >
                         <ExitToApp
                           style={{ color: "#ff9800" }}
-                          className={
-                            classes.tableActionButtonIcon + " " + classes.edit
-                          }
+                          className={ classes.tableActionButtonIcon + " " + classes.edit }
                         />
                       </IconButton>
                     </Tooltip>

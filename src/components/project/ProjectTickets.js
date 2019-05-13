@@ -1,21 +1,15 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
-
 // Redux
 import { connect } from "react-redux";
-import {
-  getTicketStatus,
-  getTicketTypes
-} from "../../redux/actions/tickets/Actions";
-
+import { getTicketStatus, getTicketTypes } from "../../redux/actions/tickets/Actions";
 // Theme components
 import Table from "../theme/Table/Table.jsx";
 import Button from "../theme/CustomButtons/Button.jsx";
 import GridItem from "../theme/Grid/GridItem.jsx";
 import CardFooter from "../theme/Card/CardFooter.jsx";
 import GridContainer from "../theme/Grid/GridContainer.jsx";
-
 // Material UI components
 import Avatar from "@material-ui/core/Avatar";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -193,13 +187,7 @@ class ProjectTickets extends Component {
                       placement="top"
                       classes={{ tooltip: classes.tooltip }}
                     >
-                      <Avatar
-                        style={{
-                          backgroundColor: "#8e24aa",
-                          height: "30px",
-                          width: "30px"
-                        }}
-                      >
+                      <Avatar style={{ backgroundColor: "#8e24aa", height: "30px", width: "30px" }} >
                         {ticket.type ? ticket.type.type == 'Bug' ? (
                           <BugReport style={{ fontSize: "18px" }} />
                         ) : ticket.type.type == 'Future request' ? (
@@ -212,11 +200,7 @@ class ProjectTickets extends Component {
                       </Avatar>
                     </Tooltip>,
                     `${ticket.priority}`,
-                    `${
-                      ticket.assigned_user
-                        ? ticket.assigned_user.name
-                        : "No one"
-                    }`,
+                    `${ticket.assigned_user ? ticket.assigned_user.name : "No one"}`,
                     `${ticket.status.status}`,
                     `${moment(ticket.due_date).format("YYYY-MM-DD")}`,
                     <Tooltip
@@ -226,16 +210,8 @@ class ProjectTickets extends Component {
                       classes={{ tooltip: classes.tooltip }}
                       onClick={this.goToTicket.bind(this, ticket.id)}
                     >
-                      <IconButton
-                        aria-label="Go to"
-                        className={classes.tableActionButton}
-                      >
-                        <ExitToApp
-                          style={{ color: "#66bb6a" }}
-                          className={
-                            classes.tableActionButtonIcon + " " + classes.edit
-                          }
-                        />
+                      <IconButton aria-label="Go to" className={classes.tableActionButton} >
+                        <ExitToApp style={{ color: "#66bb6a" }} className={ classes.tableActionButtonIcon + " " + classes.edit } />
                       </IconButton>
                     </Tooltip>
                   ];

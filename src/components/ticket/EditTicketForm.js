@@ -20,9 +20,7 @@ import GridContainer from "../theme/Grid/GridContainer.jsx";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
-import Avatar from "@material-ui/core/Avatar";
 import Tooltip from "@material-ui/core/Tooltip";
-import Remove from "@material-ui/icons/Remove";
 // Components
 // External
 import axios from "axios";
