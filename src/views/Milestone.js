@@ -181,9 +181,7 @@ class Milestone extends Component {
                         milestone={milestone}
                         classes={classes}
                         getEdit={this.getEdit.bind(this)}
-                        creator={
-                          creator === parseInt(auth_user_id) ? true : false
-                        }
+                        creator={ creator === parseInt(auth_user_id) ? true : false }
                       />
                     )
                   },
@@ -205,18 +203,13 @@ class Milestone extends Component {
                         tabContent: (
                           <CardBody>
                             <CardFooter style={{ justifyContent: "center" }}>
-                              <Button
-                                color="warning"
-                                onClick={this.handleClickOpen}
-                              >
+                              <Button color="warning" onClick={this.handleClickOpen} >
                                 Delete milestone
                               </Button>
                             </CardFooter>
                             <DangerDialogWrapped
                               type={"milestone"}
-                              title={
-                                "Are you sure you want to delete this milestone?"
-                              }
+                              title={ "Are you sure you want to delete this milestone?" }
                               id={milestone.id}
                               open={this.state.open}
                               onClose={this.handleClose}
@@ -249,9 +242,4 @@ const mapStateToProps = state => ({
   successMessage: state.milestone.successMessage
 });
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(dashboardStyle)(Milestone))
-);
+export default withRouter(connect( mapStateToProps, mapDispatchToProps)(withStyles(dashboardStyle)(Milestone)));

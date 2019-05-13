@@ -29,7 +29,6 @@ import CardHeader from "../components/theme/Card/CardHeader.jsx";
 import CardIcon from "../components/theme/Card/CardIcon.jsx";
 
 
-
 class Activity extends Component {
   constructor(props) {
     super(props)

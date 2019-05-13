@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 // Redux
 import { connect } from "react-redux";
-import { getTeam } from "../../redux/actions/projects/Actions";
+import { getTeam, getProject} from "../../redux/actions/projects/Actions";
 // Theme components
 import Table from "../theme/Table/Table.jsx";
 import Button from "../theme/CustomButtons/Button.jsx";
@@ -31,8 +31,10 @@ class ProjectTeam extends Component {
       ticketRowsPerPage: 5,
       open: false,
       userId: '',
-      token: ''
+      token: '',
+      invitations: this.props.invitations
     };
+
     this.invitePeople = this.invitePeople.bind(this);
   }
 
@@ -43,6 +45,10 @@ class ProjectTeam extends Component {
     if (this.props.team) {
       this.setState({ team: this.props.team });
     }
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
   };
 
   handleClickOpen = (userId) => {
@@ -67,13 +73,20 @@ class ProjectTeam extends Component {
     });
   };
 
+  setInvitations(invitations) {
+    debugger;
+    this.setState({ invitations })
+  }
+
   getSuccess = successMessage => {
     this.setState({ successMessage });
     this.showNotification("tr");
+
     this.props.getTeam(this.props.match.params.id, this.state.token)
     .then(res => {
       this.setState({ team: res.team });
     });
+
   };
 
   showNotification = place => {
@@ -90,9 +103,9 @@ class ProjectTeam extends Component {
   };
 
   render() {
-    const { classes, creator, successMessage, invitations } = this.props;
-    const { rowsPerPage, page, team } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, team.length - page * rowsPerPage);
+    const { classes, creator } = this.props;
+    const { rowsPerPage, page, team, successMessage, invitations } = this.state;
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, team ? team.length - page * rowsPerPage : 0);
 
     return (
       <div>
@@ -100,7 +113,7 @@ class ProjectTeam extends Component {
           place="tr"
           color="success"
           icon={CheckCircleOutline}
-          message={successMessage}
+          message={successMessage ? successMessage : ''}
           open={this.state.tr}
           closeNotification={() => this.setState({ tr: false })}
           close
@@ -150,7 +163,7 @@ class ProjectTeam extends Component {
                               classes={{ tooltip: classes.tooltip }}
                             >
                               <IconButton aria-label="Close" className={classes.tableActionButton} >
-                              <Close className={ classes.tableActionButtonIcon + classes.close } />
+                                <Close className={ classes.tableActionButtonIcon + classes.close } />
                               </IconButton>
                             </Tooltip>
                             <DangerDialogWrapped
@@ -158,7 +171,7 @@ class ProjectTeam extends Component {
                               title={"Are you sure you want to remove this user from the team?"}
                               id={person.id}
                               open={this.state.userId == person.id ? this.state.open : false}
-                              onClose={this.handleClose}
+                              onClose={this.handleClose.bind(this)}
                               getSuccess={this.getSuccess.bind(this)}
                             />
                           </div>
@@ -185,7 +198,7 @@ class ProjectTeam extends Component {
                   <div>
                     <Tooltip
                       id="tooltip-top-start"
-                      title="Remove"
+                      title="Remove invitation"
                       placement="top"
                       onClick={() => this.handleClickOpen(invitation.id, this)}
                       classes={{ tooltip: classes.tooltip }}
@@ -196,11 +209,12 @@ class ProjectTeam extends Component {
                     </Tooltip>
                     <DangerDialogWrapped
                       type={"invitation"}
-                      title={"Are you sure you want to remove this user from the team?"}
+                      title={"Are you sure you want to remove this invitation?"}
                       id={invitation.id}
                       open={this.state.userId == invitation.id ? this.state.open : false}
-                      onClose={this.handleClose}
+                      onClose={this.handleClose.bind(this)}
                       getSuccess={this.getSuccess.bind(this)}
+                      setInvitations={this.setInvitations.bind(this)}
                     />
                   </div>
                   : null
@@ -220,7 +234,14 @@ class ProjectTeam extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => { return { getTeam: (id, token) => dispatch(getTeam(id, token)) } };
-const mapStateToProps = state => ({ successMessage: state.project.successMessage });
+const mapDispatchToProps = dispatch => { return { 
+  getTeam: (id, token) => dispatch(getTeam(id, token)),
+  getProject: (id, token) => dispatch(getProject(id, token)),
+}
+};
+const mapStateToProps = state => ({ 
+  successMessage: state.project.successMessage,
+  invitations: state.project.invitations
+ });
 
 export default withRouter(connect( mapStateToProps, mapDispatchToProps )(ProjectTeam));

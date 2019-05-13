@@ -31,11 +31,12 @@ var token = cookies.get('token')
 
 export const register = creds => {
   return async dispatch => {
-    const registrationSuccess = token => { 
-      dispatch ({ type: REGISTER_SUCCESS, payload: token.success.user}); 
-      cookies.set("token", token.success.token, { path: "/", maxAge: 86399 });
-      cookies.set("user", token.success.user.id, { path: "/", maxAge: 86399 });
-      return token.success.user; 
+    const registrationSuccess = user => { 
+      debugger;
+      dispatch ({ type: REGISTER_SUCCESS, payload: user.success.user}); 
+      cookies.set("token", user.success.token, { path: "/", maxAge: 86399 });
+      cookies.set("user", user.success.user.id, { path: "/", maxAge: 86399 });
+      return user.success.user; 
     }
 
     try {
@@ -49,8 +50,12 @@ export const register = creds => {
           'mode': 'no-cors'
         }
       })
-      const token = await res.json();
-      return registrationSuccess(token);
+      const user = await res.json();
+      if (user.message) {
+        dispatch ({ type: REGISTER_FAILURE, message: user.message })
+      } else {
+        return registrationSuccess(user);
+      }
 
     } catch (error) { dispatch ({ type: REGISTER_FAILURE, message: 'Could not register user' }); return error; }
   }

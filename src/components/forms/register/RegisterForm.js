@@ -11,8 +11,10 @@ import GridContainer from "../../theme/Grid/GridContainer.jsx";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from "@material-ui/core/styles";
-import { FormControl } from "@material-ui/core";
+import { FormControl, Typography } from "@material-ui/core";
 import LoginTextSpinner from "../../spinner/LoginTextSpinner";
+import FormHelperText from "@material-ui/core/FormHelperText"
+
 // Style
 import dashboardStyle from "../../../assets/jss/material-dashboard-react/views/dashboardStyle.jsx";
 
@@ -26,7 +28,8 @@ class RegisterForm extends Component {
       password: "",
       repeatPassword: "",
       errorMessage: "",
-      invitation: ""
+      invitation: "",
+      hasError: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.submit = this.submit.bind(this);
@@ -49,32 +52,47 @@ class RegisterForm extends Component {
 
   submit = event => {
     event.preventDefault();
-    if (this.state.password === this.state.repeatPassword) {
+
+    // Check if required fields
+    if(this.state.name && this.state.email && this.state.password && this.state.repeatPassword) {
+    
+      // Check if password is correct
+      if (this.state.password === this.state.repeatPassword) {
       const email = "";
+
       if (this.props.email) {
         this.email = this.props.email;
       } else {
         this.email = this.state.email;
       }
+
       const creds = {
         name: this.state.name,
         email: this.email,
         password: this.state.password
       };
 
-      this.props.register(creds).then(res => {
-        if (res.email) {
+      this.props.register(creds)
+      .then((res) => {
+        debugger;
+        if (res && res.email) {
           if (this.state.invitation) {
             this.props.redirect(this.state.invitation, true);
           } else {
             this.props.history.push("/home/activity");
           }
-        } else {
+        } 
+
+        if (this.props.errorMessage) {
           this.setState({
-            errorMessage: "Could not log in, show error message"
+            errorMessage: this.props.errorMessage
           });
+
         }
       });
+    }
+    } else {
+      this.setState({ hasError: true})
     }
   };
 
@@ -91,6 +109,7 @@ class RegisterForm extends Component {
 
   render() {
     const { classes, email, isFetching, text, errorMessage } = this.props;
+    const { hasError, name, password, repeatPassword } = this.state;
 
     return (
       <GridContainer>
@@ -100,6 +119,7 @@ class RegisterForm extends Component {
               <form style={{ width: "100%", textAlign: "center" }} onSubmit={this.submit} >
                 <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
+                  {hasError && !name && <FormHelperText id="name"> Please fill in your name! </FormHelperText>}
                     <TextField
                       name="name"
                       type="text"
@@ -113,6 +133,7 @@ class RegisterForm extends Component {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
+                  {hasError && !email && <FormHelperText id="name"> Please fill in your email! </FormHelperText>}
                     <TextField
                       disabled={email ? true : false}
                       name="email"
@@ -127,12 +148,14 @@ class RegisterForm extends Component {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
+                  {hasError && !name && <FormHelperText id="name"> Choose password! </FormHelperText>}
                     <TextField
                       name="password"
                       type="password"
                       autoComplete="new-password"
                       label="Password"
                       fullWidth
+                      minLength="6"
                       value={this.state.password}
                       onChange={this.handleChange}
                     />
@@ -140,12 +163,14 @@ class RegisterForm extends Component {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12} style={{ margin: "auto" }}>
                   <FormControl className={classes.formControl}>
+                  {hasError && !name && <FormHelperText id="name"> Repeat password! </FormHelperText>}
                     <TextField
                       name="repeatPassword"
-                      type="repeatPassword"
+                      type="password"
                       autoComplete="new-password"
                       label="Repeat Password"
                       fullWidth
+                      minLength="6"
                       value={this.state.repeatPassword}
                       onChange={this.handleChange}
                     />
@@ -186,7 +211,9 @@ class RegisterForm extends Component {
                 {isFetching ? <LoginTextSpinner text={text}/> : ''}
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}style={{ textAlign: "center", marginTop: "20px" }} >
-                  {this.state.errorMessage}
+                  <Typography style={{ padding: '10px'}}>
+                    {this.state.errorMessage}
+                  </Typography>
                 </GridItem>
             </CardBody>
           </GridContainer>

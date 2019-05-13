@@ -24,7 +24,6 @@ const SectionOne = ({ registerForm }) => {
         </Typography>
         <Hidden smDown implementation="css">
           <Button
-            color=""
             style={{
               width: "200px",
               color: "black",

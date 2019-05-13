@@ -44,8 +44,8 @@ class DangerDialog extends Component {
     const cookies = new Cookies();
     const token = cookies.get('token')
     this.setState({ token })
-
   }
+
   handleClose = () => {
     this.props.onClose(false);
   };
@@ -112,13 +112,13 @@ class DangerDialog extends Component {
   };
 
   deleteInvitation = () => {
-    console.log('delete invitation')
-    // this.props.deleteInvitation(this.props.id, this.state.token)
-    // .then(res => {
-    //   if(res.message) {
-    //     this.setSuccess(res.message)
-    //   }
-    // });
+    this.props.deleteInvitation(this.props.id, this.state.token)
+    .then(res => {
+      if(res.message) {
+        this.setSuccess(res.message)
+      }
+    });
+    this.handleClose()
   };
 
   deleteComment = () => {
@@ -146,11 +146,7 @@ class DangerDialog extends Component {
     } = this.props;
 
     return (
-      <Dialog
-        onClose={this.handleClose}
-        aria-labelledby="simple-dialog-title"
-        {...other}
-      >
+      <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" {...other} >
         <Card>
           <CardHeader color="danger">
             <DialogTitle id="simple-dialog-title">{title}</DialogTitle>
@@ -172,8 +168,7 @@ class DangerDialog extends Component {
                   ? this.deleteInvitation.bind(this)
                   : this.deleteUser.bind(this)
               }
-              style={{ cursor: "pointer" }}
-            >
+              style={{ cursor: "pointer" }} >
               <ListItemAvatar>
                 <Avatar style={{ backgroundColor: "#f44336" }}>
                   <DeleteForever />
@@ -181,11 +176,7 @@ class DangerDialog extends Component {
               </ListItemAvatar>
               <ListItemText primary="Delete" />
             </ListItem>
-
-            <ListItem
-              onClick={this.handleClose.bind(this)}
-              style={{ cursor: "pointer" }}
-            >
+            <ListItem onClick={this.handleClose.bind(this)} style={{ cursor: "pointer" }}>
               <ListItemAvatar>
                 <Avatar>
                   <Cancel />
@@ -226,11 +217,6 @@ const mapStateToProps = state => ({
   successMessageComment: state.comment.successMessage
 });
 
-const DangerDialogWrapped = withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(withStyles(styles)(DangerDialog))
-);
+const DangerDialogWrapped = withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DangerDialog)));
 
 export default DangerDialogWrapped;

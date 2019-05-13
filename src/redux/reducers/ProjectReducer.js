@@ -24,6 +24,9 @@ import {
   INVITATION_REQUEST,
   INVITATION_SUCCESS,
   INVITATION_FAILURE,
+  DELETE_INVITATION_REQUEST,
+  DELETE_INVITATION_SUCCESS,
+  DELETE_INVITATION_FAILURE,
   GET_INVITATIONS_SUCCESS,
   GET_INVITATIONS_FAILURE,
   REMOVE_FROM_TEAM_SUCCESS,
@@ -43,7 +46,8 @@ const initialState = {
   isFetching: false,
   text: '',
   errorMessage: "",
-  successMessage: ""
+  successMessage: "",
+  invitations: [],
 };
 
 const ProjectReducer = (state = initialState, action) => {
@@ -60,7 +64,8 @@ const ProjectReducer = (state = initialState, action) => {
         isFetching: false,
         project: action.payload.project,
         team: action.payload.team,
-        tickets: action.payload.tickets
+        tickets: action.payload.tickets,
+        invitations: action.payload.invites
       };
     case GET_PROJECT_FAILURE:
       return {
@@ -202,6 +207,23 @@ const ProjectReducer = (state = initialState, action) => {
         isFetching: false,
         errorMessage: action.message
       };
+    case DELETE_INVITATION_REQUEST:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case DELETE_INVITATION_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        successMessage: action.payload.message
+      };
+    case DELETE_INVITATION_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        errorMessage: action.message
+      };  
     case GET_INVITATIONS_SUCCESS:
       return {
         ...state,

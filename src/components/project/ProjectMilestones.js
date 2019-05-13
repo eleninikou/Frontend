@@ -108,16 +108,8 @@ class ProjectMilestones extends Component {
                       classes={{ tooltip: classes.tooltip }}
                       onClick={this.editMilestone.bind(this, milestone.id)}
                     >
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.tableActionButton}
-                      >
-                        <ExitToApp
-                          style={{ color: "#66bb6a" }}
-                          className={
-                            classes.tableActionButtonIcon + " " + classes.edit
-                          }
-                        />
+                      <IconButton aria-label="Edit" className={classes.tableActionButton} >
+                        <ExitToApp style={{ color: "#66bb6a" }} className={ classes.tableActionButtonIcon + " " + classes.edit }/>
                       </IconButton>
                     </Tooltip>,
                     creator ? (
@@ -129,18 +121,8 @@ class ProjectMilestones extends Component {
                           onClick={this.handleClickOpen}
                           classes={{ tooltip: classes.tooltip }}
                         >
-                          <IconButton
-                            aria-label="Close"
-                            className={classes.tableActionButton}
-                          >
-                            <Close
-                              style={{ color: "#f44336" }}
-                              className={
-                                classes.tableActionButtonIcon +
-                                " " +
-                                classes.close
-                              }
-                            />
+                          <IconButton aria-label="Close" className={classes.tableActionButton} >
+                            <Close style={{ color: "#f44336" }} className={ classes.tableActionButtonIcon + classes.close } />
                           </IconButton>
                         </Tooltip>
                         <DangerDialogWrapped
@@ -171,10 +153,7 @@ class ProjectMilestones extends Component {
         />
         <CardFooter style={{ justifyContent: "flex-end" }}>
           {creator ? (
-            <Button
-              color="success"
-              onClick={this.createNewMilestone.bind(this)}
-            >
+            <Button color="success" onClick={this.createNewMilestone.bind(this)} >
               Create new Milestone
             </Button>
           ) : null}
