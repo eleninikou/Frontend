@@ -5,14 +5,17 @@ import Button from "../theme/CustomButtons/Button.jsx";
 import collab from "../../assets/img/enivorment.png";
 import GridContainer from "../theme/Grid/GridContainer.jsx";
 import Hidden from "@material-ui/core/Hidden";
+import MediaQuery from 'react-responsive';
 
 const SectionOne = ({ registerForm }) => {
   return (
   <GridItem xs={12} sm={11} md={10} style={{ margin: "auto", justifyContent: "center",  marginTop: "150px" }} >
     <GridContainer>
-            <GridItem xs={12} sm={10} md={6} style={{ margin: "auto" }}>
-              <img src={collab} alt="collab" width="90%" height="auto" />
-            </GridItem>
+        <GridItem xs={12} sm={10} md={6} style={{ margin: "auto" }}>
+        <MediaQuery query="(min-device-width: 960px)" >
+          <img src={collab} alt="collab" width="90%" height="auto" />
+        </MediaQuery>
+        </GridItem>
       <GridItem xs={12} sm={10} md={6} style={{ margin: "auto" }}>
         <Typography style={{ fontSize: "2em", fontWeight: "600", paddingRight: '20px' }}>
           ease is a collaboration platform built for every member of your

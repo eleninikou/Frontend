@@ -7,7 +7,7 @@ import RegisterForm from "../forms/register/RegisterForm";
 
 const MobileFormDisplay = () => {
     return (
-        <div style={{ backgroundColor: "#F4CCCC", zIndex: 5, height: "100vh" }} >
+        <div style={{ backgroundColor: "#00acc1", zIndex: 5, height: "100vh", position: 'fixed', top: '0', width: '100vw' }} >
             <GridItem xs={12} sm={10} md={10}
               style={{
                 position: "fixed",

@@ -219,13 +219,13 @@ class Login extends Component {
             </Hidden>
             {/*  Mobile Menu */}
             <Hidden mdUp implementation="css" >
-            <div style={{ position: 'fixed', width: '100%', height: 'auto'}}>
+            <div style={{ position: 'fixed', width: '100%', height: 'auto', zIndex: '20'}}>
               <MobileMenu handleDrawerToggle={this.handleDrawerToggle} {...rest} />
             </div>
               {mobileOpen ? ( <MobileFormDisplay /> ) : null}
             </Hidden>
             <MediaQuery query="(max-device-width: 1224px)" >
-             <h1 style={{ margin: "0px", color: "white", fontFamily: 'Roboto', fontSize: '72px', marginLeft: '20px' }}>  e a s e . </h1>
+               <h1 style={{ margin: "0px", color: "white", fontFamily: 'Roboto', fontSize: '72px', marginLeft: '20px' }}>  e a s e . </h1>
             </MediaQuery>    
             <SectionOne registerForm={this.registerForm.bind(this)}/>
             <InvitationFormDisplay 

@@ -19,17 +19,17 @@ function MobileMenu({ ...props }) {
 
   return (
     <AppBar className={classes.appBar + appBarClasses} >
-    <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end'}}>
-        <Hidden mdUp implementation="css">
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={props.handleDrawerToggle}
-            >
-            <Menu style={{fontSize: '55px', color: 'black'}} />
-          </IconButton>
-        </Hidden>
-    </div>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', zIndex: '20'}}>
+          <Hidden mdUp implementation="css">
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={props.handleDrawerToggle}
+              >
+              <Menu style={{fontSize: '55px', color: 'black'}} />
+            </IconButton>
+          </Hidden>
+      </div>
     </AppBar>
   );
 }

@@ -5,6 +5,7 @@ import { Typography } from "@material-ui/core";
 import together from "../../assets/img/NS2R7RJK.png";
 import sitting from "../../assets/img/girlexplaining.png";
 import standing from "../../assets/img/ZvTjn__9.png";
+import MediaQuery from 'react-responsive';
 
 const SectionThree = () => {
     return (
@@ -12,6 +13,9 @@ const SectionThree = () => {
           <GridContainer>
             <GridItem xs={10} sm={10} md={10} style={{ margin: "auto", justifyContent: "center",  marginTop: "10px" }} >
               <GridContainer>
+              <MediaQuery query="(max-device-width: 960px)" >
+                <div style={{ width: '100%', height: '40px'}}></div>
+              </MediaQuery>   
                 <GridItem xs={12} sm={12} md={4} style={{ margin: "auto" }}>
                   <Typography style={{ fontSize: "1.4em", fontWeight: "600" }}>
                     Share ideas and tasks!
@@ -22,6 +26,9 @@ const SectionThree = () => {
                     images and report bugs with ease.
                   </Typography>
                 </GridItem>
+                <MediaQuery query="(max-device-width: 960px)" >
+                  <div style={{ width: '100%', height: '40px'}}></div>
+                </MediaQuery>  
                 <GridItem xs={12} sm={12} md={7} style={{ margin: "auto", position: "relative" }} >
                   <img src={together} alt="collab" width="100%" height="auto" />
                   <img
