@@ -11,12 +11,11 @@ const Footer = () => {
         <GridItem xs={12} sm={12} md={12}
           style={{
             backgroundColor: "#00acc1",
-            height: "10vh",
+            height: "15vh",
             display: "flex",
             width: "100%",
             justifyContent: "space-around",
             alignItems: "center",
-            padding: '0px'
           }} >
           <GridContainer style={{ width: "100%", display: "flex", alignItems: "center" }} >
             {/* <Hidden smDown implementation="css"> */}

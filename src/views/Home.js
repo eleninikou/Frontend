@@ -12,6 +12,7 @@ import Navbar from "../components/theme/Navbars/Navbar.jsx";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Typography } from "@material-ui/core";
 import MediaQuery from 'react-responsive';
+import ScreenRotation from "@material-ui/icons/ScreenRotation"
 
 
 // Views
@@ -154,9 +155,13 @@ class Home extends React.Component {
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
           />
-          <MediaQuery query="(max-device-width: 1224px)">
+          <MediaQuery query="(max-device-width: 1224px)" >
             <MediaQuery query="(orientation: portrait)">
-              <Typography>For best experience, flip device to landscape mode</Typography>
+            <div style={{ width: '100%', height: 'auto', textAlign: 'center', position: 'fixed', marginTop: '10px', zIndex: '10'}}>
+              <Typography style={{ color: "#D4D4D4", fontSize: '15px' }}>For the best experience, </Typography>
+              <Typography style={{ color: "#D4D4D4", fontSize: '15px' }}> flip device to landscape mode </Typography>
+              <ScreenRotation style={{ marginTop: '5px', color: "#D4D4D4" }} />
+            </div>
             </MediaQuery>
           </MediaQuery>
 
