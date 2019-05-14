@@ -135,7 +135,7 @@ class TicketsTable extends Component {
                         )}
                       </Tooltip>,
                     `${ticket.milestone ? ticket.milestone.title : "-"}`,
-                    `${moment(ticket.due_date).format("YYYY-MM-DD")}`,
+                    ticket.due_date ? `${moment(ticket.due_date).format("YYYY-MM-DD")}`: '-',
                     <Tooltip
                       id="tooltip-top"
                       title="Go To Ticket"

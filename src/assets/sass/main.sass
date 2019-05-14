@@ -1,22 +1,6 @@
 @import 'colors'
-@import 'create-milestone'
-@import 'create-ticket'
-@import 'edit-ticket'
-@import 'invite'
 @import 'wysiwyg'
-@import 'project'
-@import 'ticket'
-@import 'comments'
 @import 'menu'
-
-.my-input 
-    margin-bottom: 25px !important    
-    
-.my-select 
-    padding: 15px
-
-.my-label 
-    margin-left: 15px   
 
 .image-gallery-slide img
     width: auto !important
@@ -28,3 +12,13 @@
 
 body
     margin: 0px !important    
+
+
+@media screen and (max-width: 958px ) and (orientation: portrait) 
+    .orientation
+        display: 'flex'
+
+
+@media screen and (max-width: 958px ) and (orientation: landscape) 
+    .orientation
+        display: 'none'

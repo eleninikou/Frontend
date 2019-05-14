@@ -11,6 +11,8 @@ import Navbar from "../components/theme/Navbars/Navbar.jsx";
 // Material UI
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Typography } from "@material-ui/core";
+import MediaQuery from 'react-responsive';
+
 
 // Views
 import {
@@ -63,7 +65,8 @@ class Home extends React.Component {
       hasImage: true,
       fixedClasses: "dropdown show",
       mobileOpen: false,
-      user: ''
+      user: '',
+      orientation: ''
     };
   }
 
@@ -126,9 +129,11 @@ class Home extends React.Component {
     window.removeEventListener("resize", this.resizeFunction);
   }
 
+
   render() {
     const { classes, isFetching, ...rest } = this.props;
     const { user } = this.state;
+
 
     return (
       user ? (
@@ -149,6 +154,11 @@ class Home extends React.Component {
             handleDrawerToggle={this.handleDrawerToggle}
             {...rest}
           />
+          <MediaQuery query="(max-device-width: 1224px)">
+            <MediaQuery query="(orientation: portrait)">
+              <Typography>For best experience, flip device to landscape mode</Typography>
+            </MediaQuery>
+          </MediaQuery>
 
           {this.getRoute() ? (
             <div className={classes.content} style={{ marginTop: "20px" }}>

@@ -1,66 +1,6 @@
-.CreateTicket-formControl-126 {
-  min-width: 100% !important; }
-
-.EditTicket-formControl-257 {
-  min-width: 100% !important; }
-
-.MuiInput-underline-269:after {
-  border-bottom: 2px solid #9c27b0 !important; }
-
-.MuiInput-underline-422:after {
-  border-bottom: 2px solid #9c27b0 !important; }
-
-.MuiFormControl-fullWidth-417 {
-  margin-top: 15px !important; }
-
-.Invite-formControl-126 {
-  min-width: 100% !important; }
-
 .rdw-editor-main {
   border: 1px solid rgba(128, 128, 128, 0.1);
   min-height: 150px; }
-
-.MuiAvatar-root-551 {
-  width: 35px !important;
-  height: 35px !important; }
-
-.MuiSvgIcon-root-104 {
-  width: 0.9em !important;
-  height: 0.9em !important; }
-
-.my-ticket-list {
-  margin-bottom: 30px !important; }
-
-.ticket-title {
-  margin-bottom: 30px !important; }
-
-.Ticket-cardCategoryWhite-123 {
-  text-align: center !important; }
-
-.ticket-priority-red {
-  background-color: red !important; }
-
-.ticket-priority-green {
-  background-color: green !important; }
-
-.ticket-priority-orange {
-  background-color: orange !important; }
-
-.my-comments-form {
-  width: 70%; }
-
-.my-ticket-description {
-  min-height: 200px; }
-
-.my-ticket-time {
-  margin-bottom: 20px !important; }
-
-.my-comment-submit {
-  margin-top: 10px !important;
-  padding: 0 !important; }
-
-.MuiFormControl-marginNormal-426 {
-  width: 100% !important; }
 
 .Menu {
   display: flex;
@@ -72,15 +12,6 @@
     margin: 10px;
     color: white; }
 
-.my-input {
-  margin-bottom: 25px !important; }
-
-.my-select {
-  padding: 15px; }
-
-.my-label {
-  margin-left: 15px; }
-
 .image-gallery-slide img {
   width: auto !important;
   max-width: 100%; }
@@ -91,3 +22,11 @@
 
 body {
   margin: 0px !important; }
+
+@media screen and (max-width: 958px) and (orientation: portrait) {
+  .orientation {
+    display: 'flex'; } }
+
+@media screen and (max-width: 958px) and (orientation: landscape) {
+  .orientation {
+    display: 'none'; } }

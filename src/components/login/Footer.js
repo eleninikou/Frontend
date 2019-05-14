@@ -26,7 +26,7 @@ const Footer = () => {
             {/* </Hidden>   */}
             <GridItem xs={12} sm={8} md={8} style={{ textAlign: "center" }}>
               <Typography style={{ fontSize: "12px", color: "white" }}>
-                Copyright 2019 NAME. All rights reserved.
+                Copyright © 2019 e a s e. All rights reserved.
               </Typography>
               {/* <Typography style={{ fontSize: "12px", color: "white" }}>
                 <a href="https://bracket.gr" style={{ textDecoration: 'none', color: 'white'}}>

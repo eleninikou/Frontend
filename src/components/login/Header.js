@@ -20,7 +20,7 @@ const Header = ({ registerForm, loginForm }) => {
       <GridContainer style={{ width: '100%'}}>
         <GridItem xs={3} sm={3} md={3} style={{ width: "auto", display: "flex", padding: '0px !important' }}>
           {/* <Avatar style={{ backgroundColor: "white" }} /> */}
-          <h1 style={{ margin: "0px", color: "white", fontFamily: 'Roboto', fontSize: '47px' }}>  e a s e . </h1>
+          <h1 style={{ margin: "0px", color: "white", fontFamily: 'Roboto', fontSize: '52px' }}>  e a s e . </h1>
         </GridItem>
         <GridItem xs={9} sm={9} md={9} style={{ textAlign: 'right', paddingtop: '0px' }}>
               <Button
