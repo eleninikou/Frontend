@@ -12,10 +12,10 @@ const SectionOne = ({ registerForm }) => {
   <GridItem xs={12} sm={11} md={10} style={{ margin: "auto", justifyContent: "center"}} >
     <GridContainer>
         <MediaQuery query="(min-device-width: 960px)" >
-          <GridItem xs={12} sm={10} md={6} style={{ margin: "auto", marginTop: '130px' }}>
+          <GridItem xs={12} sm={10} md={6} style={{ margin: "auto", marginTop: '150px' }}>
             <img src={collab} alt="collab" width="90%" height="auto" />
           </GridItem>
-          <GridItem xs={12} sm={10} md={6} style={{ margin: "auto", marginTop: '240px' }}>
+          <GridItem xs={12} sm={10} md={6} style={{ margin: "auto", marginTop: '260px' }}>
             <Typography style={{ fontSize: "2em", fontWeight: "600", paddingRight: '20px', color: 'white', lineHeight: 'unset' }}>
               Ease is a collaboration platform built for every member of your
               team to simplify your workflow.

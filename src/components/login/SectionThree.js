@@ -26,9 +26,8 @@ const SectionThree = () => {
                     images and report bugs with ease.
                   </Typography>
                   <Typography style={{ fontSize: "1em", marginTop: '10px' }}>
-                    Speed up collaboration, communication, and
-                    idea exchange. Comment on each other's tickets, upload
-                    images and report bugs with ease.
+                    Whether your team is in the same room or spread around the world, 
+                    ease brings transparency to your team's work and keeps everyone on the same page.
                   </Typography>
                 </GridItem>
                 <MediaQuery query="(max-device-width: 960px)" >
