@@ -13,6 +13,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import { whiteColor, grayColor } from "../assets/jss/material-dashboard-react.jsx";
 // External
 import Cookies from "universal-cookie";
+import MediaQuery from 'react-responsive';
 
 import { MobileMenu, SectionOne, SectionTwo, SectionThree, Header, FormDisplay, InvitationFormDisplay, Footer, MobileFormDisplay } from '../components/login'
 
@@ -217,10 +218,15 @@ class Login extends Component {
               : null }
             </Hidden>
             {/*  Mobile Menu */}
-            <Hidden mdUp implementation="css">
+            <Hidden mdUp implementation="css" >
+            <div style={{ position: 'fixed', width: '100%', height: 'auto'}}>
               <MobileMenu handleDrawerToggle={this.handleDrawerToggle} {...rest} />
+            </div>
               {mobileOpen ? ( <MobileFormDisplay /> ) : null}
             </Hidden>
+            <MediaQuery query="(max-device-width: 1224px)" >
+             <h1 style={{ margin: "0px", color: "white", fontFamily: 'Roboto', fontSize: '72px', marginLeft: '20px' }}>  e a s e . </h1>
+            </MediaQuery>    
             <SectionOne registerForm={this.registerForm.bind(this)}/>
             <InvitationFormDisplay 
               classes={classes} 

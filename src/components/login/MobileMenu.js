@@ -26,7 +26,7 @@ function MobileMenu({ ...props }) {
             aria-label="open drawer"
             onClick={props.handleDrawerToggle}
             >
-            <Menu style={{fontSize: '45px'}} />
+            <Menu style={{fontSize: '55px', color: 'black'}} />
           </IconButton>
         </Hidden>
     </div>
