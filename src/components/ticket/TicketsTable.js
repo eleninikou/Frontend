@@ -15,7 +15,6 @@ import BugReport from "@material-ui/icons/BugReport";
 import LowPriority from "@material-ui/icons/LowPriority";
 import LinearScale from "@material-ui/icons/LinearScale";
 import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor";
-import DashboardSpinner from "../spinner/DashboardSpinner";
 
 class TicketsTable extends Component {
   constructor(props) {
@@ -143,16 +142,8 @@ class TicketsTable extends Component {
                       classes={{ tooltip: classes.tooltip }}
                       onClick={this.goToTicket.bind(this, ticket.id)}
                     >
-                      <IconButton
-                        aria-label="Edit"
-                        className={classes.tableActionButton}
-                      >
-                        <ExitToApp
-                          style={{ color: "#ab47bc" }}
-                          className={
-                            classes.tableActionButtonIcon + " " + classes.edit
-                          }
-                        />
+                      <IconButton aria-label="Edit" className={classes.tableActionButton} >
+                        <ExitToApp style={{ color: "#ab47bc" }} className={ classes.tableActionButtonIcon + " " + classes.edit } />
                       </IconButton>
                     </Tooltip>
                   ];

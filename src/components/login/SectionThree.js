@@ -16,11 +16,16 @@ const SectionThree = () => {
               <MediaQuery query="(max-device-width: 960px)" >
                 <div style={{ width: '100%', height: '40px'}}></div>
               </MediaQuery>   
-                <GridItem xs={12} sm={12} md={4} style={{ margin: "auto" }}>
+                <GridItem xs={12} sm={12} md={4} style={{ marginTop: "270px" }}>
                   <Typography style={{ fontSize: "1.4em", fontWeight: "600" }}>
                     Share ideas and tasks!
                   </Typography>
                   <Typography style={{ fontSize: "1em" }}>
+                    Speed up collaboration, communication, and
+                    idea exchange. Comment on each other's tickets, upload
+                    images and report bugs with ease.
+                  </Typography>
+                  <Typography style={{ fontSize: "1em", marginTop: '10px' }}>
                     Speed up collaboration, communication, and
                     idea exchange. Comment on each other's tickets, upload
                     images and report bugs with ease.

@@ -10,9 +10,10 @@ const Header = ({ registerForm, loginForm }) => {
         style={{
           display: "flex",
           position: "fixed",
-          backgroundColor: "#00acc1",
+          background: "linear-gradient(60deg, #26c6da, #00acc1)",
+          // borderBottom: '1px solid rgba(255,255,255, 0.2)',
           width: "100%",
-          height: "58px",
+          height: "80px",
           zIndex: 10,
           padding: '0px'
         }}
@@ -21,20 +22,22 @@ const Header = ({ registerForm, loginForm }) => {
         <GridItem xs={3} sm={3} md={3} style={{ width: "auto", display: "flex", padding: '0px !important' }}>
           {/* <Avatar style={{ backgroundColor: "white" }} /> */}
           <a href="/" style={{ textDecoration: 'none'}}>
-            <h1 style={{ margin: "0px", color: "white", fontFamily: 'Roboto', fontSize: '52px' }}>  e a s e . </h1>
+            <h1 style={{ margin: "0px", color: "white", fontFamily: 'Roboto', fontSize: '52px', marginTop: '15px' }}>  e a s e . </h1>
           </a>
         </GridItem>
-        <GridItem xs={9} sm={9} md={9} style={{ textAlign: 'right', paddingtop: '0px' }}>
+        <GridItem xs={9} sm={9} md={9} style={{ textAlign: 'right', }}>
               <Button
                 onClick={loginForm}
                 style={{
-                  backgroundColor: "transparent",
-                  border: "1px solid white",
+                  backgroundColor: "rgba(255,255,255, 0.2)",
+                  border: " 1px solid rgba(255,255,255, 0.2)",
                   boxShadow: "none",
-                  color: "black",
+                  color: "#042C54",
                   marginRight: '10px',
                   width: '170px',
-                  textTransform: 'unset', fontSize: '15px'
+                  textTransform: 'unset', 
+                  fontSize: '15px',
+                  marginTop: '18px'
                 }}
               >
                 Log In
@@ -42,11 +45,13 @@ const Header = ({ registerForm, loginForm }) => {
               <Button 
               onClick={registerForm} 
               style={{ 
-                color: "black", 
-                backgroundColor: "rgb(119, 186, 193)",
+                color: "white", 
+                backgroundColor: "#042C54",
                 textTransform: 'unset', 
+                border: "1px solid #042C54",
                 fontSize: '15px',
                 width: '170px',
+                marginTop: '18px'
                 }}> Sign Up </Button>
           </GridItem>
         </GridContainer>

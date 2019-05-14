@@ -258,7 +258,7 @@ class Invite extends Component {
                             <TextField
                               disabled={this.state.project_id ? false : true}
                               type="email"
-                              label="email"
+                              label="Email"
                               error={hasError && !this.state.email ? true : false}
                               id="email"
                               onChange={this.handleChange}

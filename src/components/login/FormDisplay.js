@@ -18,7 +18,7 @@ const FormDisplay = ({ register, handleClickOpen, classes }) => {
         <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: '2px', top: "55px",  zIndex: 10 }} >
             <Card style={{ minWidth: '312px', marginRight: '10px'}}>
                 <CardHeader style={{ display: 'flex', justifyContent: 'space-between'}}>
-                <CardIcon color="success">
+                <CardIcon color="rose">
                     {register ?
                     <HowToReg style={{ color: 'white'}} />
                     : <AccountCircle style={{ color: 'white'}} /> }

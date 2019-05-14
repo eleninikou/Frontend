@@ -205,7 +205,7 @@ class Login extends Component {
 
     return (
       <GridContainer>
-        <GridItem  xs={12} sm={12} md={12} style={{ backgroundColor: "#00acc1", minHeight: "85vh", height: 'auto', padding: "0px", margin: "0px" }} >
+        <GridItem  xs={12} sm={12} md={12} style={{ background: "linear-gradient(60deg, #26c6da, #00acc1)", minHeight: "80vh", height: 'auto', padding: "0px", margin: "0px" }} >
           <GridContainer style={{ padding: '0px'}}>
             {/*  Desktop Menu  */}
             <Hidden smDown implementation="css">
@@ -225,9 +225,7 @@ class Login extends Component {
               {mobileOpen ? ( <MobileFormDisplay /> ) : null}
             </Hidden>
             <MediaQuery query="(max-device-width: 960px)" >
-            <a href="/">
                <h1 style={{ margin: "0px", color: "white", fontFamily: 'Roboto', fontSize: '72px', marginLeft: '20px' }}>  e a s e . </h1>
-            </a>
             </MediaQuery>    
             <SectionOne registerForm={this.registerForm.bind(this)}/>
             <InvitationFormDisplay 

@@ -3,7 +3,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 const LoginSpinner = withStyles({
   colorPrimary: {
-    color: "#66bb6a"
+    color: "#d81b60"
   }
 })(CircularProgress);
 

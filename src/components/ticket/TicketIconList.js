@@ -24,7 +24,7 @@ const TicketIconList = ({ ticket }) => {
                   borderRadius: '50%'
                 }}
                 />
-              {ticket.assigned_user.name}
+              <Typography> {ticket.assigned_user.name} </Typography>
             </div>
           ) : (
             <div style={{ display: 'flex', alignItems: 'center'}}>
@@ -42,39 +42,39 @@ const TicketIconList = ({ ticket }) => {
       <Typography>{ticket.status ? ticket.status.status : null} </Typography>
       <Typography style={{ color: "grey", marginTop: "25px" }}> Priority </Typography>
       {ticket.priority === "low" ? (
-                          <Avatar
-                            style={{
-                              backgroundColor: "#FADC08",
-                              height: "30px",
-                              width: "30px",
-                              marginRight: "20px"
-                            }}
-                          >
-                            <Warning style={{ fontSize: "18px" }} />
-                          </Avatar>
-                        ) : ticket.priority === "normal" ? (
-                          <Avatar
-                            style={{
-                              backgroundColor: "#4caf50",
-                              height: "30px",
-                              width: "30px",
-                              marginRight: "20px"
-                            }}
-                          >
-                            <Warning style={{ fontSize: "18px" }} />
-                          </Avatar>
-                        ) : (
-                          <Avatar
-                            style={{
-                              backgroundColor: "#f44336",
-                              height: "30px",
-                              width: "30px",
-                              marginRight: "20px"
-                            }}
-                          >
-                            <Warning style={{ fontSize: "18px" }} />
-                          </Avatar>
-                        )}
+          <Avatar
+            style={{
+              backgroundColor: "#FADC08",
+              height: "30px",
+              width: "30px",
+              marginRight: "20px"
+            }}
+          >
+            <Warning style={{ fontSize: "18px" }} />
+          </Avatar>
+        ) : ticket.priority === "normal" ? (
+          <Avatar
+            style={{
+              backgroundColor: "#4caf50",
+              height: "30px",
+              width: "30px",
+              marginRight: "20px"
+            }}
+          >
+            <Warning style={{ fontSize: "18px" }} />
+          </Avatar>
+        ) : (
+          <Avatar
+            style={{
+              backgroundColor: "#f44336",
+              height: "30px",
+              width: "30px",
+              marginRight: "20px"
+            }}
+          >
+            <Warning style={{ fontSize: "18px" }} />
+          </Avatar>
+        )}
     </div>
   ) : null;
 };

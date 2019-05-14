@@ -24,7 +24,7 @@ const InfoIcons = () => {
           <CardBody style={{ margin: 'auto'}}>
             <GridContainer > 
               <GridItem xs={12} sm={12} md={4}>
-                <Card>
+                <Card style={{ height: '150px'}}>
                   <CardHeader>
                     <CardIcon color="info">
                       <ContactMail style={{ color: 'white'}} />
@@ -36,7 +36,7 @@ const InfoIcons = () => {
                 </Card>
               </GridItem>
               <GridItem xs={12} sm={12} md={4}>
-                <Card>
+              <Card style={{ height: '150px'}}>
                   <CardHeader>
                     <CardIcon color="rose">
                       <LowPriority style={{ color: 'white'}} />
@@ -48,7 +48,7 @@ const InfoIcons = () => {
                 </Card>
               </GridItem>
               <GridItem xs={12} sm={12} md={4}>
-                <Card>
+              <Card style={{ height: '150px'}}>
                   <CardHeader>
                     <CardIcon color="primary">
                       <Note style={{ color: 'white'}} />
@@ -60,7 +60,7 @@ const InfoIcons = () => {
                 </Card>
               </GridItem>
               <GridItem xs={12} sm={12} md={4}>
-                <Card>
+              <Card style={{ height: '150px'}}>
                   <CardHeader>
                     <CardIcon color="success">
                       <Person style={{ color: 'white'}} />
@@ -72,7 +72,7 @@ const InfoIcons = () => {
                 </Card>
               </GridItem>
               <GridItem xs={12} sm={12} md={4}>
-                <Card>
+              <Card style={{ height: '150px'}}>
                   <CardHeader>
                     <CardIcon color="warning">
                       <Timeline style={{ color: 'white'}} />
@@ -84,7 +84,7 @@ const InfoIcons = () => {
                 </Card>
               </GridItem>
               <GridItem xs={12} sm={12} md={4}>
-                <Card>
+              <Card style={{ height: '150px'}}>
                   <CardHeader>
                     <CardIcon color="danger">
                       <BugReport style={{ color: 'white'}} />

@@ -47,23 +47,25 @@ class TicketComments extends Component {
   };
 
   render() {
-    const { user, classes, comments, isFetching } = this.props;
+    const { user, classes, comments } = this.props;
+
     return (
       <List>
         {comments
           ? comments.map(comment => {
+            console.log(comment)
             return (
               <Card key={comment.id}>
                   <ListItem style={{ borderBottom: "1px solid grey", padding: "30px" }} >
                     <GridContainer style={{ width: "100%", padding: "0px" }}>
                       <GridItem xs={12} sm={12} md={12} style={{ padding: "0px"}} >
                         <GridContainer style={{ alignItems: "center" }}>
-                          <GridItem xs={12} sm={2} md={2} style={{ padding: "0px"}}>
+                          <GridItem xs={12} sm={2} md={10} style={{ padding: "0px", display: 'flex', alignItems: 'center'}}>
                             <ListItemAvatar>
                               <Avatar>
-                                {user.avatar ? (
+                                {comment.user ? comment.user.avatar ? (
                                   <img
-                                    src={user.avatar}
+                                    src={comment.user.avatar}
                                     alt="user"
                                     style={{
                                       display: "block",
@@ -74,11 +76,9 @@ class TicketComments extends Component {
                                   />
                                 ) : (
                                   <Person />
-                                )}
+                                ) : null }
                               </Avatar>
                             </ListItemAvatar>
-                          </GridItem>
-                          <GridItem xs={12} sm={8} md={8}>
                             <ListItemText primary={
                                 comment.user
                                   ? comment.user.name +
@@ -114,7 +114,6 @@ class TicketComments extends Component {
                         </GridContainer>
                       </GridItem>
                       <GridItem xs={12} sm={12} md={12}>
-                      {console.log((comment.comment))}
                         {comment.comment && comment.comment.blocks ? comment.comment.blocks[0].text : null ? 
                           <div dangerouslySetInnerHTML={{ __html: this.convertFromJSONToHTML(comment.comment)}} />
                           : null }

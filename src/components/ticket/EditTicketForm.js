@@ -182,7 +182,6 @@ class EditTicketForm extends Component {
       type_id: this.state.type_id,
       project_id: this.state.project_id
     };
-    debugger;
     // Old image is object
     const urls = [];
     this.state.urls.map(url => {

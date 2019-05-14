@@ -8,20 +8,17 @@ import MediaQuery from 'react-responsive';
 
 const SectionTwo = () => {
     return (
-        <GridItem xs={12} sm={10} md={10} style={{ margin: "auto", justifyContent: "center" }} >
+        <GridItem xs={12} sm={10} md={10} style={{ margin: "auto", display: 'flex', minHeight: '70vh', height: 'auto'}} >
           <GridContainer>
             <MediaQuery query="(max-device-width: 960px)" >
               <div style={{ width: '100%', height: '40px'}}></div>
             </MediaQuery>    
             <GridItem xs={12} sm={10} md={3} style={{ margin: "auto" }}>
               <Typography style={{ fontSize: "22px", fontWeight: "600" }}>
-                Built for Developers,
+                Built for Developers
               </Typography>
               <Typography style={{ fontSize: "22px", fontWeight: "600" }}>
-                Product Managers,
-              </Typography>
-              <Typography style={{ fontSize: "22px", fontWeight: "600" }}>
-                and UX Designers
+                and Clients.
               </Typography>
               <div style={{ width: "30%", height: "10px", backgroundColor: "rgb(209, 0, 83)" }} />
             </GridItem>

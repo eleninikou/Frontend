@@ -136,8 +136,11 @@ class LoginForm extends Component {
                     <Button
                       type="submit"
                       variant="contained"
-                      color="primary"
-                      style={{ backgroundColor: "#66bb6a", padding: "10px" }}
+                      style={{ 
+                        backgroundColor: "#d81b60", 
+                        padding: "10px", 
+                        color: "white", 
+                        textTransform: 'unset' }}
                     >
                       Log in
                     </Button>

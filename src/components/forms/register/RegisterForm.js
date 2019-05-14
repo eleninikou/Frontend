@@ -71,7 +71,6 @@ class RegisterForm extends Component {
         email: this.email,
         password: this.state.password
       };
-      debugger;
 
       this.props.register(creds)
       .then((res) => {
@@ -185,11 +184,13 @@ class RegisterForm extends Component {
                       style={{
                         marginTop: "30px",
                         marginBottom: "20px",
-                        backgroundColor: "#66bb6a",
-                        padding: "10px"
+                        backgroundColor: "#d81b60", 
+                        color: "white",
+                        padding: "10px",
+                        textTransform: 'unset'
                       }}
                     >
-                      SIGN UP
+                      Sign Up
                     </Button>
                   </FormControl>
                 </GridItem>

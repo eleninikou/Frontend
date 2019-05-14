@@ -31,7 +31,7 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import "../assets/css/main.css";
 
 import Cookies from "universal-cookie";
-import image from '../assets/img/NS2R7RJK.png'
+import image from '../assets/img/dot.png'
 import routes from "../routes.js";
 
 const switchRoutes = (
