@@ -115,12 +115,12 @@ class TicketComments extends Component {
                         </GridContainer>
                       </GridItem>
                       <GridItem xs={12} sm={12} md={12}>
-                      {console.log(comment.comment.blocks)}
-                        {comment.comment && comment.comment.blocks ? 
+                        {comment.comment && comment.comment.blocks ? comment.comment.blocks[0].text : null ? 
                           <div dangerouslySetInnerHTML={{ __html: this.convertFromJSONToHTML(comment.comment)}} />
                        : null }
                       </GridItem>
-                      {comment.image ? comment.images.length ? (
+                      {console.log(comment.images)}
+                      {comment.images ? comment.images.length ? (
                         <GridItem xs={12} sm={12} md={12} style={{ marginTop: "100px" }} >
                           <ImageGallery
                             items={comment.images.map(image => {

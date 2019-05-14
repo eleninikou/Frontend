@@ -230,7 +230,7 @@ class Ticket extends Component {
         {isFetching ? ( <LoadingSpinner text={text}/>
         ) : (
           <GridContainer>
-            <GridItem xs={12} sm={12} md={12}>
+            <GridItem xs={12} sm={12} md={10}>
                 {ticket && !edit ? (
                 <Card>
                     <CardHeader color="primary">
@@ -324,7 +324,7 @@ class Ticket extends Component {
             </CardHeader>
 
             <GridContainer>
-              <GridItem xs={12} sm={12} md={12}>
+              <GridItem xs={12} sm={12} md={10}>
                 <EditTicketForm
                   showForm={this.showForm.bind(this)}
                   ButtonText={ButtonText}
@@ -354,6 +354,8 @@ class Ticket extends Component {
 
         {/* Display Comments */}
         {(!isFetching && showComments) || (!isFetching && addComment) ? (
+            <GridContainer>
+              <GridItem xs={12} sm={12} md={10}>
           <Card>
             <CardHeader style={{ display: "flex", justifyContent: "space-between",  alignItems: "start" }} >
               <CardIcon color="info">
@@ -386,6 +388,8 @@ class Ticket extends Component {
               />
             </CardBody>
           </Card>
+              </GridItem>
+              </GridContainer>
         ) : null}
       </div>
     );

@@ -152,7 +152,7 @@ class EditTicketForm extends Component {
     event.preventDefault();
     let date = "";
 
-    if (this.state.selectedDate === "") {
+    if (this.state.selectedDate === "" || "Invalid date") {
       this.date = this.state.due_date;
     } else {
       this.date = this.state.selectedDate;
@@ -182,7 +182,7 @@ class EditTicketForm extends Component {
       type_id: this.state.type_id,
       project_id: this.state.project_id
     };
-
+    debugger;
     // Old image is object
     const urls = [];
     this.state.urls.map(url => {
