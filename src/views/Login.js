@@ -200,7 +200,7 @@ class Login extends Component {
   }
 
   render() {
-    const { classes, ...rest } = this.props;
+    const { classes, isFetching, ...rest } = this.props;
     const { mobileOpen, display, invitedUserEmail, existingUser, invitation } = this.state;
 
     return (
@@ -224,7 +224,7 @@ class Login extends Component {
             </div>
               {mobileOpen ? ( <MobileFormDisplay /> ) : null}
             </Hidden>
-            <MediaQuery query="(max-device-width: 1224px)" >
+            <MediaQuery query="(max-device-width: 960px)" >
                <h1 style={{ margin: "0px", color: "white", fontFamily: 'Roboto', fontSize: '72px', marginLeft: '20px' }}>  e a s e . </h1>
             </MediaQuery>    
             <SectionOne registerForm={this.registerForm.bind(this)}/>
@@ -234,6 +234,8 @@ class Login extends Component {
               existingUser={existingUser}
               display={display}
               invitation={invitation}
+              redirect={this.redirect.bind(this)}
+              isFetching={isFetching}
               />
           </GridContainer>
         </GridItem>
@@ -255,4 +257,8 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default withRouter(connect( null,  mapDispatchToProps)(withStyles(styles)(Login)));
+const mapStateToProps = state => ({
+  isFetching: state.auth.isFetching,
+});
+
+export default withRouter(connect(mapStateToProps,  mapDispatchToProps)(withStyles(styles)(Login)));

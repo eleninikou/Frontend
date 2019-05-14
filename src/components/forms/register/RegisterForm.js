@@ -54,7 +54,7 @@ class RegisterForm extends Component {
     event.preventDefault();
 
     // Check if required fields
-    if(this.state.name && this.state.email && this.state.password && this.state.repeatPassword) {
+    if(this.state.name && (this.state.invitation ? this.props.email : this.state.email) && this.state.password && this.state.repeatPassword) {
     
       // Check if password is correct
       if (this.state.password === this.state.repeatPassword) {
@@ -71,10 +71,10 @@ class RegisterForm extends Component {
         email: this.email,
         password: this.state.password
       };
+      debugger;
 
       this.props.register(creds)
       .then((res) => {
-        debugger;
         if (res && res.email) {
           if (this.state.invitation) {
             this.props.redirect(this.state.invitation, true);

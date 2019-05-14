@@ -32,7 +32,6 @@ var token = cookies.get('token')
 export const register = creds => {
   return async dispatch => {
     const registrationSuccess = user => { 
-      debugger;
       dispatch ({ type: REGISTER_SUCCESS, payload: user.success.user}); 
       cookies.set("token", user.success.token, { path: "/", maxAge: 86399 });
       cookies.set("user", user.success.user.id, { path: "/", maxAge: 86399 });
