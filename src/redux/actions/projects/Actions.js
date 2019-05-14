@@ -27,6 +27,7 @@ import {
   DELETE_INVITATION_REQUEST,
   DELETE_INVITATION_SUCCESS,
   DELETE_INVITATION_FAILURE,
+  GET_INVITATIONS_REQUEST,
   GET_INVITATIONS_SUCCESS,
   GET_INVITATIONS_FAILURE,
   REMOVE_FROM_TEAM_SUCCESS,
@@ -317,13 +318,14 @@ export const invite = (invitation, token)=> {
 };
 
 
-export const getEmails = (id, token) => {
+export const getInvitations = (id, token) => {
   return async dispatch => {
     const inviteSuccess = success => { 
       dispatch ({ type: GET_INVITATIONS_SUCCESS, payload: success }); 
       return success; 
   }
     try {
+      dispatch ({ type: GET_INVITATIONS_REQUEST})
       const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/projects/${id}/invited`, {
         method: "GET",
         headers: {

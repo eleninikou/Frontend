@@ -194,7 +194,7 @@ class RegisterForm extends Component {
                   </FormControl>
                 </GridItem>
               </form>
-                <GridItem xs={12} sm={12} md={12}style={{ textAlign: "center", marginTop: "20px" }} >
+                <GridItem xs={12} sm={12} md={12}style={{ textAlign: "center"}} >
                   {!this.state.invitation ? (
                     <FormControl className={classes.formControl}>
                       <GoogleLogin

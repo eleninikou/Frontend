@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 // Redux
 import { connect } from "react-redux";
-import { getTeam, getProject} from "../../redux/actions/projects/Actions";
+import { getTeam, getInvitations } from "../../redux/actions/projects/Actions";
 // Theme components
 import Table from "../theme/Table/Table.jsx";
 import Button from "../theme/CustomButtons/Button.jsx";
@@ -74,7 +74,6 @@ class ProjectTeam extends Component {
   };
 
   setInvitations(invitations) {
-    debugger;
     this.setState({ invitations })
   }
 
@@ -86,7 +85,10 @@ class ProjectTeam extends Component {
     .then(res => {
       this.setState({ team: res.team });
     });
-
+    this.props.getInvitations(this.props.match.params.id, this.state.token)
+    .then(res => {
+      this.setState({ invitations: res.invitations })
+    })
   };
 
   showNotification = place => {
@@ -236,7 +238,7 @@ class ProjectTeam extends Component {
 
 const mapDispatchToProps = dispatch => { return { 
   getTeam: (id, token) => dispatch(getTeam(id, token)),
-  getProject: (id, token) => dispatch(getProject(id, token)),
+  getInvitations: (id, token) => dispatch(getInvitations(id, token)),
 }
 };
 const mapStateToProps = state => ({ 

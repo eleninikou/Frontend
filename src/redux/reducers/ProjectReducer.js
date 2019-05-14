@@ -39,7 +39,6 @@ const initialState = {
   tickets: [],
   milestones: [],
   team: [],
-  emails: [],
   roles: [],
   allProjects: [],
   activity: [],
@@ -228,7 +227,7 @@ const ProjectReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        emails: action.payload.emails
+        invitations: action.payload.invitations
       };
     case GET_INVITATIONS_FAILURE:
       return {

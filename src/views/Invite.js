@@ -7,7 +7,7 @@ import {
   getRoles,
   getTeam,
   invite,
-  getEmails
+  getInvitations
 } from "../redux/actions/projects/Actions";
 import { connect } from "react-redux";
 // Theme componets
@@ -44,7 +44,7 @@ class Invite extends Component {
       project_role: "",
       project_id: "",
       email: "",
-      emails: [],
+      invitations: [],
       team: "",
       page: 0,
       rowsPerPage: 5,
@@ -64,21 +64,25 @@ class Invite extends Component {
 
     // If redirected from a specific project
     if (this.props.match.params.id) {
-      this.props.getProject(this.props.match.params.id, token).then(res => {
+      this.props.getProject(this.props.match.params.id, token)
+      .then(res => {
         if (res.project) {
           this.setState({
             project_id: this.props.project.id,
             team: this.props.team,
-            backToProject: true
+            backToProject: true,
+            invitations: res.invites
           });
         }
       });
-      this.props.getEmails(this.props.match.params.id, token).then(res => {
-        this.setState({ emails: this.props.emails });
+      this.props.getInvitations(this.props.match.params.id, token)
+      .then(() => {
+        this.setState({ invitations: this.props.invitations });
       });
     } else {
       // From dashboard. Get all projects
       this.props.getProjectsByUser(token)
+  
     }
   };
 
@@ -97,9 +101,9 @@ class Invite extends Component {
         if (res.message) {
           this.showNotification("tr");
         
-          this.props.getEmails(this.state.project_id, this.state.token)
+          this.props.getInvitations(this.state.project_id, this.state.token)
           .then(res => {
-            this.setState({ emails: res.emails });
+            this.setState({ invitations: res.invitations });
           });
         }
       });
@@ -134,19 +138,21 @@ class Invite extends Component {
 
     // Get team and invited emails when selecting projects
     if ([event.target.name] == "project_id") {
-      this.props.getTeam(event.target.value, this.state.token).then(res => {
+      this.props.getTeam(event.target.value, this.state.token)
+      .then(res => {
         this.setState({ team: res.team });
       });
 
-      this.props.getEmails(event.target.value, this.state.token).then(res => {
-        this.setState({ emails: res.emails });
+      this.props.getInvitations(event.target.value, this.state.token)
+      .then(res => {
+        this.setState({ invitations: res.invitations });
       });
     }
   };
 
   render() {
     const { classes, projects, project, roles, successMessage, isFetching } = this.props;
-    const { page, team, backToProject, hasError, emails } = this.state;
+    const { page, team, backToProject, hasError, invitations } = this.state;
 
     function getUnique(arr, comp) {
       const unique = arr
@@ -159,6 +165,7 @@ class Invite extends Component {
 
     let yourProjects = projects ? projects.projects ? getUnique(projects.projects, "id") : null : null;
 
+    console.log(invitations)
     return (
       <GridContainer>
         <Snackbar
@@ -292,15 +299,15 @@ class Invite extends Component {
                           <div style={{ margin: "20px", textAlign: "center" }}>
                             {isFetching ? <StyledSpinner /> : null}
                           </div>
-                          {emails ? (
-                            emails.length && !isFetching ? (
+                          {invitations ? (
+                            invitations.length && !isFetching ? (
                               <Table
                                 page={page}
-                                rowsPerPage={emails.length}
+                                rowsPerPage={invitations.length}
                                 emptyRows={0}
                                 tableHeaderColor="info"
                                 tableHead={["Invited"]}
-                                tableData={[ emails ? emails.map(email => { return [`${email}`] }) : null ]}
+                                tableData={[ invitations ? invitations.map(invitation => { return [`${invitation.email}`] }) : null ]}
                               />
                             ) : null
                           ) : null}
@@ -336,7 +343,7 @@ const mapDispatchToProps = dispatch => {
     getRoles: (token) => dispatch(getRoles(token)),
     getTeam: (id, token) => dispatch(getTeam(id, token)),
     invite: (invitation, token) => dispatch(invite(invitation, token)),
-    getEmails: (id, token ) => dispatch(getEmails(id, token))
+    getInvitations: (id, token ) => dispatch(getInvitations(id, token))
   };
 };
 
