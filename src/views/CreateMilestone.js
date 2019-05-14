@@ -66,6 +66,7 @@ class CreateMilestone extends Component {
         errorMessage: this.props.location.state.errorMessage
       })
       this.showNotification("tr")
+      console.log(this.props.location.state.project_name)
       this.props.getProject(this.props.location.state.project_id, token)
     } else {
       this.props.getAllProjects(token)

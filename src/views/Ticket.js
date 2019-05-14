@@ -179,13 +179,14 @@ class Ticket extends Component {
           project_id: res.ticket.project_id,
           creator: res.ticket.project.creator_id,
           ticket: res.ticket,
-          comments: res.ticket.comments,
+          comments: this.props.comments,
           edit: false,
           ButtonText: "Edit Ticket"
         });
       }
     });
   };
+
 
   render() {
     const {
@@ -227,46 +228,40 @@ class Ticket extends Component {
           close
         />
 
-        {isFetching ? ( <LoadingSpinner text={text}/>
-        ) : (
+        {isFetching ?  <LoadingSpinner text={text}/>
+        : (
           <GridContainer>
             <GridItem xs={12} sm={12} md={10}>
                 {ticket && !edit ? (
                 <Card>
                     <CardHeader color="primary">
-                      <h4 className={classes.cardTitleWhite}  style={{ fontSize: "2em" }} >
-                        Ticket | {ticket.title}
-                      </h4>
-                      <h4 className={classes.cardTitleWhite}>
-                        {ticket.type ? ticket.type.type : null}
-                      </h4>
+                      <h4 className={classes.cardTitleWhite}  style={{ fontSize: "2em" }} > Ticket | {ticket.title} </h4>
+                      <h4 className={classes.cardTitleWhite}> {ticket.type ? ticket.type.type : null} </h4>
                     </CardHeader>
                     <CardBody>
                       <GridContainer>
                         <GridItem xs={12} sm={12} md={5}>
-                          {ticket ? (
-                            <TicketIconList ticket={ticket} classes={classes} />
-                          ) : (
+                          {ticket ?  <TicketIconList ticket={ticket} classes={classes} />
+                           : 
                             <div style={{ width: "100%", textAlign: "center" }}>
                               <DashboardSpinner />
                             </div>
-                          )}
+                          }
                         </GridItem>
                         <GridItem xs={12} sm={12} md={7}>
-                          {description ? (
-                            <TicketContent description={description} />
-                          ) : (
+                          {description ?  <TicketContent description={description} />
+                           : 
                             <div style={{ width: "100%", textAlign: "center" }}>
                               <DashboardSpinner />
                             </div>
-                          )}
+                          }
                         </GridItem>
                         <GridItem xs={12} sm={12} md={12}>
-                          {images.length ? (
+                          {images.length ? 
                             <Card>
                               <ImageGallery items={galleryImages[0]} />
                             </Card>
-                          ) : null}
+                           : null}
                         </GridItem>
                       </GridContainer>
                     </CardBody>
@@ -286,9 +281,8 @@ class Ticket extends Component {
                       ) : null}
                     </CardFooter>
                   </Card>
-                ) : (
-                  <LoadingSpinner text={text}/>
-                )}
+                ) : <LoadingSpinner text={text}/>
+                }
             </GridItem>
           </GridContainer>
         )}
@@ -382,6 +376,7 @@ class Ticket extends Component {
               ) : null}
               <TicketComments
                 comments={comments}
+                isFetching={isFetching}
                 user={user}
                 classes={classes}
                 getSuccess={this.getSuccess.bind(this)}

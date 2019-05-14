@@ -3,6 +3,8 @@ import moment from "moment";
 // Icons
 import PersonPin from "@material-ui/icons/PersonPin";
 import Typography from "@material-ui/core/Typography";
+import Avatar from "@material-ui/core/Avatar";
+import Warning from "@material-ui/icons/Warning";
 
 
 const TicketIconList = ({ ticket }) => {
@@ -18,7 +20,8 @@ const TicketIconList = ({ ticket }) => {
                   display: "block",
                   width: "30px",
                   height: "30px",
-                  marginRight: '10px'
+                  marginRight: '10px',
+                  borderRadius: '50%'
                 }}
                 />
               {ticket.assigned_user.name}
@@ -38,8 +41,40 @@ const TicketIconList = ({ ticket }) => {
       <Typography style={{ color: "grey", marginTop: "25px" }}> Status </Typography>
       <Typography>{ticket.status ? ticket.status.status : null} </Typography>
       <Typography style={{ color: "grey", marginTop: "25px" }}> Priority </Typography>
-      <Typography> {ticket.priority ? ticket.priority : null} </Typography>
-
+      {ticket.priority === "low" ? (
+                          <Avatar
+                            style={{
+                              backgroundColor: "#FADC08",
+                              height: "30px",
+                              width: "30px",
+                              marginRight: "20px"
+                            }}
+                          >
+                            <Warning style={{ fontSize: "18px" }} />
+                          </Avatar>
+                        ) : ticket.priority === "normal" ? (
+                          <Avatar
+                            style={{
+                              backgroundColor: "#4caf50",
+                              height: "30px",
+                              width: "30px",
+                              marginRight: "20px"
+                            }}
+                          >
+                            <Warning style={{ fontSize: "18px" }} />
+                          </Avatar>
+                        ) : (
+                          <Avatar
+                            style={{
+                              backgroundColor: "#f44336",
+                              height: "30px",
+                              width: "30px",
+                              marginRight: "20px"
+                            }}
+                          >
+                            <Warning style={{ fontSize: "18px" }} />
+                          </Avatar>
+                        )}
     </div>
   ) : null;
 };

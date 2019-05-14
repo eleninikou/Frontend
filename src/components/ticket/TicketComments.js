@@ -28,7 +28,6 @@ class TicketComments extends Component {
     this.state = {
       open: false,
       id: '',
-      comments: []
     };
   }
 
@@ -48,7 +47,7 @@ class TicketComments extends Component {
   };
 
   render() {
-    const { user, classes, comments } = this.props;
+    const { user, classes, comments, isFetching } = this.props;
     return (
       <List>
         {comments
@@ -56,10 +55,10 @@ class TicketComments extends Component {
             return (
               <Card key={comment.id}>
                   <ListItem style={{ borderBottom: "1px solid grey", padding: "30px" }} >
-                    <GridContainer style={{ width: "100%" }}>
-                      <GridItem xs={12} sm={12} md={12}>
+                    <GridContainer style={{ width: "100%", padding: "0px" }}>
+                      <GridItem xs={12} sm={12} md={12} style={{ padding: "0px"}} >
                         <GridContainer style={{ alignItems: "center" }}>
-                          <GridItem xs={12} sm={2} md={2}>
+                          <GridItem xs={12} sm={2} md={2} style={{ padding: "0px"}}>
                             <ListItemAvatar>
                               <Avatar>
                                 {user.avatar ? (
@@ -115,11 +114,11 @@ class TicketComments extends Component {
                         </GridContainer>
                       </GridItem>
                       <GridItem xs={12} sm={12} md={12}>
+                      {console.log((comment.comment))}
                         {comment.comment && comment.comment.blocks ? comment.comment.blocks[0].text : null ? 
                           <div dangerouslySetInnerHTML={{ __html: this.convertFromJSONToHTML(comment.comment)}} />
-                       : null }
+                          : null }
                       </GridItem>
-                      {console.log(comment.images)}
                       {comment.images ? comment.images.length ? (
                         <GridItem xs={12} sm={12} md={12} style={{ marginTop: "100px" }} >
                           <ImageGallery

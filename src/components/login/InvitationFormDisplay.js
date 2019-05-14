@@ -13,7 +13,7 @@ const InvitationFormDisplay = ({ invitedUserEmail, existingUser, classes, displa
     return (
         invitedUserEmail ? (
         <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: "17px", top: "90px",  zIndex: 10 }} >
-            <Card style={{ minWidth: '312px', marginRight: '10px', paddingBottom: '50px'}}>
+            <Card style={{ width: '347px', marginRight: '10px', paddingBottom: '50px'}}>
               <CardHeader color="success" style={{ marginBottom: '20px'}}>
                 <h4 className={classes.cardTitleWhite}> Fill in to accept the invitation! </h4>
               </CardHeader>
@@ -24,16 +24,16 @@ const InvitationFormDisplay = ({ invitedUserEmail, existingUser, classes, displa
         </GridItem>
         ) : display ? null 
         : invitation && !isFetching ? (
-          <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: "17px", top: "90px",  zIndex: 10 }} >
-            <Card style={{ minWidth: '312px', marginRight: '10px'}}>
+          <GridItem xs={10} sm={3} md={3} style={{ position: "fixed", right: "5px", top: "70px",  zIndex: 10 }} >
+            <Card style={{ width: '347px'}}>
             <CardHeader >
               <CardIcon color="danger">
                 <ErrorOutline style={{ color: 'white'}} />
               </CardIcon>
             </CardHeader>
               <CardBody>
-                <Typography> It looks like your invitation allready has been used. </Typography>
-                <Typography> You can still login to start working on your own projects! </Typography>
+                <Typography> This invitation is unfortunately not valid any longer...</Typography>
+                <Typography style={{ marginTop: '10px'}}> But you can still login to start working on your own projects! </Typography>
               </CardBody>
             </Card>
           </GridItem>

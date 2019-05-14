@@ -225,7 +225,9 @@ class Login extends Component {
               {mobileOpen ? ( <MobileFormDisplay /> ) : null}
             </Hidden>
             <MediaQuery query="(max-device-width: 960px)" >
+            <a href="/">
                <h1 style={{ margin: "0px", color: "white", fontFamily: 'Roboto', fontSize: '72px', marginLeft: '20px' }}>  e a s e . </h1>
+            </a>
             </MediaQuery>    
             <SectionOne registerForm={this.registerForm.bind(this)}/>
             <InvitationFormDisplay 

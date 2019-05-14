@@ -25,6 +25,7 @@ import LowPriority from "@material-ui/icons/LowPriority";
 import LinearScale from "@material-ui/icons/LinearScale";
 import YoutubeSearchedFor from "@material-ui/icons/YoutubeSearchedFor";
 import Cookies from "universal-cookie";
+import Warning from "@material-ui/icons/Warning";
 
 class ProjectTickets extends Component {
   constructor(props) {
@@ -199,10 +200,43 @@ class ProjectTickets extends Component {
                         ): null }
                       </Avatar>
                     </Tooltip>,
-                    `${ticket.priority}`,
+                          ticket.priority === "low" ? (
+                            <Avatar
+                              style={{
+                                backgroundColor: "#FADC08",
+                                height: "30px",
+                                width: "30px",
+                                marginRight: "20px"
+                              }}
+                            >
+                              <Warning style={{ fontSize: "18px" }} />
+                            </Avatar>
+                          ) : ticket.priority === "normal" ? (
+                            <Avatar
+                              style={{
+                                backgroundColor: "#4caf50",
+                                height: "30px",
+                                width: "30px",
+                                marginRight: "20px"
+                              }}
+                            >
+                              <Warning style={{ fontSize: "18px" }} />
+                            </Avatar>
+                          ) : (
+                            <Avatar
+                              style={{
+                                backgroundColor: "#f44336",
+                                height: "30px",
+                                width: "30px",
+                                marginRight: "20px"
+                              }}
+                            >
+                              <Warning style={{ fontSize: "18px" }} />
+                            </Avatar>
+                          ),
                     `${ticket.assigned_user ? ticket.assigned_user.name : "No one"}`,
                     `${ticket.status.status}`,
-                    `${moment(ticket.due_date).format("YYYY-MM-DD")}`,
+                    ticket.due_date ? `${moment(ticket.due_date).format("YYYY-MM-DD")}`: '-',
                     <Tooltip
                       id="tooltip-top"
                       title="Go to Ticket"
