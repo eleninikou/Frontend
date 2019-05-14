@@ -23,10 +23,3 @@
 body {
   margin: 0px !important; }
 
-@media screen and (max-width: 958px) and (orientation: portrait) {
-  .orientation {
-    display: 'flex'; } }
-
-@media screen and (max-width: 958px) and (orientation: landscape) {
-  .orientation {
-    display: 'none'; } }

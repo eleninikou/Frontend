@@ -13,6 +13,7 @@ import {
     GET_USER_REQUEST,
     GET_USER_SUCCESS,
     GET_USER_FAILURE,
+    UPDATE_USER_REQUEST,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_FAILURE,
     DELETE_USER_SUCCESS,
@@ -167,6 +168,7 @@ export const updateUser = (user, id) => {
   }
   
     try {
+      dispatch({ type: UPDATE_USER_REQUEST })
       const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/users/${id}`, {
         method: "PUT",
         body: JSON.stringify(user),
